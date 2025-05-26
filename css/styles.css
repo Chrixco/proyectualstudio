@@ -1,0 +1,114 @@
+body {
+  background-color: #d5ddfd;
+  font-family: monospace;
+  color: #000;
+}
+
+video.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -10;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.body-white-text {
+  background-color: #000000;
+  font-family: monospace;
+  color: #fff;
+}
+
+.body-black-text {
+  background-color: #d5ddfd;
+  font-family: monospace;
+  color: #000000;
+}
+
+.navbar, .footer {
+  background-color: #000;
+  color: #fff;
+}
+
+.navbar a, .footer {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.article-title {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 700;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.article {
+  border-bottom: 2px solid #000;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .navbar-brand, .nav-link {
+    font-size: 0.9rem;
+  }
+}
+/* Image opacity hover effect for article links */
+.article-link img {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.article-link:hover img {
+  opacity: 0.95;
+}
+
+.carousel-img {
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+
+.modal-img {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.modal-dialog {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.modal-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 30%;
+  background-color: rgba(213, 221, 253, 0.3); /* Match body background with some transparency */
+  opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+
+hr {
+  border: 4px solid rgba(255, 255, 255, 1) !important;
+}
+
