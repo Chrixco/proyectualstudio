@@ -1,7 +1,7 @@
 body {
   background-color: #d5ddfd;
   font-family: monospace;
-  color: #000;
+  color: hsl(0, 0%, 0%);
 }
 
 video.bg-video {
@@ -17,9 +17,9 @@ video.bg-video {
 }
 
 .body-white-text {
-  background-color: #000000;
+  background-color: #fff8e9;
   font-family: monospace;
-  color: #fff;
+  color: #555555;
 }
 
 .body-black-text {
