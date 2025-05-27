@@ -9,14 +9,18 @@
   <link href="css/styles.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #fff;
+      background-color: #000;
       color: #ffffff;
       font-family: monospace;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
+      text-align: center;
       height: 100vh;
+      width: 100vw;
       margin: 0;
+      overflow: hidden;
     }
 
     .loader-text {
@@ -31,6 +35,11 @@
     @keyframes typing {
       from { width: 0; }
       to { width: 18ch; }
+    }
+
+    .loader-sub {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      margin-top: 1rem;
     }
 
     .enter-text {
@@ -48,26 +57,37 @@
 </head>
 <body>
   <video autoplay loop muted playsinline class="position-fixed w-100 h-100 object-fit-cover z-n1">
-    <source src="media\Sequence blue.mp4" type="video/mp4">
+    <source src="media/Sequence blue.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div class="text-center">
     <div id="loader-text" class="loader-text">Proyectual Studio.</div>
+  </div>
+  <div class="text-center">
+    <div class="loader-sub">Everyone should have the right to inhabit spaces that uphold human dignity and environmental responsibility.</div>
     <div id="enter-text" class="enter-text">[under construction]</div>
   </div>
 
   <script>
-    const loaderText = document.getElementById('loader-text');
-    const enterText = document.getElementById('enter-text');
+  const loaderText = document.getElementById('loader-text');
+  // Show the [under construction] text and toggle email on click
+  const enterStatus = document.getElementById('enter-text');
 
-    loaderText.addEventListener('animationend', () => {
-      loaderText.style.borderRight = 'none';
-      enterText.classList.add('show');
-    });
+  loaderText.addEventListener('animationend', () => {
+    loaderText.style.borderRight = 'none';
+    enterStatus.classList.add('show');
+    // Do not show email by default
+    // enterEmail.classList.add('show');
+  });
 
-    enterText.addEventListener('click', () => {
-      window.location.href = '';
-    });
+  // Toggle email visibility when clicking on [under construction]
+  enterStatus.addEventListener('click', () => {
+    // No email toggle since email element removed
+  });
   </script>
+
+  <footer class="footer text-center py-3" style="position: absolute; bottom: 0; width: 100%; background-color: transparent; color: white;">
+    © 2025 Christian Corral | <a href="mailto:christianxcorral@gmail.com" style="color: white; text-decoration: underline;">christianxcorral@gmail.com</a>
+  </footer>
 </body>
 </html>
