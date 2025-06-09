@@ -1,7 +1,7 @@
 body {
   background-color: #d5ddfd;
   font-family: monospace;
-  color: hsl(0, 0%, 0%);
+  color: #555555;
 }
 
 video.bg-video {
@@ -17,7 +17,7 @@ video.bg-video {
 }
 
 .body-white-text {
-  background-color: #fff8e9;
+  background-color: #d5ddfd;
   font-family: monospace;
   color: #555555;
 }
@@ -55,6 +55,9 @@ video.bg-video {
   .navbar-brand, .nav-link {
     font-size: 0.9rem;
   }
+  .grid-layout {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 /* Image opacity hover effect for article links */
 .article-link img {
@@ -70,6 +73,13 @@ video.bg-video {
   cursor: zoom-in;
   transition: transform 0.3s ease;
   border: 2px solid #000;
+  border-radius: 10px;
+}
+
+.carousel-img-white {
+  cursor: zoom-in;
+  transition: transform 0.3s ease;
+  border: 2px solid #ffffff;
   border-radius: 10px;
 }
 
@@ -112,3 +122,150 @@ hr {
   border: 4px solid rgba(255, 255, 255, 1) !important;
 }
 
+/* Mosaic View Styling */
+/* Mosaic View Styling */
+.mosaic-view .project-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.mosaic-view .project-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.project-image {
+  transition: opacity 0.3s ease;
+  opacity: 0.75;
+}
+
+.project-card:hover .project-image {
+  opacity: 1;
+}
+
+.overlay-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.project-card:hover .overlay-title {
+  opacity: 1;
+}
+
+/* List view override */
+.list-view .overlay-title {
+  display: none !important;
+}
+
+.list-view .project-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.list-view .project-card img {
+  max-width: 150px;
+  margin-right: 1rem;
+  opacity: 1 !important;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.project-description {
+font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+line-height: 1.5;
+text-align: justify;
+margin-bottom: 1rem;
+padding-left: 1rem;
+padding-right: 1rem;
+}
+
+.project-description-cursive {
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  line-height: 1.5;
+  text-align: justify;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-style: italic;
+}
+
+@media (min-width: 768px) {
+.project-description {
+padding-left: 1rem;
+padding-right: 1rem;
+}
+}
+
+h1, h2, h3 {
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 2px solid #000;
+  padding-bottom: 0.25em;
+  margin-bottom: 1rem;
+}
+
+.btn, #lang-toggle {
+  font-family: 'Space Mono', monospace;
+  border: 2px solid black;
+  background: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.25rem 0.75rem;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: auto;
+  gap: 1rem; /* spacing between grid items */
+  align-items: stretch; /* makes all items equal height by row */
+}
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+.col-span-4 { grid-column: span 4; }
+.col-span-5 { grid-column: span 5; }
+.col-span-6 { grid-column: span 6; }
+.col-span-7 { grid-column: span 7; }
+.col-span-8 { grid-column: span 8; }
+.col-span-9 { grid-column: span 9; }
+.col-span-10 { grid-column: span 10; }
+.col-span-11 { grid-column: span 11; }
+.col-span-12 { grid-column: span 12; }
+
+/* Fixed-height grid units */
+.grid-h1 { height: 200px; }
+.grid-h2 { height: 400px; }
+.grid-h3 { height: 600px; }
+
+/* Image fit handling */
+.img-fit {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 10px;
+  display: block;
+  margin: auto;
+}
+
+/* Utility class to center content inside grid boxes */
+.grid-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

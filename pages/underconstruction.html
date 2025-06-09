@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="dynamicTitle">Proyectual Studio – Under Construction</title>
+  <link href="../css/styles.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-background video {
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
+
+    main.container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-custom {
+      background-color: #f8f9fa;
+      border: 2px solid #000;
+      color: #000;
+    }
+
+    .btn-custom:hover {
+      background-color: #dee2e6;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="../media/output_bw.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+    <img src="../images/icon.png" alt="Proyectual Logo" style="height: 32px;" />
+    <span data-en="Proyectual Studio" data-es="Estudio Proyectual">Proyectual Studio</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+      <li class="nav-item">
+        <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+  <main class="container py-5 px-3 px-md-4">
+    <h1 class="fw-bold text-center mb-4 text-white" data-en="Under Construction" data-es="En Construcción">Under Construction</h1>
+    <div class="border border-2 border-black rounded p-4 mb-5 text-center bg-light bg-opacity-75">
+      <p class="fs-5 mb-0" data-en="We are currently working hard to update our project pages. Please check back soon." data-es="Estamos trabajando arduamente para actualizar nuestras páginas de proyectos. Vuelve pronto."></p>
+      <a href="../pages/architecture.html" class="btn btn-custom mt-3" data-en="Back to Architecture" data-es="Volver a Arquitectura">Back to Architecture</a>
+    </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function updateLanguage(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+      });
+      const dynamicTitle = document.getElementById('dynamicTitle');
+      if (dynamicTitle) {
+        dynamicTitle.textContent = lang === 'en' ? 'Proyectual Studio – Under Construction' : 'Estudio Proyectual – En Construcción';
+      }
+      // Update the main h1 title
+      const mainTitle = document.querySelector('h1[data-en]');
+      if (mainTitle) {
+        mainTitle.textContent = mainTitle.getAttribute(`data-${lang}`);
+      }
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+      }
+      localStorage.setItem('lang', lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLang);
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          currentLang = currentLang === 'en' ? 'es' : 'en';
+          updateLanguage(currentLang);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

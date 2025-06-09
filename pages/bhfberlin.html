@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="dynamicTitle">BHF Berlin</title>
+  <link href="../css/styles.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+    <img src="../images/icon.png" alt="Proyectual Logo" style="height: 32px;" />
+    <span data-en="Proyectual Studio" data-es="Estudio Proyectual">Proyectual Studio</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+      <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+      <li class="nav-item">
+        <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+<main class="container py-5 px-3 px-md-4">
+  <h1 class="fw-bold text-center mb-5" data-en="BHF Berlin" data-es="BHF Berlín">BHF Berlin</h1>
+
+  <div class="row">
+    <div class="col-12 col-lg-7 mb-4 mb-lg-0">
+      <img src="../images/bhf zoo berlin/07062017- Portfolio_Page_07_Image_0001.jpg" alt="BHF Berlin" class="img-fluid border border-2 border-black rounded w-100" style="object-fit: cover; height: auto;" />
+      <img src="../images/bhf zoo berlin/07062017- Portfolio_Page_08_Image_0001.jpg" alt="BHF Berlin bottom 1" class="img-fluid border border-2 border-black rounded mt-3 w-100" style="object-fit: cover; width: 100%; height: auto;" />
+      <img src="../images/bhf zoo berlin/07062017- Portfolio_Page_08_Image_0002.jpg" alt="BHF Berlin bottom 2" class="img-fluid border border-2 border-black rounded mt-3 w-100" style="object-fit: cover; width: 100%; height: auto;" />
+      <img src="../images/bhf zoo berlin/07062017- Portfolio_Page_06_Image_0002.jpg" alt="BHF Berlin secondary" class="img-fluid border border-2 border-black rounded w-100 mt-3" style="object-fit: cover; width: 100%; height: auto;" />
+      <img src="../images/bhf zoo berlin/07062017- Portfolio_Page_07_Image_0002.jpg" alt="BHF Berlin tertiary" class="img-fluid border border-2 border-black rounded w-100 mt-3" style="object-fit: cover; width: 100%; height: auto;" />
+    </div>
+    <div class="col-12 col-lg-5 d-flex flex-column">
+      <img src="../images/bhf zoo berlin/07062017- Portfolio_Page_06_Image_0001.jpg" alt="BHF Berlin top right" class="img-fluid border border-2 border-black rounded mb-3" style="aspect-ratio: 1 / 1; width: 100%; object-fit: cover; height: auto;" />
+      <div class="border border-2 border-black rounded p-3 w-100 flex-grow-1">
+        <p class="project-description mb-0" style="text-align: justify;">
+          <strong>Urban Vision and Concept:</strong><br>
+          As a utopian model for urban design, the castle appeared to be a suitable starting point. Its isolation and inner density inspired a reinterpretation of urban form, resisting the freneticism of contemporary cities while retaining vibrancy. Drawing inspiration from the historic city of Split, Croatia—where a medieval city inhabits the ruins of Diocletian’s Palace—the proposal explores the interplay between rigidity and spontaneity, between old and new. 
+          <br><br>
+          This idea is further rooted in Berlin’s own urban heritage. The perimeter block typology of the late 19th century—with its shielded interior courtyards—serves as a base for the design. The dense fabric is laid over the site and then opened selectively to form new sub-blocks, generating a porous, evolving urban system. In contrast to large-scale developments, the proposal advocates for small plot divisions to foster diversity and social resilience. 
+          <br><br>
+          The city becomes a mixed-use district, with a strong emphasis on student housing, local commerce, public courtyards, and community infrastructure. Amidst noise constraints near the rail line, office space is prioritised, while David Bowie Square is programmed as a vibrant public hub anchored by a school. Public and semi-private spaces are structured through streets, alleys, and courtyards—punctuated with vegetation extending from courtyards onto the street. These green fingers visually and functionally connect Hardenbergplatz, the new neighbourhood, and the rail viaduct. The result is a richly layered, small-scale urbanism that channels Berlin’s history into a vision for a liveable post-pandemic city.
+        </p>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let currentLang = localStorage.getItem('lang') || 'en';
+  function updateLanguage(lang) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.textContent = el.getAttribute(`data-${lang}`);
+    });
+    const dynamicTitle = document.getElementById('dynamicTitle');
+    if (dynamicTitle) {
+      dynamicTitle.textContent = lang === 'en' ? 'BHF Berlin' : 'BHF Berlín';
+    }
+    const mainTitle = document.querySelector('h1[data-en]');
+    if (mainTitle) {
+      mainTitle.textContent = mainTitle.getAttribute(`data-${lang}`);
+    }
+    const toggleBtn = document.getElementById('lang-toggle');
+    if (toggleBtn) {
+      toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+    }
+    localStorage.setItem('lang', lang);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    updateLanguage(currentLang);
+    const toggleBtn = document.getElementById('lang-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'es' : 'en';
+        updateLanguage(currentLang);
+      });
+    }
+  });
+</script>
+</body>
+</html>

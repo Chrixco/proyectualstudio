@@ -21,15 +21,23 @@ def pixelate_video(input_path, output_path=None, pixel_width=128, pixel_height=6
     print("Processing frames...")
 
     for i, frame in enumerate(clip.iter_frames()):
-        # Resize frame to pixel dimensions
-        small = cv2.resize(frame, (pixel_width, pixel_height), interpolation=cv2.INTER_LINEAR)
-        # Scale it back up to original size (pixelated)
+        # Convert RGB (moviepy) to BGR (OpenCV)
+        frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        
+        # Resize down to pixel size
+        small = cv2.resize(frame_bgr, (pixel_width, pixel_height), interpolation=cv2.INTER_LINEAR)
+        # Resize back up to original size (pixelated effect)
         pixelated = cv2.resize(small, (frame.shape[1], frame.shape[0]), interpolation=cv2.INTER_NEAREST)
+        
         if grayscale:
-            pixelated = cv2.cvtColor(pixelated, cv2.COLOR_RGB2GRAY)
-            pixelated = cv2.cvtColor(pixelated, cv2.COLOR_GRAY2RGB)
+            pixelated = cv2.cvtColor(pixelated, cv2.COLOR_BGR2GRAY)
+            pixelated = cv2.cvtColor(pixelated, cv2.COLOR_GRAY2BGR)
+        
+        # Convert back BGR to RGB for saving and moviepy compatibility
+        pixelated_rgb = cv2.cvtColor(pixelated, cv2.COLOR_BGR2RGB)
+        
         out_path = f"{temp_dir}/frame_{i:05d}.png"
-        cv2.imwrite(out_path, pixelated)
+        cv2.imwrite(out_path, pixelated_rgb)
         frame_paths.append(out_path)
 
     print("Creating video...")
@@ -45,10 +53,10 @@ def pixelate_video(input_path, output_path=None, pixel_width=128, pixel_height=6
 
     print("Done.")
 
-input_file = "media/Sequence blue.mp4"
+input_file = "/Volumes/T7/Promotion/Scenarios/Adapt/Screenshot/adapt.mp4"
 
 # Black and white output
-#pixelate_video(input_file, pixel_width=128, pixel_height=64, grayscale=True)
+pixelate_video(input_file, pixel_width=128, pixel_height=64, grayscale=True)
 
 # Colour output
 pixelate_video(input_file, pixel_width=128, pixel_height=64, grayscale=False)
