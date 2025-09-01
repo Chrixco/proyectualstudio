@@ -27,7 +27,7 @@
       font-size: clamp(1.5rem, 6vw, 3rem);
       white-space: nowrap;
       overflow: hidden;
-      border-right: 0.15em solid black;
+      border-right: 0.15em solid white;
       width: 0;
       animation: typing 1.5s steps(20, end) forwards;
     }
@@ -46,12 +46,13 @@
       display: none;
       font-size: clamp(1rem, 4vw, 2rem);
       font-weight: 300;
-      margin-top: 1rem;
+      margin-top: 2rem;
+      cursor: pointer;
+      text-decoration: underline;
     }
 
-    .show {
+    .enter-text.show {
       display: block;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -60,34 +61,36 @@
     <source src="media/Sequence blue.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
+
   <div class="text-center">
     <div id="loader-text" class="loader-text">Proyectual Studio</div>
   </div>
   <div class="text-center">
-    <div class="loader-sub">Everyone should have the right to inhabit spaces that uphold human dignity and environmental responsibility.</div>
-    <div id="enter-text" class="enter-text">[under construction]</div>
+    <div class="loader-sub">
+      Everyone should have the right to inhabit spaces that uphold human dignity and environmental responsibility.
+    </div>
+    <div id="enter-text" class="enter-text">[Click to Enter]</div>
   </div>
 
-  <script>
-  const loaderText = document.getElementById('loader-text');
-  // Show the [under construction] text and toggle email on click
-  const enterStatus = document.getElementById('enter-text');
-
-  loaderText.addEventListener('animationend', () => {
-    loaderText.style.borderRight = 'none';
-    enterStatus.classList.add('show');
-    // Do not show email by default
-    // enterEmail.classList.add('show');
-  });
-
-  // Toggle email visibility when clicking on [under construction]
-  enterStatus.addEventListener('click', () => {
-    // No email toggle since email element removed
-  });
-  </script>
-
   <footer class="footer text-center py-3" style="position: absolute; bottom: 0; width: 100%; background-color: transparent; color: white;">
-    © 2025 Christian Corral | <a href="mailto:christianxcorral@gmail.com" style="color: white; text-decoration: underline;">christianxcorral@gmail.com</a>
+    © 2025 Christian Corral | 
+    <a href="mailto:christianxcorral@gmail.com" style="color: white; text-decoration: underline;">
+      christianxcorral@gmail.com
+    </a>
   </footer>
+
+  <script>
+    const loaderText = document.getElementById('loader-text');
+    const enterText = document.getElementById('enter-text');
+
+    loaderText.addEventListener('animationend', () => {
+      loaderText.style.borderRight = 'none';
+      enterText.classList.add('show');
+    });
+
+    enterText.addEventListener('click', () => {
+      window.location.href = "main.html";
+    });
+  </script>
 </body>
 </html>
