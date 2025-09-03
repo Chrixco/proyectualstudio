@@ -6,11 +6,28 @@
   <title id="dynamicTitle">Casa de Tres Generaciones</title>
   <link href="../css/styles.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .square-img {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      width: 100%;
+      height: auto;
+    }
+    .img-frame {
+      padding: 0.5rem;
+      border: 2px solid black;
+      border-radius: 0.5rem;
+      background-color: #fff;
+    }
+    .img-no-frame {
+      border-radius: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
   <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
-    <img src="../images/loco03.png" alt="Proyectual Logo" style="height: 32px;" />
+    <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
     <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
   </a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -31,47 +48,43 @@
 </nav>
 
 <main class="container py-5 px-3 px-md-4">
-  <h1 class="fw-bold text-center mb-5" data-en="House of Three Generations" data-es="Casa de Tres Generaciones">
-    Casa de Tres Generaciones
-  </h1>
+  <h1 class="fw-bold text-center mb-5" 
+      data-en="House of Three Generations" 
+      data-es="Casa de Tres Generaciones">Casa de Tres Generaciones</h1>
 
-  <!-- Unified carousel -->
-  <div id="projectCarousel" class="carousel slide mb-5" data-bs-ride="carousel" style="max-width: 1000px; margin: 0 auto;">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="../images/casa_ny/01_16 - Photo Large.jpeg" class="d-block w-100 rounded border border-2 border-dark" alt="Courtyard view 1" />
+  <div class="row">
+    <!-- LEFT: TEXT -->
+    <div class="col-12 col-lg-7 d-flex flex-column gap-3">
+      <div class="border border-2 border-black rounded p-3">
+        <p class="project-description mb-0"
+           data-en="Casa de Tres Generaciones is organised around a central courtyard that acts as the heart of family life. The patio, landscaped with trees, flowers, and natural rocks, creates a microclimate and strengthens the connection between interior and exterior spaces. Brick masonry, exposed concrete, and stone define the construction, emphasising robustness and material honesty. Large openings ensure ventilation and daylight, while covered walkways and transitional thresholds mediate between private rooms and communal areas. The project supports intergenerational living by offering independent units connected by the courtyard, where privacy and togetherness coexist."
+           data-es="La Casa de Tres Generaciones se organiza en torno a un patio central que actúa como corazón de la vida familiar. El patio, ajardinado con árboles, flores y rocas naturales, genera un microclima y refuerza la relación entre los espacios interiores y exteriores. El ladrillo visto, el hormigón expuesto y la piedra definen la construcción, enfatizando la solidez y la honestidad material. Las amplias aberturas garantizan ventilación e iluminación natural, mientras los corredores cubiertos y umbrales de transición median entre los espacios privados y las áreas comunes. El proyecto favorece la convivencia intergeneracional al ofrecer unidades independientes conectadas por el patio, donde la privacidad y el encuentro se equilibran.">
+        </p>
       </div>
-      <div class="carousel-item">
-        <img src="../images/casa_ny/01_17 - Photo Large.jpeg" class="d-block w-100 rounded border border-2 border-dark" alt="Courtyard view 2" />
-      </div>
-      <div class="carousel-item">
-        <img src="../images/casa_ny/01_20 - Photo Large.jpeg" class="d-block w-100 rounded border border-2 border-dark" alt="Courtyard view 3" />
-      </div>
-      <div class="carousel-item">
-        <img src="../images/casa_ny/casany_01.jpeg" class="d-block w-100 rounded border border-2 border-dark" alt="Courtyard view 4" />
-      </div>
-      <div class="carousel-item">
-        <img src="../images/casa_ny/Isometrie.png" class="d-block w-100 rounded border border-2 border-dark" alt="Isometric drawing" />
+
+      <div class="border border-2 border-black rounded p-3">
+        <p class="project-description mb-0"
+           data-en="Each of the three independent units is carefully articulated around the courtyard, offering autonomy to each generation while preserving the essence of collective life. The design prioritises light, ventilation, and the tactile qualities of local materials."
+           data-es="Cada una de las tres unidades independientes está cuidadosamente articulada en torno al patio, ofreciendo autonomía a cada generación y preservando la esencia de la vida colectiva. El diseño prioriza la luz, la ventilación y las cualidades táctiles de los materiales locales.">
+        </p>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
 
-  <!-- Project description -->
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-10">
-      <div class="border border-2 border-dark rounded p-4">
-        <p class="project-description mb-0"
-           data-en="Casa de Tres Generaciones is organised around a central courtyard that acts as the heart of family life. The patio, landscaped with trees, flowers, and natural rocks, creates a microclimate and strengthens the connection between interior and exterior spaces. Brick masonry, exposed concrete, and stone define the construction, emphasising robustness and material honesty. Large openings ensure ventilation and daylight, while covered walkways and transitional thresholds mediate between private rooms and communal areas. The project supports intergenerational living by offering independent units connected by the courtyard, where privacy and togetherness coexist. The architecture merges local construction traditions with contemporary spatial clarity, resulting in a home that is both resilient and rooted in place."
-           data-es="La Casa de Tres Generaciones se organiza en torno a un patio central que actúa como corazón de la vida familiar. El patio, ajardinado con árboles, flores y rocas naturales, genera un microclima y refuerza la relación entre los espacios interiores y exteriores. El ladrillo visto, el hormigón expuesto y la piedra definen la construcción, enfatizando la solidez y la honestidad material. Las amplias aberturas garantizan ventilación e iluminación natural, mientras los corredores cubiertos y umbrales de transición median entre los espacios privados y las áreas comunes. El proyecto favorece la convivencia intergeneracional al ofrecer unidades independientes conectadas por el patio, donde la privacidad y el encuentro se equilibran. La arquitectura combina tradiciones constructivas locales con una claridad espacial contemporánea, resultando en una vivienda resiliente y profundamente enraizada en su contexto.">
-        </p>
+    <!-- RIGHT: IMAGES -->
+    <div class="col-12 col-lg-5 d-flex flex-column gap-3">
+      <!-- Renderings: no padding -->
+      <img src="../images/casa_ny/01_16 - Photo Large.jpeg" alt="Courtyard rendering 1" class="square-img img-no-frame" />
+      <img src="../images/casa_ny/01_17 - Photo Large.jpeg" alt="Courtyard rendering 2" class="square-img img-no-frame" />
+
+      <!-- Drawings: framed -->
+      <div class="img-frame">
+        <img src="../images/casa_ny/210912_PB.png" alt="Ground floor plan" class="square-img" />
+      </div>
+      <div class="img-frame">
+        <img src="../images/casa_ny/210912_P1.png" alt="First floor plan" class="square-img" />
+      </div>
+      <div class="img-frame">
+        <img src="../images/casa_ny/A.01 planta de cubiertas.png" alt="Roof plan" class="square-img" />
       </div>
     </div>
   </div>
@@ -84,7 +97,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   let currentLang = localStorage.getItem('lang') || 'en';
-
   function updateLanguage(lang) {
     document.querySelectorAll('[data-en]').forEach(el => {
       el.textContent = el.getAttribute(`data-${lang}`);
@@ -99,7 +111,6 @@
     }
     localStorage.setItem('lang', lang);
   }
-
   document.addEventListener('DOMContentLoaded', () => {
     updateLanguage(currentLang);
     const toggleBtn = document.getElementById('lang-toggle');
