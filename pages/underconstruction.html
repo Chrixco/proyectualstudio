@@ -39,6 +39,11 @@
       color: #000;
     }
   </style>
+
+  <!-- Theme Script (loads early to prevent flash) -->
+  <script src="../js/theme.js"></script>
+  <!-- Neo-Brutalist Effects -->
+  <script src="../js/neobrutalist.js"></script>
 </head>
 <body>
   <div class="video-background">
@@ -64,6 +69,9 @@
       <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
       <li class="nav-item">
         <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+        <li class="nav-item">
+          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
       </li>
     </ul>
   </div>
