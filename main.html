@@ -47,14 +47,26 @@
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .cta-container .btn:hover {
+    /* Yellow button (Get in Touch) */
+    .cta-container .btn[href*="contact"]:hover {
       transform: translate(-3px, -3px);
       box-shadow: 9px 9px 0px var(--brutalist-black) !important;
     }
 
-    .cta-container .btn:active {
+    .cta-container .btn[href*="contact"]:active {
       transform: translate(2px, 2px);
       box-shadow: 3px 3px 0px var(--brutalist-black) !important;
+    }
+
+    /* Black button (Calculate Budget) */
+    .cta-container .btn[href*="calculator"]:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0px var(--brutalist-yellow) !important;
+    }
+
+    .cta-container .btn[href*="calculator"]:active {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0px var(--brutalist-yellow) !important;
     }
   </style>
 </head>
@@ -119,12 +131,20 @@
            data-es="¿Tienes un proyecto en mente? Conversemos sobre cómo crear espacios que respeten tanto a las personas como al planeta.">
           Have a project in mind? Let's discuss how we can create spaces that respect both people and the planet.
         </p>
-        <a href="pages/contact.html" class="btn btn-lg px-5 py-3"
-           style="background: var(--brutalist-yellow); color: var(--brutalist-black); border: 4px solid var(--brutalist-black); box-shadow: 6px 6px 0px var(--brutalist-black); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
-           data-en="Get in Touch"
-           data-es="Contáctanos">
-          Get in Touch
-        </a>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <a href="pages/calculator.html" class="btn btn-lg px-5 py-3"
+             style="background: var(--brutalist-black); color: var(--brutalist-yellow); border: 4px solid var(--brutalist-yellow); box-shadow: 6px 6px 0px var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
+             data-en="Calculate Budget"
+             data-es="Calcular Presupuesto">
+            Calculate Budget
+          </a>
+          <a href="pages/contact.html" class="btn btn-lg px-5 py-3"
+             style="background: var(--brutalist-yellow); color: var(--brutalist-black); border: 4px solid var(--brutalist-black); box-shadow: 6px 6px 0px var(--brutalist-black); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
+             data-en="Get in Touch"
+             data-es="Contáctanos">
+            Get in Touch
+          </a>
+        </div>
       </div>
     </section>
     <hr class="border border-4 my-5 scroll-fade-in" />
