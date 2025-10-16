@@ -955,6 +955,52 @@ html {
 }
 
 /* ===========================
+   FORM STYLING - ALWAYS READABLE
+   =========================== */
+/* Form inputs should always have dark text on light background */
+.form-container {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.form-container h1,
+.form-container .form-label {
+  color: #000000 !important;
+}
+
+.form-control {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+.form-control::placeholder {
+  color: #666666 !important;
+}
+
+.form-control:focus {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: var(--brutalist-yellow) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 213, 0, 0.25) !important;
+}
+
+/* Dark mode: Keep forms readable */
+[data-theme="dark"] .form-container {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme="dark"] .form-container h1,
+[data-theme="dark"] .form-container .form-label {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .form-control {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+/* ===========================
    PRINT STYLES
    =========================== */
 @media print {
