@@ -187,43 +187,6 @@
       }
     }
 
-    /* Corner decorations */
-    .corner-decor {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      border: 4px solid var(--brutalist-yellow);
-      z-index: 1;
-    }
-
-    .corner-tl {
-      top: 20px;
-      left: 20px;
-      border-right: none;
-      border-bottom: none;
-    }
-
-    .corner-tr {
-      top: 20px;
-      right: 20px;
-      border-left: none;
-      border-bottom: none;
-    }
-
-    .corner-bl {
-      bottom: 20px;
-      left: 20px;
-      border-right: none;
-      border-top: none;
-    }
-
-    .corner-br {
-      bottom: 20px;
-      right: 20px;
-      border-left: none;
-      border-top: none;
-    }
-
     /* Pulsing circles */
     .pulse-circle {
       position: fixed;
@@ -293,12 +256,6 @@
   <div style="position: fixed; top: 20px; right: 20px; z-index: 10000;">
     <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
   </div>
-
-  <!-- Corner decorations -->
-  <div class="corner-decor corner-tl"></div>
-  <div class="corner-decor corner-tr"></div>
-  <div class="corner-decor corner-bl"></div>
-  <div class="corner-decor corner-br"></div>
 
   <!-- Pulsing circles -->
   <div class="pulse-circle pulse-1"></div>
@@ -397,16 +354,6 @@
       createCursorFollower();
       setInterval(randomGlitch, 100);
 
-      // Parallax effect for decorative elements
-      document.addEventListener('mousemove', (e) => {
-        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-
-        document.querySelectorAll('.corner-decor').forEach((corner, i) => {
-          const speed = (i + 1) * 0.5;
-          corner.style.transform = `translate(${xAxis * speed}px, ${yAxis * speed}px)`;
-        });
-      });
     });
 
     // Keyboard shortcut - press Enter to navigate
