@@ -64,12 +64,35 @@
       box-shadow: 6px 6px 0px var(--brutalist-white);
     }
 
+    /* Yellow range slider for both themes */
     .range-slider {
       width: 100%;
-      height: 8px;
-      background: var(--brutalist-white);
+      height: 10px;
+      background: var(--brutalist-yellow);
       outline: none;
-      border: 2px solid var(--brutalist-yellow);
+      border: 2px solid var(--brutalist-black);
+      border-radius: 5px;
+      -webkit-appearance: none;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      background: var(--brutalist-black);
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .range-slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      background: var(--brutalist-black);
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: 50%;
     }
 
     .range-value {
@@ -77,6 +100,28 @@
       font-weight: bold;
       color: var(--brutalist-yellow);
       margin-top: 0.5rem;
+    }
+
+    .unit-toggle {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .unit-toggle button {
+      padding: 0.5rem 1.5rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: var(--glass-bg);
+      color: var(--brutalist-white);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .unit-toggle button.active {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
     }
 
     .total-container {
@@ -105,10 +150,10 @@
     .cta-final {
       margin-top: 2rem;
       padding: 1.5rem 3rem;
-      background: var(--brutalist-black);
-      color: var(--brutalist-yellow);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      border: 4px solid var(--brutalist-black);
+      box-shadow: 6px 6px 0px var(--brutalist-black);
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -117,9 +162,11 @@
     }
 
     .cta-final:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 9px 9px 0px var(--brutalist-yellow);
+      background: var(--brutalist-black);
       color: var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      transform: translate(-3px, -3px);
     }
   </style>
 </head>
@@ -162,12 +209,12 @@
         Project Cost Calculator
       </h1>
       <p class="text-center mb-5"
-         data-en="Get a rough estimate for your architecture or urban design project"
-         data-es="Obtén una estimación aproximada para tu proyecto de arquitectura o diseño urbano">
-        Get a rough estimate for your architecture or urban design project
+         data-en="Get a rough estimate for your project"
+         data-es="Obtén una estimación aproximada para tu proyecto">
+        Get a rough estimate for your project
       </p>
 
-      <!-- Project Type -->
+      <!-- 1. Project Discipline -->
       <div class="calculator-section">
         <div class="calculator-label"
              data-en="1. Project Type"
@@ -175,93 +222,237 @@
           1. Project Type
         </div>
         <div class="row">
-          <div class="col-md-4">
-            <div class="option-card" data-type="house" data-multiplier="1.0" onclick="selectOption(this, 'projectType')">
-              <h5 data-en="New House" data-es="Casa Nueva">New House</h5>
-              <p class="small mb-0" data-en="Residential building" data-es="Edificio residencial">Residential building</p>
+          <div class="col-md-6">
+            <div class="option-card selected" data-discipline="architecture" onclick="selectDiscipline(this)">
+              <h5 data-en="Architecture" data-es="Arquitectura">Architecture</h5>
+              <p class="small mb-0" data-en="Buildings and structures" data-es="Edificios y estructuras">Buildings and structures</p>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="option-card" data-type="renovation" data-multiplier="0.7" onclick="selectOption(this, 'projectType')">
-              <h5 data-en="Renovation" data-es="Renovación">Renovation</h5>
-              <p class="small mb-0" data-en="Existing structure" data-es="Estructura existente">Existing structure</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="option-card" data-type="urban" data-multiplier="1.3" onclick="selectOption(this, 'projectType')">
+          <div class="col-md-6">
+            <div class="option-card" data-discipline="urban" onclick="selectDiscipline(this)">
               <h5 data-en="Urban Design" data-es="Diseño Urbano">Urban Design</h5>
-              <p class="small mb-0" data-en="Public space design" data-es="Diseño de espacio público">Public space design</p>
+              <p class="small mb-0" data-en="Public spaces and planning" data-es="Espacios públicos y planificación">Public spaces and planning</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Project Size -->
+      <!-- 2. Location (Pricing) -->
       <div class="calculator-section">
         <div class="calculator-label"
-             data-en="2. Project Size (m²)"
-             data-es="2. Tamaño del Proyecto (m²)">
-          2. Project Size (m²)
+             data-en="2. Project Location"
+             data-es="2. Ubicación del Proyecto">
+          2. Project Location
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="option-card selected" data-location="ecuador" data-rate-arch="600" data-rate-urban="50000" onclick="selectOption(this, 'location')">
+              <h5 data-en="Ecuador" data-es="Ecuador">Ecuador</h5>
+              <p class="small mb-0" data-en="Latin American pricing" data-es="Precios de América Latina">Latin American pricing</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="option-card" data-location="germany" data-rate-arch="2500" data-rate-urban="120000" onclick="selectOption(this, 'location')">
+              <h5 data-en="Germany" data-es="Alemania">Germany</h5>
+              <p class="small mb-0" data-en="European pricing" data-es="Precios europeos">European pricing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Project Size (Dynamic based on discipline) -->
+      <div class="calculator-section">
+        <div class="calculator-label">
+          <span id="sizeLabel" data-en="3. Project Size" data-es="3. Tamaño del Proyecto">3. Project Size</span>
+        </div>
+
+        <!-- Unit toggle for Architecture -->
+        <div class="unit-toggle" id="unitToggle" style="display: none;">
+          <button class="active" onclick="switchUnit('sqm')" id="sqmBtn" data-en="m²" data-es="m²">m²</button>
+          <button onclick="switchUnit('people')" id="peopleBtn" data-en="People" data-es="Personas">People</button>
+        </div>
+
         <input type="range" min="50" max="500" value="150" class="range-slider" id="sizeSlider" oninput="updateSize(this.value)">
         <div class="range-value text-center">
-          <span id="sizeValue">150</span> m²
+          <span id="sizeValue">150</span> <span id="sizeUnit">m²</span>
         </div>
       </div>
 
-      <!-- Budget Level -->
-      <div class="calculator-section">
-        <div class="calculator-label"
-             data-en="3. Finish Quality"
-             data-es="3. Calidad de Acabados">
-          3. Finish Quality
+      <!-- 4. Architecture-specific options -->
+      <div id="architectureOptions">
+        <!-- Project Subtype -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="4. Building Type"
+               data-es="4. Tipo de Edificio">
+            4. Building Type
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'buildingType')">
+                <h5 data-en="New House" data-es="Casa Nueva">New House</h5>
+                <p class="small mb-0" data-en="Residential" data-es="Residencial">Residential</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="0.7" onclick="selectOption(this, 'buildingType')">
+                <h5 data-en="Renovation" data-es="Renovación">Renovation</h5>
+                <p class="small mb-0" data-en="Existing structure" data-es="Estructura existente">Existing structure</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.3" onclick="selectOption(this, 'buildingType')">
+                <h5 data-en="Commercial" data-es="Comercial">Commercial</h5>
+                <p class="small mb-0" data-en="Office/Retail" data-es="Oficina/Comercio">Office/Retail</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="option-card" data-multiplier="0.8" onclick="selectOption(this, 'quality')">
-              <h5 data-en="Essential" data-es="Esencial">Essential</h5>
-              <p class="small mb-0" data-en="Basic finishes" data-es="Acabados básicos">Basic finishes</p>
+
+        <!-- Finish Quality -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="5. Finish Quality"
+               data-es="5. Calidad de Acabados">
+            5. Finish Quality
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="0.8" onclick="selectOption(this, 'quality')">
+                <h5 data-en="Essential" data-es="Esencial">Essential</h5>
+                <p class="small mb-0" data-en="Basic finishes" data-es="Acabados básicos">Basic finishes</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'quality')">
+                <h5 data-en="Standard" data-es="Estándar">Standard</h5>
+                <p class="small mb-0" data-en="Good quality" data-es="Buena calidad">Good quality</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.5" onclick="selectOption(this, 'quality')">
+                <h5 data-en="Premium" data-es="Premium">Premium</h5>
+                <p class="small mb-0" data-en="High-end finishes" data-es="Acabados de lujo">High-end finishes</p>
+              </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'quality')">
-              <h5 data-en="Standard" data-es="Estándar">Standard</h5>
-              <p class="small mb-0" data-en="Good quality" data-es="Buena calidad">Good quality</p>
-            </div>
+        </div>
+
+        <!-- Sustainability -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="6. Sustainability Features"
+               data-es="6. Características Sustentables">
+            6. Sustainability Features
           </div>
-          <div class="col-md-4">
-            <div class="option-card" data-multiplier="1.5" onclick="selectOption(this, 'quality')">
-              <h5 data-en="Premium" data-es="Premium">Premium</h5>
-              <p class="small mb-0" data-en="High-end finishes" data-es="Acabados de lujo">High-end finishes</p>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.0" onclick="selectOption(this, 'sustainability')">
+                <h5 data-en="Standard" data-es="Estándar">Standard</h5>
+                <p class="small mb-0" data-en="Basic efficiency" data-es="Eficiencia básica">Basic efficiency</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.15" onclick="selectOption(this, 'sustainability')">
+                <h5 data-en="Sustainable" data-es="Sustentable">Sustainable</h5>
+                <p class="small mb-0" data-en="Eco-friendly materials" data-es="Materiales ecológicos">Eco-friendly materials</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.35" onclick="selectOption(this, 'sustainability')">
+                <h5 data-en="Net-Zero" data-es="Cero Neto">Net-Zero</h5>
+                <p class="small mb-0" data-en="Carbon neutral" data-es="Carbono neutro">Carbon neutral</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Sustainability -->
-      <div class="calculator-section">
-        <div class="calculator-label"
-             data-en="4. Sustainability Features"
-             data-es="4. Características Sustentables">
-          4. Sustainability Features
+      <!-- 4. Urban Design-specific options -->
+      <div id="urbanOptions" style="display: none;">
+        <!-- Scope -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="4. Project Scope"
+               data-es="4. Alcance del Proyecto">
+            4. Project Scope
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'scope')">
+                <h5 data-en="Basic" data-es="Básico">Basic</h5>
+                <p class="small mb-0" data-en="Concept design" data-es="Diseño conceptual">Concept design</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.4" onclick="selectOption(this, 'scope')">
+                <h5 data-en="Detailed" data-es="Detallado">Detailed</h5>
+                <p class="small mb-0" data-en="Full planning" data-es="Planificación completa">Full planning</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.8" onclick="selectOption(this, 'scope')">
+                <h5 data-en="Comprehensive" data-es="Integral">Comprehensive</h5>
+                <p class="small mb-0" data-en="+ Implementation" data-es="+ Implementación">+ Implementation</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="option-card" data-multiplier="1.0" onclick="selectOption(this, 'sustainability')">
-              <h5 data-en="Standard" data-es="Estándar">Standard</h5>
-              <p class="small mb-0" data-en="Basic efficiency" data-es="Eficiencia básica">Basic efficiency</p>
+
+        <!-- Complexity -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="5. Project Complexity"
+               data-es="5. Complejidad del Proyecto">
+            5. Project Complexity
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="0.8" onclick="selectOption(this, 'complexity')">
+                <h5 data-en="Simple" data-es="Simple">Simple</h5>
+                <p class="small mb-0" data-en="Single zone" data-es="Zona única">Single zone</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'complexity')">
+                <h5 data-en="Moderate" data-es="Moderado">Moderate</h5>
+                <p class="small mb-0" data-en="Multiple zones" data-es="Múltiples zonas">Multiple zones</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.3" onclick="selectOption(this, 'complexity')">
+                <h5 data-en="Complex" data-es="Complejo">Complex</h5>
+                <p class="small mb-0" data-en="High integration" data-es="Alta integración">High integration</p>
+              </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="option-card selected" data-multiplier="1.15" onclick="selectOption(this, 'sustainability')">
-              <h5 data-en="Sustainable" data-es="Sustentable">Sustainable</h5>
-              <p class="small mb-0" data-en="Eco-friendly materials" data-es="Materiales ecológicos">Eco-friendly materials</p>
-            </div>
+        </div>
+
+        <!-- Participation -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="6. Community Participation"
+               data-es="6. Participación Comunitaria">
+            6. Community Participation
           </div>
-          <div class="col-md-4">
-            <div class="option-card" data-multiplier="1.35" onclick="selectOption(this, 'sustainability')">
-              <h5 data-en="Net-Zero" data-es="Cero Neto">Net-Zero</h5>
-              <p class="small mb-0" data-en="Carbon neutral" data-es="Carbono neutro">Carbon neutral</p>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.0" onclick="selectOption(this, 'participation')">
+                <h5 data-en="Standard" data-es="Estándar">Standard</h5>
+                <p class="small mb-0" data-en="Basic engagement" data-es="Participación básica">Basic engagement</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.2" onclick="selectOption(this, 'participation')">
+                <h5 data-en="Participatory" data-es="Participativo">Participatory</h5>
+                <p class="small mb-0" data-en="Active involvement" data-es="Participación activa">Active involvement</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.4" onclick="selectOption(this, 'participation')">
+                <h5 data-en="Co-design" data-es="Co-diseño">Co-design</h5>
+                <p class="small mb-0" data-en="Full collaboration" data-es="Colaboración total">Full collaboration</p>
+              </div>
             </div>
           </div>
         </div>
@@ -274,17 +465,19 @@
             data-es="Costo Estimado del Proyecto">
           Estimated Project Cost
         </h3>
-        <div class="total-amount" id="totalCost">$45,000</div>
-        <p class="disclaimer"
-           data-en="* This is a rough estimate. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote."
-           data-es="* Esta es una estimación aproximada. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada.">
-          * This is a rough estimate. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
+        <div class="total-amount" id="totalCost">$90,000</div>
+        <p class="disclaimer" id="disclaimer"
+           data-en-arch="* This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote."
+           data-es-arch="* Esta es una estimación aproximada para diseño arquitectónico y construcción. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada."
+           data-en-urban="* This estimate covers urban design services including planning, community engagement, and design documentation. Does not include construction or implementation costs. Contact us for a detailed scope and quote."
+           data-es-urban="* Esta estimación cubre servicios de diseño urbano incluyendo planificación, participación comunitaria y documentación de diseño. No incluye costos de construcción o implementación. Contáctanos para un alcance detallado y cotización.">
+          * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
         </p>
 
         <a href="contact.html" class="cta-final btn"
-           data-en="Get a Detailed Quote"
+           data-en="Get Detailed Quote"
            data-es="Obtener Cotización Detallada">
-          Get a Detailed Quote
+          Get Detailed Quote
         </a>
       </div>
     </div>
@@ -299,79 +492,198 @@
   <script>
     // Calculator state
     let calculatorState = {
-      projectType: 1.0,
+      discipline: 'architecture',
+      location: 'ecuador',
       size: 150,
+      unit: 'sqm', // sqm or people
+      buildingType: 1.0,
       quality: 1.0,
-      sustainability: 1.15
+      sustainability: 1.15,
+      scope: 1.0,
+      complexity: 1.0,
+      participation: 1.2
     };
 
-    // Base cost per square meter
-    const BASE_COST_PER_SQM = 800; // $800 per m²
+    // Pricing rates
+    const RATES = {
+      architecture: {
+        ecuador: 600,  // per m²
+        germany: 2500  // per m²
+      },
+      urban: {
+        ecuador: 50000,  // base project cost
+        germany: 120000  // base project cost
+      }
+    };
+
+    // People to sqm conversion (average 30m² per person for residential)
+    const SQM_PER_PERSON = 30;
+
+    // Select discipline
+    function selectDiscipline(element) {
+      const siblings = element.parentElement.parentElement.querySelectorAll('.option-card');
+      siblings.forEach(card => card.classList.remove('selected'));
+      element.classList.add('selected');
+
+      calculatorState.discipline = element.getAttribute('data-discipline');
+
+      // Show/hide relevant sections
+      const archOptions = document.getElementById('architectureOptions');
+      const urbanOptions = document.getElementById('urbanOptions');
+      const unitToggle = document.getElementById('unitToggle');
+      const slider = document.getElementById('sizeSlider');
+      const sizeLabel = document.getElementById('sizeLabel');
+
+      if (calculatorState.discipline === 'architecture') {
+        archOptions.style.display = 'block';
+        urbanOptions.style.display = 'none';
+        unitToggle.style.display = 'flex';
+        slider.min = 50;
+        slider.max = 500;
+        slider.value = 150;
+        updateSize(150);
+      } else {
+        archOptions.style.display = 'none';
+        urbanOptions.style.display = 'block';
+        unitToggle.style.display = 'none';
+        calculatorState.unit = 'ha';
+        slider.min = 0.5;
+        slider.max = 20;
+        slider.step = 0.5;
+        slider.value = 5;
+        updateSize(5);
+      }
+
+      updateDisclaimer();
+      calculateTotal();
+    }
+
+    // Switch unit for architecture
+    function switchUnit(unit) {
+      calculatorState.unit = unit;
+      const sqmBtn = document.getElementById('sqmBtn');
+      const peopleBtn = document.getElementById('peopleBtn');
+      const slider = document.getElementById('sizeSlider');
+
+      if (unit === 'sqm') {
+        sqmBtn.classList.add('active');
+        peopleBtn.classList.remove('active');
+        slider.min = 50;
+        slider.max = 500;
+        slider.value = 150;
+      } else {
+        sqmBtn.classList.remove('active');
+        peopleBtn.classList.add('active');
+        slider.min = 2;
+        slider.max = 20;
+        slider.value = 5;
+      }
+
+      updateSize(slider.value);
+      calculateTotal();
+    }
 
     // Select option
     function selectOption(element, category) {
-      // Remove selected class from siblings
       const siblings = element.parentElement.parentElement.querySelectorAll('.option-card');
       siblings.forEach(card => card.classList.remove('selected'));
-
-      // Add selected class to clicked element
       element.classList.add('selected');
 
-      // Update state
-      const multiplier = parseFloat(element.getAttribute('data-multiplier'));
-      calculatorState[category] = multiplier;
+      if (category === 'location') {
+        calculatorState.location = element.getAttribute('data-location');
+      } else {
+        const multiplier = parseFloat(element.getAttribute('data-multiplier'));
+        calculatorState[category] = multiplier;
+      }
 
-      // Recalculate
       calculateTotal();
     }
 
     // Update size
     function updateSize(value) {
-      document.getElementById('sizeValue').textContent = value;
-      calculatorState.size = parseInt(value);
+      const sizeValue = document.getElementById('sizeValue');
+      const sizeUnit = document.getElementById('sizeUnit');
+
+      if (calculatorState.discipline === 'architecture') {
+        if (calculatorState.unit === 'sqm') {
+          calculatorState.size = parseInt(value);
+          sizeValue.textContent = value;
+          sizeUnit.textContent = 'm²';
+        } else {
+          const people = parseInt(value);
+          calculatorState.size = people * SQM_PER_PERSON;
+          sizeValue.textContent = people;
+          sizeUnit.textContent = currentLang === 'en' ? 'People' : 'Personas';
+        }
+      } else {
+        calculatorState.size = parseFloat(value);
+        sizeValue.textContent = value;
+        sizeUnit.textContent = 'ha';
+      }
+
       calculateTotal();
+    }
+
+    // Update disclaimer
+    function updateDisclaimer() {
+      const disclaimer = document.getElementById('disclaimer');
+      const suffix = calculatorState.discipline === 'architecture' ? 'arch' : 'urban';
+      const key = `data-${currentLang}-${suffix}`;
+      disclaimer.textContent = disclaimer.getAttribute(key);
     }
 
     // Calculate total
     function calculateTotal() {
-      const total =
-        BASE_COST_PER_SQM *
-        calculatorState.size *
-        calculatorState.projectType *
-        calculatorState.quality *
-        calculatorState.sustainability;
+      let total = 0;
 
-      // Format with commas
+      if (calculatorState.discipline === 'architecture') {
+        const baseRate = RATES.architecture[calculatorState.location];
+        total = baseRate * calculatorState.size * calculatorState.buildingType *
+                calculatorState.quality * calculatorState.sustainability;
+      } else {
+        const baseRate = RATES.urban[calculatorState.location];
+        // For urban design, size is in hectares, scale accordingly
+        const sizeMultiplier = calculatorState.size / 5; // normalized to 5ha
+        total = baseRate * sizeMultiplier * calculatorState.scope *
+                calculatorState.complexity * calculatorState.participation;
+      }
+
       const formatted = '$' + Math.round(total).toLocaleString();
       document.getElementById('totalCost').textContent = formatted;
     }
 
-    // Initialize - select first option in projectType on load
-    document.addEventListener('DOMContentLoaded', () => {
-      // Select first project type by default
-      const firstProjectCard = document.querySelector('[data-type="house"]');
-      if (firstProjectCard) {
-        selectOption(firstProjectCard, 'projectType');
+    // Language toggle
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function updateLanguage(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        const key = `data-${lang}`;
+        if (el.hasAttribute(key)) {
+          el.textContent = el.getAttribute(key);
+        }
+      });
+
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
       }
 
-      // Initial calculation
+      localStorage.setItem('lang', lang);
+      currentLang = lang;
+
+      // Update size unit text if in people mode
+      if (calculatorState.unit === 'people') {
+        updateSize(document.getElementById('sizeSlider').value);
+      }
+
+      updateDisclaimer();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLang);
       calculateTotal();
 
-      // Language toggle
-      let currentLang = localStorage.getItem('lang') || 'en';
-
-      function updateLanguage(lang) {
-        document.querySelectorAll('[data-en]').forEach(el => {
-          el.textContent = el.getAttribute(`data-${lang}`);
-        });
-        const toggleBtn = document.getElementById('lang-toggle');
-        if (toggleBtn) {
-          toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
-        }
-        localStorage.setItem('lang', lang);
-      }
-
-      updateLanguage(currentLang);
       const toggleBtn = document.getElementById('lang-toggle');
       if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
