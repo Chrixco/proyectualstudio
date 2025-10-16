@@ -41,6 +41,21 @@
       position: relative;
       z-index: 1;
     }
+
+    /* CTA Button Hover Effect */
+    .cta-container .btn {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cta-container .btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0px var(--brutalist-black) !important;
+    }
+
+    .cta-container .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0px var(--brutalist-black) !important;
+    }
   </style>
 </head>
 <body class="body-white-text">
@@ -90,6 +105,35 @@
       </h4>
     </section>
     <hr class="border border-4 my-5 scroll-fade-in" />
+
+    <!-- Call to Action Section -->
+    <section class="text-center py-4 my-5 scroll-fade-in">
+      <div class="cta-container p-4 border border-4 rounded-4" style="max-width: 800px; margin: 0 auto; background: var(--glass-bg); backdrop-filter: blur(10px);">
+        <h3 class="mb-4 fw-bold"
+            data-en="Let's Build Something Meaningful Together"
+            data-es="Construyamos Algo Significativo Juntos">
+          Let's Build Something Meaningful Together
+        </h3>
+        <p class="mb-4"
+           data-en="Have a project in mind? Let's discuss how we can create spaces that respect both people and the planet."
+           data-es="¿Tienes un proyecto en mente? Conversemos sobre cómo crear espacios que respeten tanto a las personas como al planeta.">
+          Have a project in mind? Let's discuss how we can create spaces that respect both people and the planet.
+        </p>
+        <a href="pages/contact.html" class="btn btn-lg px-5 py-3"
+           style="background: var(--brutalist-yellow); color: var(--brutalist-black); border: 4px solid var(--brutalist-black); box-shadow: 6px 6px 0px var(--brutalist-black); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
+           data-en="Get in Touch"
+           data-es="Contáctanos">
+          Get in Touch
+        </a>
+      </div>
+    </section>
+    <hr class="border border-4 my-5 scroll-fade-in" />
+
+    <h2 class="text-center mb-5 scroll-fade-in fw-bold"
+        data-en="Featured Projects"
+        data-es="Proyectos Destacados">
+      Featured Projects
+    </h2>
 
     <!-- 1) Edificio CCB -->
     <div class="col-12 mb-5 scroll-slide-left">
