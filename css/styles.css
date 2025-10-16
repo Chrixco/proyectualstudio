@@ -853,6 +853,14 @@ html {
   padding: 0;
   position: relative;
   overflow: hidden;
+  margin-left: 12px;
+}
+
+/* Ensure language toggle has proper spacing */
+#lang-toggle {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  margin-left: 0.5rem;
 }
 
 /* Half circle for dark mode, full circle for light mode */
