@@ -15,15 +15,49 @@
   <script src="../js/neobrutalist.js"></script>
 
   <style>
-    /* Calculator specific styles */
-    .calculator-container {
-      max-width: 900px;
+    /* Two-panel calculator layout for desktop */
+    .calculator-wrapper {
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 2rem;
+    }
+
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    /* Mobile: single column */
+    @media (max-width: 991px) {
+      .calculator-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+    }
+
+    .inputs-panel {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 2rem;
+    }
+
+    .results-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 2rem;
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
     }
 
     .calculator-section {
@@ -131,14 +165,14 @@
       border: 4px solid var(--brutalist-black);
       box-shadow: 8px 8px 0px var(--brutalist-black);
       text-align: center;
-      margin-top: 2rem;
     }
 
     .total-amount {
-      font-size: 3rem;
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
+      word-break: break-word;
     }
 
     .disclaimer {
@@ -167,6 +201,202 @@
       border-color: var(--brutalist-yellow);
       box-shadow: 6px 6px 0px var(--brutalist-yellow);
       transform: translate(-3px, -3px);
+    }
+
+    /* Info buttons - square with yellow titles */
+    .info-btn {
+      width: 100%;
+      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 4px solid var(--brutalist-yellow);
+      color: var(--brutalist-yellow);
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .info-btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+    }
+
+    /* Frosted glass modal */
+    .info-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10000;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+    }
+
+    .info-modal.active {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .info-modal-content {
+      position: relative;
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 3rem;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      color: #000;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .info-modal-content h3 {
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--brutalist-yellow);
+      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-modal-content h4 {
+      color: #000;
+      font-weight: bold;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      font-size: 1.1rem;
+    }
+
+    .info-modal-content p {
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .info-modal-content ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1rem;
+    }
+
+    .info-modal-content li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .info-modal-content li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--brutalist-yellow);
+      font-weight: bold;
+    }
+
+    .info-modal-content a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: underline;
+      transition: all 0.2s ease;
+    }
+
+    .info-modal-content a:hover {
+      color: var(--brutalist-yellow);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      background: var(--brutalist-yellow);
+      color: #000;
+      border: 3px solid #000;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      background: #000;
+      color: var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+      transform: rotate(90deg);
+    }
+
+    .reference-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid rgba(0, 0, 0, 0.2);
+    }
+
+    /* Summary section in results panel */
+    .selection-summary {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 3px solid var(--brutalist-yellow);
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 213, 0, 0.3);
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: var(--brutalist-yellow);
+    }
+
+    .summary-value {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 991px) {
+      .results-panel {
+        margin-top: 2rem;
+      }
     }
   </style>
 </head>
@@ -202,18 +432,21 @@
   </nav>
 
   <main class="container py-5">
-    <div class="calculator-container scroll-fade-in">
-      <h1 class="text-center mb-4 fw-bold"
-          data-en="Project Cost Calculator"
-          data-es="Calculadora de Costos del Proyecto">
-        Project Cost Calculator
-      </h1>
-      <p class="text-center mb-5"
-         data-en="Get a rough estimate for your project"
-         data-es="Obtén una estimación aproximada para tu proyecto">
-        Get a rough estimate for your project
-      </p>
+    <h1 class="text-center mb-4 fw-bold scroll-fade-in"
+        data-en="Project Cost Calculator"
+        data-es="Calculadora de Costos del Proyecto">
+      Project Cost Calculator
+    </h1>
+    <p class="text-center mb-5 scroll-fade-in"
+       data-en="Get a rough estimate for your project"
+       data-es="Obtén una estimación aproximada para tu proyecto">
+      Get a rough estimate for your project
+    </p>
 
+    <div class="calculator-wrapper scroll-fade-in">
+      <div class="calculator-layout">
+        <!-- LEFT PANEL: Inputs -->
+        <div class="inputs-panel">
       <!-- 1. Project Discipline -->
       <div class="calculator-section">
         <div class="calculator-label"
@@ -457,28 +690,89 @@
           </div>
         </div>
       </div>
+        </div>
 
-      <!-- Total -->
-      <div class="total-container">
-        <h3 class="mb-3"
-            data-en="Estimated Project Cost"
-            data-es="Costo Estimado del Proyecto">
-          Estimated Project Cost
-        </h3>
-        <div class="total-amount" id="totalCost">$90,000</div>
-        <p class="disclaimer" id="disclaimer"
-           data-en-arch="* This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote."
-           data-es-arch="* Esta es una estimación aproximada para diseño arquitectónico y construcción. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada."
-           data-en-urban="* This estimate covers urban design services including planning, community engagement, and design documentation. Does not include construction or implementation costs. Contact us for a detailed scope and quote."
-           data-es-urban="* Esta estimación cubre servicios de diseño urbano incluyendo planificación, participación comunitaria y documentación de diseño. No incluye costos de construcción o implementación. Contáctanos para un alcance detallado y cotización.">
-          * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
-        </p>
+        <!-- RIGHT PANEL: Results (Sticky) -->
+        <div class="results-panel">
+          <h3 class="mb-4 fw-bold text-center"
+              data-en="Your Estimate"
+              data-es="Tu Estimación">
+            Your Estimate
+          </h3>
 
-        <a href="contact.html" class="cta-final btn"
-           data-en="Get Detailed Quote"
-           data-es="Obtener Cotización Detallada">
-          Get Detailed Quote
-        </a>
+          <!-- Selection Summary -->
+          <div class="selection-summary">
+            <div class="summary-item">
+              <span class="summary-label" data-en="Project Type" data-es="Tipo de Proyecto">Project Type</span>
+              <span class="summary-value" id="summaryDiscipline" data-en="Architecture" data-es="Arquitectura">Architecture</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label" data-en="Location" data-es="Ubicación">Location</span>
+              <span class="summary-value" id="summaryLocation" data-en="Ecuador" data-es="Ecuador">Ecuador</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label" data-en="Size" data-es="Tamaño">Size</span>
+              <span class="summary-value" id="summarySize">150 m²</span>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="total-container">
+            <h3 class="mb-3"
+                data-en="Estimated Project Cost"
+                data-es="Costo Estimado del Proyecto">
+              Estimated Project Cost
+            </h3>
+            <div class="total-amount" id="totalCost">$90,000</div>
+            <p class="disclaimer" id="disclaimer"
+               data-en-arch="* This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote."
+               data-es-arch="* Esta es una estimación aproximada para diseño arquitectónico y construcción. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada."
+               data-en-urban="* This estimate covers urban design services including planning, community engagement, and design documentation. Does not include construction or implementation costs. Contact us for a detailed scope and quote."
+               data-es-urban="* Esta estimación cubre servicios de diseño urbano incluyendo planificación, participación comunitaria y documentación de diseño. No incluye costos de construcción o implementación. Contáctanos para un alcance detallado y cotización.">
+              * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
+            </p>
+
+            <a href="contact.html" class="cta-final btn"
+               data-en="Get Detailed Quote"
+               data-es="Obtener Cotización Detallada">
+              Get Detailed Quote
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panels Section -->
+    <div class="row mt-5 scroll-fade-in">
+      <div class="col-12 text-center mb-4">
+        <h2 class="fw-bold" data-en="Helpful Information" data-es="Información Útil">Helpful Information</h2>
+        <p data-en="Learn more about construction costs and pricing" data-es="Aprende más sobre costos de construcción y precios">Learn more about construction costs and pricing</p>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <button class="info-btn" onclick="openInfoPanel('ecuador')">
+          <span data-en="Ecuador Costs" data-es="Costos Ecuador">Ecuador Costs</span>
+        </button>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <button class="info-btn" onclick="openInfoPanel('germany')">
+          <span data-en="Germany Costs" data-es="Costos Alemania">Germany Costs</span>
+        </button>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <button class="info-btn" onclick="openInfoPanel('fees')">
+          <span data-en="Design Fees" data-es="Honorarios">Design Fees</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Info Modal Overlay -->
+    <div id="infoModal" class="info-modal" onclick="closeInfoPanel(event)">
+      <div class="info-modal-content" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="closeInfoPanel()">&times;</button>
+        <div id="modalBody"></div>
       </div>
     </div>
   </main>
@@ -526,6 +820,18 @@
       element.classList.add('selected');
 
       calculatorState.discipline = element.getAttribute('data-discipline');
+
+      // Update summary
+      const summaryDiscipline = document.getElementById('summaryDiscipline');
+      if (calculatorState.discipline === 'architecture') {
+        summaryDiscipline.setAttribute('data-en', 'Architecture');
+        summaryDiscipline.setAttribute('data-es', 'Arquitectura');
+        summaryDiscipline.textContent = currentLang === 'en' ? 'Architecture' : 'Arquitectura';
+      } else {
+        summaryDiscipline.setAttribute('data-en', 'Urban Design');
+        summaryDiscipline.setAttribute('data-es', 'Diseño Urbano');
+        summaryDiscipline.textContent = currentLang === 'en' ? 'Urban Design' : 'Diseño Urbano';
+      }
 
       // Show/hide relevant sections
       const archOptions = document.getElementById('architectureOptions');
@@ -591,6 +897,11 @@
 
       if (category === 'location') {
         calculatorState.location = element.getAttribute('data-location');
+
+        // Update summary
+        const summaryLocation = document.getElementById('summaryLocation');
+        const locationName = calculatorState.location.charAt(0).toUpperCase() + calculatorState.location.slice(1);
+        summaryLocation.textContent = locationName;
       } else {
         const multiplier = parseFloat(element.getAttribute('data-multiplier'));
         calculatorState[category] = multiplier;
@@ -603,22 +914,26 @@
     function updateSize(value) {
       const sizeValue = document.getElementById('sizeValue');
       const sizeUnit = document.getElementById('sizeUnit');
+      const summarySize = document.getElementById('summarySize');
 
       if (calculatorState.discipline === 'architecture') {
         if (calculatorState.unit === 'sqm') {
           calculatorState.size = parseInt(value);
           sizeValue.textContent = value;
           sizeUnit.textContent = 'm²';
+          summarySize.textContent = value + ' m²';
         } else {
           const people = parseInt(value);
           calculatorState.size = people * SQM_PER_PERSON;
           sizeValue.textContent = people;
           sizeUnit.textContent = currentLang === 'en' ? 'People' : 'Personas';
+          summarySize.textContent = people + (currentLang === 'en' ? ' People' : ' Personas');
         }
       } else {
         calculatorState.size = parseFloat(value);
         sizeValue.textContent = value;
         sizeUnit.textContent = 'ha';
+        summarySize.textContent = value + ' ha';
       }
 
       calculateTotal();
@@ -678,6 +993,285 @@
 
       updateDisclaimer();
     }
+
+    // Info panel content
+    const infoContent = {
+      ecuador: {
+        en: {
+          title: 'Ecuador Construction Costs',
+          content: `
+            <p><strong>Average residential construction costs in Ecuador range from $800-$1,200 per m²</strong>, depending on location, materials, and quality standards.</p>
+
+            <p><strong>Key factors affecting costs:</strong></p>
+            <ul>
+              <li>Location: Quito and Guayaquil tend to be 15-20% more expensive than smaller cities</li>
+              <li>Materials: Imported materials can be 30-50% more expensive than local alternatives</li>
+              <li>Labor: Skilled labor costs approximately $15-25 per hour</li>
+              <li>Sustainability features: Eco-friendly materials and systems add 10-20% to base costs</li>
+            </ul>
+
+            <p><strong>Typical breakdown:</strong></p>
+            <ul>
+              <li>Basic residential (essential finishes): $800-900/m²</li>
+              <li>Standard residential (good quality): $900-1,100/m²</li>
+              <li>Premium residential (high-end finishes): $1,200-1,500/m²</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>References</h4>
+              <ul>
+                <li><a href="https://www.globalpropertyguide.com/Latin-America/Ecuador/square-meter-prices" target="_blank">Global Property Guide - Ecuador Construction Costs</a></li>
+                <li><a href="https://www.preciosmundi.com/ecuador/construccion" target="_blank">PreciosMundi - Construction Prices Ecuador</a></li>
+                <li>Based on 2024-2025 market research and local contractor data</li>
+              </ul>
+            </div>
+          `
+        },
+        es: {
+          title: 'Costos de Construcción en Ecuador',
+          content: `
+            <p><strong>Los costos promedio de construcción residencial en Ecuador varían entre $800-$1,200 por m²</strong>, dependiendo de la ubicación, materiales y estándares de calidad.</p>
+
+            <p><strong>Factores clave que afectan los costos:</strong></p>
+            <ul>
+              <li>Ubicación: Quito y Guayaquil tienden a ser 15-20% más caros que ciudades pequeñas</li>
+              <li>Materiales: Materiales importados pueden ser 30-50% más caros que alternativas locales</li>
+              <li>Mano de obra: Mano de obra calificada cuesta aproximadamente $15-25 por hora</li>
+              <li>Características sustentables: Materiales y sistemas ecológicos añaden 10-20% a costos base</li>
+            </ul>
+
+            <p><strong>Desglose típico:</strong></p>
+            <ul>
+              <li>Residencial básico (acabados esenciales): $800-900/m²</li>
+              <li>Residencial estándar (buena calidad): $900-1,100/m²</li>
+              <li>Residencial premium (acabados de lujo): $1,200-1,500/m²</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>Referencias</h4>
+              <ul>
+                <li><a href="https://www.globalpropertyguide.com/Latin-America/Ecuador/square-meter-prices" target="_blank">Global Property Guide - Costos de Construcción Ecuador</a></li>
+                <li><a href="https://www.preciosmundi.com/ecuador/construccion" target="_blank">PreciosMundi - Precios de Construcción Ecuador</a></li>
+                <li>Basado en investigación de mercado 2024-2025 y datos de contratistas locales</li>
+              </ul>
+            </div>
+          `
+        }
+      },
+      germany: {
+        en: {
+          title: 'Germany Construction Costs',
+          content: `
+            <p><strong>Construction costs in Germany for 2025 are estimated at €3,500-€5,500 per m²</strong> for residential buildings, making it one of the more expensive markets in Europe.</p>
+
+            <p><strong>Key factors affecting costs:</strong></p>
+            <ul>
+              <li>Regional variations: Munich and Hamburg are 20-30% more expensive than smaller cities</li>
+              <li>Building regulations: Strict energy efficiency standards (GEG 2024) add significant costs</li>
+              <li>Labor shortage: Skilled construction workers command premium wages (€40-70/hour)</li>
+              <li>Materials: High quality standards and environmental regulations increase material costs</li>
+            </ul>
+
+            <p><strong>Typical breakdown:</strong></p>
+            <ul>
+              <li>Basic residential (KfW 55 standard): €3,500-4,000/m²</li>
+              <li>Standard residential (good quality): €4,000-4,800/m²</li>
+              <li>Premium/Passive house: €5,000-6,500/m²</li>
+            </ul>
+
+            <p><strong>2025 trends:</strong></p>
+            <ul>
+              <li>Increased focus on sustainable materials and carbon-neutral construction</li>
+              <li>Rising costs for energy-efficient systems (heat pumps, solar, insulation)</li>
+              <li>Government subsidies available for KfW 40 and Passive House standards</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>References</h4>
+              <ul>
+                <li><a href="https://www.smartest-home.com/en/construction-costs-square-meter-housebuilding/" target="_blank">Smartest Home - Construction Costs per Square Meter 2025</a></li>
+                <li><a href="https://www.baukosten.net/" target="_blank">Baukosten.net - German Construction Cost Database</a></li>
+                <li>KfW Bank - Energy Efficiency Standards Documentation</li>
+              </ul>
+            </div>
+          `
+        },
+        es: {
+          title: 'Costos de Construcción en Alemania',
+          content: `
+            <p><strong>Los costos de construcción en Alemania para 2025 se estiman en €3,500-€5,500 por m²</strong> para edificios residenciales, siendo uno de los mercados más caros de Europa.</p>
+
+            <p><strong>Factores clave que afectan los costos:</strong></p>
+            <ul>
+              <li>Variaciones regionales: Munich y Hamburgo son 20-30% más caros que ciudades pequeñas</li>
+              <li>Regulaciones de construcción: Estrictos estándares de eficiencia energética (GEG 2024) añaden costos significativos</li>
+              <li>Escasez de mano de obra: Trabajadores calificados demandan salarios premium (€40-70/hora)</li>
+              <li>Materiales: Altos estándares de calidad y regulaciones ambientales aumentan costos de materiales</li>
+            </ul>
+
+            <p><strong>Desglose típico:</strong></p>
+            <ul>
+              <li>Residencial básico (estándar KfW 55): €3,500-4,000/m²</li>
+              <li>Residencial estándar (buena calidad): €4,000-4,800/m²</li>
+              <li>Premium/Casa pasiva: €5,000-6,500/m²</li>
+            </ul>
+
+            <p><strong>Tendencias 2025:</strong></p>
+            <ul>
+              <li>Mayor enfoque en materiales sustentables y construcción carbono neutral</li>
+              <li>Costos crecientes para sistemas eficientes (bombas de calor, solar, aislamiento)</li>
+              <li>Subsidios gubernamentales disponibles para estándares KfW 40 y Casa Pasiva</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>Referencias</h4>
+              <ul>
+                <li><a href="https://www.smartest-home.com/en/construction-costs-square-meter-housebuilding/" target="_blank">Smartest Home - Costos de Construcción por Metro Cuadrado 2025</a></li>
+                <li><a href="https://www.baukosten.net/" target="_blank">Baukosten.net - Base de Datos de Costos de Construcción Alemana</a></li>
+                <li>Banco KfW - Documentación de Estándares de Eficiencia Energética</li>
+              </ul>
+            </div>
+          `
+        }
+      },
+      fees: {
+        en: {
+          title: 'Design & Professional Fees',
+          content: `
+            <p><strong>Architectural and urban design fees typically range from 8-15% of total construction cost</strong>, varying based on project complexity, scope, and location.</p>
+
+            <p><strong>Architecture Project Fees:</strong></p>
+            <ul>
+              <li>Basic design package (concept + planning): 8-10% of construction cost</li>
+              <li>Full service (design through construction oversight): 12-15% of construction cost</li>
+              <li>Renovation/retrofit projects: 10-18% due to increased complexity</li>
+              <li>Small residential projects: Often charged hourly ($80-200/hour) or fixed fee</li>
+            </ul>
+
+            <p><strong>Urban Design Project Fees:</strong></p>
+            <ul>
+              <li>Concept/vision plans: $30,000-80,000 for small districts (1-5 ha)</li>
+              <li>Comprehensive planning: $80,000-250,000 for medium projects (5-15 ha)</li>
+              <li>Large-scale masterplans: $250,000+ for extensive urban areas (15+ ha)</li>
+              <li>Community engagement adds 15-25% to base fees</li>
+            </ul>
+
+            <p><strong>What's included in professional fees:</strong></p>
+            <ul>
+              <li>Site analysis and feasibility studies</li>
+              <li>Concept and schematic design</li>
+              <li>Design development and documentation</li>
+              <li>Permit applications and approvals</li>
+              <li>Construction documentation</li>
+              <li>Bidding and contractor selection assistance</li>
+              <li>Construction administration (site visits, quality control)</li>
+            </ul>
+
+            <p><strong>Fee structures:</strong></p>
+            <ul>
+              <li>Percentage of construction cost (most common)</li>
+              <li>Hourly rates with maximum cap</li>
+              <li>Fixed fee for defined scope</li>
+              <li>Hybrid: Fixed fee for design + hourly for additional services</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>References</h4>
+              <ul>
+                <li><a href="https://mkarchitectures.com/how-much-does-it-cost-to-hire-an-architect-architect-fees-guide-2025/" target="_blank">MK Architecture - Architect Fees Guide 2025</a></li>
+                <li><a href="https://www.architectmagazine.com/practice/the-basics-of-architecture-fees_o" target="_blank">Architect Magazine - The Basics of Architecture Fees</a></li>
+                <li>AIA (American Institute of Architects) - Compensation Guidelines</li>
+                <li>HOAI (Germany) & CAE (Ecuador) - Professional Fee Schedules</li>
+              </ul>
+            </div>
+          `
+        },
+        es: {
+          title: 'Honorarios de Diseño y Profesionales',
+          content: `
+            <p><strong>Los honorarios de arquitectura y diseño urbano típicamente varían del 8-15% del costo total de construcción</strong>, dependiendo de la complejidad del proyecto, alcance y ubicación.</p>
+
+            <p><strong>Honorarios Proyectos de Arquitectura:</strong></p>
+            <ul>
+              <li>Paquete de diseño básico (concepto + planificación): 8-10% del costo de construcción</li>
+              <li>Servicio completo (diseño hasta supervisión de obra): 12-15% del costo de construcción</li>
+              <li>Proyectos de renovación: 10-18% debido a mayor complejidad</li>
+              <li>Proyectos residenciales pequeños: A menudo se cobran por hora ($80-200/hora) o tarifa fija</li>
+            </ul>
+
+            <p><strong>Honorarios Proyectos de Diseño Urbano:</strong></p>
+            <ul>
+              <li>Planes concepto/visión: $30,000-80,000 para distritos pequeños (1-5 ha)</li>
+              <li>Planificación integral: $80,000-250,000 para proyectos medianos (5-15 ha)</li>
+              <li>Planes maestros gran escala: $250,000+ para áreas urbanas extensas (15+ ha)</li>
+              <li>Participación comunitaria añade 15-25% a honorarios base</li>
+            </ul>
+
+            <p><strong>Qué incluyen los honorarios profesionales:</strong></p>
+            <ul>
+              <li>Análisis de sitio y estudios de factibilidad</li>
+              <li>Diseño conceptual y esquemático</li>
+              <li>Desarrollo de diseño y documentación</li>
+              <li>Solicitudes de permisos y aprobaciones</li>
+              <li>Documentación de construcción</li>
+              <li>Asistencia en licitación y selección de contratistas</li>
+              <li>Administración de construcción (visitas, control de calidad)</li>
+            </ul>
+
+            <p><strong>Estructuras de honorarios:</strong></p>
+            <ul>
+              <li>Porcentaje del costo de construcción (más común)</li>
+              <li>Tarifas por hora con tope máximo</li>
+              <li>Tarifa fija para alcance definido</li>
+              <li>Híbrido: Tarifa fija para diseño + por hora para servicios adicionales</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>Referencias</h4>
+              <ul>
+                <li><a href="https://mkarchitectures.com/how-much-does-it-cost-to-hire-an-architect-architect-fees-guide-2025/" target="_blank">MK Architecture - Guía de Honorarios de Arquitectos 2025</a></li>
+                <li><a href="https://www.architectmagazine.com/practice/the-basics-of-architecture-fees_o" target="_blank">Architect Magazine - Fundamentos de Honorarios de Arquitectura</a></li>
+                <li>AIA (Instituto Americano de Arquitectos) - Lineamientos de Compensación</li>
+                <li>HOAI (Alemania) & CAE (Ecuador) - Aranceles de Honorarios Profesionales</li>
+              </ul>
+            </div>
+          `
+        }
+      }
+    };
+
+    // Open info panel
+    function openInfoPanel(type) {
+      const modal = document.getElementById('infoModal');
+      const modalBody = document.getElementById('modalBody');
+
+      const content = infoContent[type][currentLang];
+      modalBody.innerHTML = `
+        <h3>${content.title}</h3>
+        ${content.content}
+      `;
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close info panel
+    function closeInfoPanel(event) {
+      const modal = document.getElementById('infoModal');
+
+      // Close if clicking outside the modal content or explicitly calling close
+      if (!event || event.target.id === 'infoModal' || event.target.classList.contains('close-btn')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeInfoPanel();
+      }
+    });
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
