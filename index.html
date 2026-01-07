@@ -97,6 +97,26 @@
       51%, 100% { border-color: transparent; }
     }
 
+    .loader-subtitle {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--brutalist-white);
+      text-align: center;
+      margin: 1rem 0;
+      padding: 0 1rem;
+      border-bottom: none;
+      white-space: normal;
+      word-wrap: break-word;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards 1.5s;
+    }
+
+    .loader-subtitle::after {
+      display: none;
+    }
+
     .loader-sub {
       font-size: clamp(0.9rem, 3vw, 1.3rem);
       margin-top: 2rem;
@@ -214,6 +234,12 @@
         text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
       }
 
+      .loader-subtitle {
+        font-size: clamp(1rem, 5vw, 1.5rem);
+        letter-spacing: 1px;
+        margin: 0.75rem 0;
+      }
+
       .loader-sub {
         font-size: clamp(0.95rem, 4vw, 1.25rem);
         margin-top: 1.5rem;
@@ -246,6 +272,12 @@
       .loader-text {
         font-size: clamp(1.6rem, 9vw, 2.6rem);
         text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+      }
+
+      .loader-subtitle {
+        font-size: clamp(0.9rem, 4.5vw, 1.3rem);
+        letter-spacing: 0.5px;
+        margin: 0.5rem 0;
       }
 
       .loader-sub {
@@ -341,8 +373,7 @@
     <div class="text-center">
       <div id="loader-text" class="loader-text brutal-text-yellow">Proyectual Studio</div>
     </div>
-    <p></p>
-    <div class="loader-text"><h1>architecture and urban design</div></h1>
+    <h1 class="loader-subtitle">architecture and urban design</h1>
     <div class="text-center">
       <div class="loader-sub">
         Everyone deserves spaces that respect people and the planet.
