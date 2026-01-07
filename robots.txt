@@ -1,0 +1,12 @@
+# Robots.txt for proyectualst.com
+# Proyectual Studio - Architecture & Urban Design
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://proyectualst.com/sitemap.xml
+
+# Disallow admin/private directories (if any)
+Disallow: /admin/
+Disallow: /private/
