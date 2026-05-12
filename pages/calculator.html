@@ -545,6 +545,7 @@
         <!-- Unit toggle for Architecture -->
         <div class="unit-toggle" id="unitToggle" style="display: none;">
           <button class="active" onclick="switchUnit('sqm')" id="sqmBtn" data-en="m²" data-es="m²">m²</button>
+          <button onclick="switchUnit('apartments')" id="apartmentsBtn" data-en="Apartments" data-es="Departamentos">Apartments</button>
           <button onclick="switchUnit('people')" id="peopleBtn" data-en="People" data-es="Personas">People</button>
         </div>
 
@@ -942,17 +943,27 @@
     function switchUnit(unit) {
       calculatorState.unit = unit;
       const sqmBtn = document.getElementById('sqmBtn');
+      const apartmentsBtn = document.getElementById('apartmentsBtn');
       const peopleBtn = document.getElementById('peopleBtn');
       const slider = document.getElementById('sizeSlider');
 
       if (unit === 'sqm') {
         sqmBtn.classList.add('active');
+        apartmentsBtn.classList.remove('active');
         peopleBtn.classList.remove('active');
         slider.min = 50;
         slider.max = 500;
         slider.value = 150;
+      } else if (unit === 'apartments') {
+        sqmBtn.classList.remove('active');
+        apartmentsBtn.classList.add('active');
+        peopleBtn.classList.remove('active');
+        slider.min = 1;
+        slider.max = 20;
+        slider.value = 3;
       } else {
         sqmBtn.classList.remove('active');
+        apartmentsBtn.classList.remove('active');
         peopleBtn.classList.add('active');
         slider.min = 2;
         slider.max = 20;
@@ -996,6 +1007,12 @@
           sizeValue.textContent = value;
           sizeUnit.textContent = 'm²';
           summarySize.textContent = value + ' m²';
+        } else if (calculatorState.unit === 'apartments') {
+          const apartments = parseInt(value);
+          calculatorState.size = apartments * 80;
+          sizeValue.textContent = apartments;
+          sizeUnit.textContent = currentLang === 'en' ? 'Apartments' : 'Departamentos';
+          summarySize.textContent = apartments + (currentLang === 'en' ? ' Apartments' : ' Departamentos');
         } else {
           const people = parseInt(value);
           calculatorState.size = people * SQM_PER_PERSON;
