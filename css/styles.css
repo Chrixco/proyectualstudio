@@ -562,6 +562,42 @@ h4 {
 }
 
 /* ===========================
+   CTA CONTAINER STYLING
+   =========================== */
+.cta-container {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-color: var(--brutalist-yellow) !important;
+}
+
+.cta-container .btn {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Yellow button (Get in Touch) */
+.cta-container .btn[href*="contact"]:hover,
+.cta-container .btn[href*="main.html"]:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px var(--brutalist-black) !important;
+}
+
+.cta-container .btn[href*="contact"]:active,
+.cta-container .btn[href*="main.html"]:active {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0px var(--brutalist-black) !important;
+}
+
+/* Black button (Calculate Budget) */
+.cta-container .btn[href*="calculator"]:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px var(--brutalist-yellow) !important;
+}
+
+.cta-container .btn[href*="calculator"]:active {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0px var(--brutalist-yellow) !important;
+}
+
+/* ===========================
    GRID LAYOUT SYSTEM
    =========================== */
 .grid-layout {
