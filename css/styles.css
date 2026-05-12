@@ -1243,6 +1243,20 @@ html {
   box-shadow: 6px 6px 0px var(--brutalist-black);
 }
 
+/* Light theme button hover */
+[data-theme="light"] .brutal-btn-yellow:hover,
+:root[data-theme="light"] .brutal-btn-yellow:hover,
+html[data-theme="light"] .brutal-btn-yellow:hover {
+  background: #FFD500 !important;
+  color: #000000 !important;
+  border-color: #FFD500 !important;
+}
+
+/* Dark theme button hover */
+.brutal-btn-yellow:hover {
+  background: #000000 !important;
+}
+
 .brutal-btn-sm {
   padding: 0.5rem 1.5rem;
   font-size: 0.9rem;
