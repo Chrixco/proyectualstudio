@@ -519,6 +519,7 @@ h4 {
 .btn, #lang-toggle {
   font-family: 'Space Mono', monospace;
   border: 3px solid var(--brutalist-yellow);
+  border-radius: 0.75rem;
   background: var(--brutalist-black);
   color: var(--brutalist-yellow);
   text-transform: uppercase;
