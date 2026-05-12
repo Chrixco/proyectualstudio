@@ -1,0 +1,195 @@
+================================================================================
+PROYECTUAL STUDIO - FEATURED PROJECTS INVENTORY
+================================================================================
+
+PROJECT 1: CCB BUILDING
+================================================================================
+Title:          CCB Building
+Subtitle:       Building in the historic centre with regional timber. Cuenca, Ecuador.
+Link:           pages/ccbbuilding.html
+Image Path:     images/penthouse/Corral_Portfolio_Page_07_Image_0001.jpg
+Alt Text:       CCB Building
+
+Context:        Architecture - Timber Architecture
+
+Description:    A mixed-use corner building in Cuenca that integrates commercial
+                and residential functions within a compact 180 m² lot. Handcrafted
+                brickwork and locally sourced pinewood define its material expression,
+                while reinterpreted masonry details frame views of Cabogana mountain
+                and create a semi-public threshold in the urban fabric.
+
+Spanish Description:
+                Un edificio de uso mixto en una esquina de Cuenca que integra
+                funciones comerciales y residenciales en un lote compacto de 180 m².
+                La mampostería artesanal y la madera de pino local definen su
+                expresión material, mientras que los detalles reinterpretados del
+                ladrillo enmarcan vistas al cerro Cabogana y generan un umbral
+                semi-público en el tejido urbano.
+
+================================================================================
+PROJECT 2: FARMACIA
+================================================================================
+Title:          Farmacia
+Subtitle:       Adaptive reuse for community health
+Link:           pages/farmacia.html
+Image Path:     images/farmacia/hero.jpg
+Alt Text:       Farmacia
+
+Context:        Architecture - Adaptive Reuse
+
+Description:    A mid-century pharmacy in Quito transformed into a flexible
+                health hub, weaving clinical services with neighbourhood gathering
+                space and a revived public plaza.
+
+Spanish Description:
+                Una farmacia de mediados de siglo en Quito transformada en un
+                centro de salud flexible que entrelaza servicios clínicos con
+                espacios de encuentro barrial y una plaza pública revitalizada.
+
+================================================================================
+PROJECT 3: CASA TRES GENERACIONES
+================================================================================
+Title:          Casa Tres Generaciones
+Subtitle:       Housing for intergenerational care
+Link:           pages/casatresgeneraciones.html
+Image Path:     images/casa_ny/hero.jpg
+Alt Text:       Casa Tres Generaciones
+
+Context:        Architecture - Residential Design
+
+Description:    A domestic prototype in Cuenca that blends shared patios,
+                independent suites, and productive gardens to support
+                multigenerational living and collective resilience.
+
+Spanish Description:
+                Un prototipo doméstico en Cuenca que combina patios compartidos,
+                suites independientes y huertos productivos para sostener la vida
+                multigeneracional y la resiliencia colectiva.
+
+================================================================================
+PROJECT 4: SUPERBLOCK CUENCA
+================================================================================
+Title:          Superblock Cuenca
+Subtitle:       Streets reclaimed for ecology and collective life
+Link:           pages/superblock.html
+Image Path:     images/superblock cuenca/20180624_superblock_cuenca_3x3 Large.jpeg
+Alt Text:       Superblock Cuenca
+
+Context:        Urban Design - Street Reclamation
+
+Description:    An urban strategy that reorganises mobility hierarchies in
+                Cuenca's historic centre, liberating interior streets for public
+                space, ecological corridors, and community-led programming.
+
+Spanish Description:
+                Una estrategia urbana que reorganiza jerarquías de movilidad en
+                el centro histórico de Cuenca, liberando las calles interiores
+                para espacio público, corredores ecológicos y programación comunitaria.
+
+================================================================================
+PROJECT 5: PLANTME
+================================================================================
+Title:          PlantMe
+Subtitle:       Climate Action Meets Social Impact
+Link:           pages/plantme.html
+Image Path:     images/plantme/Plantme2.jpeg
+Alt Text:       PlantMe
+
+Context:        Research - Climate Action, Ecological Restoration
+
+Description:    In partnership with Renderless.eu, PlantMe restores native
+                forests in Sinincay to decarbonise, protect water sources, and
+                fund community-led stewardship.
+
+Spanish Description:
+                En colaboración con Renderless.eu, PlantMe restaura bosques
+                nativos en Sinincay para descarbonizar, proteger fuentes de agua
+                y financiar la custodia comunitaria.
+
+================================================================================
+PROJECT 6: UN MUNDO MEJOR
+================================================================================
+Title:          Un Mundo Mejor
+Subtitle:       Marching for Water, Life, and Dignity
+Link:           pages/un_mundo_mejor.html
+Image Path:     images/agua_protesta/IMG_6966 Large.jpeg
+Alt Text:       Un Mundo Mejor
+
+Context:        Research - Social Activism, Environmental Justice
+
+Description:    On 16 September 2025, 100,000 people converged in Cuenca to
+                defend Ecuador's rivers from extractivist mining. We stood
+                alongside communities to demand a future rooted in water, justice,
+                and collective care.
+
+Spanish Description:
+                El 16 de septiembre de 2025, 100.000 personas se congregaron en
+                Cuenca para defender los ríos de Ecuador frente a la minería
+                extractivista. Marchamos con las comunidades para exigir un futuro
+                basado en el agua, la justicia y el cuidado colectivo.
+
+================================================================================
+PROJECT 7: C3 - CLIMBING CENTER
+================================================================================
+Title:          C3 - Climbing Center
+Subtitle:       Space as resistance, surface as movement
+Link:           pages/c3.html
+Image Path:     images/c3/IMG_2361.jpg
+Alt Text:       C3 - Climbing Center
+
+Context:        Architecture - Sports Architecture
+
+Description:    A climbing centre designed to merge sport and spatial experience,
+                combining verticality, movement, and community engagement. The
+                project creates an indoor landscape that translates climbing routes
+                into architectural surfaces.
+
+Spanish Description:
+                Un centro de escalada diseñado para fusionar deporte y experiencia
+                espacial, combinando verticalidad, movimiento y participación
+                comunitaria. El proyecto genera un paisaje interior que convierte
+                las rutas de escalada en superficies arquitectónicas.
+
+================================================================================
+PROJECT 8: FLOODED FUTURES: GUAYAQUIL
+================================================================================
+Title:          Flooded Futures: Guayaquil
+Subtitle:       Climate-adaptive vision for resilience
+Link:           pages/floodedfutures.html
+Image Path:     images/flooded futures/Corral_2025.png
+Alt Text:       Flooded Futures: Guayaquil
+
+Context:        Urban Design - Climate Adaptation
+
+Description:    A climate-adaptive vision for Guayaquil's river delta that
+                explores resilient housing, amphibious infrastructures, and
+                ecological restoration through speculative urban design.
+
+Spanish Description:
+                Una visión de adaptación climática para el delta de Guayaquil
+                que explora vivienda resiliente, infraestructuras anfibias y
+                restauración ecológica mediante diseño urbano especulativo.
+
+================================================================================
+PROJECT 9: LESSONS FROM JARDIM COLOMBO 🇧🇷
+================================================================================
+Title:          Lessons from Jardim Colombo 🇧🇷
+Subtitle:       Collaborative insights from São Paulo
+Link:           pages/jardimColombo.html
+Image Path:     images/JardimColombo/1720428941173.jpeg
+Alt Text:       Lessons from Jardim Colombo
+
+Context:        Research - Informal Settlements, Collective Resilience
+
+Description:    Insights from collaborative work with residents of Jardim
+                Colombo in São Paulo, focusing on informal settlements,
+                collective resilience, and the co-creation of public space.
+
+Spanish Description:
+                Aprendizajes del trabajo colaborativo con residentes de Jardim
+                Colombo en São Paulo, centrado en asentamientos informales,
+                resiliencia colectiva y co-creación de espacio público.
+
+================================================================================
+END OF INVENTORY
+================================================================================

@@ -1,447 +1,324 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<!-- Cookie Consent & Analytics -->
-<script src="js/cookie-consent.js"></script>
-<link href="images/logo03.jpg" rel="icon" type="image/jpeg"/>
-<title>Proyectual Studio | Arquitectura y Urbanismo | Timber Architecture | Cuenca, Ecuador</title>
-<meta name="description" content="Proyectual Arquitectura y Urbanismo. Studio specialising in timber architecture, sustainable design, and climate resilience. Arquitectura con madera y diseño sostenible en Cuenca, Ecuador."/>
-<meta name="keywords" content="proyectual arquitectura, proyectual urbanismo, arquitectura con madera, timber architecture, wood architecture, architecture, arquitectura sostenible, sustainable architecture, sustainable design, urban design, diseño urbano, urbanismo, Cuenca, Ecuador, Latin America, climate resilience, resiliencia climática, decolonial futures, futuros decoloniales"/>
-<meta name="author" content="Christian Corral"/>
-<!-- Language alternates for SEO -->
-<link rel="alternate" hreflang="en" href="https://proyectualst.com/main.html"/>
-<link rel="alternate" hreflang="es" href="https://proyectualst.com/main.html"/>
-<link rel="alternate" hreflang="x-default" href="https://proyectualst.com/main.html"/>
-<!-- Open Graph -->
-<meta property="og:title" content="Proyectual Studio | Arquitectura y Urbanismo | Timber Architecture"/>
-<meta property="og:description" content="Proyectual Arquitectura y Urbanismo. Timber architecture, sustainable design, and climate resilience in Cuenca, Ecuador. Arquitectura con madera y diseño sostenible."/>
-<meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
-<meta property="og:url" content="https://proyectualst.com"/>
-<meta property="og:type" content="website"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:locale:alternate" content="es_EC"/>
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Proyectual Studio | Arquitectura y Urbanismo | Timber Architecture"/>
-<meta name="twitter:description" content="Proyectual Arquitectura y Urbanismo. Timber architecture, sustainable design in Cuenca, Ecuador."/>
-<!-- JSON-LD Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ArchitectureFirm",
-  "name": "Proyectual Studio",
-  "alternateName": ["Proyectual Arquitectura", "Proyectual Urbanismo"],
-  "description": "Architecture and urban design studio specialising in timber architecture, sustainable design, and climate resilience. Estudio de arquitectura con madera y urbanismo sostenible.",
-  "url": "https://proyectualst.com",
-  "logo": "https://proyectualst.com/images/logo03.png",
-  "image": "https://proyectualst.com/images/logo03.png",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Cuenca",
-    "addressCountry": "EC"
-  },
-  "founder": {
-    "@type": "Person",
-    "name": "Christian Corral",
-    "jobTitle": "Architect & Urban Planner"
-  },
-  "areaServed": ["Ecuador", "Latin America", "Germany"],
-  "knowsAbout": ["Architecture", "Urban Design", "Timber Architecture", "Sustainable Design", "Climate Resilience", "Arquitectura con madera", "Urbanismo"],
-  "sameAs": [
-    "https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/",
-    "https://www.instagram.com/proyectualstudioau/"
-  ]
-}
-</script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="css/styles.css" rel="stylesheet"/>
-<!-- Theme Script (loads early to prevent flash) -->
-<script src="js/theme.js"></script>
-<!-- Neo-Brutalist Effects -->
-<script src="js/neobrutalist.js"></script>
-<!-- Image Lightbox -->
-<script src="js/lightbox.js"></script>
-<style>
-    /* Hover effect for article titles */
-    a.text-reset:hover .article-title {
-      color: var(--brutalist-black);
-      background-color: var(--brutalist-yellow);
-      transition: all 0.3s ease;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-
-    /* Hero section styling */
-    .hero-section {
-      position: relative;
-      padding: 4rem 2rem;
-      margin: 3rem 0;
-    }
-
-    .hero-section h1 {
-      display: block;
-      width: 100%;
-    }
-
-    /* Container styling */
-    .container {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* CTA Button Hover Effect */
-    .cta-container .btn {
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    /* Yellow button (Get in Touch) */
-    .cta-container .btn[href*="contact"]:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 9px 9px 0px var(--brutalist-black) !important;
-    }
-
-    .cta-container .btn[href*="contact"]:active {
-      transform: translate(2px, 2px);
-      box-shadow: 3px 3px 0px var(--brutalist-black) !important;
-    }
-
-    /* Black button (Calculate Budget) */
-    .cta-container .btn[href*="calculator"]:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 9px 9px 0px var(--brutalist-yellow) !important;
-    }
-
-    .cta-container .btn[href*="calculator"]:active {
-      transform: translate(2px, 2px);
-      box-shadow: 3px 3px 0px var(--brutalist-yellow) !important;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Cookie Consent & Analytics -->
+  <script src="js/cookie-consent.js"></script>
+  <link rel="icon" href="images/logo03.jpg" type="image/jpeg" />
+  <title>Proyectual Studio | Arquitectura y Urbanismo | Timber Architecture | Cuenca, Ecuador</title>
+  <meta name="description" content="Proyectual Arquitectura y Urbanismo. Studio specialising in timber architecture, sustainable design, and climate resilience. Arquitectura con madera y diseño sostenible en Cuenca, Ecuador."/>
+  <meta name="keywords" content="proyectual arquitectura, proyectual urbanismo, arquitectura con madera, timber architecture, wood architecture, architecture, arquitectura sostenible, sustainable architecture, sustainable design, urban design, diseño urbano, urbanismo, Cuenca, Ecuador, Latin America, climate resilience, resiliencia climática, decolonial futures, futuros decoloniales"/>
+  <meta name="author" content="Christian Corral"/>
+  <!-- Language alternates for SEO -->
+  <link rel="alternate" hreflang="en" href="https://proyectualst.com/main.html"/>
+  <link rel="alternate" hreflang="es" href="https://proyectualst.com/main.html"/>
+  <link rel="alternate" hreflang="x-default" href="https://proyectualst.com/main.html"/>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Proyectual Studio | Arquitectura y Urbanismo | Timber Architecture"/>
+  <meta property="og:description" content="Proyectual Arquitectura y Urbanismo. Timber architecture, sustainable design, and climate resilience in Cuenca, Ecuador. Arquitectura con madera y diseño sostenible."/>
+  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
+  <meta property="og:url" content="https://proyectualst.com"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:locale:alternate" content="es_EC"/>
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Proyectual Studio | Arquitectura y Urbanismo | Timber Architecture"/>
+  <meta name="twitter:description" content="Proyectual Arquitectura y Urbanismo. Timber architecture, sustainable design in Cuenca, Ecuador."/>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ArchitectureFirm",
+    "name": "Proyectual Studio",
+    "alternateName": ["Proyectual Arquitectura", "Proyectual Urbanismo"],
+    "description": "Architecture and urban design studio specialising in timber architecture, sustainable design, and climate resilience. Estudio de arquitectura con madera y urbanismo sostenible.",
+    "url": "https://proyectualst.com",
+    "logo": "https://proyectualst.com/images/logo03.png",
+    "image": "https://proyectualst.com/images/logo03.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Cuenca",
+      "addressCountry": "EC"
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Christian Corral",
+      "jobTitle": "Architect & Urban Planner"
+    },
+    "areaServed": ["Ecuador", "Latin America", "Germany"],
+    "knowsAbout": ["Architecture", "Urban Design", "Timber Architecture", "Sustainable Design", "Climate Resilience", "Arquitectura con madera", "Urbanismo"],
+    "sameAs": [
+      "https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/",
+      "https://www.instagram.com/proyectualstudioau/"
+    ]
+  }
+  </script>
+  <link href="css/styles.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Theme Script (loads early to prevent flash) -->
+  <script src="js/theme.js"></script>
+  <!-- Neo-Brutalist Effects -->
+  <script src="js/neobrutalist.js"></script>
+  <!-- Image Lightbox -->
+  <script src="js/lightbox.js"></script>
 </head>
 <body class="body-white-text">
-<video autoplay="" class="position-fixed w-100 h-100 object-fit-cover z-n1" loop="" muted="" playsinline="">
-<source src="" type="video/mp4"/>
-    Your browser does not support the video tag.
-  </video>
-<nav class="navbar navbar-expand-lg navbar-dark px-3">
-<a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-<img alt="Proyectual Logo" src="images/logo03.png" style="height: 32px;"/>
-      Proyectual Studio
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
+      <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
     </a>
-<button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarNav">
-<ul class="navbar-nav ms-auto">
-<li class="nav-item"><a class="nav-link" data-en="Architecture" data-es="Arquitectura" href="pages/architecture.html">Architecture</a></li>
-<li class="nav-item"><a class="nav-link" data-en="Urban Design" data-es="Diseño Urbano" href="pages/urban_design.html">Urban Design</a></li>
-<li class="nav-item"><a class="nav-link" data-en="Research" data-es="Investigación" href="pages/research.html">Research</a></li>
-<li class="nav-item"><a class="nav-link" data-en="About Us" data-es="Sobre Nosotros" href="pages/about_us.html">About Us</a></li>
-<li class="nav-item"><a class="nav-link" data-en="Contact" data-es="Contacto" href="pages/contact.html">Contact</a></li>
-<li class="nav-item">
-<button class="btn btn-sm btn-outline-light" id="lang-toggle">ES</button>
-</li>
-<li class="nav-item">
-<button aria-label="Toggle theme" id="theme-toggle" title="Toggle dark/light mode"></button>
-</li>
-</ul>
-</div>
-</nav>
-<main class="container mt-4">
-<section class="hero-section text-center py-5 my-5 scroll-fade-in">
-<h1 data-en="Everyone deserves spaces that respect people and the planet." data-es="Todos merecen habitar espacios que respeten a las personas y al planeta.">
-        Everyone should have the right to inhabit spaces that uphold human dignity and environmental responsibility—challenging systems that normalise inequality, extractivism, and ecological degradation in how we build.
-      </h1>
-</section>
-<hr class="border border-4 border-white opacity-75 my-5 scroll-fade-in"/>
-<section class="text-center py-5 my-5 scroll-fade-in">
-<h4 data-en="Architecture and urban design studio specialising in sustainable design." data-es="Estudio de arquitectura y urbanismo especializado en diseño sustentable.">
-       Architecture and urban design studio specialising in sustainable design.
-      </h4>
-</section>
-<hr class="border border-4 border-white opacity-75 my-5 scroll-fade-in"/>
-<!-- Call to Action Panels -->
-<section class="py-4 my-5 scroll-fade-in">
-<div class="row g-4">
-<!-- Contact Panel -->
-<div class="col-md-6">
-<div class="form-container border border-4 border-white rounded-4 p-4 h-100">
-<h3 class="mb-3 fw-bold brutal-text-yellow" data-en="Let's Build Something Meaningful Together" data-es="Construyamos Algo Significativo Juntos">
-              Let's Build Something Meaningful Together
-            </h3>
-<p class="mb-4" data-en="Have a project in mind? Let's discuss how we can create spaces that respect both people and the planet." data-es="¿Tienes un proyecto en mente? Conversemos sobre cómo crear espacios que respeten tanto a las personas como al planeta.">
-              Have a project in mind? Let's discuss how we can create spaces that respect both people and the planet.
-            </p>
-<a class="brutal-btn-yellow brutal-btn-lg w-100 d-block text-center" data-en="Get in Touch" data-es="Contáctanos" href="pages/contact.html">
-              Get in Touch
-            </a>
-</div>
-</div>
-<!-- Calculator Panel -->
-<div class="col-md-6">
-<div class="form-container border border-4 border-white rounded-4 p-4 h-100" style="background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(135, 206, 250, 0.4) 100%), var(--glass-bg); backdrop-filter: blur(10px);">
-<h3 class="mb-3 fw-bold brutal-text-yellow" data-en="Calculate Your Project Budget FOR FREE" data-es="Calcula el Presupuesto de Tu Proyecto">
-              Calculate Your Project Budget
-            </h3>
-<p class="mb-4" data-en="Get a free instant estimate for your architecture or urban design project in just a few clicks." data-es="Obtén una estimación instantánea gratis para tu proyecto de arquitectura o diseño urbano en solo unos clics.">
-              Get a free instant estimate for your architecture or urban design project in just a few clicks.
-            </p>
-<a class="brutal-btn-yellow brutal-btn-lg w-100 d-block text-center" data-en="Calculate for FREE" data-es="Calcular GRATIS" href="pages/calculator.html">
-              Calculate for FREE
-            </a>
-</div>
-</div>
-</div>
-</section>
-<hr class="border border-4 border-white opacity-75 my-5 scroll-fade-in"/>
-<h2 class="text-center mb-5 scroll-fade-in fw-bold" data-en="Featured Projects" data-es="Proyectos Destacados">
-      Featured Projects
-    </h2>
-<div class="row g-4 mosaic-view" id="featuredProjects">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-left">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/ccbbuilding.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="CCB Building: building in the historic centre with regional timber. Cuenca, Ecuador." data-es="Edificio CCB: construyendo en el centro histórico con madera de la región. Cuenca, Ecuador.">
-                  CCB Building: building in the historic centre with regional timber. Cuenca, Ecuador.
-                </h3>
-<p class="mb-0" data-en="A mixed-use corner building in Cuenca that integrates commercial and residential functions within a compact 180 m² lot. Handcrafted brickwork and locally sourced pinewood define its material expression, while reinterpreted masonry details frame views of Cabogana mountain and create a semi-public threshold in the urban fabric." data-es="Un edificio de uso mixto en una esquina de Cuenca que integra funciones comerciales y residenciales en un lote compacto de 180 m². La mampostería artesanal y la madera de pino local definen su expresión material, mientras que los detalles reinterpretados del ladrillo enmarcan vistas al cerro Cabogana y generan un umbral semi-público en el tejido urbano." style="text-align: justify;">
-                  A mixed-use corner building in Cuenca that integrates commercial and residential functions within a compact 180 m² lot. Handcrafted brickwork and locally sourced pinewood define its material expression, while reinterpreted masonry details frame views of Cabogana mountain and create a semi-public threshold in the urban fabric.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/ccbbuilding.html">
-<img alt="Edificio CCB en el Centro Histórico de Cuenca" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/penthouse/Corral_Portfolio_Page_07_Image_0001.jpg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-right">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/farmacia.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Farmacia — Adaptive reuse for community health." data-es="Farmacia — Reutilización adaptativa para la salud comunitaria.">
-                  Farmacia — Adaptive reuse for community health.
-                </h3>
-<p class="mb-0" data-en="A mid-century pharmacy in Quito transformed into a flexible health hub, weaving clinical services with neighbourhood gathering space and a revived public plaza." data-es="Una farmacia de mediados de siglo en Quito transformada en un centro de salud flexible que entrelaza servicios clínicos con espacios de encuentro barrial y una plaza pública revitalizada." style="text-align: justify;">
-                  A mid-century pharmacy in Quito transformed into a flexible health hub, weaving clinical services with neighbourhood gathering space and a revived public plaza.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/farmacia.html">
-<img alt="Farmacia adaptive reuse project" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/farmacia/hero.jpg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-left">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/casatresgeneraciones.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Casa Tres Generaciones — Housing for intergenerational care." data-es="Casa Tres Generaciones — Vivienda para el cuidado intergeneracional.">
-                  Casa Tres Generaciones — Housing for intergenerational care.
-                </h3>
-<p class="mb-0" data-en="A domestic prototype in Cuenca that blends shared patios, independent suites, and productive gardens to support multigenerational living and collective resilience." data-es="Un prototipo doméstico en Cuenca que combina patios compartidos, suites independientes y huertos productivos para sostener la vida multigeneracional y la resiliencia colectiva." style="text-align: justify;">
-                  A domestic prototype in Cuenca that blends shared patios, independent suites, and productive gardens to support multigenerational living and collective resilience.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/casatresgeneraciones.html">
-<img alt="Casa Tres Generaciones" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/casa_ny/hero.jpg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-right">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/superblock.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Superblock Cuenca — Streets reclaimed for ecology and collective life." data-es="Superblock Cuenca — Calles recuperadas para la ecología y la vida colectiva.">
-                  Superblock Cuenca — Streets reclaimed for ecology and collective life.
-                </h3>
-<p class="mb-0" data-en="An urban strategy that reorganises mobility hierarchies in Cuenca’s historic centre, liberating interior streets for public space, ecological corridors, and community-led programming." data-es="Una estrategia urbana que reorganiza jerarquías de movilidad en el centro histórico de Cuenca, liberando las calles interiores para espacio público, corredores ecológicos y programación comunitaria." style="text-align: justify;">
-                  An urban strategy that reorganises mobility hierarchies in Cuenca’s historic centre, liberating interior streets for public space, ecological corridors, and community-led programming.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/superblock.html">
-<img alt="Superblock Cuenca project" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/superblock cuenca/20180624_superblock_cuenca_3x3 Large.jpeg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-right">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/plantme.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="PlantMe — Climate Action Meets Social Impact" data-es="PlantMe — Climate Action Meets Social Impact">
-                  PlantMe — Climate Action Meets Social Impact
-                </h3>
-<p class="mb-0" data-en="In partnership with Renderless.eu, PlantMe restores native forests in Sinincay to decarbonise, protect water sources, and fund community-led stewardship." data-es="En colaboración con Renderless.eu, PlantMe restaura bosques nativos en Sinincay para descarbonizar, proteger fuentes de agua y financiar la custodia comunitaria." style="text-align: justify;">
-                  In partnership with Renderless.eu, PlantMe restores native forests in Sinincay to decarbonise, protect water sources, and fund community-led stewardship.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<figure class="mb-0">
-<video class="w-100 border border-4 border-white rounded-4 lazy-feature-video" controls="" playsinline="" poster="images/plantme/Plantme2.jpeg" preload="none">
-<source data-src="https://cdn.shopify.com/videos/c/o/v/40f87a1e2a084233848fe20bcf77117b.mp4" type="video/mp4">
-                  Your browser does not support the video tag.
-                </source></video>
-<figcaption class="small mt-2 brutal-text-white" data-en="Renderless.eu climate narrative for PlantMe." data-es="Narrativa climática de Renderless.eu para PlantMe.">
-                  Renderless.eu climate narrative for PlantMe.
-                </figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-left">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/un_mundo_mejor.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Un Mundo Mejor — Marching for Water, Life, and Dignity" data-es="Un Mundo Mejor — Marchamos por el Agua, la Vida y la Dignidad">
-                  Un Mundo Mejor — Marching for Water, Life, and Dignity
-                </h3>
-<p class="mb-0" data-en="On 16 September 2025, 100,000 people converged in Cuenca to defend Ecuador’s rivers from extractivist mining. We stood alongside communities to demand a future rooted in water, justice, and collective care." data-es="El 16 de septiembre de 2025, 100.000 personas se congregaron en Cuenca para defender los ríos de Ecuador frente a la minería extractivista. Marchamos con las comunidades para exigir un futuro basado en el agua, la justicia y el cuidado colectivo." style="text-align: justify;">
-                  On 16 September 2025, 100,000 people converged in Cuenca to defend Ecuador’s rivers from extractivist mining. We stood alongside communities to demand a future rooted in water, justice, and collective care.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/un_mundo_mejor.html">
-<img alt="Marcha por el Agua in Cuenca, 16 September 2025" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/agua_protesta/IMG_6966 Large.jpeg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-right">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/c3.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="C3 Climbing Gym – Space as resistance, surface as movement. Offering a new place for climbers in Cuenca, Ecuador." data-es="C3 Climbing Gym – Espacio como resistencia, superficie como movimiento. Ofreciendo un nuevo lugar para escaladores en Cuenca, Ecuador.">
-                  C3 Climbing Gym – Space as resistance, surface as movement. Offering a new place for climbers in Cuenca, Ecuador.
-                </h3>
-<p class="mb-0" data-en="A climbing centre designed to merge sport and spatial experience, combining verticality, movement, and community engagement. The project creates an indoor landscape that translates climbing routes into architectural surfaces." data-es="Un centro de escalada diseñado para fusionar deporte y experiencia espacial, combinando verticalidad, movimiento y participación comunitaria. El proyecto genera un paisaje interior que convierte las rutas de escalada en superficies arquitectónicas." style="text-align: justify;">
-                  A climbing centre designed to merge sport and spatial experience, combining verticality, movement, and community engagement. The project creates an indoor landscape that translates climbing routes into architectural surfaces.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/c3.html">
-<img alt="C3 Climbing Gym en Cuenca" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/c3/IMG_2361.jpg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-left">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/floodedfutures.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Flooded Futures: Guayaquil." data-es="Futuros Inundados: Guayaquil.">
-                  Flooded Futures: Guayaquil.
-                </h3>
-<p class="mb-0" data-en="A climate-adaptive vision for Guayaquil’s river delta that explores resilient housing, amphibious infrastructures, and ecological restoration through speculative urban design." data-es="Una visión de adaptación climática para el delta de Guayaquil que explora vivienda resiliente, infraestructuras anfibias y restauración ecológica mediante diseño urbano especulativo." style="text-align: justify;">
-                  A climate-adaptive vision for Guayaquil’s river delta that explores resilient housing, amphibious infrastructures, and ecological restoration through speculative urban design.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/floodedfutures.html">
-<img alt="Futuros Inundados en Guayaquil" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/flooded futures/chrixco9_architectural_drawing_black_and_white_very_realistic_c_54613f20-b811-4853-bc4f-710fdee00276.png" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div><hr class="brutal-divider"/><div class="col-12 mb-5 scroll-slide-right">
-<div class="form-container border border-4 border-white rounded-4 p-4">
-<div class="row align-items-center">
-<div class="col-12 col-lg-8 mb-3 mb-lg-0">
-<a class="text-decoration-none text-reset" href="pages/jardimColombo.html">
-<h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Lessons from Jardim Colombo 🇧🇷" data-es="Lecciones desde Jardim Colombo 🇧🇷">
-                  Lessons from Jardim Colombo 🇧🇷
-                </h3>
-<p class="mb-0" data-en="Insights from collaborative work with residents of Jardim Colombo in São Paulo, focusing on informal settlements, collective resilience, and the co-creation of public space." data-es="Aprendizajes del trabajo colaborativo con residentes de Jardim Colombo en São Paulo, centrado en asentamientos informales, resiliencia colectiva y co-creación de espacio público." style="text-align: justify;">
-                  Insights from collaborative work with residents of Jardim Colombo in São Paulo, focusing on informal settlements, collective resilience, and the co-creation of public space.
-                </p>
-</a>
-</div>
-<div class="col-12 col-lg-4 text-center">
-<a href="pages/jardimColombo.html">
-<img alt="Lessons from Jardim Colombo" class="img-fluid border border-4 border-white rounded-4 panel-image" src="images/JardimColombo/1720428941173.jpeg" style="width: 100%; height: auto;"/>
-</a>
-</div>
-</div>
-</div>
-</div></div>
-</main>
-<footer class="footer-enhanced">
-  <div class="footer-content">
-    <div class="footer-section">
-      <h4>Proyectual Studio</h4>
-      <p>Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
-      <p><strong>Cuenca, Ecuador</strong></p>
-    </div>
-    <div class="footer-section">
-      <h4>Navigation</h4>
-      <ul class="footer-links">
-        <li><a href="pages/architecture.html">Architecture</a></li>
-        <li><a href="pages/urban_design.html">Urban Design</a></li>
-        <li><a href="pages/research.html">Research</a></li>
-        <li><a href="pages/about_us.html">About Us</a></li>
-        <li><a href="pages/contact.html">Contact</a></li>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item">
+          <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+        <li class="nav-item">
+          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
+        </li>
       </ul>
     </div>
-    <div class="footer-section">
-      <h4>Contact</h4>
-      <p><a href="mailto:christianxcorral@gmail.com">christianxcorral@gmail.com</a></p>
-      <div class="footer-social">
-        <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/proyectualstudioau/" target="_blank" rel="noopener" aria-label="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
+  </nav>
+
+  <main class="container mt-5 px-3 px-md-4">
+    <h1 class="text-center mb-4"></h1>
+    <div class="brutal-hero scroll-fade-in">
+      <h2 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: bold;"
+          data-en="Everyone deserves spaces that respect people and the planet."
+          data-es="Todos merecen espacios que respeten a las personas y el planeta.">
+        Everyone deserves spaces that respect people and the planet.
+      </h2>
+    </div>
+
+    <div class="text-center mb-5">
+      <p class="lead" style="font-size: clamp(1rem, 2.5vw, 1.25rem);"
+         data-en="Architecture and urban design studio specialising in sustainable design."
+         data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible.">
+        Architecture and urban design studio specialising in sustainable design.
+      </p>
+    </div>
+
+    <div id="projectContainer" class="row g-4 mosaic-view">
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-left">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/ccbbuilding.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="CCB Building" data-es="Edificio CCB">CCB Building</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="A mixed-use corner building in Cuenca that integrates commercial and residential functions within a compact 180 m² lot. Handcrafted brickwork and locally sourced pinewood define its material expression, while reinterpreted masonry details frame views of Cabogana mountain and create a semi-public threshold in the urban fabric." data-es="Un edificio de uso mixto en una esquina de Cuenca que integra funciones comerciales y residenciales en un lote compacto de 180 m². La mampostería artesanal y la madera de pino local definen su expresión material, mientras que los detalles reinterpretados del ladrillo enmarcan vistas al cerro Cabogana y generan un umbral semi-público en el tejido urbano.">A mixed-use corner building in Cuenca that integrates commercial and residential functions within a compact 180 m² lot.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/ccbbuilding.html">
+              <img src="images/edicio ccb/Corral_Portfolio_Page_04_Image_0001.jpg" alt="CCB Building" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-right">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/farmacia.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Farmacia" data-es="Farmacia">Farmacia</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="A mid-century pharmacy in Quito transformed into a flexible health hub, weaving clinical services with neighbourhood gathering space and a revived public plaza." data-es="Una farmacia de mediados de siglo en Quito transformada en un centro de salud flexible que entrelaza servicios clínicos con espacios de encuentro barrial y una plaza pública revitalizada.">A mid-century pharmacy in Quito transformed into a flexible health hub.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/farmacia.html">
+              <img src="images/farmacia/DSC07884_compressed.jpg" alt="Farmacia" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-left">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/casatresgeneraciones.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Casa Tres Generaciones" data-es="Casa Tres Generaciones">Casa Tres Generaciones</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="A domestic prototype in Cuenca that blends shared patios, independent suites, and productive gardens to support multigenerational living and collective resilience." data-es="Un prototipo doméstico en Cuenca que combina patios compartidos, suites independientes y huertos productivos para sostener la vida multigeneracional y la resiliencia colectiva.">A domestic prototype in Cuenca that blends shared patios and independent suites.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/casatresgeneraciones.html">
+              <img src="images/casa_ny/IMG_0705 Large.jpeg" alt="Casa Tres Generaciones" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-right">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/superblock.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Superblock Cuenca" data-es="Superblock Cuenca">Superblock Cuenca</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="An urban strategy that reorganises mobility hierarchies in Cuenca's historic centre, liberating interior streets for public space, ecological corridors, and community-led programming." data-es="Una estrategia urbana que reorganiza jerarquías de movilidad en el centro histórico de Cuenca, liberando las calles interiores para espacio público, corredores ecológicos y programación comunitaria.">An urban strategy that reorganises mobility hierarchies in Cuenca's historic centre.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/superblock.html">
+              <img src="images/superblock cuenca/20180624_superblock_cuenca_3x3 Large.jpeg" alt="Superblock Cuenca" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-left">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/plantme.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="PlantMe" data-es="PlantMe">PlantMe</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="In partnership with Renderless.eu, PlantMe restores native forests in Sinincay to decarbonise, protect water sources, and fund community-led stewardship." data-es="En colaboración con Renderless.eu, PlantMe restaura bosques nativos en Sinincay para descarbonizar, proteger fuentes de agua y financiar la custodia comunitaria.">In partnership with Renderless.eu, PlantMe restores native forests in Sinincay.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/plantme.html">
+              <img src="images/plantme/Plantme2.jpeg" alt="PlantMe" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-right">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/un_mundo_mejor.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Un Mundo Mejor" data-es="Un Mundo Mejor">Un Mundo Mejor</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="On 16 September 2025, 100,000 people converged in Cuenca to defend Ecuador's rivers from extractivist mining. We stood alongside communities to demand a future rooted in water, justice, and collective care." data-es="El 16 de septiembre de 2025, 100.000 personas se congregaron en Cuenca para defender los ríos de Ecuador frente a la minería extractivista. Marchamos con las comunidades para exigir un futuro basado en el agua, la justicia y el cuidado colectivo.">On 16 September 2025, 100,000 people converged in Cuenca to defend Ecuador's rivers.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/un_mundo_mejor.html">
+              <img src="images/agua_protesta/IMG_6966 Large.jpeg" alt="Un Mundo Mejor" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-left">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/c3.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="C3 - Climbing Center" data-es="C3 - Centro de Escalada">C3 - Climbing Center</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="A climbing centre designed to merge sport and spatial experience, combining verticality, movement, and community engagement." data-es="Un centro de escalada diseñado para fusionar deporte y experiencia espacial, combinando verticalidad, movimiento y participación comunitaria.">A climbing centre designed to merge sport and spatial experience.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/c3.html">
+              <img src="images/c3/IMG_2361.jpg" alt="C3 Climbing Center" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-right">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/floodedfutures.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Flooded Futures: Guayaquil" data-es="Futuros Inundados: Guayaquil">Flooded Futures: Guayaquil</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="A climate-adaptive vision for Guayaquil's river delta that explores resilient housing, amphibious infrastructures, and ecological restoration through speculative urban design." data-es="Una visión de adaptación climática para el delta de Guayaquil que explora vivienda resiliente, infraestructuras anfibias y restauración ecológica mediante diseño urbano especulativo.">A climate-adaptive vision for Guayaquil's river delta.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/floodedfutures.html">
+              <img src="images/flooded futures/Corral_2025.png" alt="Flooded Futures: Guayaquil" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-left">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <a href="pages/jardimColombo.html" class="text-decoration-none text-reset">
+                <h3 class="fw-bold mb-3 brutal-text-yellow" data-en="Lessons from Jardim Colombo 🇧🇷" data-es="Lecciones desde Jardim Colombo 🇧🇷">Lessons from Jardim Colombo 🇧🇷</h3>
+              <p style="text-align: justify;" class="mb-0" data-en="Insights from collaborative work with residents of Jardim Colombo in São Paulo, focusing on informal settlements, collective resilience, and the co-creation of public space." data-es="Aprendizajes del trabajo colaborativo con residentes de Jardim Colombo en São Paulo, centrado en asentamientos informales, resiliencia colectiva y co-creación de espacio público.">Insights from collaborative work with residents of Jardim Colombo in São Paulo.</p>
+            </a>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+            <a href="pages/jardimColombo.html">
+              <img src="images/JardimColombo/1720428941173.jpeg" alt="Lessons from Jardim Colombo" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+            </a>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2025 Christian Corral — Proyectual Studio. All rights reserved.</p>
-  </div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+  </main>
+
+  <footer class="footer-enhanced">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Proyectual Studio</h4>
+        <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
+        <p><strong>Cuenca, Ecuador</strong></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Contact" data-es="Contacto">Contact</h4>
+        <p><a href="mailto:christianxcorral@gmail.com">christianxcorral@gmail.com</a></p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/proyectualstudioau/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Christian Corral — Proyectual Studio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
     let currentLang = localStorage.getItem('lang') || 'en';
 
     function updateLanguage(lang) {
@@ -455,62 +332,7 @@
       localStorage.setItem('lang', lang);
     }
 
-    // Scroll Animation Observer
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, observerOptions);
-
-    // Parallax effect for images
-    function handleParallax() {
-      const scrolled = window.pageYOffset;
-      const parallaxElements = document.querySelectorAll('.form-container img');
-
-      parallaxElements.forEach((element, index) => {
-        const speed = 0.05;
-        const yPos = -(scrolled * speed * (index % 2 === 0 ? 1 : -1));
-        element.style.transform = `translateY(${yPos}px)`;
-      });
-    }
-
-    // Cursor glow effect
-    function createCursorGlow() {
-      const glow = document.createElement('div');
-      glow.className = 'cursor-glow';
-      glow.style.cssText = `
-        position: fixed;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(255, 213, 0, 0.15) 0%, transparent 70%);
-        pointer-events: none;
-        z-index: 9999;
-        transition: opacity 0.3s ease;
-        opacity: 0;
-      `;
-      document.body.appendChild(glow);
-
-      document.addEventListener('mousemove', (e) => {
-        glow.style.left = (e.clientX - 100) + 'px';
-        glow.style.top = (e.clientY - 100) + 'px';
-        glow.style.opacity = '1';
-      });
-
-      document.addEventListener('mouseleave', () => {
-        glow.style.opacity = '0';
-      });
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-      // Initialize language
       updateLanguage(currentLang);
       const toggleBtn = document.getElementById('lang-toggle');
       if (toggleBtn) {
@@ -519,64 +341,6 @@
           updateLanguage(currentLang);
         });
       }
-
-      // Initialize scroll animations
-      const animatedElements = document.querySelectorAll('.scroll-fade-in, .scroll-slide-left, .scroll-slide-right');
-      animatedElements.forEach(el => observer.observe(el));
-
-      // Lazy load featured videos
-      const lazyVideos = document.querySelectorAll('.lazy-feature-video');
-      if (lazyVideos.length) {
-        const loadVideo = (video) => {
-          const source = video.querySelector('source[data-src]');
-          if (source && !source.src) {
-            source.src = source.dataset.src;
-            video.load();
-          }
-        };
-
-        const videoObserver = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              loadVideo(entry.target);
-              obs.unobserve(entry.target);
-            }
-          });
-        }, { rootMargin: '0px 0px 200px 0px', threshold: 0 });
-
-        lazyVideos.forEach(video => {
-          videoObserver.observe(video);
-          video.addEventListener('play', () => loadVideo(video), { once: true });
-        });
-      }
-
-      // Add parallax scroll effect
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            handleParallax();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      });
-
-      // Create cursor glow effect
-      createCursorGlow();
-
-      // Add hover sound effect (visual feedback)
-      const cards = document.querySelectorAll('.form-container');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        });
-      });
-
-      // Stagger animation for initial load
-      animatedElements.forEach((el, index) => {
-        el.style.animationDelay = `${index * 0.1}s`;
-      });
     });
   </script>
 </body>
