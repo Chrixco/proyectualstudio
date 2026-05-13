@@ -602,6 +602,13 @@
             <div id="breakdownItems"></div>
           </div>
 
+          <!-- Chart Filter -->
+          <div style="margin-bottom: 1rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</div>
+          <div class="chart-controls" style="margin-bottom: 1rem;">
+            <button class="chart-btn active" data-scope-filter="all" data-en="All Phases" data-es="Todas las Fases">All Phases</button>
+            <button class="chart-btn" data-scope-filter="construction" data-en="Construction Only" data-es="Solo Construcción">Construction Only</button>
+          </div>
+
           <!-- Charts -->
           <div class="charts-container">
             <!-- Pie Chart Section -->
@@ -695,6 +702,7 @@
     let pieChart, densityChart;
     let currentPieMode = 'lifecycle';
     let currentHistogramMode = 'absolute';
+    let currentScopeFilter = 'all';
 
     const carbonState = {
       projectType: 'Residential',
@@ -872,17 +880,26 @@
       const treeOffset = carbonState.trees * CO2_FACTORS.treeOffset;
       processValues['Tree Offset'] = Math.abs(treeOffset);
 
-      const maxValue = Math.max(...Object.values(processValues));
-      const totalProcessCO2 = Object.values(processValues).reduce((a, b) => a + b, 0);
+      // Filter for construction-only mode
+      let filteredProcessValues = processValues;
+      if (currentScopeFilter === 'construction') {
+        filteredProcessValues = {};
+        processOrder.forEach(p => {
+          filteredProcessValues[p] = processValues[p];
+        });
+      }
+
+      const maxValue = Math.max(...Object.values(filteredProcessValues));
+      const totalProcessCO2 = Object.values(filteredProcessValues).reduce((a, b) => a + b, 0);
 
       // Display A1-A5 lifecycle stages
       processOrder.forEach(processName => {
         const data = processes[processName];
         if (!data) return;
 
-        const totalCO2 = processValues[processName].toFixed(0);
-        const barWidth = maxValue > 0 ? (processValues[processName] / maxValue) * 100 : 0;
-        const pct = totalProcessCO2 > 0 ? ((processValues[processName] / totalProcessCO2) * 100).toFixed(0) : 0;
+        const totalCO2 = filteredProcessValues[processName].toFixed(0);
+        const barWidth = maxValue > 0 ? (filteredProcessValues[processName] / maxValue) * 100 : 0;
+        const pct = totalProcessCO2 > 0 ? ((filteredProcessValues[processName] / totalProcessCO2) * 100).toFixed(0) : 0;
         const barColor = PROCESS_COLORS[processName] || '#FFD500';
 
         const item = document.createElement('div');
@@ -900,7 +917,7 @@
       });
 
       // Display operational energy (5-year window)
-      if (processValues['Operational'] > 0) {
+      if (processValues['Operational'] > 0 && currentScopeFilter === 'all') {
         const operCO2 = processValues['Operational'].toFixed(0);
         const operPct = totalProcessCO2 > 0 ? ((processValues['Operational'] / totalProcessCO2) * 100).toFixed(0) : 0;
         const operBar = maxValue > 0 ? (processValues['Operational'] / maxValue) * 100 : 0;
@@ -921,7 +938,7 @@
       }
 
       // Display tree offset
-      if (processValues['Tree Offset'] > 0) {
+      if (processValues['Tree Offset'] > 0 && currentScopeFilter === 'all') {
         const treeCO2 = processValues['Tree Offset'].toFixed(0);
         const treePct = totalProcessCO2 > 0 ? ((processValues['Tree Offset'] / totalProcessCO2) * 100).toFixed(0) : 0;
         const treeBar = maxValue > 0 ? (processValues['Tree Offset'] / maxValue) * 100 : 0;
@@ -1020,6 +1037,15 @@
           labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensación');
 
           colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+
+          // Filter for construction-only mode
+          if (currentScopeFilter === 'construction') {
+            const operLabel = currentLang === 'en' ? 'Operational' : 'Operacional';
+            const offsetLabel = currentLang === 'en' ? 'Tree Offset' : 'Compensación';
+            labels = labels.filter(l => l !== operLabel && l !== offsetLabel);
+            data = data.slice(0, 4); // Keep only first 4 (A1-A5)
+            colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+          }
         }
       } else if (currentPieMode === 'impact') {
         // Total embodied + operational impact
@@ -1034,6 +1060,13 @@
           Math.abs(trees * CO2_FACTORS.treeOffset * 30)
         ];
         colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+
+        // Filter for construction-only mode
+        if (currentScopeFilter === 'construction') {
+          labels = labels.slice(0, 1); // Keep only Embodied Carbon
+          data = data.slice(0, 1);
+          colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+        }
       } else if (currentPieMode === 'breakdown') {
         // Original 5-category breakdown
         labels = [
@@ -1051,6 +1084,13 @@
           Math.abs(trees * CO2_FACTORS.treeOffset * 30)
         ];
         colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+
+        // Filter for construction-only mode
+        if (currentScopeFilter === 'construction') {
+          labels = labels.slice(0, 2); // Keep only Materials and Transport
+          data = data.slice(0, 2);
+          colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+        }
       }
 
       const borderColor = 'rgba(255, 213, 0, 0.2)';
@@ -1130,6 +1170,12 @@
 
       labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
       labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensación');
+
+      // Filter for construction-only mode
+      if (currentScopeFilter === 'construction') {
+        labels = labels.slice(0, 4); // Keep only A1-A5 processes
+        data = data.slice(0, 4);
+      }
 
       // Transform data based on histogram mode
       if (currentHistogramMode === 'percentage') {
@@ -1278,6 +1324,16 @@
           document.querySelectorAll('[data-histogram-mode]').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           currentHistogramMode = btn.getAttribute('data-histogram-mode');
+          calculateTotal();
+        });
+      });
+
+      // Scope filter buttons
+      document.querySelectorAll('[data-scope-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('[data-scope-filter]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentScopeFilter = btn.getAttribute('data-scope-filter');
           calculateTotal();
         });
       });
