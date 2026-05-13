@@ -533,6 +533,20 @@
               $<span id="priceValue">0.12</span> / kWh
             </div>
           </div>
+
+          <!-- 7. System Cost -->
+          <div class="calculator-section">
+            <div class="calculator-label" data-en="7. System Cost per kW" data-es="7. Costo del Sistema por kW">
+              7. System Cost per kW
+            </div>
+            <input type="range" min="1500" max="4000" value="3000" step="100" class="range-slider" id="costPerKwSlider" oninput="updateDisplay()">
+            <div class="range-value text-center">
+              $<span id="costPerKwValue">3000</span> / kW
+            </div>
+            <p style="font-size: 0.75rem; color: rgba(255, 213, 0, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
+              <span data-en="Includes panels, inverter, installation" data-es="Incluye paneles, inversor, instalación">Includes panels, inverter, installation</span>
+            </p>
+          </div>
         </div>
 
         <!-- RIGHT PANEL: RESULTS -->
@@ -551,6 +565,10 @@
               <span class="summary-label" data-en="Roof Area" data-es="Área de Techo">Roof Area</span>
               <span class="summary-value" id="summaryArea">50 m²</span>
             </div>
+            <div class="summary-item">
+              <span class="summary-label" data-en="System Cost" data-es="Costo del Sistema">System Cost</span>
+              <span class="summary-value" id="summaryCost">$150,000</span>
+            </div>
           </div>
 
           <!-- Charts -->
@@ -563,6 +581,49 @@
               </div>
               <div class="chart-wrapper">
                 <canvas id="productionChart"></canvas>
+              </div>
+            </div>
+
+            <div>
+              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Investment Payback" data-es="Recuperación de Inversión">Investment Payback</div>
+              <div class="chart-wrapper">
+                <canvas id="paybackChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cost & Payback Analysis -->
+          <div style="background: var(--glass-bg); border: 3px solid var(--brutalist-yellow); padding: 1rem; margin-bottom: 1rem; border-radius: var(--panel-border-radius); display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase;">
+                <span data-en="Initial Investment" data-es="Inversión Inicial">Initial Investment</span>
+              </div>
+              <div style="font-size: 1.4rem; font-weight: bold; color: #FFFFFF;">
+                $<span id="totalCostDisplay">150,000</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase;">
+                <span data-en="Annual Savings" data-es="Ahorros Anuales">Annual Savings</span>
+              </div>
+              <div style="font-size: 1.4rem; font-weight: bold; color: #FFFFFF;">
+                $<span id="annualSavingsDisplay">1,800</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase;">
+                <span data-en="Payback Period" data-es="Período de Recuperación">Payback Period</span>
+              </div>
+              <div style="font-size: 1.4rem; font-weight: bold; color: #FFD500;">
+                <span id="paybackYears">8.3</span> <span data-en="years" data-es="años" style="font-size: 0.8rem;">years</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase;">
+                <span data-en="30-Year Savings" data-es="Ahorros en 30 Años">30-Year Savings</span>
+              </div>
+              <div style="font-size: 1.4rem; font-weight: bold; color: #FFFFFF;">
+                $<span id="thirtYearSavings">54,000</span>
               </div>
             </div>
           </div>
@@ -628,7 +689,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let currentLang = localStorage.getItem('lang') || 'en';
-    let productionChart;
+    let productionChart, paybackChart;
     let currentChartMode = 'monthly';
 
     const solarState = {
@@ -639,7 +700,8 @@
       panelEfficiency: 0.18,
       orientation: 0,
       lossFactors: 15,
-      electricityPrice: 0.12
+      electricityPrice: 0.12,
+      costPerKw: 3000
     };
 
     // Solar irradiance data (kWh/m²/day) by month for different latitudes
@@ -705,12 +767,14 @@
       const orientation = parseInt(document.getElementById('orientationSlider').value);
       const lossFactor = parseInt(document.getElementById('lossFactorSlider').value);
       const price = parseFloat(document.getElementById('priceSlider').value);
+      const costPerKw = parseInt(document.getElementById('costPerKwSlider').value);
 
       solarState.latitude = latitude;
       solarState.roofArea = roofArea;
       solarState.orientation = orientation;
       solarState.lossFactors = lossFactor;
       solarState.electricityPrice = price;
+      solarState.costPerKw = costPerKw;
 
       if (document.getElementById('locationSelect').value !== 'custom') {
         // Don't update latitude display if using preset location
@@ -721,6 +785,7 @@
       document.getElementById('orientationValue').textContent = orientation;
       document.getElementById('lossFactorValue').textContent = lossFactor;
       document.getElementById('priceValue').textContent = price.toFixed(2);
+      document.getElementById('costPerKwValue').textContent = costPerKw.toLocaleString();
 
       document.getElementById('summaryArea').textContent = roofArea + ' m²';
       document.getElementById('summaryPanel').textContent = solarState.panelType;
@@ -757,12 +822,25 @@
       const co2Offset = (totalAnnual * 0.4).toFixed(0); // ~0.4 kg CO2 per kWh in grid
       const carDays = (totalAnnual / 20).toFixed(0); // Average car uses ~20 kWh/day
 
+      // Cost Analysis
+      const peakCapacity = solarState.roofArea * solarState.panelEfficiency; // kW
+      const totalSystemCost = (peakCapacity * solarState.costPerKw).toFixed(0);
+      const paybackPeriod = (totalSystemCost / annualSavings).toFixed(1);
+      const thirtYearSavings = (annualSavings * 30 - totalSystemCost).toFixed(0);
+
+      document.getElementById('totalCostDisplay').textContent = parseInt(totalSystemCost).toLocaleString();
+      document.getElementById('annualSavingsDisplay').textContent = parseInt(annualSavings).toLocaleString();
+      document.getElementById('paybackYears').textContent = paybackPeriod;
+      document.getElementById('thirtYearSavings').textContent = parseInt(thirtYearSavings).toLocaleString();
+      document.getElementById('summaryCost').textContent = '$' + parseInt(totalSystemCost).toLocaleString();
+
       document.getElementById('equivalence').innerHTML = `
         Annual savings: <strong>$${annualSavings}</strong><br>
         <small>≈ ${co2Offset} kg CO₂ offset | ${carDays} days of car travel</small>
       `;
 
       updateProductionChart(monthlyProduction);
+      updatePaybackChart(annualSavings, totalSystemCost);
     }
 
     function updateProductionChart(monthlyData) {
@@ -818,6 +896,69 @@
                 bodyColor: '#FFFFFF',
                 borderColor: '#FFD500',
                 borderWidth: 1
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function updatePaybackChart(annualSavings, investmentCost) {
+      const years = [];
+      const cumulativeSavings = [];
+      const breakEvenYear = parseFloat((investmentCost / annualSavings).toFixed(1));
+
+      for (let year = 0; year <= 30; year++) {
+        years.push(year);
+        cumulativeSavings.push(year * annualSavings - investmentCost);
+      }
+
+      if (paybackChart) {
+        paybackChart.data.labels = years;
+        paybackChart.data.datasets[0].data = cumulativeSavings;
+        paybackChart.update();
+      } else {
+        const ctx = document.getElementById('paybackChart').getContext('2d');
+        paybackChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: years,
+            datasets: [{
+              label: 'Cumulative Savings',
+              data: cumulativeSavings,
+              borderColor: '#FFD500',
+              backgroundColor: 'rgba(255, 213, 0, 0.1)',
+              borderWidth: 3,
+              fill: true,
+              pointBackgroundColor: '#FFD500',
+              pointBorderColor: '#FFFFFF',
+              pointBorderWidth: 2,
+              pointRadius: 4,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#FFFFFF', font: { family: "'Space Mono', monospace", size: 10 } }
+              },
+              annotation: {
+                drawTime: 'beforeDatasetsDraw'
+              }
+            },
+            scales: {
+              y: {
+                ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { family: "'Space Mono', monospace", size: 10 } },
+                grid: { color: 'rgba(255, 213, 0, 0.2)' },
+                title: { display: true, text: 'Savings ($)', color: 'rgba(255, 255, 255, 0.8)' }
+              },
+              x: {
+                ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { family: "'Space Mono', monospace", size: 9 } },
+                grid: { color: 'rgba(255, 213, 0, 0.2)' },
+                title: { display: true, text: 'Years', color: 'rgba(255, 255, 255, 0.8)' }
               }
             }
           }
