@@ -230,6 +230,40 @@
       margin-bottom: 2rem;
     }
 
+    .chart-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .chart-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(255, 213, 0, 0.1);
+      border: 2px solid var(--brutalist-yellow);
+      color: var(--brutalist-yellow);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-radius: var(--panel-border-radius);
+      transition: all 0.2s ease;
+    }
+
+    .chart-btn:hover {
+      background: rgba(255, 213, 0, 0.2);
+      transform: translate(-1px, -1px);
+      box-shadow: 2px 2px 0px var(--brutalist-yellow);
+    }
+
+    .chart-btn.active {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      box-shadow: 3px 3px 0px var(--brutalist-yellow);
+    }
+
     .chart-wrapper {
       position: relative;
       height: 300px;
@@ -565,11 +599,28 @@
 
           <!-- Charts -->
           <div class="charts-container">
-            <div class="chart-wrapper">
-              <canvas id="pieChart"></canvas>
+            <!-- Pie Chart Section -->
+            <div>
+              <div class="chart-controls">
+                <button class="chart-btn active" data-pie-mode="lifecycle" data-en="Lifecycle" data-es="Ciclo de Vida">Lifecycle</button>
+                <button class="chart-btn" data-pie-mode="impact" data-en="Total Impact" data-es="Impacto Total">Total Impact</button>
+                <button class="chart-btn" data-pie-mode="breakdown" data-en="Breakdown" data-es="Desglose">Breakdown</button>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="pieChart"></canvas>
+              </div>
             </div>
-            <div class="chart-wrapper">
-              <canvas id="densityHistogram"></canvas>
+
+            <!-- Density Histogram Section -->
+            <div>
+              <div class="chart-controls">
+                <button class="chart-btn active" data-histogram-mode="absolute" data-en="Absolute" data-es="Absoluto">Absolute</button>
+                <button class="chart-btn" data-histogram-mode="percentage" data-en="Percentage" data-es="Porcentaje">Percentage</button>
+                <button class="chart-btn" data-histogram-mode="cumulative" data-en="Cumulative" data-es="Acumulativo">Cumulative</button>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="densityHistogram"></canvas>
+              </div>
             </div>
           </div>
 
@@ -635,6 +686,8 @@
   <script>
     let currentLang = localStorage.getItem('lang') || 'en';
     let pieChart, densityChart;
+    let currentPieMode = 'lifecycle';
+    let currentHistogramMode = 'absolute';
 
     const carbonState = {
       projectType: 'Residential',
@@ -809,34 +862,50 @@
     }
 
     function updateCharts(embodied, operational, transport, waste, trees) {
-      // Check if we should show process-based breakdown
-      const materialData = MATERIAL_PROCESSES[carbonState.material];
-      const showProcessBreakdown = materialData ? true : false;
+      updatePieChart(embodied, operational, transport, waste, trees);
+      updateDensityHistogram(embodied, operational, transport, waste, trees);
+    }
 
+    function updatePieChart(embodied, operational, transport, waste, trees) {
       let labels, data, colors;
 
-      if (showProcessBreakdown) {
-        // Show process-based breakdown (Extraction → Processing → Transportation → Installation)
-        const processes = materialData.processes;
-        const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
+      if (currentPieMode === 'lifecycle') {
+        // Process-based breakdown (Extraction → Processing → Transportation → Installation)
+        const materialData = MATERIAL_PROCESSES[carbonState.material];
+        if (materialData) {
+          const processes = materialData.processes;
+          const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
 
-        labels = processOrder.map(p => {
-          const lang = currentLang === 'en' ? p :
-            p === 'Extraction' ? 'Extracción' :
-            p === 'Processing' ? 'Procesamiento' :
-            p === 'Transportation' ? 'Transporte' : 'Instalación';
-          return lang;
-        });
+          labels = processOrder.map(p => {
+            const lang = currentLang === 'en' ? p :
+              p === 'Extraction' ? 'Extracción' :
+              p === 'Processing' ? 'Procesamiento' :
+              p === 'Transportation' ? 'Transporte' : 'Instalación';
+            return lang;
+          });
 
-        data = processOrder.map(p => {
-          const proc = processes[p];
-          return proc ? (proc.value * (carbonState.area || 1)) : 0;
-        });
+          data = processOrder.map(p => {
+            const proc = processes[p];
+            return proc ? (proc.value * (carbonState.area || 1)) : 0;
+          });
 
-        // Color palette for lifecycle stages (extraction → processing → transport → installation)
-        colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
-      } else {
-        // Show original 5-category view (for fallback)
+          colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
+        }
+      } else if (currentPieMode === 'impact') {
+        // Total embodied + operational impact
+        labels = [
+          currentLang === 'en' ? 'Embodied Carbon' : 'Carbono Encarnado',
+          currentLang === 'en' ? 'Operational (50yr)' : 'Operacional (50yr)',
+          currentLang === 'en' ? 'Tree Offset' : 'Compensación Árboles'
+        ];
+        data = [
+          embodied,
+          operational,
+          Math.abs(trees * CO2_FACTORS.treeOffset * 30)
+        ];
+        colors = ['#FFD500', '#FFC700', 'rgba(255,255,255,0.6)'];
+      } else if (currentPieMode === 'breakdown') {
+        // Original 5-category breakdown
         labels = [
           currentLang === 'en' ? 'Materials' : 'Materiales',
           currentLang === 'en' ? 'Transport' : 'Transporte',
@@ -887,6 +956,40 @@
           }
         });
       }
+    }
+
+    function updateDensityHistogram(embodied, operational, transport, waste, trees) {
+      const materialData = MATERIAL_PROCESSES[carbonState.material];
+      const processes = materialData ? materialData.processes : {};
+      const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
+
+      let labels = processOrder.map(p => {
+        const lang = currentLang === 'en' ? p :
+          p === 'Extraction' ? 'Extracción' :
+          p === 'Processing' ? 'Procesamiento' :
+          p === 'Transportation' ? 'Transporte' : 'Instalación';
+        return lang;
+      });
+
+      let data = processOrder.map(p => {
+        const proc = processes[p];
+        return proc ? (proc.value * (carbonState.area || 1)) : 0;
+      });
+
+      // Transform data based on histogram mode
+      if (currentHistogramMode === 'percentage') {
+        const total = data.reduce((a, b) => a + b, 0);
+        data = data.map(v => (total > 0 ? (v / total) * 100 : 0));
+      } else if (currentHistogramMode === 'cumulative') {
+        let cumulative = 0;
+        data = data.map(v => {
+          cumulative += v;
+          return cumulative;
+        });
+      }
+
+      const colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
+      const borderColor = 'rgba(255, 213, 0, 0.2)';
 
       // Update Density Histogram Chart
       if (densityChart) {
@@ -1003,6 +1106,26 @@
     document.addEventListener('DOMContentLoaded', () => {
       updateDisplay();
       updateLanguage(currentLang);
+
+      // Pie chart mode buttons
+      document.querySelectorAll('[data-pie-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('[data-pie-mode]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentPieMode = btn.getAttribute('data-pie-mode');
+          calculateTotal();
+        });
+      });
+
+      // Histogram mode buttons
+      document.querySelectorAll('[data-histogram-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('[data-histogram-mode]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentHistogramMode = btn.getAttribute('data-histogram-mode');
+          calculateTotal();
+        });
+      });
 
       const langToggle = document.getElementById('lang-toggle');
       if (langToggle) {
