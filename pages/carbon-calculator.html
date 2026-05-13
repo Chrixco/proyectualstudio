@@ -53,8 +53,10 @@
       backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
-      padding: 2rem;
+      padding: 1.5rem;
       border-radius: var(--panel-border-radius);
+      max-height: none;
+      overflow: visible;
     }
 
     .results-panel {
@@ -72,8 +74,8 @@
     }
 
     .calculator-section {
-      margin-bottom: 1.5rem;
-      padding: 1.5rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
       border: 2px solid var(--brutalist-yellow);
       background: rgba(255, 213, 0, 0.05);
       border-radius: var(--panel-border-radius);
@@ -87,22 +89,22 @@
     .calculator-label {
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 1.2rem;
-      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
       color: var(--brutalist-yellow);
       display: block;
       border-bottom: 2px solid rgba(255, 213, 0, 0.2);
-      padding-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
     }
 
     .option-card {
-      padding: 1.2rem;
+      padding: 0.8rem;
       border: 2px solid rgba(255, 255, 255, 0.3);
       cursor: pointer;
       transition: all 0.3s ease;
       background: rgba(0, 0, 0, 0.3);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
       border-radius: var(--panel-border-radius);
     }
 
@@ -111,13 +113,15 @@
     }
 
     .option-card h5 {
-      margin-bottom: 0.25rem;
-      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+      font-size: 0.85rem;
+      line-height: 1.2;
     }
 
     .option-card p {
       margin-bottom: 0;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
+      line-height: 1.1;
     }
 
     .option-card:hover {
@@ -136,13 +140,13 @@
 
     .range-slider {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: rgba(255, 213, 0, 0.2);
       outline: none;
       border: 1px solid var(--brutalist-yellow);
       border-radius: 4px;
       -webkit-appearance: none;
-      margin: 1rem 0;
+      margin: 0.5rem 0;
     }
 
     .range-slider::-webkit-slider-thumb {
@@ -178,10 +182,10 @@
     }
 
     .range-value {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: bold;
       color: var(--brutalist-yellow);
-      margin-top: 0.75rem;
+      margin-top: 0.4rem;
       text-align: center;
     }
 
