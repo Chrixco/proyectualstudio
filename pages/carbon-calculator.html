@@ -714,6 +714,36 @@
       treeOffset: -22 // kgCO2e per tree per year
     };
 
+    // Consistent color mapping for all diagrams
+    const PROCESS_COLORS = {
+      'Extraction': '#FFD500',           // Yellow
+      'Extracción': '#FFD500',
+      'Processing': '#FFC700',           // Orange
+      'Procesamiento': '#FFC700',
+      'Transportation': 'rgba(255,213,0,0.5)',  // Semi-yellow
+      'Transporte': 'rgba(255,213,0,0.5)',
+      'Installation': 'rgba(255,255,255,0.6)',  // White
+      'Instalación': 'rgba(255,255,255,0.6)',
+      'Operational': 'rgba(200,220,200,0.7)',   // Pale green
+      'Operacional': 'rgba(200,220,200,0.7)',
+      'Tree Offset': 'rgba(100,200,100,0.6)',   // Green
+      'Compensación': 'rgba(100,200,100,0.6)',
+      'Materials': '#FFD500',
+      'Materiales': '#FFD500',
+      'Transport': '#FFC700',
+      'Transporte (Categoría)': '#FFC700',
+      'Energy (50yr)': 'rgba(255,213,0,0.5)',
+      'Energía (50yr)': 'rgba(255,213,0,0.5)',
+      'Waste Reduction': 'rgba(255,255,255,0.6)',
+      'Reducción Residuos': 'rgba(255,255,255,0.6)',
+      'Embodied Carbon': '#FFD500',
+      'Carbono Encarnado': '#FFD500',
+      'Total Impact': '#FFC700',
+      'Impacto Total': '#FFC700',
+      'Breakdown': 'rgba(255,213,0,0.5)',
+      'Desglose': 'rgba(255,213,0,0.5)'
+    };
+
     // Process-based carbon breakdown by construction lifecycle (A1-A5 framework)
     // Extraction (A1), Processing (A2-A3), Transportation (A4), Installation/Assembly (A5)
     const MATERIAL_PROCESSES = {
@@ -853,6 +883,7 @@
         const totalCO2 = processValues[processName].toFixed(0);
         const barWidth = maxValue > 0 ? (processValues[processName] / maxValue) * 100 : 0;
         const pct = totalProcessCO2 > 0 ? ((processValues[processName] / totalProcessCO2) * 100).toFixed(0) : 0;
+        const barColor = PROCESS_COLORS[processName] || '#FFD500';
 
         const item = document.createElement('div');
         item.className = 'breakdown-item';
@@ -862,7 +893,7 @@
             <span>${pct}% (${totalCO2} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${barWidth}%"></div>
+            <div class="breakdown-fill" style="width: ${barWidth}%; background: ${barColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
@@ -873,6 +904,7 @@
         const operCO2 = processValues['Operational'].toFixed(0);
         const operPct = totalProcessCO2 > 0 ? ((processValues['Operational'] / totalProcessCO2) * 100).toFixed(0) : 0;
         const operBar = maxValue > 0 ? (processValues['Operational'] / maxValue) * 100 : 0;
+        const operColor = PROCESS_COLORS['Operational'] || 'rgba(200,220,200,0.7)';
 
         const item = document.createElement('div');
         item.className = 'breakdown-item';
@@ -882,7 +914,7 @@
             <span>${operPct}% (${operCO2} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${operBar}%"></div>
+            <div class="breakdown-fill" style="width: ${operBar}%; background: ${operColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
@@ -893,6 +925,7 @@
         const treeCO2 = processValues['Tree Offset'].toFixed(0);
         const treePct = totalProcessCO2 > 0 ? ((processValues['Tree Offset'] / totalProcessCO2) * 100).toFixed(0) : 0;
         const treeBar = maxValue > 0 ? (processValues['Tree Offset'] / maxValue) * 100 : 0;
+        const treeColor = PROCESS_COLORS['Tree Offset'] || 'rgba(100,200,100,0.6)';
 
         const item = document.createElement('div');
         item.className = 'breakdown-item';
@@ -902,7 +935,7 @@
             <span>−${treePct}% (−${treeCO2} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${treeBar}%; background: linear-gradient(90deg, rgba(100, 200, 100, 0.8), rgba(100, 200, 100, 0.4));"></div>
+            <div class="breakdown-fill" style="width: ${treeBar}%; background: ${treeColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
@@ -986,7 +1019,7 @@
           labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
           labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensación');
 
-          colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(200,220,200,0.7)', 'rgba(100,200,100,0.6)'];
+          colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
         }
       } else if (currentPieMode === 'impact') {
         // Total embodied + operational impact
@@ -1000,7 +1033,7 @@
           operational,
           Math.abs(trees * CO2_FACTORS.treeOffset * 30)
         ];
-        colors = ['#FFD500', '#FFC700', 'rgba(255,255,255,0.6)'];
+        colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
       } else if (currentPieMode === 'breakdown') {
         // Original 5-category breakdown
         labels = [
@@ -1008,7 +1041,7 @@
           currentLang === 'en' ? 'Transport' : 'Transporte',
           currentLang === 'en' ? 'Energy (50yr)' : 'Energía (50yr)',
           currentLang === 'en' ? 'Waste Reduction' : 'Reducción Residuos',
-          currentLang === 'en' ? 'Tree Offset' : 'Compensación Árboles'
+          currentLang === 'en' ? 'Tree Offset' : 'Compensação Árboles'
         ];
         data = [
           Math.max(0, embodied - transport - waste),
@@ -1017,7 +1050,7 @@
           Math.abs(waste),
           Math.abs(trees * CO2_FACTORS.treeOffset * 30)
         ];
-        colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(255,255,255,0.2)'];
+        colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
       }
 
       const borderColor = 'rgba(255, 213, 0, 0.2)';
@@ -1110,8 +1143,8 @@
         });
       }
 
-      // Colors for all 6 categories (extraction, processing, transport, installation, operational, tree offset)
-      const colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(200,220,200,0.7)', 'rgba(100,200,100,0.6)'];
+      // Use consistent color map for all labels
+      const colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
       const borderColor = 'rgba(255, 213, 0, 0.2)';
 
       // Update Density Histogram Chart
