@@ -430,14 +430,42 @@
       <div class="calculator-layout">
         <!-- LEFT PANEL: INPUTS -->
         <div class="inputs-panel">
-          <!-- 1. Location Latitude -->
+          <!-- 1. Location Selection -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="1. Location Latitude" data-es="1. Latitud de Ubicación">
-              1. Location Latitude
+            <div class="calculator-label" data-en="1. Select Location" data-es="1. Seleccionar Ubicación">
+              1. Select Location
             </div>
-            <input type="range" min="-60" max="60" value="2.9" step="0.1" class="range-slider" id="latitudeSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="latitudeValue">2.9</span>° (Cuenca, Ecuador)
+            <div style="margin-bottom: 0.5rem;">
+              <select id="locationSelect" class="form-select" style="background: rgba(0, 0, 0, 0.3); border: 2px solid var(--brutalist-yellow); color: var(--brutalist-white);" onchange="updateLocation()">
+                <optgroup label="Ecuador">
+                  <option value="2.9" data-location="Cuenca, Ecuador">Cuenca (2.9°)</option>
+                  <option value="-0.2" data-location="Quito (0.2°)">Quito (-0.2°)</option>
+                  <option value="-2.2" data-location="Guayaquil">Guayaquil (-2.2°)</option>
+                  <option value="-4.0" data-location="Loja">Loja (-4.0°)</option>
+                </optgroup>
+                <optgroup label="Europe">
+                  <option value="40.4" data-location="Madrid, Spain">Madrid, Spain (40.4°)</option>
+                  <option value="48.9" data-location="Paris, France">Paris, France (48.9°)</option>
+                  <option value="52.5" data-location="Berlin, Germany">Berlin, Germany (52.5°)</option>
+                  <option value="41.9" data-location="Milan, Italy">Milan, Italy (41.9°)</option>
+                  <option value="51.5" data-location="London, UK">London, UK (51.5°)</option>
+                  <option value="37.8" data-location="Athens, Greece">Athens, Greece (37.8°)</option>
+                  <option value="43.7" data-location="Barcelona, Spain">Barcelona, Spain (43.7°)</option>
+                  <option value="59.3" data-location="Stockholm, Sweden">Stockholm, Sweden (59.3°)</option>
+                </optgroup>
+                <optgroup label="Custom">
+                  <option value="custom" data-location="Custom Latitude">Custom Latitude...</option>
+                </optgroup>
+              </select>
+            </div>
+            <div id="customLatitudeSection" style="display: none;">
+              <input type="range" min="-60" max="60" value="2.9" step="0.1" class="range-slider" id="latitudeSlider" oninput="updateDisplay()">
+              <div class="range-value text-center">
+                <span id="latitudeValue">2.9</span>°
+              </div>
+            </div>
+            <div id="selectedLocationDisplay" class="range-value text-center" style="color: rgba(255, 213, 0, 0.8); margin-top: 0.5rem;">
+              Cuenca, Ecuador
             </div>
           </div>
 
@@ -633,6 +661,30 @@
       return Math.cos((orientation * Math.PI) / 180) * 0.9 + 0.1;
     }
 
+    function updateLocation() {
+      const select = document.getElementById('locationSelect');
+      const selectedOption = select.options[select.selectedIndex];
+      const latitude = parseFloat(selectedOption.value);
+      const customSection = document.getElementById('customLatitudeSection');
+      const displaySection = document.getElementById('selectedLocationDisplay');
+
+      if (selectedOption.value === 'custom') {
+        customSection.style.display = 'block';
+        displaySection.style.display = 'none';
+        solarState.location = 'Custom Location';
+      } else {
+        customSection.style.display = 'none';
+        displaySection.style.display = 'block';
+        solarState.location = selectedOption.dataset.location || 'Custom Location';
+        solarState.latitude = latitude;
+        document.getElementById('latitudeValue').textContent = Math.abs(latitude).toFixed(1);
+        displaySection.textContent = solarState.location;
+      }
+
+      updateDisplay();
+      calculateProduction();
+    }
+
     function selectOption(element, category) {
       const siblings = element.parentElement.querySelectorAll('.option-card');
       siblings.forEach(card => card.classList.remove('selected'));
@@ -660,7 +712,11 @@
       solarState.lossFactors = lossFactor;
       solarState.electricityPrice = price;
 
-      document.getElementById('latitudeValue').textContent = latitude.toFixed(1);
+      if (document.getElementById('locationSelect').value !== 'custom') {
+        // Don't update latitude display if using preset location
+      } else {
+        document.getElementById('latitudeValue').textContent = latitude.toFixed(1);
+      }
       document.getElementById('roofAreaValue').textContent = roofArea;
       document.getElementById('orientationValue').textContent = orientation;
       document.getElementById('lossFactorValue').textContent = lossFactor;
@@ -668,7 +724,7 @@
 
       document.getElementById('summaryArea').textContent = roofArea + ' m²';
       document.getElementById('summaryPanel').textContent = solarState.panelType;
-      document.getElementById('summaryLocation').textContent = solarState.location + ' (' + latitude.toFixed(1) + '°)';
+      document.getElementById('summaryLocation').textContent = solarState.location;
 
       calculateProduction();
     }
