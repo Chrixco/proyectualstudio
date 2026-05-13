@@ -230,16 +230,20 @@
     }
 
     .chart-controls {
-      display: flex;
-      gap: 0.5rem;
+      display: inline-flex;
+      gap: 0;
       margin-bottom: 1rem;
-      flex-wrap: wrap;
+      background: rgba(255, 213, 0, 0.05);
+      border: 2px solid var(--brutalist-yellow);
+      border-radius: 50px;
+      padding: 0.3rem;
+      backdrop-filter: blur(5px);
     }
 
     .chart-btn {
-      padding: 0.5rem 1rem;
-      background: rgba(255, 213, 0, 0.1);
-      border: 2px solid var(--brutalist-yellow);
+      padding: 0.5rem 1.2rem;
+      background: transparent;
+      border: none;
       color: var(--brutalist-yellow);
       font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
@@ -247,20 +251,21 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
-      border-radius: var(--panel-border-radius);
-      transition: all 0.2s ease;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
     }
 
     .chart-btn:hover {
-      background: rgba(255, 213, 0, 0.2);
-      transform: translate(-1px, -1px);
-      box-shadow: 2px 2px 0px var(--brutalist-yellow);
+      background: rgba(255, 213, 0, 0.1);
+      transform: translateY(-1px);
     }
 
     .chart-btn.active {
       background: var(--brutalist-yellow);
       color: var(--brutalist-black);
-      box-shadow: 3px 3px 0px var(--brutalist-yellow);
+      box-shadow: 0 2px 8px rgba(255, 213, 0, 0.3);
+      font-weight: 900;
     }
 
     .chart-wrapper {
@@ -601,6 +606,7 @@
           <div class="charts-container">
             <!-- Pie Chart Section -->
             <div>
+              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</div>
               <div class="chart-controls">
                 <button class="chart-btn active" data-pie-mode="lifecycle" data-en="Lifecycle" data-es="Ciclo de Vida">Lifecycle</button>
                 <button class="chart-btn" data-pie-mode="impact" data-en="Total Impact" data-es="Impacto Total">Total Impact</button>
@@ -613,6 +619,7 @@
 
             <!-- Density Histogram Section -->
             <div>
+              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Data Representation" data-es="Representación de Datos">Data Representation</div>
               <div class="chart-controls">
                 <button class="chart-btn active" data-histogram-mode="absolute" data-en="Absolute" data-es="Absoluto">Absolute</button>
                 <button class="chart-btn" data-histogram-mode="percentage" data-en="Percentage" data-es="Porcentaje">Percentage</button>
