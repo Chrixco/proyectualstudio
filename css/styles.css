@@ -590,6 +590,7 @@ h4 {
 .cta-container .btn[href*="calculator"]:hover {
   transform: translate(-3px, -3px);
   box-shadow: 9px 9px 0px var(--brutalist-yellow) !important;
+  color: var(--brutalist-white) !important;
 }
 
 .cta-container .btn[href*="calculator"]:active {
