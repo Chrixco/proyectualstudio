@@ -64,12 +64,10 @@
       backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
-      padding: 2rem;
-      position: sticky;
-      top: 100px;
+      padding: 1.5rem;
+      position: relative;
       height: fit-content;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
+      overflow: visible;
       border-radius: var(--panel-border-radius);
     }
 
@@ -192,17 +190,18 @@
     .selection-summary {
       background: var(--glass-bg);
       border: 3px solid var(--brutalist-yellow);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
       border-radius: var(--panel-border-radius);
     }
 
     .summary-item {
       display: flex;
       justify-content: space-between;
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
+      padding-bottom: 0.7rem;
+      margin-bottom: 0.7rem;
       border-bottom: 2px solid rgba(255, 213, 0, 0.3);
+      font-size: 0.95rem;
     }
 
     .summary-item:last-child {
@@ -227,7 +226,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
 
     .chart-controls {
@@ -266,17 +265,17 @@
 
     .chart-wrapper {
       position: relative;
-      height: 300px;
+      height: 250px;
       border: 2px solid rgba(255, 213, 0, 0.2);
       border-radius: var(--panel-border-radius);
-      padding: 1rem;
+      padding: 0.75rem;
       background: rgba(0, 0, 0, 0.3);
     }
 
     .total-container {
       background: var(--brutalist-yellow);
       color: var(--brutalist-black);
-      padding: 2rem;
+      padding: 1.5rem;
       border: 4px solid var(--brutalist-black);
       box-shadow: 8px 8px 0px var(--brutalist-black);
       text-align: center;
@@ -284,41 +283,42 @@
     }
 
     .total-amount {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       word-break: break-word;
     }
 
     .total-label {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: bold;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
     .equivalence {
-      font-size: 0.95rem;
-      margin-top: 1rem;
-      padding: 1rem;
+      font-size: 0.8rem;
+      margin-top: 0.7rem;
+      padding: 0.8rem;
       background: rgba(0, 0, 0, 0.2);
       border-radius: var(--panel-border-radius);
       font-style: italic;
     }
 
     .disclaimer {
-      font-size: 0.9rem;
-      margin-top: 1rem;
+      font-size: 0.75rem;
+      margin-top: 0.7rem;
       opacity: 0.8;
+      line-height: 1.3;
     }
 
     .breakdown-item {
-      margin-bottom: 1rem;
+      margin-bottom: 0.7rem;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.3rem;
     }
 
     .breakdown-item:last-child {
@@ -328,7 +328,7 @@
     .breakdown-label {
       display: flex;
       justify-content: space-between;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--brutalist-white);
     }
@@ -349,16 +349,16 @@
     }
 
     .cta-final {
-      margin-top: 2rem;
-      padding: 1.5rem 3rem;
+      margin-top: 1rem;
+      padding: 1rem 2rem;
       background: var(--brutalist-yellow);
       color: var(--brutalist-black);
-      border: 4px solid var(--brutalist-black);
-      box-shadow: 6px 6px 0px var(--brutalist-black);
+      border: 3px solid var(--brutalist-black);
+      box-shadow: 4px 4px 0px var(--brutalist-black);
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 1.2rem;
+      letter-spacing: 1px;
+      font-size: 0.95rem;
       transition: all 0.3s ease;
       border-radius: var(--panel-border-radius);
       display: block;
@@ -412,260 +412,6 @@
       position: relative;
       z-index: 1;
     }
-
-    /* ==================== GAMIFICATION STYLES ==================== */
-
-    .gamification-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 213, 0, 0.1);
-      border: 2px solid var(--brutalist-yellow);
-      padding: 1rem;
-      border-radius: var(--panel-border-radius);
-      margin-bottom: 1.5rem;
-    }
-
-    .player-level {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .level-badge {
-      background: linear-gradient(135deg, #FFD500, #FFC700);
-      color: #000;
-      padding: 0.5rem 1rem;
-      border-radius: 50%;
-      font-weight: bold;
-      font-size: 1.2rem;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px rgba(255, 213, 0, 0.5);
-    }
-
-    .level-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .level-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      color: var(--brutalist-yellow);
-      letter-spacing: 1px;
-    }
-
-    .level-name {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: white;
-    }
-
-    .streak-counter {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255, 213, 0, 0.15);
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--panel-border-radius);
-      border: 2px solid var(--brutalist-yellow);
-    }
-
-    .streak-flame {
-      font-size: 1.5rem;
-      animation: flicker 1.5s ease-in-out infinite;
-    }
-
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    .grade-display {
-      font-size: 4rem;
-      font-weight: 900;
-      text-align: center;
-      margin: 1rem 0;
-      letter-spacing: 4px;
-      text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
-    }
-
-    .grade-A { color: #4CAF50; }
-    .grade-B { color: #8BC34A; }
-    .grade-C { color: #FFC107; }
-    .grade-D { color: #FF9800; }
-    .grade-F { color: #F44336; }
-
-    .grade-label {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--brutalist-yellow);
-      margin-bottom: 0.5rem;
-    }
-
-    .achievement-badges {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin: 1.5rem 0;
-    }
-
-    .achievement-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.75rem;
-      background: rgba(255, 213, 0, 0.1);
-      border: 2px solid rgba(255, 213, 0, 0.3);
-      border-radius: var(--panel-border-radius);
-      text-align: center;
-      font-size: 0.7rem;
-      transition: all 0.3s ease;
-      cursor: help;
-      position: relative;
-    }
-
-    .achievement-badge:hover {
-      background: rgba(255, 213, 0, 0.2);
-      border-color: var(--brutalist-yellow);
-      transform: translate(-2px, -2px);
-    }
-
-    .achievement-badge.earned {
-      background: rgba(255, 213, 0, 0.25);
-      border-color: var(--brutalist-yellow);
-      box-shadow: 0 0 15px rgba(255, 213, 0, 0.5);
-    }
-
-    .achievement-badge.locked {
-      opacity: 0.4;
-      filter: grayscale(100%);
-    }
-
-    .badge-icon {
-      font-size: 1.8rem;
-      line-height: 1;
-    }
-
-    .badge-name {
-      font-weight: bold;
-      color: white;
-    }
-
-    .share-section {
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 2px solid rgba(255, 213, 0, 0.2);
-    }
-
-    .share-btn {
-      width: 100%;
-      padding: 1rem;
-      background: rgba(255, 213, 0, 0.15);
-      border: 2px solid var(--brutalist-yellow);
-      color: var(--brutalist-yellow);
-      font-family: 'Space Mono', monospace;
-      font-weight: bold;
-      text-transform: uppercase;
-      border-radius: var(--panel-border-radius);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-bottom: 0.5rem;
-    }
-
-    .share-btn:hover {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px var(--brutalist-yellow);
-    }
-
-    .tip-box {
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(139, 195, 74, 0.15));
-      border: 2px solid rgba(76, 175, 80, 0.3);
-      padding: 1rem;
-      border-radius: var(--panel-border-radius);
-      margin: 1rem 0;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .tip-title {
-      font-weight: bold;
-      color: #8BC34A;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .celebration {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 10000;
-    }
-
-    .celebration-text {
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--brutalist-yellow);
-      text-shadow: 0 0 20px rgba(255, 213, 0, 0.8);
-      animation: celebrateFloat 1.5s ease-out forwards;
-    }
-
-    @keyframes celebrateFloat {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(0, -100px) scale(1.5);
-      }
-    }
-
-    @keyframes confetti {
-      0% {
-        opacity: 1;
-        transform: translateY(0) rotateZ(0deg);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(100px) rotateZ(360deg);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .gamification-header {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .achievement-badges {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .achievement-badges {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .level-badge {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-      }
-    }
   </style>
 </head>
 <body>
@@ -702,31 +448,12 @@
   </nav>
 
   <main class="container mt-5 px-3 px-md-4 py-5">
-    <!-- Quest Narrative -->
-    <div style="text-align: center; margin-bottom: 2rem;">
-      <h1 class="fw-bold text-white" data-en="🏗️ Architects as Climate Heroes" data-es="🏗️ Arquitectos como Héroes del Clima">
-        🏗️ Architects as Climate Heroes
-      </h1>
-      <p class="text-secondary" data-en="Design carbon-smart buildings, unlock achievements, save the planet." data-es="Diseña edificios con inteligencia de carbono, desbloquea logros, salva el planeta.">
-        Design carbon-smart buildings, unlock achievements, save the planet.
-      </p>
-    </div>
-
-    <!-- Gamification Header -->
-    <div class="gamification-header">
-      <div class="player-level">
-        <div class="level-badge" id="levelBadge">1</div>
-        <div class="level-info">
-          <div class="level-label" data-en="Your Level" data-es="Tu Nivel">Your Level</div>
-          <div class="level-name" id="levelName">Novice</div>
-        </div>
-      </div>
-      <div class="streak-counter" id="streakCounter" style="display: none;">
-        <span class="streak-flame">🔥</span>
-        <span id="streakDays">0</span>
-        <span data-en="day streak" data-es="día racha">day streak</span>
-      </div>
-    </div>
+    <h1 class="fw-bold text-center mb-2 text-white" data-en="Carbon Footprint Calculator" data-es="Calculadora de Huella de Carbono">
+      Carbon Footprint Calculator
+    </h1>
+    <p class="text-center text-secondary mb-5" data-en="Estimate the embodied and operational carbon of your architecture project" data-es="Estima la huella de carbono de tu proyecto de arquitectura">
+      Estimate the embodied and operational carbon of your architecture project
+    </p>
 
     <div class="calculator-wrapper">
       <div class="calculator-layout">
@@ -863,7 +590,7 @@
           </div>
 
           <!-- Construction Process Breakdown -->
-          <div id="materialBreakdown" style="background: var(--glass-bg); border: 3px solid var(--brutalist-yellow); padding: 1.5rem; margin-bottom: 2rem; border-radius: var(--panel-border-radius); display: none;">
+          <div id="materialBreakdown" style="background: var(--glass-bg); border: 3px solid var(--brutalist-yellow); padding: 1rem; margin-bottom: 1rem; border-radius: var(--panel-border-radius); display: none;">
             <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--brutalist-yellow); display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Construction Process" data-es="Proceso de Construcción">
               Construction Process
             </div>
@@ -897,20 +624,6 @@
             </div>
           </div>
 
-          <!-- Grade Display (Gamification) -->
-          <div class="grade-label" data-en="Project Rating" data-es="Calificación del Proyecto">Project Rating</div>
-          <div class="grade-display grade-A" id="gradeDisplay">A</div>
-
-          <!-- Achievement Badges -->
-          <div style="margin: 1.5rem 0;">
-            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--brutalist-yellow); border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Achievements" data-es="Logros">
-              Achievements
-            </div>
-            <div class="achievement-badges" id="achievementBadges">
-              <!-- Populated by JavaScript -->
-            </div>
-          </div>
-
           <!-- Total Container -->
           <div class="total-container">
             <div class="total-amount" id="totalCO2">0</div>
@@ -920,27 +633,9 @@
             <div class="equivalence" id="equivalence">
               ≈ 50 tree-years to offset
             </div>
-
-            <!-- Did You Know Tip -->
-            <div class="tip-box">
-              <div class="tip-title">💡 <span data-en="Did You Know?" data-es="¿Sabías que?">Did You Know?</span></div>
-              <div id="didYouKnow">Cement production accounts for 88% of concrete's carbon footprint.</div>
-            </div>
-
             <p class="disclaimer" data-en="This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources. Contact us for a detailed audit." data-es="Esta es una estimación aproximada. La huella de carbono final depende de materiales específicos, métodos de transporte y fuentes de energía. Contáctanos para una auditoría detallada.">
               This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources.
             </p>
-
-            <!-- Share Section -->
-            <div class="share-section">
-              <button class="share-btn" id="shareBtn" data-en="📤 Share This Design" data-es="📤 Compartir Este Diseño">
-                📤 Share This Design
-              </button>
-              <button class="share-btn" id="saveBtn" data-en="💾 Save Project" data-es="💾 Guardar Proyecto">
-                💾 Save Project
-              </button>
-            </div>
-
             <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
               Support Tree Planting
             </a>
@@ -993,274 +688,6 @@
     let pieChart, densityChart;
     let currentPieMode = 'lifecycle';
     let currentHistogramMode = 'absolute';
-
-    // Gamification State
-    let playerStats = {
-      level: parseInt(localStorage.getItem('playerLevel')) || 1,
-      xp: parseInt(localStorage.getItem('playerXP')) || 0,
-      projectsCreated: parseInt(localStorage.getItem('projectsCreated')) || 0,
-      streak: parseInt(localStorage.getItem('streak')) || 0,
-      lastPlayDate: localStorage.getItem('lastPlayDate') || null,
-      badges: JSON.parse(localStorage.getItem('badges')) || {},
-      savedProjects: JSON.parse(localStorage.getItem('savedProjects')) || []
-    };
-
-    // Achievement Definitions
-    const ACHIEVEMENTS = {
-      'first-design': {
-        id: 'first-design',
-        name: 'First Design',
-        icon: '🎯',
-        description: 'Create your first carbon project',
-        condition: () => playerStats.projectsCreated >= 1
-      },
-      'green-thumb': {
-        id: 'green-thumb',
-        name: 'Green Thumb',
-        icon: '🌱',
-        description: 'Reduce material carbon by 10%',
-        condition: () => false // Dynamic check
-      },
-      'efficiency-expert': {
-        id: 'efficiency-expert',
-        name: 'Efficiency Expert',
-        icon: '⭐',
-        description: 'Achieve A-rated carbon efficiency',
-        condition: () => false // Dynamic check
-      },
-      'tree-planter': {
-        id: 'tree-planter',
-        name: 'Tree Planter',
-        icon: '🌳',
-        description: 'Include tree offset in project',
-        condition: () => carbonState.trees >= 1
-      },
-      'circular-thinker': {
-        id: 'circular-thinker',
-        name: 'Circular Thinker',
-        icon: '🔄',
-        description: 'Maximize waste recycling (90%+)',
-        condition: () => carbonState.waste >= 90
-      },
-      'builder-pride': {
-        id: 'builder-pride',
-        name: "Builder's Pride",
-        icon: '🏗️',
-        description: 'Complete 5 projects',
-        condition: () => playerStats.projectsCreated >= 5
-      },
-      'streak-master': {
-        id: 'streak-master',
-        name: 'Streak Master',
-        icon: '🔥',
-        description: 'Maintain 7-day streak',
-        condition: () => playerStats.streak >= 7
-      },
-      'data-detective': {
-        id: 'data-detective',
-        name: 'Data Detective',
-        icon: '📊',
-        description: 'Switch between 3+ analysis modes',
-        condition: () => false // Tracked during session
-      }
-    };
-
-    // Did You Know Facts
-    const DID_YOU_KNOW = [
-      { en: '🔨 Cement production accounts for 88% of concrete\'s carbon footprint. Using low-carbon cement can cut embodied carbon by 40%!', es: '🔨 La producción de cemento representa el 88% de la huella de carbono del hormigón. Usar cemento bajo en carbono puede reducir el carbono incorporado en un 40%.' },
-      { en: '🚚 Timber\'s carbon footprint depends heavily on transportation distance. Local sourcing can save 20% of embodied carbon.', es: '🚚 La huella de carbono de la madera depende mucho de la distancia de transporte. El abastecimiento local puede ahorrar el 20% del carbono incorporado.' },
-      { en: '⚙️ Steel smelting methods vary: EAF (scrap-based) emits 65% less than BF-BOF traditional furnaces.', es: '⚙️ Los métodos de fundición de acero varían: EAF (basado en chatarra) emite 65% menos que los hornos tradicionales BF-BOF.' },
-      { en: '🏭 Brick firing is 70% of its carbon footprint. Alternative kiln fuels (biomass, waste heat) can cut this in half.', es: '🏭 El quemado de ladrillos es el 70% de su huella de carbono. Los combustibles de horno alternativos pueden reducir esto a la mitad.' },
-      { en: '🌳 One mature tree absorbs ~22 kg of CO₂ per year on average.', es: '🌳 Un árbol maduro absorbe aproximadamente 22 kg de CO₂ por año en promedio.' },
-      { en: '♻️ Recycled steel reduces carbon emissions by 65% compared to virgin steel production.', es: '♻️ El acero reciclado reduce las emisiones de carbono en un 65% en comparación con la producción de acero virgen.' },
-      { en: '🌱 Timber sequesters carbon: mature wood stores 50% of its dry weight in carbon.', es: '🌱 La madera secuestra carbono: la madera madura almacena el 50% de su peso seco en carbono.' },
-      { en: '📦 A-rated design puts you in the top 15% of architecture projects.', es: '📦 Un diseño con calificación A lo coloca en el 15% superior de proyectos de arquitectura.' }
-    ];
-
-    function getRandomDidYouKnow() {
-      const fact = DID_YOU_KNOW[Math.floor(Math.random() * DID_YOU_KNOW.length)];
-      return currentLang === 'en' ? fact.en : fact.es;
-    }
-
-    function calculateGrade(totalCO2, area) {
-      if (!area) return 'C';
-      const co2PerM2 = totalCO2 / area;
-      if (co2PerM2 < 150) return 'A+';
-      if (co2PerM2 < 200) return 'A';
-      if (co2PerM2 < 300) return 'B';
-      if (co2PerM2 < 400) return 'C';
-      if (co2PerM2 < 500) return 'D';
-      return 'F';
-    }
-
-    function getGradeClass(grade) {
-      if (grade.startsWith('A')) return 'grade-A';
-      if (grade === 'B') return 'grade-B';
-      if (grade === 'C') return 'grade-C';
-      if (grade === 'D') return 'grade-D';
-      return 'grade-F';
-    }
-
-    function celebrateAchievement(badgeName) {
-      const celebration = document.createElement('div');
-      celebration.className = 'celebration';
-      celebration.innerHTML = `<div class="celebration-text">🎉 ${badgeName}!</div>`;
-      document.body.appendChild(celebration);
-      setTimeout(() => celebration.remove(), 1500);
-    }
-
-    function updateAchievements(totalCO2, area) {
-      const grade = calculateGrade(totalCO2, area);
-      const co2PerM2 = totalCO2 / area;
-
-      // Check conditions
-      if (carbonState.waste >= 90 && !playerStats.badges['circular-thinker']) {
-        playerStats.badges['circular-thinker'] = true;
-        celebrateAchievement('Circular Thinker');
-        gainXP(50);
-      }
-
-      if (grade === 'A' || grade === 'A+') {
-        if (!playerStats.badges['efficiency-expert']) {
-          playerStats.badges['efficiency-expert'] = true;
-          celebrateAchievement('Efficiency Expert');
-          gainXP(100);
-        }
-      }
-
-      if (carbonState.trees >= 1 && !playerStats.badges['tree-planter']) {
-        playerStats.badges['tree-planter'] = true;
-        celebrateAchievement('Tree Planter');
-        gainXP(30);
-      }
-
-      if (!playerStats.badges['first-design']) {
-        playerStats.badges['first-design'] = true;
-        celebrateAchievement('First Design');
-        gainXP(20);
-      }
-
-      displayAchievements();
-      saveTolocalStorage();
-    }
-
-    function displayAchievements() {
-      const container = document.getElementById('achievementBadges');
-      container.innerHTML = '';
-
-      Object.values(ACHIEVEMENTS).forEach(badge => {
-        const earned = playerStats.badges[badge.id] ? 'earned' : 'locked';
-        const badgeEl = document.createElement('div');
-        badgeEl.className = `achievement-badge ${earned}`;
-        badgeEl.title = `${badge.name}: ${badge.description}`;
-        badgeEl.innerHTML = `
-          <div class="badge-icon">${badge.icon}</div>
-          <div class="badge-name">${badge.name}</div>
-        `;
-        container.appendChild(badgeEl);
-      });
-    }
-
-    function gainXP(amount) {
-      playerStats.xp += amount;
-      const nextLevelXP = playerStats.level * 200;
-      if (playerStats.xp >= nextLevelXP) {
-        playerStats.level++;
-        playerStats.xp = 0;
-        celebrateAchievement(`Level ${playerStats.level}!`);
-      }
-      updateLevelDisplay();
-      saveTolocalStorage();
-    }
-
-    function updateLevelDisplay() {
-      document.getElementById('levelBadge').textContent = playerStats.level;
-
-      const levelNames = ['Novice', 'Apprentice', 'Builder', 'Expert', 'Master', 'Legend'];
-      const levelName = levelNames[Math.min(playerStats.level - 1, levelNames.length - 1)];
-      document.getElementById('levelName').textContent = levelName;
-    }
-
-    function updateStreak() {
-      const today = new Date().toDateString();
-      const lastPlay = playerStats.lastPlayDate;
-
-      if (lastPlay === today) return; // Already played today
-
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-      if (lastPlay === yesterday) {
-        playerStats.streak++;
-        gainXP(Math.min(playerStats.streak * 5, 50));
-      } else {
-        playerStats.streak = 1;
-      }
-
-      playerStats.lastPlayDate = today;
-
-      if (playerStats.streak > 1) {
-        document.getElementById('streakCounter').style.display = 'flex';
-        document.getElementById('streakDays').textContent = playerStats.streak;
-      }
-
-      if (playerStats.streak === 7 && !playerStats.badges['streak-master']) {
-        playerStats.badges['streak-master'] = true;
-        celebrateAchievement('Streak Master');
-        gainXP(100);
-      }
-
-      saveTolocalStorage();
-    }
-
-    function saveTolocalStorage() {
-      localStorage.setItem('playerLevel', playerStats.level);
-      localStorage.setItem('playerXP', playerStats.xp);
-      localStorage.setItem('projectsCreated', playerStats.projectsCreated);
-      localStorage.setItem('streak', playerStats.streak);
-      localStorage.setItem('lastPlayDate', playerStats.lastPlayDate);
-      localStorage.setItem('badges', JSON.stringify(playerStats.badges));
-      localStorage.setItem('savedProjects', JSON.stringify(playerStats.savedProjects));
-    }
-
-    function shareProject() {
-      const grade = calculateGrade(parseFloat(document.getElementById('totalCO2').textContent.replace(/[^0-9.]/g, '')) * 1000, carbonState.area);
-      const shareText = `🏗️ My Carbon-Smart Building
-━━━━━━━━━━━━━━━━━━
-Grade: ${grade} | Material: ${carbonState.material}
-Trees Planted: ${carbonState.trees} 🌳
-━━━━━━━━━━━━━━━━━━
-I designed this with @ProyectualStudio's Carbon Calculator!
-Join the Green Building Quest →`;
-
-      if (navigator.share) {
-        navigator.share({ title: 'My Carbon-Smart Design', text: shareText });
-      } else {
-        const twitterLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-        window.open(twitterLink, '_blank');
-      }
-    }
-
-    function saveProject() {
-      const project = {
-        name: `${carbonState.material} Building - ${new Date().toLocaleDateString()}`,
-        material: carbonState.material,
-        area: carbonState.area,
-        grade: calculateGrade(parseFloat(document.getElementById('totalCO2').textContent.replace(/[^0-9.]/g, '')) * 1000, carbonState.area),
-        co2: document.getElementById('totalCO2').textContent,
-        timestamp: new Date().getTime()
-      };
-
-      playerStats.savedProjects.push(project);
-      playerStats.projectsCreated++;
-
-      if (playerStats.projectsCreated === 5 && !playerStats.badges['builder-pride']) {
-        playerStats.badges['builder-pride'] = true;
-        celebrateAchievement("Builder's Pride");
-        gainXP(75);
-      }
-
-      celebrateAchievement('Project Saved!');
-      saveTolocalStorage();
-    }
 
     const carbonState = {
       projectType: 'Residential',
@@ -1423,17 +850,6 @@ Join the Green Building Quest →`;
 
       document.getElementById('totalCO2').textContent = totalTonnes + ' t CO₂e';
 
-      // Gamification: Update grade and achievements
-      const grade = calculateGrade(totalCO2, carbonState.area);
-      const gradeDisplay = document.getElementById('gradeDisplay');
-      gradeDisplay.textContent = grade;
-      gradeDisplay.className = 'grade-display ' + getGradeClass(grade);
-
-      updateAchievements(totalCO2, carbonState.area);
-
-      // Update Did You Know fact
-      document.getElementById('didYouKnow').textContent = getRandomDidYouKnow();
-
       const treeYears = Math.abs(offsetCO2 / 30);
       const equivalentDays = totalCO2 / 5; // Average car ~5kg CO2/day
       document.getElementById('equivalence').innerHTML = `
@@ -1560,23 +976,16 @@ Join the Green Building Quest →`;
         return proc ? (proc.value * (carbonState.area || 1)) : 0;
       });
 
-      let yAxisLabel = currentLang === 'en' ? 'kgCO₂e' : 'kgCO₂e';
-      let datasetLabel = currentLang === 'en' ? 'CO₂e Distribution' : 'Distribución CO₂e';
-
       // Transform data based on histogram mode
       if (currentHistogramMode === 'percentage') {
         const total = data.reduce((a, b) => a + b, 0);
         data = data.map(v => (total > 0 ? (v / total) * 100 : 0));
-        yAxisLabel = currentLang === 'en' ? 'Percentage (%)' : 'Porcentaje (%)';
-        datasetLabel = currentLang === 'en' ? 'CO₂e % Share' : 'Cuota CO₂e (%)';
       } else if (currentHistogramMode === 'cumulative') {
         let cumulative = 0;
         data = data.map(v => {
           cumulative += v;
           return cumulative;
         });
-        yAxisLabel = currentLang === 'en' ? 'Cumulative kgCO₂e' : 'Acumulativo kgCO₂e';
-        datasetLabel = currentLang === 'en' ? 'Cumulative CO₂e' : 'CO₂e Acumulativo';
       }
 
       const colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
@@ -1587,12 +996,9 @@ Join the Green Building Quest →`;
         densityChart.data.labels = labels;
         densityChart.data.datasets[0].data = data;
         densityChart.data.datasets[0].backgroundColor = colors;
-        densityChart.data.datasets[0].label = datasetLabel;
         // Update density curve (smoothed distribution)
         const densityValues = calculateDensity(data);
         densityChart.data.datasets[1].data = densityValues;
-        // Update Y-axis title
-        densityChart.options.scales.y.title.text = yAxisLabel;
         densityChart.update();
       } else {
         const densityCtx = document.getElementById('densityHistogram').getContext('2d');
@@ -1604,7 +1010,7 @@ Join the Green Building Quest →`;
             labels: labels,
             datasets: [
               {
-                label: datasetLabel,
+                label: currentLang === 'en' ? 'CO₂e Distribution' : 'Distribución CO₂e',
                 data: data,
                 backgroundColor: colors,
                 borderColor: '#FFD500',
@@ -1639,7 +1045,7 @@ Join the Green Building Quest →`;
                 position: 'left',
                 ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { family: "'Space Mono', monospace", size: 10 } },
                 grid: { color: borderColor },
-                title: { display: true, text: yAxisLabel, color: 'rgba(255, 255, 255, 0.8)' }
+                title: { display: true, text: 'kgCO₂e', color: 'rgba(255, 255, 255, 0.8)' }
               },
               y1: {
                 type: 'linear',
@@ -1661,23 +1067,7 @@ Join the Green Building Quest →`;
                 titleColor: '#FFD500',
                 bodyColor: '#FFFFFF',
                 borderColor: '#FFD500',
-                borderWidth: 1,
-                callbacks: {
-                  label: function(context) {
-                    let label = context.dataset.label || '';
-                    if (label) label += ': ';
-                    if (context.parsed.y !== null) {
-                      if (currentHistogramMode === 'percentage') {
-                        label += context.parsed.y.toFixed(1) + '%';
-                      } else if (currentHistogramMode === 'cumulative') {
-                        label += Math.round(context.parsed.y) + ' kgCO₂e';
-                      } else {
-                        label += Math.round(context.parsed.y) + ' kgCO₂e';
-                      }
-                    }
-                    return label;
-                  }
-                }
+                borderWidth: 1
               }
             }
           }
@@ -1687,22 +1077,18 @@ Join the Green Building Quest →`;
 
     // Calculate density curve values for smooth distribution visualization
     function calculateDensity(data) {
-      if (!data || data.length === 0) return data;
-
       const n = data.length;
-      const mean = data.reduce((a, b) => a + b, 0) / n;
-      const variance = data.reduce((sq, val) => sq + Math.pow(val - mean, 2), 0) / n;
-      const sigma = Math.sqrt(variance) || 1; // Prevent division by zero
+      const mean = data.reduce((a, b) => a + b) / n;
+      const variance = data.reduce((sq, n) => sq + Math.pow(n - mean, 2)) / n;
+      const sigma = Math.sqrt(variance);
 
       // Normal distribution (bell curve) calculation
-      const maxValue = Math.max(...data);
-      if (maxValue === 0) return data.map(() => 0);
-
       return data.map((_, i) => {
         const x = data[i];
         const gaussian = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mean) / sigma, 2));
-        return gaussian * (maxValue * 0.8); // Scale to fit chart
+        return gaussian * (Math.max(...data) * 0.8); // Scale to fit chart
       });
+    }
     }
 
     // Language support
@@ -1718,12 +1104,6 @@ Join the Green Building Quest →`;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Gamification initialization
-      updateStreak();
-      updateLevelDisplay();
-      displayAchievements();
-      document.getElementById('didYouKnow').textContent = getRandomDidYouKnow();
-
       updateDisplay();
       updateLanguage(currentLang);
 
@@ -1746,10 +1126,6 @@ Join the Green Building Quest →`;
           calculateTotal();
         });
       });
-
-      // Gamification buttons
-      document.getElementById('shareBtn').addEventListener('click', shareProject);
-      document.getElementById('saveBtn').addEventListener('click', saveProject);
 
       const langToggle = document.getElementById('lang-toggle');
       if (langToggle) {
