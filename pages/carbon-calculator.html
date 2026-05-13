@@ -835,9 +835,17 @@
         processValues[p] = Math.max(0, value);
       });
 
+      // Add operational energy contribution (normalized to 5-year period for visibility)
+      processValues['Operational'] = (carbonState.area * carbonState.energyCO2 * 5); // 5-year window
+
+      // Add tree offset (negative value shown separately)
+      const treeOffset = carbonState.trees * CO2_FACTORS.treeOffset;
+      processValues['Tree Offset'] = Math.abs(treeOffset);
+
       const maxValue = Math.max(...Object.values(processValues));
       const totalProcessCO2 = Object.values(processValues).reduce((a, b) => a + b, 0);
 
+      // Display A1-A5 lifecycle stages
       processOrder.forEach(processName => {
         const data = processes[processName];
         if (!data) return;
@@ -859,6 +867,46 @@
         `;
         itemsEl.appendChild(item);
       });
+
+      // Display operational energy (5-year window)
+      if (processValues['Operational'] > 0) {
+        const operCO2 = processValues['Operational'].toFixed(0);
+        const operPct = totalProcessCO2 > 0 ? ((processValues['Operational'] / totalProcessCO2) * 100).toFixed(0) : 0;
+        const operBar = maxValue > 0 ? (processValues['Operational'] / maxValue) * 100 : 0;
+
+        const item = document.createElement('div');
+        item.className = 'breakdown-item';
+        item.innerHTML = `
+          <div class="breakdown-label">
+            <span><strong>Operational</strong> — Energy use (5yr window)</span>
+            <span>${operPct}% (${operCO2} kgCO₂e)</span>
+          </div>
+          <div class="breakdown-bar">
+            <div class="breakdown-fill" style="width: ${operBar}%"></div>
+          </div>
+        `;
+        itemsEl.appendChild(item);
+      }
+
+      // Display tree offset
+      if (processValues['Tree Offset'] > 0) {
+        const treeCO2 = processValues['Tree Offset'].toFixed(0);
+        const treePct = totalProcessCO2 > 0 ? ((processValues['Tree Offset'] / totalProcessCO2) * 100).toFixed(0) : 0;
+        const treeBar = maxValue > 0 ? (processValues['Tree Offset'] / maxValue) * 100 : 0;
+
+        const item = document.createElement('div');
+        item.className = 'breakdown-item';
+        item.innerHTML = `
+          <div class="breakdown-label">
+            <span><strong>Tree Offset</strong> — Carbon sequestration</span>
+            <span>−${treePct}% (−${treeCO2} kgCO₂e)</span>
+          </div>
+          <div class="breakdown-bar">
+            <div class="breakdown-fill" style="width: ${treeBar}%; background: linear-gradient(90deg, rgba(100, 200, 100, 0.8), rgba(100, 200, 100, 0.4));"></div>
+          </div>
+        `;
+        itemsEl.appendChild(item);
+      }
     }
 
     function calculateTotal() {
