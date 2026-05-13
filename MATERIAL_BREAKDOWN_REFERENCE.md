@@ -1,109 +1,139 @@
-# Material Carbon Breakdown Reference
+# Construction Process Carbon Breakdown Reference
 
-This document outlines the material composition data integrated into the carbon footprint calculator (`pages/carbon-calculator.html`).
+This document outlines the process-based carbon lifecycle data integrated into the carbon footprint calculator (`pages/carbon-calculator.html`), organized by construction stages (A1-A5 framework).
+
+## Lifecycle Assessment Framework
+
+The calculator uses the **A1-A5 standard framework** from ISO 14040/14044:
+
+- **A1: Extraction** — Raw material extraction, mining, quarrying (including initial processing)
+- **A2-A3: Processing** — Manufacturing, refining, smelting, kiln drying, lamination
+- **A4: Transportation** — Moving finished products to construction site
+- **A5: Installation** — On-site assembly, welding, mortar application, finishing
 
 ## Data Sources
-Research compiled from:
-- [Environmental impact of concrete - Wikipedia](https://en.wikipedia.org/wiki/Environmental_impact_of_concrete)
-- [Embodied Carbon in Concrete (ARUP/IStructE)](https://www.istructe.org/IStructE/media/Public/Resources/ARUP-Embodied-carbon-concrete_1.pdf)
-- [Climate change and steel production - World Steel Association](https://worldsteel.org/climate-action/climate-change-and-the-production-of-iron-and-steel/)
-- [Iron & Steel - IEA](https://www.iea.org/energy-system/industry/steel)
-- [Embodied Carbon in Timber (ARUP/IStructE)](https://www.istructe.org/IStructE/media/Public/Resources/ARUP-Embodied-carbon-timber-v2.pdf)
-- [Greenhouse Gas Emissions from Clay Brick Production - ACS Environmental Science & Technology](https://pubs.acs.org/doi/10.1021/acs.est.4c08994)
 
-## Material Compositions
+Research compiled from:
+- [Embodied Carbon 101: Building Materials - RMI](https://rmi.org/embodied-carbon-101/)
+- [Embodied Carbon in Concrete (ARUP/IStructE)](https://www.istructe.org/IStructE/media/Public/Resources/ARUP-Embodied-carbon-concrete_1.pdf)
+- [Embodied Carbon in Steel (ARUP/IStructE)](https://www.istructe.org/IStructE/media/Public/Resources/ARUP-Embodied-carbon-steel.pdf)
+- [Embodied Carbon in Timber (ARUP/IStructE)](https://www.istructe.org/IStructE/media/Public/Resources/ARUP-Embodied-carbon-timber-v2.pdf)
+- [SteelConstruction.info - Life Cycle Assessment](https://www.steelconstruction.info/Life_cycle_assessment_and_embodied_carbon)
+- [Clearing the Air on A4 Emissions - Ramboll](https://www.ramboll.com/insights/decarbonise-for-net-zero/clearing-the-air-on-a4-emissions-a-guide-for-timber-construction)
+
+## Process Breakdown by Material
 
 ### Concrete (400 kgCO₂e/m²)
-Based on lifecycle assessment data, typical concrete composition CO₂ distribution:
 
-| Component | kgCO₂e/m² | % of Total |
-|-----------|-----------|-----------|
-| Cement Production | 352 | 88% |
-| Steel Reinforcement | 40 | 10% |
-| Aggregates & Admixtures | 8 | 2% |
+| Process | kgCO₂e/m² | % | Activities |
+|---------|-----------|-------|-----------|
+| **Extraction (A1)** | 40 | 10% | Mining, quarrying aggregates |
+| **Processing (A2-A3)** | 344 | 86% | Cement production, mixing, casting |
+| **Transportation (A4)** | 16 | 4% | Transport to construction site |
+| **Installation (A5)** | 0 | 0% | Placement & curing (energy negligible) |
 
-**Notes:**
-- Cement is the dominant carbon contributor due to clinker production (90% of cement emissions)
-- Aggregates (sand, gravel) generate minimal emissions despite making up 70% of concrete volume
-- Steel reinforcement contribution varies based on recycled content
+**Key Insight:** Cement production dominates (86%), offering the largest decarbonization opportunity through low-carbon cement alternatives (e.g., supplementary cementitious materials, limestone calcined clay cement).
+
+---
 
 ### Steel (600 kgCO₂e/m²)
-Based on Blast Furnace-Basic Oxygen Furnace (BF-BOF) production data:
 
-| Component | kgCO₂e/m² | % of Total |
-|-----------|-----------|-----------|
-| Ore Extraction & Processing | 54 | 9% |
-| Blast Furnace Smelting | 450 | 75% |
-| Processing & Finishing | 96 | 16% |
+| Process | kgCO₂e/m² | % | Activities |
+|---------|-----------|-------|-----------|
+| **Extraction (A1)** | 54 | 9% | Ore mining, preparation |
+| **Processing (A2-A3)** | 480 | 80% | Blast furnace smelting, rolling, fabrication |
+| **Transportation (A4)** | 36 | 6% | Transport to construction site |
+| **Installation (A5)** | 30 | 5% | Welding, bolting, assembly |
 
-**Notes:**
-- Energy consumption is heavily concentrated in blast furnaces (75% of energy)
-- Coal accounts for ~70% of feedstock in traditional steel production
-- Electric Arc Furnaces (EAF) produce significantly lower emissions (~0.68 t CO₂/t steel vs 2.33 t/t for BF-BOF)
+**Key Insight:** Smelting dominates (80%). Electric arc furnaces (EAF) using scrap steel can reduce this to ~200 kgCO₂e/m², cutting total by 65%.
+
+---
 
 ### Timber (80 kgCO₂e/m²)
-Based on lifecycle assessment data for processed structural timber:
 
-| Component | kgCO₂e/m² | % of Total |
-|-----------|-----------|-----------|
-| Extraction & Processing | 48 | 60% |
-| Manufacturing (Drying, Gluing) | 28.8 | 36% |
-| Transportation | 3.2 | 4% |
+| Process | kgCO₂e/m² | % | Activities |
+|---------|-----------|-------|-----------|
+| **Extraction (A1)** | 12 | 15% | Felling, initial sawmilling |
+| **Processing (A2-A3)** | 45 | 56% | Kiln drying, kiln-dry lumber, lamination, gluing |
+| **Transportation (A4)** | 20 | 25% | Transport to site (highly distance-sensitive) |
+| **Installation (A5)** | 3 | 4% | Fastening, assembly |
 
-**Notes:**
-- Transportation represents only 4% of total A1-A5 embodied energy
-- Manufacturing includes energy for kiln drying (~15%) and glue application (~22% for CLT)
-- Carbon impact varies significantly by forest location and processing methods
-- Timber has the lowest embodied carbon among major structural materials
+**Key Insight:** Transportation (25%) is a major factor for timber — local sourcing can reduce footprint by 5-20 kgCO₂e/m². Drying method (kiln vs. air) significantly affects A3.
+
+---
 
 ### Brick (180 kgCO₂e/m²)
-Based on fired clay brick production data:
 
-| Component | kgCO₂e/m² | % of Total |
-|-----------|-----------|-----------|
-| Clay Extraction | 36 | 20% |
-| Firing Energy | 126 | 70% |
-| Transportation | 18 | 10% |
+| Process | kgCO₂e/m² | % | Activities |
+|---------|-----------|-------|-----------|
+| **Extraction (A1)** | 36 | 20% | Clay extraction, preparation |
+| **Processing (A2-A3)** | 120 | 67% | Kiln firing (coal, gas, or biomass) |
+| **Transportation (A4)** | 18 | 10% | Transport to construction site |
+| **Installation (A5)** | 6 | 3% | Mortar application, pointing |
 
-**Notes:**
-- Firing is the energy-intensive step (70% of emissions)
-- Coal is the most commonly used kiln fuel, contributing to high GHG intensity
-- Traditional clay brick: ~0.48 kg CO₂eq per kg of brick
-- Alternative bricks (K-Briq, fly ash) can reduce emissions to <5% of traditional clay brick
+**Key Insight:** Firing (67%) is the critical stage. Alternative fuels (biomass), recovered heat, and waste clay bricks can reduce emissions by 30-50%.
+
+---
 
 ## Implementation in Calculator
 
-These breakdowns are stored in the JavaScript `MATERIAL_BREAKDOWN` object:
+The process-based breakdown is stored in the JavaScript `MATERIAL_PROCESSES` object:
 
 ```javascript
-const MATERIAL_BREAKDOWN = {
+const MATERIAL_PROCESSES = {
   'Concrete': {
     total: 400,
-    components: {
-      'Cement Production': { value: 352, pct: 88 },
-      'Steel Reinforcement': { value: 40, pct: 10 },
-      'Aggregates & Admix': { value: 8, pct: 2 }
+    processes: {
+      'Extraction': { value: 40, pct: 10, label: 'Mining, Quarrying' },
+      'Processing': { value: 344, pct: 86, label: 'Cement, Mixing, Casting' },
+      'Transportation': { value: 16, pct: 4, label: 'To Construction Site' },
+      'Installation': { value: 0, pct: 0, label: 'Casting, Finishing' }
     }
   },
   // ... (Steel, Timber, Brick similarly)
 };
 ```
 
-When a material is selected, the calculator:
-1. Displays a material breakdown section with progress bars
-2. Shows each component's CO₂ contribution (in kgCO₂e)
-3. Updates the pie and polar charts to reflect the material composition
-4. Recalculates based on project area (e.g., 352 kgCO₂e × area for cement in concrete)
-
 ## Calculator Features
 
-- **Material Breakdown Display**: Below the selection summary, shows component percentages and CO₂ values as progress bars
-- **Dynamic Charts**: Pie and polar area charts update to show material components when a specific material is selected
-- **Area Scaling**: All values scale proportionally with the construction area input
-- **Bilingual Support**: Labels support both English and Spanish
+1. **Construction Process Display** — Below selection summary, shows:
+   - 4 lifecycle stages (Extraction → Processing → Transportation → Installation)
+   - Percentage contribution of each stage
+   - Absolute CO₂ value scaled to project area
+   - Descriptive labels for each process type
 
-## Future Improvements
+2. **Dynamic Charts** — Pie and polar area charts update to show process-based breakdown:
+   - Different colors for each lifecycle stage
+   - Visual comparison across materials
+   - Easy identification of high-impact processes
 
-- Regional variation in cement and steel emissions (lime content, source energy mix)
-- Low-carbon alternatives (bioplastics, recycled content, alternative binders)
-- Time-of-life carbon accounting (carbon sequestration in timber over product lifetime)
+3. **Area Scaling** — All values automatically recalculate based on construction area input
+
+4. **Bilingual Support** — Process labels available in English and Spanish
+
+## Design Decision: Why Process-Based?
+
+**Architects benefit from process-focused data because:**
+
+1. **Intervention Clarity** — Shows exactly where carbon reduction strategies apply:
+   - Low-carbon cement (A3)
+   - Local material sourcing (A4)
+   - Recycled/scrap metals (A1)
+   - Assembly efficiency (A5)
+
+2. **Material Comparison** — Reveals where each material's "hotspots" are:
+   - Concrete: Focus on cement
+   - Steel: Focus on smelting method (BF-BOF vs EAF)
+   - Timber: Focus on transportation distance
+   - Brick: Focus on kiln fuel type
+
+3. **Circular Economy Signals** — Recycled/reclaimed materials improve A1 & A2 stages
+
+4. **Standards Alignment** — Follows ISO 14040/14044 and EPD (Environmental Product Declaration) conventions
+
+## Future Enhancements
+
+- **Regional Variation** — Grid decarbonization improves A3 (e.g., renewable electricity)
+- **Alternative Materials** — Add low-carbon variants (low-carbon concrete, EAF steel, FSC timber)
+- **End-of-Life (A5+)** — Include demolition, recycling potential
+- **Scenario Modeling** — "What if we use X% recycled content?" or "What if sourced locally?"

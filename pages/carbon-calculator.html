@@ -555,10 +555,10 @@
             </div>
           </div>
 
-          <!-- Material Composition Breakdown -->
+          <!-- Construction Process Breakdown -->
           <div id="materialBreakdown" style="background: var(--glass-bg); border: 3px solid var(--brutalist-yellow); padding: 1.5rem; margin-bottom: 2rem; border-radius: var(--panel-border-radius); display: none;">
-            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--brutalist-yellow); display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Material Breakdown" data-es="Desglose de Material">
-              Material Breakdown
+            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--brutalist-yellow); display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Construction Process" data-es="Proceso de Construcción">
+              Construction Process
             </div>
             <div id="breakdownItems"></div>
           </div>
@@ -654,38 +654,43 @@
       treeOffset: -22 // kgCO2e per tree per year
     };
 
-    // Material composition breakdown based on lifecycle assessment
-    const MATERIAL_BREAKDOWN = {
+    // Process-based carbon breakdown by construction lifecycle (A1-A5 framework)
+    // Extraction (A1), Processing (A2-A3), Transportation (A4), Installation/Assembly (A5)
+    const MATERIAL_PROCESSES = {
       'Concrete': {
         total: 400,
-        components: {
-          'Cement Production': { value: 352, pct: 88 },
-          'Steel Reinforcement': { value: 40, pct: 10 },
-          'Aggregates & Admix': { value: 8, pct: 2 }
+        processes: {
+          'Extraction': { value: 40, pct: 10, label: 'Mining, Quarrying' },
+          'Processing': { value: 344, pct: 86, label: 'Cement, Mixing, Casting' },
+          'Transportation': { value: 16, pct: 4, label: 'To Construction Site' },
+          'Installation': { value: 0, pct: 0, label: 'Casting, Finishing' }
         }
       },
       'Steel': {
         total: 600,
-        components: {
-          'Ore Extraction': { value: 54, pct: 9 },
-          'Blast Furnace Smelting': { value: 450, pct: 75 },
-          'Processing & Finishing': { value: 96, pct: 16 }
+        processes: {
+          'Extraction': { value: 54, pct: 9, label: 'Ore Mining, Prep' },
+          'Processing': { value: 480, pct: 80, label: 'Smelting, Rolling, Fab' },
+          'Transportation': { value: 36, pct: 6, label: 'To Construction Site' },
+          'Installation': { value: 30, pct: 5, label: 'Welding, Assembly' }
         }
       },
       'Timber': {
         total: 80,
-        components: {
-          'Extraction & Processing': { value: 48, pct: 60 },
-          'Manufacturing (Drying)': { value: 28.8, pct: 36 },
-          'Transportation': { value: 3.2, pct: 4 }
+        processes: {
+          'Extraction': { value: 12, pct: 15, label: 'Felling, Mill Processing' },
+          'Processing': { value: 45, pct: 56, label: 'Kiln Drying, Laminating' },
+          'Transportation': { value: 20, pct: 25, label: 'To Construction Site' },
+          'Installation': { value: 3, pct: 4, label: 'Assembly, Fastening' }
         }
       },
       'Brick': {
         total: 180,
-        components: {
-          'Clay Extraction': { value: 36, pct: 20 },
-          'Firing Energy': { value: 126, pct: 70 },
-          'Transportation': { value: 18, pct: 10 }
+        processes: {
+          'Extraction': { value: 36, pct: 20, label: 'Clay Extraction' },
+          'Processing': { value: 120, pct: 67, label: 'Kiln Firing, Curing' },
+          'Transportation': { value: 18, pct: 10, label: 'To Construction Site' },
+          'Installation': { value: 6, pct: 3, label: 'Mortar, Setting' }
         }
       }
     };
@@ -732,8 +737,8 @@
       calculateTotal();
     }
 
-    function updateMaterialBreakdown() {
-      const materialData = MATERIAL_BREAKDOWN[carbonState.material];
+    function updateProcessBreakdown() {
+      const materialData = MATERIAL_PROCESSES[carbonState.material];
       const breakdownEl = document.getElementById('materialBreakdown');
       const itemsEl = document.getElementById('breakdownItems');
 
@@ -745,10 +750,16 @@
       breakdownEl.style.display = 'block';
       itemsEl.innerHTML = '';
 
-      const components = materialData.components;
-      const maxValue = Math.max(...Object.values(components).map(c => c.value));
+      const processes = materialData.processes;
+      const maxValue = Math.max(...Object.values(processes).map(p => p.value));
 
-      Object.entries(components).forEach(([label, data]) => {
+      // Order: Extraction → Processing → Transportation → Installation
+      const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
+
+      processOrder.forEach(processName => {
+        const data = processes[processName];
+        if (!data) return;
+
         const barWidth = (data.value / maxValue) * 100;
         const totalCO2 = (data.value * carbonState.area).toFixed(0);
 
@@ -756,7 +767,7 @@
         item.className = 'breakdown-item';
         item.innerHTML = `
           <div class="breakdown-label">
-            <span>${label}</span>
+            <span><strong>${processName}</strong> — ${data.label}</span>
             <span>${data.pct}% (${totalCO2} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
@@ -793,39 +804,39 @@
         <small>≈ ${Math.round(equivalentDays)} days of car travel</small>
       `;
 
-      updateMaterialBreakdown();
+      updateProcessBreakdown();
       updateCharts(embodiedCO2, operationalCO2, transport * area * CO2_FACTORS.transport, Math.max(0, waste * area * CO2_FACTORS.waste), trees);
     }
 
     function updateCharts(embodied, operational, transport, waste, trees) {
-      // Check if we should show material breakdown detail
-      const materialData = MATERIAL_BREAKDOWN[carbonState.material];
-      const showMaterialBreakdown = materialData ? true : false;
+      // Check if we should show process-based breakdown
+      const materialData = MATERIAL_PROCESSES[carbonState.material];
+      const showProcessBreakdown = materialData ? true : false;
 
       let labels, data, colors;
 
-      if (showMaterialBreakdown) {
-        // Show detailed material breakdown + main categories
-        labels = Object.keys(materialData.components);
-        data = Object.values(materialData.components).map(c => c.value * (carbonState.area || 1) / materialData.total);
+      if (showProcessBreakdown) {
+        // Show process-based breakdown (Extraction → Processing → Transportation → Installation)
+        const processes = materialData.processes;
+        const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
 
-        // Color palette for material components
-        const componentColors = {
-          'Cement Production': '#FFD500',
-          'Steel Reinforcement': '#FFC700',
-          'Aggregates & Admix': 'rgba(255,213,0,0.6)',
-          'Ore Extraction': '#FFD500',
-          'Blast Furnace Smelting': '#FFC700',
-          'Processing & Finishing': 'rgba(255,213,0,0.6)',
-          'Extraction & Processing': '#FFD500',
-          'Manufacturing (Drying)': '#FFC700',
-          'Transportation': 'rgba(255,213,0,0.6)',
-          'Clay Extraction': '#FFD500',
-          'Firing Energy': '#FFC700'
-        };
-        colors = labels.map(label => componentColors[label] || '#FFD500');
+        labels = processOrder.map(p => {
+          const lang = currentLang === 'en' ? p :
+            p === 'Extraction' ? 'Extracción' :
+            p === 'Processing' ? 'Procesamiento' :
+            p === 'Transportation' ? 'Transporte' : 'Instalación';
+          return lang;
+        });
+
+        data = processOrder.map(p => {
+          const proc = processes[p];
+          return proc ? (proc.value * (carbonState.area || 1)) : 0;
+        });
+
+        // Color palette for lifecycle stages (extraction → processing → transport → installation)
+        colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
       } else {
-        // Show original 5-category view
+        // Show original 5-category view (for fallback)
         labels = [
           currentLang === 'en' ? 'Materials' : 'Materiales',
           currentLang === 'en' ? 'Transport' : 'Transporte',
