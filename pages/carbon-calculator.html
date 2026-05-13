@@ -962,12 +962,31 @@
             return lang;
           });
 
+          // Calculate dynamic values based on sliders
           data = processOrder.map(p => {
             const proc = processes[p];
-            return proc ? (proc.value * (carbonState.area || 1)) : 0;
+            if (!proc) return 0;
+
+            let value = 0;
+            if (p === 'Transportation') {
+              value = carbonState.area * carbonState.transport * CO2_FACTORS.transport;
+            } else if (p === 'Installation') {
+              const wasteReduction = (carbonState.waste / 100);
+              value = proc.value * carbonState.area * (1 - wasteReduction * 0.1);
+            } else {
+              value = proc.value * carbonState.area;
+            }
+            return Math.max(0, value);
           });
 
-          colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
+          // Add operational and offset
+          data.push(carbonState.area * carbonState.energyCO2 * 5);
+          data.push(Math.abs(carbonState.trees * CO2_FACTORS.treeOffset));
+
+          labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
+          labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensación');
+
+          colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(200,220,200,0.7)', 'rgba(100,200,100,0.6)'];
         }
       } else if (currentPieMode === 'impact') {
         // Total embodied + operational impact
@@ -1049,10 +1068,35 @@
         return lang;
       });
 
+      // Calculate dynamic values based on all sliders
       let data = processOrder.map(p => {
         const proc = processes[p];
-        return proc ? (proc.value * (carbonState.area || 1)) : 0;
+        if (!proc) return 0;
+
+        let value = 0;
+        if (p === 'Transportation') {
+          // Affected by transport distance slider (A4)
+          value = carbonState.area * carbonState.transport * CO2_FACTORS.transport;
+        } else if (p === 'Installation') {
+          // Affected by waste reduction slider
+          const wasteReduction = (carbonState.waste / 100);
+          value = proc.value * carbonState.area * (1 - wasteReduction * 0.1);
+        } else {
+          // Base extraction and processing values
+          value = proc.value * carbonState.area;
+        }
+        return Math.max(0, value);
       });
+
+      // Add operational and offset to data for complete view
+      const operationalValue = carbonState.area * carbonState.energyCO2 * 5;
+      const treeOffsetValue = Math.abs(carbonState.trees * CO2_FACTORS.treeOffset);
+
+      data.push(operationalValue);
+      data.push(treeOffsetValue);
+
+      labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
+      labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensación');
 
       // Transform data based on histogram mode
       if (currentHistogramMode === 'percentage') {
@@ -1066,7 +1110,8 @@
         });
       }
 
-      const colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)'];
+      // Colors for all 6 categories (extraction, processing, transport, installation, operational, tree offset)
+      const colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(200,220,200,0.7)', 'rgba(100,200,100,0.6)'];
       const borderColor = 'rgba(255, 213, 0, 0.2)';
 
       // Update Density Histogram Chart
