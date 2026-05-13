@@ -280,6 +280,40 @@
       opacity: 0.8;
     }
 
+    .breakdown-item {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .breakdown-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .breakdown-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--brutalist-white);
+    }
+
+    .breakdown-bar {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--brutalist-yellow);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .breakdown-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brutalist-yellow), rgba(255, 213, 0, 0.6));
+      transition: width 0.3s ease;
+    }
+
     .cta-final {
       margin-top: 2rem;
       padding: 1.5rem 3rem;
@@ -521,6 +555,14 @@
             </div>
           </div>
 
+          <!-- Material Composition Breakdown -->
+          <div id="materialBreakdown" style="background: var(--glass-bg); border: 3px solid var(--brutalist-yellow); padding: 1.5rem; margin-bottom: 2rem; border-radius: var(--panel-border-radius); display: none;">
+            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--brutalist-yellow); display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Material Breakdown" data-es="Desglose de Material">
+              Material Breakdown
+            </div>
+            <div id="breakdownItems"></div>
+          </div>
+
           <!-- Charts -->
           <div class="charts-container">
             <div class="chart-wrapper">
@@ -612,6 +654,42 @@
       treeOffset: -22 // kgCO2e per tree per year
     };
 
+    // Material composition breakdown based on lifecycle assessment
+    const MATERIAL_BREAKDOWN = {
+      'Concrete': {
+        total: 400,
+        components: {
+          'Cement Production': { value: 352, pct: 88 },
+          'Steel Reinforcement': { value: 40, pct: 10 },
+          'Aggregates & Admix': { value: 8, pct: 2 }
+        }
+      },
+      'Steel': {
+        total: 600,
+        components: {
+          'Ore Extraction': { value: 54, pct: 9 },
+          'Blast Furnace Smelting': { value: 450, pct: 75 },
+          'Processing & Finishing': { value: 96, pct: 16 }
+        }
+      },
+      'Timber': {
+        total: 80,
+        components: {
+          'Extraction & Processing': { value: 48, pct: 60 },
+          'Manufacturing (Drying)': { value: 28.8, pct: 36 },
+          'Transportation': { value: 3.2, pct: 4 }
+        }
+      },
+      'Brick': {
+        total: 180,
+        components: {
+          'Clay Extraction': { value: 36, pct: 20 },
+          'Firing Energy': { value: 126, pct: 70 },
+          'Transportation': { value: 18, pct: 10 }
+        }
+      }
+    };
+
     function selectOption(element, category) {
       const siblings = element.parentElement.querySelectorAll('.option-card');
       siblings.forEach(card => card.classList.remove('selected'));
@@ -654,6 +732,41 @@
       calculateTotal();
     }
 
+    function updateMaterialBreakdown() {
+      const materialData = MATERIAL_BREAKDOWN[carbonState.material];
+      const breakdownEl = document.getElementById('materialBreakdown');
+      const itemsEl = document.getElementById('breakdownItems');
+
+      if (!materialData) {
+        breakdownEl.style.display = 'none';
+        return;
+      }
+
+      breakdownEl.style.display = 'block';
+      itemsEl.innerHTML = '';
+
+      const components = materialData.components;
+      const maxValue = Math.max(...Object.values(components).map(c => c.value));
+
+      Object.entries(components).forEach(([label, data]) => {
+        const barWidth = (data.value / maxValue) * 100;
+        const totalCO2 = (data.value * carbonState.area).toFixed(0);
+
+        const item = document.createElement('div');
+        item.className = 'breakdown-item';
+        item.innerHTML = `
+          <div class="breakdown-label">
+            <span>${label}</span>
+            <span>${data.pct}% (${totalCO2} kgCO₂e)</span>
+          </div>
+          <div class="breakdown-bar">
+            <div class="breakdown-fill" style="width: ${barWidth}%"></div>
+          </div>
+        `;
+        itemsEl.appendChild(item);
+      });
+    }
+
     function calculateTotal() {
       const { area, materialCO2, transport, energyCO2, waste, trees } = carbonState;
 
@@ -680,27 +793,56 @@
         <small>≈ ${Math.round(equivalentDays)} days of car travel</small>
       `;
 
+      updateMaterialBreakdown();
       updateCharts(embodiedCO2, operationalCO2, transport * area * CO2_FACTORS.transport, Math.max(0, waste * area * CO2_FACTORS.waste), trees);
     }
 
     function updateCharts(embodied, operational, transport, waste, trees) {
-      const labels = [
-        currentLang === 'en' ? 'Materials' : 'Materiales',
-        currentLang === 'en' ? 'Transport' : 'Transporte',
-        currentLang === 'en' ? 'Energy (50yr)' : 'Energía (50yr)',
-        currentLang === 'en' ? 'Waste Reduction' : 'Reducción Residuos',
-        currentLang === 'en' ? 'Tree Offset' : 'Compensación Árboles'
-      ];
+      // Check if we should show material breakdown detail
+      const materialData = MATERIAL_BREAKDOWN[carbonState.material];
+      const showMaterialBreakdown = materialData ? true : false;
 
-      const data = [
-        Math.max(0, embodied - transport - waste),
-        transport,
-        operational,
-        Math.abs(waste),
-        Math.abs(trees * CO2_FACTORS.treeOffset * 30)
-      ];
+      let labels, data, colors;
 
-      const colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(255,255,255,0.2)'];
+      if (showMaterialBreakdown) {
+        // Show detailed material breakdown + main categories
+        labels = Object.keys(materialData.components);
+        data = Object.values(materialData.components).map(c => c.value * (carbonState.area || 1) / materialData.total);
+
+        // Color palette for material components
+        const componentColors = {
+          'Cement Production': '#FFD500',
+          'Steel Reinforcement': '#FFC700',
+          'Aggregates & Admix': 'rgba(255,213,0,0.6)',
+          'Ore Extraction': '#FFD500',
+          'Blast Furnace Smelting': '#FFC700',
+          'Processing & Finishing': 'rgba(255,213,0,0.6)',
+          'Extraction & Processing': '#FFD500',
+          'Manufacturing (Drying)': '#FFC700',
+          'Transportation': 'rgba(255,213,0,0.6)',
+          'Clay Extraction': '#FFD500',
+          'Firing Energy': '#FFC700'
+        };
+        colors = labels.map(label => componentColors[label] || '#FFD500');
+      } else {
+        // Show original 5-category view
+        labels = [
+          currentLang === 'en' ? 'Materials' : 'Materiales',
+          currentLang === 'en' ? 'Transport' : 'Transporte',
+          currentLang === 'en' ? 'Energy (50yr)' : 'Energía (50yr)',
+          currentLang === 'en' ? 'Waste Reduction' : 'Reducción Residuos',
+          currentLang === 'en' ? 'Tree Offset' : 'Compensación Árboles'
+        ];
+        data = [
+          Math.max(0, embodied - transport - waste),
+          transport,
+          operational,
+          Math.abs(waste),
+          Math.abs(trees * CO2_FACTORS.treeOffset * 30)
+        ];
+        colors = ['#FFD500', '#FFC700', 'rgba(255,213,0,0.5)', 'rgba(255,255,255,0.6)', 'rgba(255,255,255,0.2)'];
+      }
+
       const borderColor = 'rgba(255, 213, 0, 0.2)';
 
       // Update Pie Chart
