@@ -811,24 +811,47 @@
       itemsEl.innerHTML = '';
 
       const processes = materialData.processes;
-      const maxValue = Math.max(...Object.values(processes).map(p => p.value));
-
-      // Order: Extraction → Processing → Transportation → Installation
       const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
+
+      // Calculate dynamic values based on sliders
+      let processValues = {};
+
+      processOrder.forEach(p => {
+        const proc = processes[p];
+        if (!proc) return;
+
+        let value = 0;
+        if (p === 'Transportation') {
+          // Transportation changes with distance slider (A4)
+          value = carbonState.area * carbonState.transport * CO2_FACTORS.transport;
+        } else if (p === 'Installation') {
+          // Installation affected by waste reduction (improves assembly efficiency)
+          const wasteReduction = (carbonState.waste / 100);
+          value = proc.value * carbonState.area * (1 - wasteReduction * 0.1);
+        } else {
+          // Extraction & Processing are base values
+          value = proc.value * carbonState.area;
+        }
+        processValues[p] = Math.max(0, value);
+      });
+
+      const maxValue = Math.max(...Object.values(processValues));
+      const totalProcessCO2 = Object.values(processValues).reduce((a, b) => a + b, 0);
 
       processOrder.forEach(processName => {
         const data = processes[processName];
         if (!data) return;
 
-        const barWidth = (data.value / maxValue) * 100;
-        const totalCO2 = (data.value * carbonState.area).toFixed(0);
+        const totalCO2 = processValues[processName].toFixed(0);
+        const barWidth = maxValue > 0 ? (processValues[processName] / maxValue) * 100 : 0;
+        const pct = totalProcessCO2 > 0 ? ((processValues[processName] / totalProcessCO2) * 100).toFixed(0) : 0;
 
         const item = document.createElement('div');
         item.className = 'breakdown-item';
         item.innerHTML = `
           <div class="breakdown-label">
             <span><strong>${processName}</strong> — ${data.label}</span>
-            <span>${data.pct}% (${totalCO2} kgCO₂e)</span>
+            <span>${pct}% (${totalCO2} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
             <div class="breakdown-fill" style="width: ${barWidth}%"></div>
