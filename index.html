@@ -191,6 +191,11 @@
       left: 0;
     }
 
+    /* Light mode: text becomes visible dark color on white background */
+    html[data-theme="light"] .enter-text:hover {
+      color: var(--brutalist-white) !important;
+    }
+
     .enter-text:active {
       transform: translate(2px, 2px);
       box-shadow: 3px 3px 0px var(--brutalist-black);
