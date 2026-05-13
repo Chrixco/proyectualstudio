@@ -438,23 +438,23 @@
             <div style="margin-bottom: 0.5rem;">
               <select id="locationSelect" class="form-select" style="background: rgba(0, 0, 0, 0.3); border: 2px solid var(--brutalist-yellow); color: var(--brutalist-white);" onchange="updateLocation()">
                 <optgroup label="Ecuador">
-                  <option value="2.9" data-location="Cuenca, Ecuador">Cuenca (2.9°)</option>
-                  <option value="-0.2" data-location="Quito (0.2°)">Quito (-0.2°)</option>
-                  <option value="-2.2" data-location="Guayaquil">Guayaquil (-2.2°)</option>
-                  <option value="-4.0" data-location="Loja">Loja (-4.0°)</option>
+                  <option value="2.9" data-location="Cuenca, Ecuador" data-price="0.10">Cuenca (2.9°) - $0.10/kWh</option>
+                  <option value="-0.2" data-location="Quito, Ecuador" data-price="0.10">Quito (-0.2°) - $0.10/kWh</option>
+                  <option value="-2.2" data-location="Guayaquil, Ecuador" data-price="0.12">Guayaquil (-2.2°) - $0.12/kWh</option>
+                  <option value="-4.0" data-location="Loja, Ecuador" data-price="0.10">Loja (-4.0°) - $0.10/kWh</option>
                 </optgroup>
                 <optgroup label="Europe">
-                  <option value="40.4" data-location="Madrid, Spain">Madrid, Spain (40.4°)</option>
-                  <option value="48.9" data-location="Paris, France">Paris, France (48.9°)</option>
-                  <option value="52.5" data-location="Berlin, Germany">Berlin, Germany (52.5°)</option>
-                  <option value="41.9" data-location="Milan, Italy">Milan, Italy (41.9°)</option>
-                  <option value="51.5" data-location="London, UK">London, UK (51.5°)</option>
-                  <option value="37.8" data-location="Athens, Greece">Athens, Greece (37.8°)</option>
-                  <option value="43.7" data-location="Barcelona, Spain">Barcelona, Spain (43.7°)</option>
-                  <option value="59.3" data-location="Stockholm, Sweden">Stockholm, Sweden (59.3°)</option>
+                  <option value="40.4" data-location="Madrid, Spain" data-price="0.30">Madrid, Spain (40.4°) - €0.30/kWh</option>
+                  <option value="48.9" data-location="Paris, France" data-price="0.28">Paris, France (48.9°) - €0.28/kWh</option>
+                  <option value="52.5" data-location="Berlin, Germany" data-price="0.38">Berlin, Germany (52.5°) - €0.38/kWh</option>
+                  <option value="41.9" data-location="Milan, Italy" data-price="0.35">Milan, Italy (41.9°) - €0.35/kWh</option>
+                  <option value="51.5" data-location="London, UK" data-price="0.36">London, UK (51.5°) - £0.36/kWh</option>
+                  <option value="37.8" data-location="Athens, Greece" data-price="0.25">Athens, Greece (37.8°) - €0.25/kWh</option>
+                  <option value="43.7" data-location="Barcelona, Spain" data-price="0.30">Barcelona, Spain (43.7°) - €0.30/kWh</option>
+                  <option value="59.3" data-location="Stockholm, Sweden" data-price="0.20">Stockholm, Sweden (59.3°) - kr0.20/kWh</option>
                 </optgroup>
                 <optgroup label="Custom">
-                  <option value="custom" data-location="Custom Latitude">Custom Latitude...</option>
+                  <option value="custom" data-location="Custom Location" data-price="0.12">Custom Location...</option>
                 </optgroup>
               </select>
             </div>
@@ -528,10 +528,13 @@
             <div class="calculator-label" data-en="6. Local Electricity Price" data-es="6. Precio Local de Electricidad">
               6. Local Electricity Price
             </div>
-            <input type="range" min="0.05" max="0.30" value="0.12" step="0.01" class="range-slider" id="priceSlider" oninput="updateDisplay()">
+            <input type="range" min="0.05" max="0.50" value="0.12" step="0.01" class="range-slider" id="priceSlider" oninput="updateDisplay()">
             <div class="range-value text-center">
               $<span id="priceValue">0.12</span> / kWh
             </div>
+            <p style="font-size: 0.75rem; color: rgba(255, 213, 0, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
+              <span data-en="Adjust price based on location selection (2026 rates)" data-es="Ajusta el precio según la selección de ubicación (tarifas 2026)">Adjust price based on location selection (2026 rates)</span>
+            </p>
           </div>
 
           <!-- 7. System Cost -->
@@ -727,6 +730,7 @@
       const select = document.getElementById('locationSelect');
       const selectedOption = select.options[select.selectedIndex];
       const latitude = parseFloat(selectedOption.value);
+      const price = parseFloat(selectedOption.dataset.price) || 0.12;
       const customSection = document.getElementById('customLatitudeSection');
       const displaySection = document.getElementById('selectedLocationDisplay');
 
@@ -739,7 +743,10 @@
         displaySection.style.display = 'block';
         solarState.location = selectedOption.dataset.location || 'Custom Location';
         solarState.latitude = latitude;
+        solarState.electricityPrice = price;
         document.getElementById('latitudeValue').textContent = Math.abs(latitude).toFixed(1);
+        document.getElementById('priceSlider').value = price;
+        document.getElementById('priceValue').textContent = price.toFixed(2);
         displaySection.textContent = solarState.location;
       }
 
