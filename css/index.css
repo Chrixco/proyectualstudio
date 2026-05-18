@@ -1,0 +1,101 @@
+/* ===========================
+   INDEX PAGE - DEDICATED STYLES
+   Blue theme with no light/dark mode
+   =========================== */
+
+:root {
+  --index-blue: #0099FF;
+  --index-white: #FFFFFF;
+  --index-dark: #001a4d;
+  --animation-speed: 0.6s;
+}
+
+/* Speed up page animations */
+.loader-text {
+  animation: typing 1.5s steps(30, end) forwards, blink 0.5s step-end infinite !important;
+  color: var(--index-white) !important;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.loader-subtitle {
+  animation: fadeInUp 0.6s ease forwards 1s !important;
+}
+
+.loader-sub {
+  animation: fadeInUp 0.6s ease forwards 1.3s !important;
+}
+
+.loader-container {
+  animation: floatContainer 2.5s ease-in-out infinite !important;
+}
+
+.enter-text.show {
+  animation: bounceIn 0.4s ease forwards !important;
+}
+
+/* Override theme toggle visibility */
+#theme-toggle {
+  display: none !important;
+}
+
+/* Ensure index page ALWAYS uses one fixed mode - no theme switching */
+:root {
+  --index-blue: #0099FF !important;
+  --index-white: #FFFFFF !important;
+}
+
+/* Override ALL theme changes - force one mode */
+html[data-theme="light"],
+:root[data-theme="light"],
+[data-theme="light"] {
+  --index-blue: #0099FF !important;
+  --index-white: #FFFFFF !important;
+}
+
+/* Force index page body to always use blue theme background */
+body {
+  background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0051cc 100%) !important;
+}
+
+/* Button styling for index page */
+.enter-text {
+  background: var(--index-blue) !important;
+  color: var(--index-white) !important;
+  border-color: var(--index-blue) !important;
+  box-shadow: 6px 6px 0px var(--index-blue) !important;
+}
+
+.enter-text::before {
+  background: var(--index-blue) !important;
+}
+
+.enter-text:hover {
+  background: var(--index-white) !important;
+  color: var(--index-blue) !important;
+  border-color: var(--index-blue) !important;
+  box-shadow: 10px 10px 0px var(--index-blue) !important;
+}
+
+.enter-text:active {
+  box-shadow: 3px 3px 0px var(--index-blue) !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .enter-text {
+    box-shadow: 5px 5px 0px var(--index-blue) !important;
+  }
+
+  .loader-container {
+    box-shadow: 8px 8px 0px var(--index-blue) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .loader-container {
+    box-shadow: 6px 6px 0px var(--index-blue) !important;
+  }
+}

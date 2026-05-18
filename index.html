@@ -15,13 +15,11 @@
   <link rel="canonical" href="https://proyectualst.com/main.html"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="css/styles.css" rel="stylesheet" />
-
-  <!-- Theme Script (loads early to prevent flash) -->
-  <script src="js/theme.js"></script>
+  <link href="css/index.css" rel="stylesheet" />
 
   <style>
     body {
-      background-color: var(--brutalist-black);
+      background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0051cc 100%);
       color: var(--brutalist-white);
       font-family: 'Space Mono', monospace;
       display: flex;
@@ -48,8 +46,8 @@
         45deg,
         transparent,
         transparent 10px,
-        rgba(0, 153, 255, 0.03) 10px,
-        rgba(0, 153, 255, 0.03) 20px
+        rgba(255, 255, 255, 0.08) 10px,
+        rgba(255, 255, 255, 0.08) 20px
       );
       animation: stripeMove 20s linear infinite;
       z-index: 0;
@@ -69,9 +67,9 @@
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 6px solid var(--brutalist-yellow);
+      border: 6px solid var(--index-blue);
       border-radius: var(--panel-border-radius);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--index-blue);
       animation: floatContainer 4s ease-in-out infinite;
     }
 
@@ -87,22 +85,15 @@
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 6px solid var(--brutalist-yellow);
-      width: 0;
-      animation: typing 2.5s steps(30, end) forwards, blink 0.75s step-end infinite;
-      color: var(--brutalist-yellow);
+      color: #FFFFFF;
       text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
-    }
-
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
+      max-width: 90vw;
+      opacity: 1;
+      animation: none;
     }
 
     @keyframes blink {
-      0%, 50% { border-color: var(--brutalist-yellow); }
+      0%, 50% { border-color: var(--index-blue); }
       51%, 100% { border-color: transparent; }
     }
 
@@ -130,8 +121,8 @@
       font-size: clamp(0.9rem, 3vw, 1.3rem);
       margin-top: 2rem;
       padding: 1rem;
-      border-top: 3px solid var(--brutalist-yellow);
-      border-bottom: 3px solid var(--brutalist-yellow);
+      border-top: 3px solid var(--index-blue);
+      border-bottom: 3px solid var(--index-blue);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -157,10 +148,10 @@
       margin-top: 2rem;
       padding: 1rem 2rem;
       cursor: pointer;
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      border: 4px solid var(--brutalist-black);
-      box-shadow: 6px 6px 0px var(--brutalist-black);
+      background: var(--index-blue);
+      color: #FFFFFF;
+      border: 4px solid var(--index-blue);
+      box-shadow: 6px 6px 0px var(--index-blue);
       text-transform: uppercase;
       letter-spacing: 2px;
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -176,21 +167,26 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: var(--brutalist-white);
+      background: var(--index-blue);
       transition: left 0.3s ease;
       z-index: -1;
     }
 
     .enter-text:hover {
       transform: translate(-4px, -4px);
-      box-shadow: 10px 10px 0px var(--brutalist-black);
-      background: var(--brutalist-black);
-      color: var(--brutalist-white);
-      border-color: var(--brutalist-yellow);
+      box-shadow: 10px 10px 0px var(--index-blue);
+      background: #FFFFFF;
+      color: var(--index-blue);
+      border-color: var(--index-blue);
     }
 
     .enter-text:hover::before {
       left: 0;
+    }
+
+    /* Index page always uses blue theme - no light/dark mode */
+    html[data-theme] {
+      --button-blue: var(--index-blue) !important;
     }
 
     /* Light mode: text becomes visible dark color on white background */
@@ -200,7 +196,7 @@
 
     .enter-text:active {
       transform: translate(2px, 2px);
-      box-shadow: 3px 3px 0px var(--brutalist-black);
+      box-shadow: 3px 3px 0px var(--index-blue);
     }
 
     .enter-text.show {
@@ -237,17 +233,14 @@
         padding: clamp(1.75rem, 8vw, 2.5rem);
         width: min(92vw, 520px);
         border-width: 5px;
-        box-shadow: 8px 8px 0px var(--brutalist-yellow);
+        box-shadow: 8px 8px 0px var(--index-blue);
         margin: 2rem 0;
       }
 
       .loader-text {
         font-size: clamp(2rem, 9vw, 3.2rem);
         letter-spacing: 2px;
-        border-right: none;
-        width: 100%;
         white-space: normal;
-        animation: none;
         text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
       }
 
@@ -269,7 +262,7 @@
         max-width: 280px;
         font-size: 1.05rem;
         padding: 0.9rem 1.5rem;
-        box-shadow: 5px 5px 0px var(--brutalist-black);
+        box-shadow: 5px 5px 0px var(--index-blue);
       }
 
       .pulse-circle {
@@ -283,7 +276,7 @@
       .loader-container {
         padding: 1.25rem;
         border-width: 4px;
-        box-shadow: 6px 6px 0px var(--brutalist-yellow);
+        box-shadow: 6px 6px 0px var(--index-blue);
       }
 
       .loader-text {
@@ -317,7 +310,7 @@
     position: fixed;
     width: 150px;
     height: 150px;
-      border: 3px solid var(--brutalist-yellow);
+      border: 3px solid var(--index-blue);
       border-radius: 50%;
       opacity: 0.3;
       animation: pulse 3s ease-in-out infinite;
@@ -354,12 +347,12 @@
       background: var(--glass-bg);
       backdrop-filter: blur(10px);
       color: var(--brutalist-white) !important;
-      border-top: 3px solid var(--brutalist-yellow);
+      border-top: 3px solid var(--index-blue);
       z-index: 3;
     }
 
     footer a {
-      color: var(--brutalist-yellow) !important;
+      color: var(--index-blue) !important;
       text-decoration: none;
       font-weight: bold;
       transition: all 0.3s ease;
@@ -376,11 +369,6 @@
     <source src="media/Sequence blue.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-
-  <!-- Theme Toggle Button (Top Right) -->
-  <div style="position: fixed; top: 20px; right: 20px; z-index: 10000;">
-    <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
-  </div>
 
   <!-- Pulsing circles -->
   <div class="pulse-circle pulse-1"></div>
@@ -412,22 +400,11 @@
     const loaderContainer = document.querySelector('.loader-container');
 
     const revealEnterButton = () => {
-      loaderText.style.transition = 'border-color 0.3s ease';
-      loaderText.style.borderRight = 'none';
       enterText.classList.add('show');
     };
 
-    const animationName = window.getComputedStyle(loaderText).getPropertyValue('animation-name');
-
-    if (animationName === 'none' || animationName.includes('none')) {
-      setTimeout(revealEnterButton, 600);
-    } else {
-      loaderText.addEventListener('animationend', (event) => {
-        if (event.animationName === 'typing') {
-          setTimeout(revealEnterButton, 1000);
-        }
-      });
-    }
+    // Reveal button after fade-in animation completes
+    setTimeout(revealEnterButton, 600);
 
     // Navigate to main page with fade out
     enterText.addEventListener('click', () => {
@@ -445,7 +422,7 @@
         position: fixed;
         width: 30px;
         height: 30px;
-        border: 3px solid var(--brutalist-yellow);
+        border: 3px solid var(--index-blue);
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;

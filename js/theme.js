@@ -14,12 +14,16 @@ function setTheme(theme) {
   const html = document.documentElement;
   const themeToggle = document.getElementById('theme-toggle');
 
+  console.log(`🎨 Theme change: ${currentTheme} → ${theme}`);
+
   if (theme === 'light') {
-    html.setAttribute('data-theme', 'light');
-    if (themeToggle) themeToggle.setAttribute('data-theme', 'light');
-  } else {
     html.removeAttribute('data-theme');
     if (themeToggle) themeToggle.removeAttribute('data-theme');
+    console.log('✅ Light mode: white background, black text');
+  } else {
+    html.setAttribute('data-theme', 'light');
+    if (themeToggle) themeToggle.setAttribute('data-theme', 'light');
+    console.log('✅ Dark mode: black background, white text');
   }
 
   localStorage.setItem('theme', theme);
@@ -50,6 +54,7 @@ function setTheme(theme) {
  */
 function toggleTheme() {
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  console.log(`🔄 Theme toggle clicked - switching from "${currentTheme}" to "${newTheme}"`);
   currentTheme = newTheme;
   setTheme(currentTheme);
 }
@@ -107,8 +112,13 @@ function initTheme() {
 }
 
 // Apply theme immediately (before DOM loads)
+console.log(`🎨 Initial theme: ${currentTheme}`);
 if (currentTheme === 'light') {
+  document.documentElement.removeAttribute('data-theme');
+  console.log('✅ Light mode initialized: white background, black text');
+} else {
   document.documentElement.setAttribute('data-theme', 'light');
+  console.log('✅ Dark mode initialized: black background, white text');
 }
 
 // Initialize when script loads

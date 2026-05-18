@@ -9,7 +9,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
 
-  <script src="../js/theme.js"></script>
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
 
@@ -435,131 +434,6 @@
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
         </li>
         <li class="nav-item">
-          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <main class="container">
-    <div class="form-wrapper">
-      <div class="form-header">
-        <h1 data-en="Request a Proposal" data-es="Solicitar Propuesta">Request a Proposal</h1>
-        <div class="calculator-type-badge" id="calculatorTypeBadge">Loading...</div>
-      </div>
-
-      <div id="statusMessage" class="status-message"></div>
-
-      <!-- Contact Form -->
-      <form id="leadForm">
-
-      <!-- Calculator Results Summary -->
-      <div class="form-section">
-        <div class="form-section-title" data-en="Your Results" data-es="Tus Resultados">Your Results</div>
-        <div class="calculator-data" id="calculatorDataDisplay">
-          <div class="data-item">
-            <span class="data-label">Loading...</span>
-            <span class="data-value">-</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contact Information -->
-      <div class="form-section">
-        <div class="form-section-title" data-en="Contact Information" data-es="Información de Contacto">Contact Information</div>
-
-        <div class="form-group">
-          <label for="name" data-en="Full Name" data-es="Nombre Completo">Full Name <span class="required-field">*</span></label>
-          <input type="text" class="form-control" id="name" placeholder="Your Full Name / Tu Nombre Completo" required>
-        </div>
-
-        <div class="form-group">
-          <label for="email" data-en="Email Address" data-es="Correo Electrónico">Email Address <span class="required-field">*</span></label>
-          <input type="email" class="form-control" id="email" placeholder="your@email.com" required>
-        </div>
-
-        <div class="form-group">
-          <label for="phone" data-en="Phone (Optional)" data-es="Teléfono (Opcional)">Phone (Optional)</label>
-          <input type="tel" class="form-control" id="phone" placeholder="+1 (555) 123-4567">
-        </div>
-
-        <div class="form-group">
-          <label for="company" data-en="Company (Optional)" data-es="Empresa (Opcional)">Company (Optional)</label>
-          <input type="text" class="form-control" id="company" placeholder="Company Name / Nombre de Empresa">
-        </div>
-
-        <div class="form-group">
-          <label for="fieldOfInterest" data-en="Field of Interest" data-es="Área de Interés">Field of Interest <span class="required-field">*</span></label>
-          <select class="form-control" id="fieldOfInterest" required>
-            <option value="" data-en="Select an option" data-es="Selecciona una opción">Select an option / Selecciona una opción</option>
-            <option value="Residential" data-en="Residential" data-es="Residencial">Residential / Residencial</option>
-            <option value="Commercial" data-en="Commercial" data-es="Comercial">Commercial / Comercial</option>
-            <option value="Institutional" data-en="Institutional" data-es="Institucional">Institutional / Institucional</option>
-            <option value="Urban Design" data-en="Urban Design" data-es="Diseño Urbano">Urban Design / Diseño Urbano</option>
-            <option value="Other" data-en="Other" data-es="Otro">Other / Otro</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Message -->
-      <div class="form-section">
-        <div class="form-section-title" data-en="Message" data-es="Mensaje">Message (Optional)</div>
-        <textarea class="form-control" id="message" placeholder="Tell us about your project / Cuéntanos sobre tu proyecto"></textarea>
-      </div>
-
-      <!-- Preferred Contact Method -->
-      <div class="form-section">
-        <div class="form-section-title" data-en="Preferred Contact Method" data-es="Método de Contacto Preferido">Preferred Contact Method</div>
-        <div class="toggle-group">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="preferredContact" id="contact-email" value="Email" checked />
-            <label class="form-check-label" for="contact-email" data-en="Email" data-es="Correo">
-              Email
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="preferredContact" id="contact-phone" value="Phone" />
-            <label class="form-check-label" for="contact-phone" data-en="Phone" data-es="Teléfono">
-              Phone
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="preferredContact" id="contact-both" value="Both" />
-            <label class="form-check-label" for="contact-both" data-en="Both" data-es="Ambos">
-              Both
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project Timeline -->
-      <div class="form-section">
-        <div class="form-section-title" data-en="When are you planning to begin?" data-es="¿Cuándo planeas comenzar?">When are you planning to begin?</div>
-        <div class="toggle-group toggle-group-vertical">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="projectTimeline" id="timeline-3months" value="In 3 months" checked />
-            <label class="form-check-label" for="timeline-3months" data-en="In 3 months" data-es="En 3 meses">
-              In 3 months
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="projectTimeline" id="timeline-6months" value="3-6 months" />
-            <label class="form-check-label" for="timeline-6months" data-en="3-6 months" data-es="3-6 meses">
-              3-6 months
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="projectTimeline" id="timeline-more" value="More than 6 months" />
-            <label class="form-check-label" for="timeline-more" data-en="More than 6 months" data-es="Más de 6 meses">
-              More than 6 months
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Debug Button (hidden in production) -->
-      <div style="margin-bottom: 1rem; text-align: center;">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="fillDebugData()" style="font-size: 0.75rem; opacity: 0.5;">Debug: Fill Test Data</button>
       </div>
 
       <!-- Form Actions -->
@@ -915,28 +789,7 @@
         });
       }
 
-      // Theme toggle functionality
-      const themeToggleBtn = document.getElementById('theme-toggle');
-      if (themeToggleBtn) {
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        updateThemeToggleIcon(currentTheme);
-
-        themeToggleBtn.addEventListener('click', () => {
-          const theme = localStorage.getItem('theme') || 'dark';
-          const newTheme = theme === 'dark' ? 'light' : 'dark';
-          localStorage.setItem('theme', newTheme);
-          document.documentElement.setAttribute('data-theme', newTheme);
-          updateThemeToggleIcon(newTheme);
-        });
-      }
     });
-
-    function updateThemeToggleIcon(theme) {
-      const btn = document.getElementById('theme-toggle');
-      if (btn) {
-        btn.innerHTML = theme === 'dark' ? '☀️' : '🌙';
-      }
-    }
   </script>
 </body>
 </html>

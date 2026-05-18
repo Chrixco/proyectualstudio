@@ -9,7 +9,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
 
-  <script src="../js/theme.js"></script>
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -84,8 +83,7 @@
     }
 
     .inputs-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
+      background: var(--bg-secondary);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
       padding: 1.5rem;
@@ -95,14 +93,10 @@
     }
 
     .results-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
+      background: var(--bg-secondary);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
       padding: 1.5rem;
-      position: sticky;
-      top: 100px;
-      height: fit-content;
       border-radius: var(--panel-border-radius);
       min-width: 0;
     }
@@ -111,9 +105,8 @@
       margin-bottom: 1rem;
       padding: 1rem;
       border: 2px solid var(--brutalist-yellow);
-      background: var(--accent-lighter);
+      background: var(--bg-primary);
       border-radius: var(--panel-border-radius);
-      backdrop-filter: blur(5px);
     }
 
     .calculator-label {
@@ -129,16 +122,31 @@
     }
 
     .form-control {
-      border: 2px solid var(--brutalist-yellow);
+      border: 3px solid var(--brutalist-yellow);
       background: var(--bg-primary);
       color: var(--text-primary);
       font-family: 'Space Mono', monospace;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:hover {
+      border-color: var(--brutalist-yellow);
+      box-shadow: 0 0 8px var(--brutalist-yellow);
     }
 
     .form-control:focus {
       outline: none;
+      border-color: var(--brutalist-yellow);
       box-shadow: 0 0 12px var(--brutalist-yellow);
-      background: var(--bg-dark);
+      background: var(--bg-primary);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
     }
 
     select.form-control {
@@ -148,6 +156,7 @@
       background-position: right 0.75rem center;
       background-size: 20px;
       padding-right: 2.5rem;
+      cursor: pointer;
     }
 
     .title-main {
@@ -194,7 +203,7 @@
       margin-bottom: 1.5rem;
       padding: 1rem;
       border: 2px solid var(--brutalist-yellow);
-      background: rgba(255, 213, 0, 0.05);
+      background: var(--bg-primary);
       border-radius: var(--panel-border-radius);
     }
 
@@ -434,12 +443,211 @@
       letter-spacing: 2px;
       font-size: 1.2rem;
     }
+
+    /* Slider Field Styling */
+    .slider-field {
+      margin-bottom: 1.5rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .slider-header label {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      color: var(--brutalist-yellow);
+    }
+
+    .slider-value {
+      background: var(--accent-light);
+      border: 2px solid var(--brutalist-yellow);
+      color: var(--brutalist-yellow);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-weight: bold;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(to right, var(--brutalist-yellow) 0%, var(--brutalist-yellow) 50%, var(--accent-fade) 50%, var(--accent-fade) 100%);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, var(--brutalist-yellow) 0%, var(--brutalist-yellow) 50%, var(--accent-fade) 50%, var(--accent-fade) 100%);
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    input[type="range"]::-moz-range-track {
+      background: linear-gradient(to right, var(--brutalist-yellow) 0%, var(--brutalist-yellow) 50%, var(--accent-fade) 50%, var(--accent-fade) 100%);
+      height: 6px;
+      border-radius: 3px;
+      border: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--brutalist-yellow);
+      cursor: pointer;
+      border: 3px solid var(--brutalist-black);
+      box-shadow: 0 0 8px rgba(255, 213, 0, 0.5);
+      transition: all 0.2s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 12px rgba(255, 213, 0, 0.8);
+      transform: scale(1.2);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--brutalist-yellow);
+      cursor: pointer;
+      border: 3px solid var(--brutalist-black);
+      box-shadow: 0 0 8px rgba(255, 213, 0, 0.5);
+      transition: all 0.2s ease;
+    }
+
+    input[type="range"]::-moz-range-thumb:hover {
+      box-shadow: 0 0 12px rgba(255, 213, 0, 0.8);
+      transform: scale(1.2);
+    }
+
+    .slider-range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* Option Card Styling */
+    .option-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-cards.two-col {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .option-card {
+      border: 3px solid var(--brutalist-yellow);
+      background: transparent;
+      padding: 1.25rem;
+      border-radius: var(--panel-border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .option-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+    }
+
+    .option-card.active {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      box-shadow: 8px 8px 0px var(--brutalist-black);
+    }
+
+    .option-card-title {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 1rem;
+    }
+
+    .option-card-subtitle {
+      font-size: 0.8rem;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+
+    .option-card.active .option-card-subtitle {
+      opacity: 1;
+      color: var(--brutalist-black);
+    }
+
+    @media (max-width: 480px) {
+      .option-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .option-cards.two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .slider-value {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+      }
+    }
+
+    /* Hint text styling */
+    .hint-text {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.4rem;
+      display: block;
+      font-style: italic;
+    }
+
+    /* Results state styling */
+    .results-panel.calculating {
+      opacity: 0.6;
+    }
+
+    .updating-badge {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent-primary);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
   </style>
 </head>
 <body class="body-white-text">
   <div class="video-background">
     <video autoplay muted loop playsinline>
-      <source src="../media/output_bw.mp4" type="video/mp4">
+      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
@@ -464,63 +672,36 @@
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
         </li>
         <li class="nav-item">
-          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
-    <div class="loading-container">
-      <img src="../images/logo03.png" alt="Proyectual Logo" class="loading-logo">
-      <div class="loading-text" data-en="Calculating..." data-es="Calculando...">Calculating...</div>
-    </div>
-  </div>
-
-  <main class="container py-5">
-    <div class="calculator-wrapper">
-      <h1 class="title-main" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
-
-      <div class="calculator-layout">
-        <!-- Inputs Panel -->
-        <div class="inputs-panel">
-          <div class="calculator-section">
-            <label class="calculator-label" data-en="Select Market" data-es="Selecciona Mercado">Select Market</label>
-            <div class="country-selector">
-              <button class="country-btn active" data-country="ecuador" onclick="selectCountry('ecuador')" data-en="Ecuador" data-es="Ecuador">Ecuador</button>
               <button class="country-btn" data-country="germany" onclick="selectCountry('germany')" data-en="Germany" data-es="Alemania">Germany</button>
             </div>
             <div class="info-badge" id="countryInfo">Base currency: USD</div>
           </div>
 
+          <!-- 2. Project Section -->
           <div class="calculator-section">
-            <label class="calculator-label" data-en="Project Details" data-es="Detalles del Proyecto">Project Details</label>
+            <label class="calculator-label" data-en="2. Project Details" data-es="2. Detalles del Proyecto">2. Project Details</label>
             <div class="mb-3">
               <label data-en="Project Name" data-es="Nombre del Proyecto">Project Name</label>
-              <input type="text" class="form-control" id="projectName" placeholder="e.g., Residential Complex / Complejo Residencial">
+              <input type="text" class="form-control" id="projectName" placeholder="e.g., Residential Complex" oninput="debouncedCalculate()">
             </div>
 
             <div class="mb-3">
               <label data-en="Finish Quality" data-es="Calidad de Acabados">Finish Quality</label>
-              <div class="toggle-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="finishQuality" id="finish-essential" value="essential" data-multiplier="0.8" onchange="updateFinishMultiplier()" />
-                  <label class="form-check-label" for="finish-essential" data-en="Essential" data-es="Esencial">
-                    Essential
-                  </label>
+              <div class="option-cards">
+                <div class="option-card" id="card-essential" onclick="selectFinish('essential')" data-multiplier="0.8">
+                  <div class="option-card-title" data-en="Essential" data-es="Esencial">Essential</div>
+                  <div class="option-card-subtitle">0.8×</div>
+                  <div class="option-card-subtitle" style="font-size: 0.7rem; font-weight: normal;" data-en="Basic materials" data-es="Materiales básicos">Basic materials</div>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="finishQuality" id="finish-standard" value="standard" data-multiplier="1.0" checked onchange="updateFinishMultiplier()" />
-                  <label class="form-check-label" for="finish-standard" data-en="Standard" data-es="Estándar">
-                    Standard
-                  </label>
+                <div class="option-card active" id="card-standard" onclick="selectFinish('standard')" data-multiplier="1.0">
+                  <div class="option-card-title" data-en="Standard" data-es="Estándar">Standard</div>
+                  <div class="option-card-subtitle">1.0×</div>
+                  <div class="option-card-subtitle" style="font-size: 0.7rem; font-weight: normal;" data-en="Good quality" data-es="Buena calidad">Good quality</div>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="finishQuality" id="finish-premium" value="premium" data-multiplier="1.5" onchange="updateFinishMultiplier()" />
-                  <label class="form-check-label" for="finish-premium" data-en="Premium" data-es="Premium">
-                    Premium
-                  </label>
+                <div class="option-card" id="card-premium" onclick="selectFinish('premium')" data-multiplier="1.5">
+                  <div class="option-card-title" data-en="Premium" data-es="Premium">Premium</div>
+                  <div class="option-card-subtitle">1.5×</div>
+                  <div class="option-card-subtitle" style="font-size: 0.7rem; font-weight: normal;" data-en="High-end" data-es="Lujo">High-end</div>
                 </div>
               </div>
             </div>
@@ -529,102 +710,172 @@
               <label data-en="Calculate By" data-es="Calcular Por">Calculate By</label>
               <div class="toggle-group">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-cost" value="cost" checked onchange="toggleCalcMethod()" />
+                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-cost" value="cost" checked onchange="toggleCalcMethod(); debouncedCalculate();" />
                   <label class="form-check-label" for="calc-cost" data-en="Construction Cost" data-es="Costo de Construcción">
                     Construction Cost
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-size" value="size" onchange="toggleCalcMethod()" />
+                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-size" value="size" onchange="toggleCalcMethod(); debouncedCalculate();" />
                   <label class="form-check-label" for="calc-size" data-en="Construction Size" data-es="Tamaño de Construcción">
                     Construction Size
                   </label>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div id="costInputSection" class="mb-3">
-              <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
-              <input type="number" class="form-control" id="constructionCost" value="500000" min="10000" step="10000" onchange="updateFromCost()">
-              <small id="costPerM2Hint" data-en="Based on typical cost per m²" data-es="Basado en costo típico por m²">Based on typical cost per m²</small>
-            </div>
+          <!-- 3. Costs Section -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="3. Project Costs" data-es="3. Costos del Proyecto">3. Project Costs</label>
 
-            <div id="sizeInputSection" class="mb-3" style="display: none;">
-              <label data-en="Construction Size (m²)" data-es="Tamaño de Construcción (m²)">Construction Size (m²)</label>
-              <input type="number" class="form-control" id="constructionSize" value="1000" min="100" step="100" onchange="updateFromSize()">
-              <small id="sizePerM2Hint" data-en="Cost per m²" data-es="Costo por m²"></small>
+            <div id="costInputSection">
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
+                  <span class="slider-value" id="constructionCostValue">500000</span>
+                </div>
+                <input type="range" id="constructionCost" min="100000" max="5000000" step="50000" value="500000" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
+                <div class="slider-range-labels"><span>100K</span><span>5M</span></div>
+                <span class="hint-text" id="costPerM2Hint">Ecuador: $800–1,500/m² · Germany: €1,500–2,500/m²</span>
+              </div>
             </div>
 
             <div class="mb-3">
               <label data-en="Construction Size (m²)" data-es="Tamaño de Construcción (m²)">Construction Size (m²)</label>
-              <input type="number" class="form-control" id="propertySize" value="1000" min="100" step="100">
+              <input type="number" class="form-control" id="propertySize" value="1000" min="100" step="100" oninput="updateFromSize(); debouncedCalculate();">
+              <span class="hint-text" id="sizePerM2Hint"></span>
             </div>
 
             <div class="mb-3">
               <label data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost <span class="currency" id="currencyLabel1">USD</span></label>
-              <input type="number" class="form-control" id="landCost" value="250000" min="0" step="10000">
+              <input type="number" class="form-control" id="landCost" value="250000" min="0" step="10000" oninput="debouncedCalculate();">
+              <span class="hint-text" data-en="Typically 20–40% of project cost" data-es="Típicamente 20–40% del costo total">Typically 20–40% of project cost</span>
             </div>
+          </div>
+
+          <!-- 4. Income & Returns Section -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="4. Income &amp; Returns" data-es="4. Ingresos y Retornos">4. Income &amp; Returns</label>
+
             <div class="mb-3">
               <label data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
-              <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5">
+              <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5" oninput="debouncedCalculate();">
+              <span class="hint-text" data-en="Ecuador: $8–20/m² · Germany: €10–18/m²" data-es="Ecuador: $8–20/m² · Alemania: €10–18/m²">Ecuador: $8–20/m² · Germany: €10–18/m²</span>
             </div>
-          </div>
 
-          <div class="calculator-section">
-            <label class="calculator-label" data-en="Operating Costs" data-es="Costos Operativos">Operating Costs</label>
-            <div class="mb-3">
-              <label data-en="Annual Operating Costs (%)" data-es="Costos Operativos Anuales (%)">Annual Operating Costs (% of rental income)</label>
-              <input type="number" class="form-control" id="operatingCosts" value="30" min="0" max="100" step="1">
-              <small data-en="Includes maintenance, taxes, utilities, management" data-es="Incluye mantenimiento, impuestos, servicios, gestión">Includes maintenance, taxes, utilities, management</small>
-            </div>
-            <div class="mb-3">
-              <label data-en="Annual Property Appreciation (%)" data-es="Apreciación Anual de Propiedad (%)">Annual Property Appreciation (%)</label>
-              <input type="number" class="form-control" id="appreciation" value="3" min="0" max="20" step="0.5">
-            </div>
-          </div>
-
-          <div class="calculator-section">
-            <label class="calculator-label" data-en="Financing Method" data-es="Método de Financiamiento">Financing Method</label>
-            <div class="toggle-group">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="financingMethod" id="financing-direct" value="cash" checked onchange="toggleFinancingInputs()" />
-                <label class="form-check-label" for="financing-direct" data-en="Direct Payment" data-es="Pago Directo">
-                  Direct Payment
-                </label>
+            <div class="slider-field">
+              <div class="slider-header">
+                <label data-en="Annual Operating Costs (%)" data-es="Costos Operativos Anuales (%)">Annual Operating Costs (%)</label>
+                <span class="slider-value" id="operatingCostsValue">30</span>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="financingMethod" id="financing-bank" value="bank" onchange="toggleFinancingInputs()" />
-                <label class="form-check-label" for="financing-bank" data-en="Bank Financed" data-es="Financiado por Banco">
-                  Bank Financed
-                </label>
+              <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" oninput="syncSlider(this); debouncedCalculate();">
+              <div class="slider-range-labels"><span>0%</span><span>70%</span></div>
+              <span class="hint-text" data-en="Includes maintenance, taxes, insurance, vacancy (30% is typical)" data-es="Incluye mantenimiento, impuestos, seguros, vacancia (30% es típico)">Includes maintenance, taxes, insurance, vacancy</span>
+            </div>
+
+            <div class="slider-field">
+              <div class="slider-header">
+                <label data-en="Annual Appreciation (%)" data-es="Apreciación Anual (%)">Annual Appreciation (%)</label>
+                <span class="slider-value" id="appreciationValue">3</span>
+              </div>
+              <input type="range" id="appreciation" min="0" max="10" step="0.5" value="3" oninput="syncSlider(this); debouncedCalculate();">
+              <div class="slider-range-labels"><span>0%</span><span>10%</span></div>
+              <span class="hint-text" data-en="Ecuador avg: 3–5%/yr · Germany avg: 2–4%/yr" data-es="Ecuador prom: 3–5%/año · Alemania prom: 2–4%/año">Ecuador avg: 3–5%/yr · Germany avg: 2–4%/yr</span>
+            </div>
+          </div>
+
+          <!-- 4b. Project Purpose Section -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="4b. Project Purpose" data-es="4b. Propósito del Proyecto">4b. Project Purpose</label>
+
+            <div class="option-cards">
+              <div class="option-card" id="purpose-sale" onclick="selectPurpose('sale')">
+                <div class="option-card-title" data-en="Sale Only" data-es="Solo Venta">Sale Only</div>
+                <div class="option-card-subtitle" data-en="Focus on appreciation" data-es="Enfoque en apreciación">Focus on appreciation</div>
+              </div>
+              <div class="option-card active" id="purpose-rent" onclick="selectPurpose('rent')">
+                <div class="option-card-title" data-en="Rent Only" data-es="Solo Alquiler">Rent Only</div>
+                <div class="option-card-subtitle" data-en="Focus on income" data-es="Enfoque en ingresos">Focus on income</div>
+              </div>
+              <div class="option-card" id="purpose-both" onclick="selectPurpose('both')">
+                <div class="option-card-title" data-en="Sale &amp; Rent" data-es="Venta y Alquiler">Sale &amp; Rent</div>
+                <div class="option-card-subtitle" data-en="Both income streams" data-es="Ambos flujos">Both income streams</div>
+              </div>
+            </div>
+
+            <div id="purposePercentageSection" style="display: none;">
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Rental Income (%)" data-es="Ingresos de Alquiler (%)">Rental Income (%)</label>
+                  <span class="slider-value" id="rentalPurposeValue">50</span>
+                </div>
+                <input type="range" id="rentalPurposePercent" min="10" max="90" step="10" value="50" oninput="syncSlider(this); updatePurposePercentages(); debouncedCalculate();">
+                <div class="slider-range-labels"><span>10%</span><span>90%</span></div>
+                <span class="hint-text" id="salePurposeHint">Sale focus: 50%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Financing Section -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="5. Financing Method" data-es="5. Método de Financiamiento">5. Financing Method</label>
+
+            <div class="option-cards two-col">
+              <div class="option-card active" id="card-direct" onclick="selectFinancing('cash')">
+                <div class="option-card-title" data-en="Direct Payment" data-es="Pago Directo">Direct Payment</div>
+                <div class="option-card-subtitle" data-en="Full upfront" data-es="Pago completo">Full upfront</div>
+              </div>
+              <div class="option-card" id="card-bank" onclick="selectFinancing('bank')">
+                <div class="option-card-title" data-en="Bank Financed" data-es="Financiado por Banco">Bank Financed</div>
+                <div class="option-card-subtitle" data-en="Leverage capital" data-es="Apalancamiento">Leverage capital</div>
               </div>
             </div>
 
             <div id="bankFinancingSection" style="display: none;">
-              <div class="mb-3">
-                <label data-en="Loan Amount (%)" data-es="Monto del Préstamo (%)">Loan Amount (% of construction cost)</label>
-                <input type="number" class="form-control" id="loanPercent" value="70" min="0" max="100" step="5">
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Loan Amount (%)" data-es="Monto del Préstamo (%)">Loan Amount (% of cost)</label>
+                  <span class="slider-value" id="loanPercentValue">70</span>
+                </div>
+                <input type="range" id="loanPercent" min="10" max="90" step="5" value="70" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>10%</span><span>90%</span></div>
               </div>
-              <div class="mb-3">
-                <label data-en="Annual Interest Rate (%)" data-es="Tasa de Interés Anual (%)">Annual Interest Rate (%)</label>
-                <input type="number" class="form-control" id="interestRate" value="5" min="0" max="20" step="0.5">
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Interest Rate (%)" data-es="Tasa de Interés (%)">Interest Rate (%)</label>
+                  <span class="slider-value" id="interestRateValue">5</span>
+                </div>
+                <input type="range" id="interestRate" min="1" max="15" step="0.5" value="5" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>1%</span><span>15%</span></div>
+                <span class="hint-text" data-en="Ecuador: 8–12% · Germany: 3–5%" data-es="Ecuador: 8–12% · Alemania: 3–5%">Ecuador: 8–12% · Germany: 3–5%</span>
               </div>
-              <div class="mb-3">
-                <label data-en="Loan Term (Years)" data-es="Plazo del Préstamo (Años)">Loan Term (Years)</label>
-                <input type="number" class="form-control" id="loanTerm" value="15" min="1" max="40" step="1">
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Loan Term (Years)" data-es="Plazo del Préstamo (Años)">Loan Term (Years)</label>
+                  <span class="slider-value" id="loanTermValue">15</span>
+                </div>
+                <input type="range" id="loanTerm" min="5" max="30" step="1" value="15" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>5 yrs</span><span>30 yrs</span></div>
               </div>
             </div>
           </div>
 
+          <!-- 6. Analysis Period Section -->
           <div class="calculator-section">
-            <label class="calculator-label" data-en="Analysis Period" data-es="Período de Análisis">Analysis Period</label>
-            <div class="mb-3">
-              <label data-en="Years to Analyze" data-es="Años a Analizar">Years to Analyze</label>
-              <input type="number" class="form-control" id="years" value="10" min="1" max="50" step="1">
+            <label class="calculator-label" data-en="6. Analysis Period" data-es="6. Período de Análisis">6. Analysis Period</label>
+
+            <div class="slider-field">
+              <div class="slider-header">
+                <label data-en="Years to Analyze" data-es="Años a Analizar">Years to Analyze</label>
+                <span class="slider-value" id="yearsValue">10</span>
+              </div>
+              <input type="range" id="years" min="1" max="30" step="1" value="10" oninput="syncSlider(this); debouncedCalculate();">
+              <div class="slider-range-labels"><span>1 yr</span><span>30 yrs</span></div>
             </div>
           </div>
-
-          <button class="btn-calculate" onclick="calculateProfitability()" data-en="Calculate Profitability" data-es="Calcular Rentabilidad">Calculate Profitability</button>
         </div>
 
         <!-- Results Panel -->
@@ -753,6 +1004,10 @@
     let baseCostPerM2 = null;
     let cashFlowChart = null;
     let profitBreakdownChart = null;
+    let calcDebounceTimer = null;
+    let hasCalculated = false;
+    let currentProjectPurpose = 'rent';
+    let rentalPurposePercent = 100;
 
     const countryData = {
       ecuador: {
@@ -776,6 +1031,112 @@
         typicalCostRange: '1500-2500 EUR/m²'
       }
     };
+
+    function debouncedCalculate() {
+      clearTimeout(calcDebounceTimer);
+      markResultsAsUpdating();
+      calcDebounceTimer = setTimeout(() => {
+        calculateProfitability();
+      }, 300);
+    }
+
+    function markResultsAsUpdating() {
+      if (hasCalculated) {
+        const resultsPanel = document.getElementById('resultsPanel');
+        resultsPanel.classList.add('calculating');
+      }
+    }
+
+    function formatNumber(num) {
+      const n = parseInt(num);
+      if (n >= 1000000) {
+        return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      } else if (n >= 1000) {
+        return (n / 1000).toFixed(0) + 'K';
+      }
+      return n.toString();
+    }
+
+    function syncSlider(slider) {
+      const valueId = slider.id + 'Value';
+      const valueDisplay = document.getElementById(valueId);
+      if (valueDisplay) {
+        // Special formatting for large numbers (like construction cost)
+        if (slider.id === 'constructionCost') {
+          valueDisplay.textContent = formatNumber(slider.value);
+        } else {
+          valueDisplay.textContent = slider.value;
+        }
+        // Update background gradient to show fill using CSS variables
+        const percent = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+        const root = document.documentElement;
+        const primaryColor = getComputedStyle(root).getPropertyValue('--brutalist-yellow').trim();
+        const fadeColor = getComputedStyle(root).getPropertyValue('--accent-fade').trim();
+        slider.style.background = `linear-gradient(to right, ${primaryColor} 0%, ${primaryColor} ${percent}%, ${fadeColor} ${percent}%, ${fadeColor} 100%)`;
+      }
+    }
+
+    function selectFinish(quality) {
+      // Remove active class from all finish cards
+      document.getElementById('card-essential').classList.remove('active');
+      document.getElementById('card-standard').classList.remove('active');
+      document.getElementById('card-premium').classList.remove('active');
+      // Add active class to selected card
+      document.getElementById(`card-${quality}`).classList.add('active');
+      // Update multiplier
+      currentFinishMultiplier = parseFloat(document.getElementById(`card-${quality}`).getAttribute('data-multiplier'));
+      updateFinishMultiplier();
+      debouncedCalculate();
+    }
+
+    function selectFinancing(method) {
+      // Remove active class from financing cards
+      document.getElementById('card-direct').classList.remove('active');
+      document.getElementById('card-bank').classList.remove('active');
+      // Add active class to selected card
+      if (method === 'cash') {
+        document.getElementById('card-direct').classList.add('active');
+      } else {
+        document.getElementById('card-bank').classList.add('active');
+      }
+      toggleFinancingInputs();
+      debouncedCalculate();
+    }
+
+    function selectPurpose(purpose) {
+      // Remove active class from purpose cards
+      document.getElementById('purpose-sale').classList.remove('active');
+      document.getElementById('purpose-rent').classList.remove('active');
+      document.getElementById('purpose-both').classList.remove('active');
+      // Add active class to selected card
+      document.getElementById(`purpose-${purpose}`).classList.add('active');
+
+      currentProjectPurpose = purpose;
+
+      // Show/hide percentage section
+      const percentageSection = document.getElementById('purposePercentageSection');
+      if (purpose === 'both') {
+        percentageSection.style.display = 'block';
+      } else {
+        percentageSection.style.display = 'none';
+        if (purpose === 'sale') {
+          rentalPurposePercent = 0;
+        } else {
+          rentalPurposePercent = 100;
+        }
+      }
+
+      debouncedCalculate();
+    }
+
+    function updatePurposePercentages() {
+      const rentalPercent = parseFloat(document.getElementById('rentalPurposePercent').value) || 50;
+      rentalPurposePercent = rentalPercent;
+
+      const salePercent = 100 - rentalPercent;
+      document.getElementById('rentalPurposeValue').textContent = rentalPercent;
+      document.getElementById('salePurposeHint').textContent = `Sale focus: ${salePercent}%`;
+    }
 
     function selectCountry(country) {
       currentCountry = country;
@@ -808,15 +1169,18 @@
       // Recalculate with new country's finish-adjusted costs
       updateFinishMultiplier();
 
-      // Reset results
-      document.getElementById('resultsPanel').style.display = 'none';
+      // Trigger recalculation only if already calculated (i.e., user switched countries)
+      if (hasCalculated) {
+        debouncedCalculate();
+      }
     }
 
     function toggleFinancingInputs() {
-      const method = document.querySelector('input[name="financingMethod"]:checked').value;
+      // Get financing method from active card
+      const isBankSelected = !document.getElementById('card-direct').classList.contains('active');
       const bankSection = document.getElementById('bankFinancingSection');
 
-      if (method === 'bank') {
+      if (isBankSelected) {
         bankSection.style.display = 'block';
       } else {
         bankSection.style.display = 'none';
@@ -826,26 +1190,28 @@
     function toggleCalcMethod() {
       const method = document.querySelector('input[name="calcMethod"]:checked').value;
       const costSection = document.getElementById('costInputSection');
-      const sizeSection = document.getElementById('sizeInputSection');
       const countryInfo = countryData[currentCountry];
       const costPerM2 = countryInfo.typicalCostPerM2;
+      const currency = countryInfo.currency;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
 
       if (method === 'cost') {
         costSection.style.display = 'block';
-        sizeSection.style.display = 'none';
-        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} per m²`;
+        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} ${currencySymbol}/m² (adjusted for finish quality)`;
+        document.getElementById('sizePerM2Hint').textContent = '';
       } else {
         costSection.style.display = 'none';
-        sizeSection.style.display = 'block';
-        const currency = countryInfo.currency;
-        const currencySymbol = currency === 'EUR' ? '€' : '$';
-        document.getElementById('sizePerM2Hint').textContent = `${costPerM2} ${currencySymbol}/m²`;
+        const adjustedCost = costPerM2 * currentFinishMultiplier;
+        document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
       }
     }
 
     function updateFinishMultiplier() {
-      const finishInput = document.querySelector('input[name="finishQuality"]:checked');
-      currentFinishMultiplier = parseFloat(finishInput.getAttribute('data-multiplier')) || 1.0;
+      // Get multiplier from active finish card
+      const activeFinishCard = document.querySelector('.option-cards:first-of-type .option-card.active');
+      if (activeFinishCard) {
+        currentFinishMultiplier = parseFloat(activeFinishCard.getAttribute('data-multiplier')) || 1.0;
+      }
 
       // Update calculations based on current method
       const method = document.querySelector('input[name="calcMethod"]:checked').value;
@@ -863,17 +1229,28 @@
       const adjustedCost = baseCost * currentFinishMultiplier;
       const calculatedSize = Math.round(cost / adjustedCost);
       document.getElementById('propertySize').value = calculatedSize;
-      document.getElementById('constructionSize').value = calculatedSize;
+
+      // Update cost per m² hint if in size mode
+      const method = document.querySelector('input[name="calcMethod"]:checked').value;
+      if (method === 'size') {
+        const currency = countryInfo.currency;
+        const currencySymbol = currency === 'EUR' ? '€' : '$';
+        document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
+      }
     }
 
     function updateFromSize() {
-      const size = parseFloat(document.getElementById('constructionSize').value) || 0;
+      const size = parseFloat(document.getElementById('propertySize').value) || 0;
       const countryInfo = countryData[currentCountry];
       const baseCost = countryInfo.typicalCostPerM2;
       const adjustedCost = baseCost * currentFinishMultiplier;
       const calculatedCost = Math.round(size * adjustedCost);
       document.getElementById('constructionCost').value = calculatedCost;
-      document.getElementById('propertySize').value = size;
+
+      // Update hint text with current adjusted cost per m²
+      const currency = countryInfo.currency;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
+      document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
     }
 
     function showPreviewData() {
@@ -925,13 +1302,8 @@
     }
 
     function calculateProfitability() {
-      // Show loading animation
-      document.getElementById('loadingOverlay').style.display = 'flex';
-
-      // Simulate calculation delay for animation effect
-      setTimeout(() => {
-        executeCalculation();
-      }, 800);
+      // Calculate immediately without animation
+      executeCalculation();
     }
 
     function executeCalculation() {
@@ -944,8 +1316,9 @@
       const appreciation = parseFloat(document.getElementById('appreciation').value) / 100;
       const years = parseInt(document.getElementById('years').value);
 
-      // Financing parameters
-      const financingMethod = document.querySelector('input[name="financingMethod"]:checked').value;
+      // Financing parameters - get from active financing card
+      const activeFinancingCard = document.getElementById('card-direct').classList.contains('active') ? 'cash' : 'bank';
+      const financingMethod = activeFinancingCard;
       const totalProjectCost = constructionCost + landCost;
       let downPayment = totalProjectCost;
       let annualLoanPayment = 0;
@@ -978,6 +1351,7 @@
       let paybackYear = null;
       const cashFlows = [];
       const propertyValues = [];
+      const plotValues = [];
       const yearLabels = [];
 
       for (let year = 0; year <= years; year++) {
@@ -996,8 +1370,15 @@
           propertyValue = propertyValue * (1 + appreciation);
         }
 
+        // Calculate plot value appreciation over time
+        let plotValue = landCost;
+        for (let i = 0; i < year; i++) {
+          plotValue = plotValue * (1 + appreciation);
+        }
+
         cashFlows.push(cumulativeProfit);
         propertyValues.push(propertyValue);
+        plotValues.push(plotValue);
         yearLabels.push(`Year ${year}`);
 
         if (paybackYear === null && cumulativeProfit >= 0 && year > 0) {
@@ -1046,19 +1427,19 @@
       const resultsPanel = document.getElementById('resultsPanel');
       resultsPanel.style.display = 'block';
       resultsPanel.style.opacity = '1';
-
-      // Hide loading animation
-      document.getElementById('loadingOverlay').style.display = 'none';
+      resultsPanel.classList.remove('calculating');
+      hasCalculated = true;
 
       // Draw charts
-      drawCashFlowChart(yearLabels, cashFlows, propertyValues, currency);
+      drawCashFlowChart(yearLabels, cashFlows, propertyValues, plotValues, currency);
       drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency);
     }
 
-    function drawCashFlowChart(labels, data, propertyValues, currency) {
+    function drawCashFlowChart(labels, data, propertyValues, plotValues, currency) {
       const ctx = document.getElementById('cashFlowChart').getContext('2d');
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
       const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
 
       if (cashFlowChart) {
         cashFlowChart.destroy();
@@ -1094,6 +1475,19 @@
               pointBackgroundColor: '#90EE90',
               pointBorderColor: '#90EE90',
               borderDash: [5, 5],
+              yAxisID: 'y1'
+            },
+            {
+              label: 'Plot Value',
+              data: plotValues,
+              borderColor: '#FFB347',
+              borderWidth: 2,
+              fill: false,
+              tension: 0.4,
+              pointRadius: 2,
+              pointBackgroundColor: '#FFB347',
+              pointBorderColor: '#FFB347',
+              borderDash: [10, 5],
               yAxisID: 'y1'
             }
           ]
@@ -1134,7 +1528,7 @@
                 color: 'rgba(255, 255, 255, 0.6)',
                 font: { size: 10 },
                 callback: function(value) {
-                  return '$' + (value / 1000).toFixed(0) + 'k';
+                  return currencySymbol + (value / 1000).toFixed(0) + 'k';
                 }
               },
               title: {
@@ -1153,7 +1547,7 @@
                 color: '#90EE90',
                 font: { size: 10 },
                 callback: function(value) {
-                  return '$' + (value / 1000).toFixed(0) + 'k';
+                  return currencySymbol + (value / 1000).toFixed(0) + 'k';
                 }
               },
               title: {
@@ -1212,13 +1606,27 @@
       });
     }
 
+    // Function to re-sync all sliders (called on theme change)
+    function resyncAllSliders() {
+      document.querySelectorAll('input[type="range"]').forEach(slider => {
+        syncSlider(slider);
+      });
+    }
+
     // Language support
     document.addEventListener('DOMContentLoaded', function() {
       // Initialize currency display for default country
       selectCountry(currentCountry);
 
-      // Show sample preview data
-      showPreviewData();
+      // Initialize all slider displays
+      resyncAllSliders();
+
+      // Initialize purpose selection
+      document.getElementById('purpose-rent').classList.add('active');
+      updatePurposePercentages();
+
+      // Auto-calculate on page load
+      calculateProfitability();
 
       const currentLang = localStorage.getItem('lang') || 'en';
       updateLanguageDisplay(currentLang);
@@ -1230,6 +1638,16 @@
           localStorage.setItem('lang', newLang);
           updateLanguageDisplay(newLang);
         });
+      }
+
+    });
+
+    // Also watch for storage changes (theme change from applyTheme)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'theme') {
+        setTimeout(() => {
+          resyncAllSliders();
+        }, 100);
       }
     });
 
