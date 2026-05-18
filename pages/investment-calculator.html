@@ -502,6 +502,30 @@
             </div>
 
             <div class="mb-3">
+              <label data-en="Finish Quality" data-es="Calidad de Acabados">Finish Quality</label>
+              <div class="toggle-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="finishQuality" id="finish-essential" value="essential" data-multiplier="0.8" onchange="updateFinishMultiplier()" />
+                  <label class="form-check-label" for="finish-essential" data-en="Essential" data-es="Esencial">
+                    Essential
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="finishQuality" id="finish-standard" value="standard" data-multiplier="1.0" checked onchange="updateFinishMultiplier()" />
+                  <label class="form-check-label" for="finish-standard" data-en="Standard" data-es="Estándar">
+                    Standard
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="finishQuality" id="finish-premium" value="premium" data-multiplier="1.5" onchange="updateFinishMultiplier()" />
+                  <label class="form-check-label" for="finish-premium" data-en="Premium" data-es="Premium">
+                    Premium
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
               <label data-en="Calculate By" data-es="Calcular Por">Calculate By</label>
               <div class="toggle-group">
                 <div class="form-check">
@@ -725,6 +749,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let currentCountry = 'ecuador';
+    let currentFinishMultiplier = 1.0;
+    let baseCostPerM2 = null;
     let cashFlowChart = null;
     let profitBreakdownChart = null;
 
@@ -773,10 +799,14 @@
       const calcMethod = document.querySelector('input[name="calcMethod"]:checked').value;
       const costPerM2 = countryData[country].typicalCostPerM2;
       if (calcMethod === 'cost') {
-        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} ${currencySymbol}/m²`;
+        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} ${currencySymbol}/m² (adjusted for finish quality)`;
       } else {
-        document.getElementById('sizePerM2Hint').textContent = `${costPerM2} ${currencySymbol}/m²`;
+        const adjustedCost = costPerM2 * currentFinishMultiplier;
+        document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
       }
+
+      // Recalculate with new country's finish-adjusted costs
+      updateFinishMultiplier();
 
       // Reset results
       document.getElementById('resultsPanel').style.display = 'none';
@@ -813,11 +843,25 @@
       }
     }
 
+    function updateFinishMultiplier() {
+      const finishInput = document.querySelector('input[name="finishQuality"]:checked');
+      currentFinishMultiplier = parseFloat(finishInput.getAttribute('data-multiplier')) || 1.0;
+
+      // Update calculations based on current method
+      const method = document.querySelector('input[name="calcMethod"]:checked').value;
+      if (method === 'cost') {
+        updateFromCost();
+      } else {
+        updateFromSize();
+      }
+    }
+
     function updateFromCost() {
       const cost = parseFloat(document.getElementById('constructionCost').value) || 0;
       const countryInfo = countryData[currentCountry];
-      const costPerM2 = countryInfo.typicalCostPerM2;
-      const calculatedSize = Math.round(cost / costPerM2);
+      const baseCost = countryInfo.typicalCostPerM2;
+      const adjustedCost = baseCost * currentFinishMultiplier;
+      const calculatedSize = Math.round(cost / adjustedCost);
       document.getElementById('propertySize').value = calculatedSize;
       document.getElementById('constructionSize').value = calculatedSize;
     }
@@ -825,8 +869,9 @@
     function updateFromSize() {
       const size = parseFloat(document.getElementById('constructionSize').value) || 0;
       const countryInfo = countryData[currentCountry];
-      const costPerM2 = countryInfo.typicalCostPerM2;
-      const calculatedCost = Math.round(size * costPerM2);
+      const baseCost = countryInfo.typicalCostPerM2;
+      const adjustedCost = baseCost * currentFinishMultiplier;
+      const calculatedCost = Math.round(size * adjustedCost);
       document.getElementById('constructionCost').value = calculatedCost;
       document.getElementById('propertySize').value = size;
     }
