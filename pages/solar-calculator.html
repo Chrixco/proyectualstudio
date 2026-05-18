@@ -24,6 +24,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"></script>
+  <!-- html2pdf for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     /* Two-panel calculator layout for desktop */
@@ -749,6 +751,110 @@
     .lead-summary-value {
       color: var(--text-primary);
     }
+
+    /* Email Modal for PDF Download */
+    .email-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-semi-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .email-modal.active {
+      display: flex;
+    }
+
+    .email-modal-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 2.5rem;
+      border-radius: var(--panel-border-radius);
+      max-width: 450px;
+      width: 90%;
+      animation: slideIn 0.3s ease;
+    }
+
+    .email-modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: var(--bg-white-ultra-light);
+      color: var(--brutalist-black);
+      font-size: 1rem;
+      border-radius: var(--panel-border-radius);
+      box-sizing: border-box;
+    }
+
+    .email-modal-input::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .email-modal-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--brutalist-yellow);
+    }
+
+    .email-modal-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .email-modal-btn {
+      flex: 1;
+      padding: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: var(--panel-border-radius);
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-btn.submit {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+    }
+
+    .email-modal-btn.submit:hover {
+      background: var(--brutalist-black);
+      color: var(--brutalist-yellow);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      transform: translate(-3px, -3px);
+    }
+
+    .email-modal-btn.cancel {
+      background: transparent;
+      color: var(--brutalist-yellow);
+    }
+
+    .email-modal-btn.cancel:hover {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      transform: translate(-3px, -3px);
+    }
   </style>
 </head>
 <body>
@@ -1092,14 +1198,32 @@
             <p class="disclaimer" data-en="This is an estimation based on standard solar irradiance data. Actual production depends on weather, shading, panel degradation, and installation quality." data-es="Esta es una estimación basada en datos estándar de irradiancia solar. La producción real depende del clima, sombreado, degradación de paneles y calidad de instalación.">
               This is an estimation based on standard solar irradiance data.
             </p>
-            <button onclick="navigateToLeadForm()" class="cta-final" data-en="Get Solar Design" data-es="Obtener Diseño Solar">
-              Get Solar Design
-            </button>
+            <div style="display: flex; gap: 1rem; flex-direction: column;">
+              <button onclick="navigateToLeadForm()" class="cta-final" data-en="Get Solar Design" data-es="Obtener Diseño Solar">
+                Get Solar Design
+              </button>
+              <button onclick="openEmailModal()" class="cta-final" style="background: var(--brutalist-black); color: var(--brutalist-white); border-color: var(--brutalist-yellow);" data-en="Download as PDF" data-es="Descargar como PDF">
+                Download as PDF
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
+
+  <!-- Email Modal for PDF Download -->
+  <div id="emailModal" class="email-modal">
+    <div class="email-modal-content">
+      <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--text-secondary);" data-en="Enter your email to receive the PDF of your solar design" data-es="Ingresa tu email para recibir el PDF de tu diseño solar">Enter your email to receive the PDF of your solar design</p>
+      <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
+      <div class="email-modal-buttons">
+        <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
+        <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer-enhanced">
     <div class="footer-content">
@@ -1734,6 +1858,169 @@
         });
       }
     });
+
+    // Email Modal Functions
+    window.openEmailModal = function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.getElementById('emailInput').focus();
+      }
+    };
+
+    window.closeEmailModal = function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.getElementById('emailInput').value = '';
+      }
+    };
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('emailModal');
+      if (modal && e.target === modal) {
+        window.closeEmailModal();
+      }
+    });
+
+    window.submitPdfDownload = function() {
+      const email = document.getElementById('emailInput').value.trim();
+
+      if (!email) {
+        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
+        return;
+      }
+
+      // Send email to Discord
+      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
+
+      const totalCost = parseInt(document.getElementById('totalCostDisplay').textContent.replace(/,/g, '')) || 0;
+      const annualSavings = parseInt(document.getElementById('annualSavingsDisplay').textContent.replace(/,/g, '')) || 0;
+      const location = solarState.location || 'Not specified';
+
+      const discordMessage = {
+        content: `📊 New Solar Calculator PDF Download Request`,
+        embeds: [{
+          title: '☀️ Solar Calculator PDF Request',
+          color: 16760576, // Yellow color
+          fields: [
+            { name: 'Email', value: email, inline: false },
+            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
+            { name: 'Location', value: location, inline: true },
+            { name: 'System Cost', value: '$' + totalCost.toLocaleString(), inline: true },
+            { name: 'Annual Savings', value: '$' + annualSavings.toLocaleString(), inline: true }
+          ]
+        }]
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordMessage)
+      }).catch(err => console.error('Discord webhook error:', err));
+
+      // Generate and download PDF
+      generateCalculatorPDF(email);
+
+      // Close modal
+      window.closeEmailModal();
+
+      alert(currentLang === 'en'
+        ? 'PDF downloaded successfully! Check your email for a copy.'
+        : '¡PDF descargado exitosamente! Revisa tu email para una copia.');
+    };
+
+    window.generateCalculatorPDF = function(email) {
+      const element = document.createElement('div');
+      element.style.padding = '20px';
+      element.style.fontFamily = 'Arial, sans-serif';
+      element.style.backgroundColor = 'white';
+      element.style.color = 'black';
+
+      const location = solarState.location || 'Not specified';
+      const roofArea = solarState.roofArea || 'Not specified';
+      const panelType = solarState.panelType || 'Not specified';
+      const totalCost = document.getElementById('totalCostDisplay')?.textContent || 'Not calculated';
+      const annualProduction = document.getElementById('annualProduction')?.textContent || 'Not calculated';
+      const annualSavings = document.getElementById('annualSavingsDisplay')?.textContent || 'Not calculated';
+      const paybackPeriod = document.getElementById('paybackYears')?.textContent || 'Not calculated';
+
+      element.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #FFD500; padding-bottom: 20px;">
+          <h1 style="margin: 0; color: #FFD500; font-size: 28px;">PROYECTUAL STUDIO</h1>
+          <h2 style="margin: 10px 0 0 0; font-size: 18px;">Solar Panel System Design</h2>
+        </div>
+
+        <div style="margin: 30px 0;">
+          <h3 style="color: #FFD500; font-size: 16px; text-transform: uppercase; border-bottom: 2px solid #FFD500; padding-bottom: 10px;">System Details</h3>
+          <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 10px; font-weight: bold; width: 50%;">Location:</td>
+              <td style="padding: 10px;">${location}</td>
+            </tr>
+            <tr style="background-color: #f5f5f5;">
+              <td style="padding: 10px; font-weight: bold;">Roof Area:</td>
+              <td style="padding: 10px;">${roofArea} m²</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold;">Panel Type:</td>
+              <td style="padding: 10px;">${panelType}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="margin: 30px 0;">
+          <h3 style="color: #FFD500; font-size: 16px; text-transform: uppercase; border-bottom: 2px solid #FFD500; padding-bottom: 10px;">Financial Analysis</h3>
+          <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 10px; font-weight: bold;">System Cost:</td>
+              <td style="padding: 10px;">${totalCost}</td>
+            </tr>
+            <tr style="background-color: #f5f5f5;">
+              <td style="padding: 10px; font-weight: bold;">Annual Savings:</td>
+              <td style="padding: 10px;">${annualSavings}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold;">Payback Period:</td>
+              <td style="padding: 10px;">${paybackPeriod} years</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="margin: 30px 0; background-color: #FFD500; color: black; padding: 20px; text-align: center; border-radius: 8px;">
+          <p style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Annual Energy Production</p>
+          <h2 style="margin: 10px 0 0 0; font-size: 36px; font-weight: bold;">${annualProduction}</h2>
+        </div>
+
+        <div style="margin: 30px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #FFD500; border-radius: 4px;">
+          <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #666;">
+            <strong>Disclaimer:</strong> This is an estimation based on standard solar irradiance data. Actual production depends on weather, shading, panel degradation, and installation quality.
+          </p>
+        </div>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; text-align: center; font-size: 12px; color: #999;">
+          <p>Email: christianxcorral@gmail.com</p>
+          <p>Generated: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+          <p>User Email: ${email}</p>
+        </div>
+      `;
+
+      const options = {
+        margin: 10,
+        filename: 'proyectual-solar-design.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+      };
+
+      html2pdf().set(options).from(element).save();
+    };
   </script>
 
 </body>

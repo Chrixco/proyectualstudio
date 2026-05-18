@@ -25,6 +25,9 @@
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
+  <!-- html2pdf for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
     /* Two-panel calculator layout for desktop */
     .calculator-wrapper {
@@ -551,6 +554,110 @@
     .lead-summary-value {
       color: var(--text-primary);
     }
+
+    /* Email Modal for PDF Download */
+    .email-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-semi-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .email-modal.active {
+      display: flex;
+    }
+
+    .email-modal-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 2.5rem;
+      border-radius: var(--panel-border-radius);
+      max-width: 450px;
+      width: 90%;
+      animation: slideIn 0.3s ease;
+    }
+
+    .email-modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: var(--bg-white-ultra-light);
+      color: var(--brutalist-black);
+      font-size: 1rem;
+      border-radius: var(--panel-border-radius);
+      box-sizing: border-box;
+    }
+
+    .email-modal-input::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .email-modal-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--brutalist-yellow);
+    }
+
+    .email-modal-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .email-modal-btn {
+      flex: 1;
+      padding: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: var(--panel-border-radius);
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-btn.submit {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+    }
+
+    .email-modal-btn.submit:hover {
+      background: var(--brutalist-black);
+      color: var(--brutalist-yellow);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      transform: translate(-3px, -3px);
+    }
+
+    .email-modal-btn.cancel {
+      background: transparent;
+      color: var(--brutalist-yellow);
+    }
+
+    .email-modal-btn.cancel:hover {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      transform: translate(-3px, -3px);
+    }
   </style>
 </head>
 <body>
@@ -785,19 +892,35 @@
             <p class="disclaimer" data-en="This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources. Contact us for a detailed audit." data-es="Esta es una estimación aproximada. La huella de carbono final depende de materiales específicos, métodos de transporte y fuentes de energía. Contáctanos para una auditoría detallada.">
               This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources.
             </p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
               <button onclick="navigateToLeadForm()" class="cta-final" data-en="Request Custom Analysis" data-es="Solicitar Análisis Personalizado">
                 Request Custom Analysis
               </button>
               <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
                 Support Tree Planting
               </a>
+              <button onclick="openEmailModal()" class="cta-final" style="background: var(--brutalist-black); color: var(--brutalist-white); border-color: var(--brutalist-yellow);" data-en="Download as PDF" data-es="Descargar como PDF">
+                Download as PDF
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </main>
+
+  <!-- Email Modal for PDF Download -->
+  <div id="emailModal" class="email-modal">
+    <div class="email-modal-content">
+      <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--text-secondary);" data-en="Enter your email to receive the PDF of your carbon analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de carbono">Enter your email to receive the PDF of your carbon analysis</p>
+      <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
+      <div class="email-modal-buttons">
+        <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
+        <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer-enhanced">
     <div class="footer-content">
@@ -1560,6 +1683,148 @@
       console.log('🔗 Navigating to lead-form.html');
 
       window.location.href = 'lead-form.html';
+    };
+
+    // Email Modal Functions
+    window.openEmailModal = function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.getElementById('emailInput').focus();
+      }
+    };
+
+    window.closeEmailModal = function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.getElementById('emailInput').value = '';
+      }
+    };
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('emailModal');
+      if (modal && e.target === modal) {
+        window.closeEmailModal();
+      }
+    });
+
+    window.submitPdfDownload = function() {
+      const email = document.getElementById('emailInput').value.trim();
+
+      if (!email) {
+        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
+        return;
+      }
+
+      // Send email to Discord
+      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
+
+      const totalCO2 = document.getElementById('totalCO2')?.textContent || 'Not calculated';
+      const buildingType = carbonState.buildingType || 'Not specified';
+      const location = carbonState.location || 'Not specified';
+
+      const discordMessage = {
+        content: `📊 New Carbon Calculator PDF Download Request`,
+        embeds: [{
+          title: '🌱 Carbon Calculator PDF Request',
+          color: 16760576, // Yellow color
+          fields: [
+            { name: 'Email', value: email, inline: false },
+            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
+            { name: 'Building Type', value: buildingType, inline: true },
+            { name: 'Location', value: location, inline: true },
+            { name: 'Total Carbon Footprint', value: totalCO2, inline: true }
+          ]
+        }]
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordMessage)
+      }).catch(err => console.error('Discord webhook error:', err));
+
+      // Generate and download PDF
+      generateCalculatorPDF(email);
+
+      // Close modal
+      window.closeEmailModal();
+
+      alert(currentLang === 'en'
+        ? 'PDF downloaded successfully! Check your email for a copy.'
+        : '¡PDF descargado exitosamente! Revisa tu email para una copia.');
+    };
+
+    window.generateCalculatorPDF = function(email) {
+      const element = document.createElement('div');
+      element.style.padding = '20px';
+      element.style.fontFamily = 'Arial, sans-serif';
+      element.style.backgroundColor = 'white';
+      element.style.color = 'black';
+
+      const totalCO2 = document.getElementById('totalCO2')?.textContent || 'Not calculated';
+      const buildingType = carbonState.buildingType || 'Not specified';
+      const location = carbonState.location || 'Not specified';
+      const constructionArea = carbonState.constructionArea || 'Not specified';
+
+      element.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 3px solid #FFD500; padding-bottom: 20px;">
+          <h1 style="margin: 0; color: #FFD500; font-size: 28px;">PROYECTUAL STUDIO</h1>
+          <h2 style="margin: 10px 0 0 0; font-size: 18px;">Carbon Footprint Analysis</h2>
+        </div>
+
+        <div style="margin: 30px 0;">
+          <h3 style="color: #FFD500; font-size: 16px; text-transform: uppercase; border-bottom: 2px solid #FFD500; padding-bottom: 10px;">Project Details</h3>
+          <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 10px; font-weight: bold; width: 50%;">Building Type:</td>
+              <td style="padding: 10px;">${buildingType}</td>
+            </tr>
+            <tr style="background-color: #f5f5f5;">
+              <td style="padding: 10px; font-weight: bold;">Location:</td>
+              <td style="padding: 10px;">${location}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold;">Construction Area:</td>
+              <td style="padding: 10px;">${constructionArea}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="margin: 30px 0; background-color: #FFD500; color: black; padding: 20px; text-align: center; border-radius: 8px;">
+          <p style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Total Carbon Footprint</p>
+          <h2 style="margin: 10px 0 0 0; font-size: 36px; font-weight: bold;">${totalCO2}</h2>
+        </div>
+
+        <div style="margin: 30px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #FFD500; border-radius: 4px;">
+          <p style="margin: 0; font-size: 12px; line-height: 1.6; color: #666;">
+            <strong>Disclaimer:</strong> This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources. Contact us for a detailed audit.
+          </p>
+        </div>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; text-align: center; font-size: 12px; color: #999;">
+          <p>Email: christianxcorral@gmail.com</p>
+          <p>Generated: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+          <p>User Email: ${email}</p>
+        </div>
+      `;
+
+      const options = {
+        margin: 10,
+        filename: 'proyectual-carbon-analysis.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+      };
+
+      html2pdf().set(options).from(element).save();
     };
   </script>
 
