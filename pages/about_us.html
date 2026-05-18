@@ -3,16 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Cookie Consent & Analytics -->
   <script src="../js/cookie-consent.js"></script>
+  <script src="../js/colors.js"></script>
   <link rel="icon" href="../images/logo03.ico" type="image/x-icon" />
   <title>About Us | Proyectual Studio | Christian Corral</title>
   <meta name="description" content="About Proyectual Studio and founder Christian Corral. Architecture, urbanism, and critical research founded in Cuenca, Ecuador in 2018."/>
-  <meta name="keywords" content="Christian Corral, architect, urban planner, PhD, Cuenca, Ecuador, Leibniz University"/>
-  <meta property="og:title" content="About Us | Proyectual Studio"/>
-  <meta property="og:description" content="Architecture, urbanism, and critical research founded in Cuenca, Ecuador."/>
-  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
-  <meta property="og:url" content="https://proyectualst.com/pages/about_us.html"/>
-  <link href="../css/styles.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../css/styles.css" rel="stylesheet" />
+</head>
+<body class="body-white-text">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
+      <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
+      <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item">
+          <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
+  <main class="container mt-5 px-3 px-md-4">
+    <section class="py-5 my-5">
+      <div class="brutal-hero">
+        <h1 class="mb-4" data-en="About Us" data-es="Sobre Nosotros">About Us</h1>
+        <p class="fs-5" data-en="Proyectual Studio - Architecture, urbanism, and critical research founded in Cuenca, Ecuador." data-es="Proyectual Studio - Arquitectura, urbanismo e investigación crítica fundada en Cuenca, Ecuador.">
+          Proyectual Studio - Architecture, urbanism, and critical research founded in Cuenca, Ecuador.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-enhanced">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Proyectual Studio</h4>
+        <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
+        <p><strong>Cuenca, Ecuador</strong></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Contact" data-es="Contacto">Contact</h4>
+        <p><a href="mailto:proyectualstudio@gmail.com">proyectualstudio@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© Christian Corral</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let currentLang = localStorage.getItem('lang') || 'en';
+    function updateLanguage(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+      });
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+      localStorage.setItem('lang', lang);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLang);
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          currentLang = currentLang === 'en' ? 'es' : 'en';
+          updateLanguage(currentLang);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
