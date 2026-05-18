@@ -391,6 +391,38 @@
           </div>
 
           <div class="calculator-section">
+            <label class="calculator-label" data-en="Financing" data-es="Financiamiento">Financing</label>
+            <div class="mb-3">
+              <label data-en="Financing Method" data-es="Método de Financiamiento">Financing Method</label>
+              <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="financingMethod" value="cash" checked onchange="toggleFinancingInputs()">
+                  <span data-en="Cash Payment" data-es="Pago en Efectivo">Cash Payment</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="radio" name="financingMethod" value="bank" onchange="toggleFinancingInputs()">
+                  <span data-en="Bank Financed" data-es="Financiado por Banco">Bank Financed</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="bankFinancingSection" style="display: none;">
+              <div class="mb-3">
+                <label data-en="Loan Amount (%)" data-es="Monto del Préstamo (%)">Loan Amount (% of construction cost)</label>
+                <input type="number" class="form-control" id="loanPercent" value="70" min="0" max="100" step="5">
+              </div>
+              <div class="mb-3">
+                <label data-en="Annual Interest Rate (%)" data-es="Tasa de Interés Anual (%)">Annual Interest Rate (%)</label>
+                <input type="number" class="form-control" id="interestRate" value="5" min="0" max="20" step="0.5">
+              </div>
+              <div class="mb-3">
+                <label data-en="Loan Term (Years)" data-es="Plazo del Préstamo (Años)">Loan Term (Years)</label>
+                <input type="number" class="form-control" id="loanTerm" value="15" min="1" max="40" step="1">
+              </div>
+            </div>
+          </div>
+
+          <div class="calculator-section">
             <label class="calculator-label" data-en="Analysis Period" data-es="Período de Análisis">Analysis Period</label>
             <div class="mb-3">
               <label data-en="Years to Analyze" data-es="Años a Analizar">Years to Analyze</label>
@@ -537,6 +569,32 @@
       document.getElementById('resultsPanel').style.display = 'none';
     }
 
+    function toggleFinancingInputs() {
+      const method = document.querySelector('input[name="financingMethod"]:checked').value;
+      const bankSection = document.getElementById('bankFinancingSection');
+
+      if (method === 'bank') {
+        bankSection.style.display = 'block';
+      } else {
+        bankSection.style.display = 'none';
+      }
+    }
+
+    function calculateLoanPayment(principal, annualRate, years) {
+      const monthlyRate = annualRate / 100 / 12;
+      const numberOfPayments = years * 12;
+
+      if (monthlyRate === 0) {
+        return principal / numberOfPayments;
+      }
+
+      const monthlyPayment = principal *
+        (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+        (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+      return monthlyPayment * 12; // Return annual payment
+    }
+
     function calculateProfitability() {
       const projectName = document.getElementById('projectName').value || 'Investment Project';
       const constructionCost = parseFloat(document.getElementById('constructionCost').value);
@@ -546,6 +604,21 @@
       const appreciation = parseFloat(document.getElementById('appreciation').value) / 100;
       const years = parseInt(document.getElementById('years').value);
 
+      // Financing parameters
+      const financingMethod = document.querySelector('input[name="financingMethod"]:checked').value;
+      let downPayment = constructionCost;
+      let annualLoanPayment = 0;
+
+      if (financingMethod === 'bank') {
+        const loanPercent = parseFloat(document.getElementById('loanPercent').value) / 100;
+        const interestRate = parseFloat(document.getElementById('interestRate').value);
+        const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+        const loanAmount = constructionCost * loanPercent;
+        downPayment = constructionCost - loanAmount;
+        annualLoanPayment = calculateLoanPayment(loanAmount, interestRate, loanTerm);
+      }
+
       const countryInfo = countryData[currentCountry];
       const currency = countryInfo.currency;
 
@@ -553,10 +626,10 @@
       const monthlyRental = rentalPerM2 * propertySize;
       const annualRental = monthlyRental * 12;
 
-      // Calculate annual operating costs
-      const annualOperatingCost = annualRental * operatingCostPercent;
+      // Calculate annual operating costs (including loan payment if financed)
+      const annualOperatingCost = annualRental * operatingCostPercent + annualLoanPayment;
 
-      // Calculate annual net income
+      // Calculate annual net income (after all costs including loan)
       const annualNetIncome = annualRental - annualOperatingCost;
 
       // Calculate cash flows and profits
@@ -568,7 +641,7 @@
       for (let year = 0; year <= years; year++) {
         let yearProfit;
         if (year === 0) {
-          yearProfit = -constructionCost;
+          yearProfit = -downPayment;
         } else {
           yearProfit = annualNetIncome;
         }
@@ -588,9 +661,9 @@
         propertyValue = propertyValue * (1 + appreciation);
       }
 
-      // Calculate total profit
+      // Calculate total profit (based on initial investment)
       const totalProfit = cumulativeProfit + propertyValue - constructionCost;
-      const roi = ((totalProfit / constructionCost) * 100).toFixed(2);
+      const roi = ((totalProfit / downPayment) * 100).toFixed(2);
 
       // Format currency
       const formatter = new Intl.NumberFormat('en-US', {
@@ -600,7 +673,7 @@
       });
 
       // Update results
-      document.getElementById('resultInvestment').textContent = formatter.format(constructionCost);
+      document.getElementById('resultInvestment').textContent = formatter.format(downPayment);
       document.getElementById('resultAnnualRental').textContent = formatter.format(annualRental);
       document.getElementById('resultNetIncome').textContent = formatter.format(annualNetIncome);
       document.getElementById('resultTotalProfit').textContent = formatter.format(totalProfit);
