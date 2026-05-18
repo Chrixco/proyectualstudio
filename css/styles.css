@@ -2127,3 +2127,96 @@ html {
 .panel-highlight p {
   color: #000000 !important;
 }
+
+/* ===========================
+   DARK PANEL STYLING
+   Ensure white text and buttons on dark backgrounds
+   =========================== */
+
+/* Dark navbar and footer */
+.navbar,
+.navbar.bg-dark,
+.footer,
+.footer-enhanced {
+  color: #FFFFFF !important;
+}
+
+/* Dark panel containers */
+[style*="background: rgba(0, 0, 0"]::before,
+[style*="background-color: rgba(0, 0, 0"] {
+  color: #FFFFFF !important;
+}
+
+/* Buttons in dark panels */
+.navbar .btn,
+.navbar .btn-outline-light,
+.footer .btn,
+.footer .btn-outline-light {
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
+.navbar .btn:hover,
+.navbar .btn-outline-light:hover,
+.footer .btn:hover,
+.footer .btn-outline-light:hover {
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
+/* Text elements in dark panels */
+.navbar p,
+.navbar h1,
+.navbar h2,
+.navbar h3,
+.navbar h4,
+.navbar h5,
+.navbar h6,
+.footer p,
+.footer h1,
+.footer h2,
+.footer h3,
+.footer h4,
+.footer h5,
+.footer h6,
+.footer-content p,
+.footer-content h4,
+.footer-section p,
+.footer-section h4 {
+  color: #FFFFFF !important;
+}
+
+/* Dark background panels */
+[style*="background: #000000"],
+[style*="background-color: #000000"],
+[style*="background: rgba(0, 0, 0, 0.85"],
+[style*="background: rgba(0, 0, 0, 0.9"] {
+  color: #FFFFFF !important;
+}
+
+[style*="background: #000000"] p,
+[style*="background: #000000"] h1,
+[style*="background: #000000"] h2,
+[style*="background: #000000"] h3,
+[style*="background: #000000"] h4,
+[style*="background: #000000"] h5,
+[style*="background: #000000"] h6,
+[style*="background: #000000"] a,
+[style*="background-color: #000000"] p,
+[style*="background-color: #000000"] h1,
+[style*="background-color: #000000"] h2,
+[style*="background-color: #000000"] h3,
+[style*="background-color: #000000"] h4,
+[style*="background-color: #000000"] h5,
+[style*="background-color: #000000"] h6,
+[style*="background-color: #000000"] a {
+  color: #FFFFFF !important;
+}
+
+/* Dark background buttons */
+[style*="background: #000000"] .btn,
+[style*="background: #000000"] .brutal-btn,
+[style*="background: rgba(0, 0, 0"] .btn,
+[style*="background: rgba(0, 0, 0"] .brutal-btn {
+  color: #FFFFFF !important;
+}
