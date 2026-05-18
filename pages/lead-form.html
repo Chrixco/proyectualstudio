@@ -427,6 +427,31 @@
         <textarea class="form-control" id="message" placeholder="Tell us about your project / Cuéntanos sobre tu proyecto"></textarea>
       </div>
 
+      <!-- Preferred Contact Method -->
+      <div class="form-section">
+        <div class="form-section-title" data-en="Preferred Contact Method" data-es="Método de Contacto Preferido">Preferred Contact Method</div>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferredContact" id="contact-email" value="Email" checked />
+            <label class="form-check-label" for="contact-email" data-en="Email" data-es="Correo">
+              Email
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferredContact" id="contact-phone" value="Phone" />
+            <label class="form-check-label" for="contact-phone" data-en="Phone" data-es="Teléfono">
+              Phone
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferredContact" id="contact-both" value="Both" />
+            <label class="form-check-label" for="contact-both" data-en="Both" data-es="Ambos">
+              Both
+            </label>
+          </div>
+        </div>
+      </div>
+
       <!-- Debug Button (hidden in production) -->
       <div style="margin-bottom: 1rem; text-align: center;">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="fillDebugData()" style="font-size: 0.75rem; opacity: 0.5;">Debug: Fill Test Data</button>
@@ -563,6 +588,7 @@
       const company = document.getElementById('company').value.trim();
       const fieldOfInterest = document.getElementById('fieldOfInterest').value.trim();
       const message = document.getElementById('message').value.trim();
+      const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
 
       // Validation
       if (!name) {
@@ -601,6 +627,7 @@
             { name: '🏢 Field of Interest', value: fieldOfInterest, inline: true },
             ...(phone ? [{ name: '📱 Phone', value: phone, inline: true }] : []),
             ...(company ? [{ name: '🏛️ Company', value: company, inline: true }] : []),
+            { name: '🎯 Preferred Contact', value: preferredContact, inline: true },
             ...(message ? [{ name: '💬 Message', value: message, inline: false }] : []),
           ],
           footer: { text: `Submitted: ${new Date().toLocaleString()}` }
