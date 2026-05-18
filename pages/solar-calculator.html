@@ -2011,6 +2011,10 @@
         </div>
       `;
 
+      // Append to body temporarily so html2pdf can render it
+      document.body.appendChild(element);
+      element.style.display = 'none';
+
       const options = {
         margin: 10,
         filename: 'proyectual-solar-design.pdf',
@@ -2019,7 +2023,9 @@
         jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
       };
 
-      html2pdf().set(options).from(element).save();
+      html2pdf().set(options).from(element).save().then(() => {
+        document.body.removeChild(element);
+      });
     };
   </script>
 
