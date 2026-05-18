@@ -219,8 +219,9 @@
       submitBtn.disabled = true;
       showFormStatus(currentLang === 'en' ? 'Sending...' : 'Enviando...', 'info');
 
-      // Send to Discord webhook
+      // Send to Discord webhooks
       const webhookUrl = 'https://discord.com/api/webhooks/1505911786598305852/MNhb9RAN-1tVkMBYXrrAsRAqrw2FtdLnjhhTjlqinrk2C5g6_zCDIJ3KiuapCXUDgwQ8';
+      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
 
       const discordMessage = {
         content: `📬 New Contact Form Submission from ${name}`,
@@ -243,21 +244,33 @@
       })
       .then(response => {
         if (response.ok) {
-          showFormStatus(
-            currentLang === 'en'
-              ? '✅ Message sent successfully! Thank you for contacting us.'
-              : '✅ ¡Mensaje enviado exitosamente! Gracias por contactarnos.',
-            'success'
-          );
+          // Also send email to emails_databases channel
+          const emailLogMessage = {
+            content: `\`${email}\` - Contact Form (${new Date().toLocaleString()})`
+          };
 
-          // Clear form
-          document.getElementById('contactForm').reset();
-
-          // Re-enable button
-          submitBtn.disabled = false;
+          return fetch(emailDatabaseWebhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(emailLogMessage)
+          });
         } else {
           throw new Error('Discord webhook error');
         }
+      })
+      .then(response => {
+        showFormStatus(
+          currentLang === 'en'
+            ? '✅ Message sent successfully! Thank you for contacting us.'
+            : '✅ ¡Mensaje enviado exitosamente! Gracias por contactarnos.',
+          'success'
+        );
+
+        // Clear form
+        document.getElementById('contactForm').reset();
+
+        // Re-enable button
+        submitBtn.disabled = false;
       })
       .catch(error => {
         console.error('❌ Error submitting form:', error);
