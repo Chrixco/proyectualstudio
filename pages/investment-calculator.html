@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../images/logo03.ico" type="image/x-icon" />
+  <title>Investment Profitability Calculator | Proyectual Studio</title>
+  <meta name="description" content="Calculate construction project profitability and ROI for Ecuador or Germany markets."/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../css/styles.css" rel="stylesheet" />
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/neobrutalist.js"></script>
+  <script src="../js/colors.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    .calculator-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+
+    main.container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box;
+    }
+
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 768px) {
+      .calculator-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        box-shadow: 8px 8px 0px var(--brutalist-yellow);
+        border: 3px solid var(--brutalist-yellow);
+      }
+    }
+
+    @media (max-width: 480px) {
+      main.container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      .calculator-wrapper {
+        padding: 0 0.75rem;
+      }
+
+      .calculator-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        padding: 1rem;
+        box-shadow: 6px 6px 0px var(--brutalist-yellow);
+        border: 2px solid var(--brutalist-yellow);
+      }
+    }
+
+    .inputs-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 1.5rem;
+      border-radius: var(--panel-border-radius);
+      overflow: visible;
+      min-width: 0;
+    }
+
+    .results-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 1.5rem;
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      overflow-y: auto;
+      max-height: calc(100vh - 150px);
+      border-radius: var(--panel-border-radius);
+      min-width: 0;
+    }
+
+    .calculator-section {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border: 2px solid var(--brutalist-yellow);
+      background: var(--accent-lighter);
+      border-radius: var(--panel-border-radius);
+      backdrop-filter: blur(5px);
+    }
+
+    .calculator-label {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--brutalist-yellow);
+      display: block;
+      border-bottom: 2px solid var(--accent-fade);
+      padding-bottom: 0.5rem;
+    }
+
+    .form-control {
+      border: 2px solid var(--brutalist-yellow);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .form-control:focus {
+      outline: none;
+      box-shadow: 0 0 12px var(--brutalist-yellow);
+      background: var(--bg-dark);
+    }
+
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFD500' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 20px;
+      padding-right: 2.5rem;
+    }
+
+    .title-main {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--accent-light);
+      font-size: 0.95rem;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+    }
+
+    .result-value {
+      color: var(--text-primary);
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin: 1.5rem 0;
+    }
+
+    .result-section {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border: 2px solid var(--brutalist-yellow);
+      background: rgba(255, 213, 0, 0.05);
+      border-radius: var(--panel-border-radius);
+    }
+
+    .result-section-title {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--brutalist-yellow);
+      padding-bottom: 0.5rem;
+    }
+
+    .btn-calculate {
+      width: 100%;
+      padding: 1rem;
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      border: 3px solid var(--brutalist-black);
+      box-shadow: 6px 6px 0px var(--brutalist-black);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: var(--panel-border-radius);
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      font-family: 'Space Mono', monospace;
+      margin-top: 1rem;
+    }
+
+    .btn-calculate:hover {
+      background: var(--brutalist-black);
+      color: var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+      box-shadow: 8px 8px 0px var(--brutalist-yellow);
+      transform: translate(-3px, -3px);
+    }
+
+    .country-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .country-btn {
+      padding: 1rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: transparent;
+      color: var(--brutalist-yellow);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: var(--panel-border-radius);
+      transition: all 0.3s ease;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .country-btn.active {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      box-shadow: 4px 4px 0px var(--brutalist-black);
+    }
+
+    .country-btn:hover {
+      transform: translate(-2px, -2px);
+    }
+
+    .info-badge {
+      display: inline-block;
+      background: rgba(0, 153, 255, 0.2);
+      border: 1px solid #0099FF;
+      color: #0099FF;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
+    .currency {
+      color: #0099FF;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="body-white-text">
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="../media/output_bw.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
+      <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
+      <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item">
+          <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+        <li class="nav-item">
+          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="calculator-wrapper">
+      <h1 class="title-main" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
+
+      <div class="calculator-layout">
+        <!-- Inputs Panel -->
+        <div class="inputs-panel">
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="Select Market" data-es="Selecciona Mercado">Select Market</label>
+            <div class="country-selector">
+              <button class="country-btn active" data-country="ecuador" onclick="selectCountry('ecuador')" data-en="Ecuador" data-es="Ecuador">Ecuador</button>
+              <button class="country-btn" data-country="germany" onclick="selectCountry('germany')" data-en="Germany" data-es="Alemania">Germany</button>
+            </div>
+            <div class="info-badge" id="countryInfo">Base currency: USD</div>
+          </div>
+
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="Project Details" data-es="Detalles del Proyecto">Project Details</label>
+            <div class="mb-3">
+              <label data-en="Project Name" data-es="Nombre del Proyecto">Project Name</label>
+              <input type="text" class="form-control" id="projectName" placeholder="e.g., Residential Complex / Complejo Residencial">
+            </div>
+            <div class="mb-3">
+              <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
+              <input type="number" class="form-control" id="constructionCost" value="500000" min="10000" step="10000">
+            </div>
+            <div class="mb-3">
+              <label data-en="Property Size (m²)" data-es="Tamaño de Propiedad (m²)">Property Size (m²)</label>
+              <input type="number" class="form-control" id="propertySize" value="1000" min="100" step="100">
+            </div>
+            <div class="mb-3">
+              <label data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
+              <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5">
+            </div>
+          </div>
+
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="Operating Costs" data-es="Costos Operativos">Operating Costs</label>
+            <div class="mb-3">
+              <label data-en="Annual Operating Costs (%)" data-es="Costos Operativos Anuales (%)">Annual Operating Costs (% of rental income)</label>
+              <input type="number" class="form-control" id="operatingCosts" value="30" min="0" max="100" step="1">
+              <small data-en="Includes maintenance, taxes, utilities, management" data-es="Incluye mantenimiento, impuestos, servicios, gestión">Includes maintenance, taxes, utilities, management</small>
+            </div>
+            <div class="mb-3">
+              <label data-en="Annual Property Appreciation (%)" data-es="Apreciación Anual de Propiedad (%)">Annual Property Appreciation (%)</label>
+              <input type="number" class="form-control" id="appreciation" value="3" min="0" max="20" step="0.5">
+            </div>
+          </div>
+
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="Analysis Period" data-es="Período de Análisis">Analysis Period</label>
+            <div class="mb-3">
+              <label data-en="Years to Analyze" data-es="Años a Analizar">Years to Analyze</label>
+              <input type="number" class="form-control" id="years" value="10" min="1" max="50" step="1">
+            </div>
+          </div>
+
+          <button class="btn-calculate" onclick="calculateProfitability()" data-en="Calculate Profitability" data-es="Calcular Rentabilidad">Calculate Profitability</button>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel" style="display: none;">
+          <div class="result-section">
+            <div class="result-section-title" data-en="Investment Summary" data-es="Resumen de Inversión">Investment Summary</div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Investment" data-es="Inversión Total">Total Investment</span>
+              <span class="result-value" id="resultInvestment">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Annual Rental Income" data-es="Ingreso Anual de Alquiler">Annual Rental Income</span>
+              <span class="result-value" id="resultAnnualRental">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Annual Net Income" data-es="Ingreso Neto Anual">Annual Net Income</span>
+              <span class="result-value" id="resultNetIncome">-</span>
+            </div>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title" data-en="Financial Performance" data-es="Desempeño Financiero">Financial Performance</div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Profit (10y)" data-es="Ganancia Total (10a)">Total Profit</span>
+              <span class="result-value" id="resultTotalProfit">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="ROI (%)" data-es="ROI (%)">ROI (%)</span>
+              <span class="result-value" id="resultROI">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Payback Period" data-es="Período de Retorno">Payback Period</span>
+              <span class="result-value" id="resultPayback">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Property Value (end)" data-es="Valor de Propiedad (final)">Property Value (end)</span>
+              <span class="result-value" id="resultPropertyValue">-</span>
+            </div>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title" data-en="Cash Flow" data-es="Flujo de Caja">Cash Flow Over Time</div>
+            <div class="chart-container">
+              <canvas id="cashFlowChart"></canvas>
+            </div>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title" data-en="Profit Breakdown" data-es="Desglose de Ganancias">Profit Breakdown</div>
+            <div class="chart-container">
+              <canvas id="profitBreakdownChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-enhanced">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Proyectual Studio</h4>
+        <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
+        <p><strong>Cuenca, Ecuador</strong></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+          <li><a href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Contact" data-es="Contacto">Contact</h4>
+        <p><a href="mailto:christianxcorral@gmail.com">christianxcorral@gmail.com</a></p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/proyectualstudioau/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© Christian Corral</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let currentCountry = 'ecuador';
+    let cashFlowChart = null;
+    let profitBreakdownChart = null;
+
+    const countryData = {
+      ecuador: {
+        currency: 'USD',
+        taxRate: 0.22,
+        propertyTax: 0.01,
+        rentalYield: 0.05,
+        appreciation: 0.03,
+        info: 'Growing sustainable market, lower construction costs'
+      },
+      germany: {
+        currency: 'EUR',
+        taxRate: 0.42,
+        propertyTax: 0.006,
+        rentalYield: 0.04,
+        appreciation: 0.03,
+        info: 'Stable market, high energy efficiency standards'
+      }
+    };
+
+    function selectCountry(country) {
+      currentCountry = country;
+
+      // Update button states
+      document.querySelectorAll('.country-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-country="${country}"]`).classList.add('active');
+
+      // Update currency labels
+      const currency = countryData[country].currency;
+      document.getElementById('currencyLabel').textContent = currency;
+      document.getElementById('currencyLabel2').textContent = currency;
+      document.getElementById('countryInfo').textContent = `Base currency: ${currency} - ${countryData[country].info}`;
+
+      // Reset results
+      document.getElementById('resultsPanel').style.display = 'none';
+    }
+
+    function calculateProfitability() {
+      const projectName = document.getElementById('projectName').value || 'Investment Project';
+      const constructionCost = parseFloat(document.getElementById('constructionCost').value);
+      const propertySize = parseFloat(document.getElementById('propertySize').value);
+      const rentalPerM2 = parseFloat(document.getElementById('rentalPerM2').value);
+      const operatingCostPercent = parseFloat(document.getElementById('operatingCosts').value) / 100;
+      const appreciation = parseFloat(document.getElementById('appreciation').value) / 100;
+      const years = parseInt(document.getElementById('years').value);
+
+      const countryInfo = countryData[currentCountry];
+      const currency = countryInfo.currency;
+
+      // Calculate annual rental income
+      const monthlyRental = rentalPerM2 * propertySize;
+      const annualRental = monthlyRental * 12;
+
+      // Calculate annual operating costs
+      const annualOperatingCost = annualRental * operatingCostPercent;
+
+      // Calculate annual net income
+      const annualNetIncome = annualRental - annualOperatingCost;
+
+      // Calculate cash flows and profits
+      let cumulativeProfit = 0;
+      let paybackYear = null;
+      const cashFlows = [];
+      const yearLabels = [];
+
+      for (let year = 0; year <= years; year++) {
+        let yearProfit;
+        if (year === 0) {
+          yearProfit = -constructionCost;
+        } else {
+          yearProfit = annualNetIncome;
+        }
+
+        cumulativeProfit += yearProfit;
+        cashFlows.push(cumulativeProfit);
+        yearLabels.push(`Year ${year}`);
+
+        if (paybackYear === null && cumulativeProfit >= 0 && year > 0) {
+          paybackYear = year;
+        }
+      }
+
+      // Calculate property value at end
+      let propertyValue = constructionCost;
+      for (let i = 0; i < years; i++) {
+        propertyValue = propertyValue * (1 + appreciation);
+      }
+
+      // Calculate total profit
+      const totalProfit = cumulativeProfit + propertyValue - constructionCost;
+      const roi = ((totalProfit / constructionCost) * 100).toFixed(2);
+
+      // Format currency
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency === 'EUR' ? 'EUR' : 'USD',
+        minimumFractionDigits: 0
+      });
+
+      // Update results
+      document.getElementById('resultInvestment').textContent = formatter.format(constructionCost);
+      document.getElementById('resultAnnualRental').textContent = formatter.format(annualRental);
+      document.getElementById('resultNetIncome').textContent = formatter.format(annualNetIncome);
+      document.getElementById('resultTotalProfit').textContent = formatter.format(totalProfit);
+      document.getElementById('resultROI').textContent = roi + '%';
+      document.getElementById('resultPayback').textContent = paybackYear ? `${paybackYear} years` : 'Not in analysis period';
+      document.getElementById('resultPropertyValue').textContent = formatter.format(propertyValue);
+
+      // Show results panel
+      document.getElementById('resultsPanel').style.display = 'block';
+
+      // Draw charts
+      drawCashFlowChart(yearLabels, cashFlows, currency);
+      drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency);
+    }
+
+    function drawCashFlowChart(labels, data, currency) {
+      const ctx = document.getElementById('cashFlowChart').getContext('2d');
+      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
+      const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
+
+      if (cashFlowChart) {
+        cashFlowChart.destroy();
+      }
+
+      cashFlowChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Cumulative Profit',
+            data: data,
+            borderColor: accentColor,
+            backgroundColor: accentLight,
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: accentColor,
+            pointBorderColor: accentColor,
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: { size: 12, weight: 'bold' }
+              }
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              grid: {
+                color: 'rgba(255, 213, 0, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.6)',
+                font: { size: 10 }
+              }
+            },
+            y: {
+              display: true,
+              grid: {
+                color: 'rgba(255, 213, 0, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.6)',
+                font: { size: 10 },
+                callback: function(value) {
+                  return '$' + (value / 1000).toFixed(0) + 'k';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function drawProfitBreakdownChart(rental, operating, total, currency) {
+      const ctx = document.getElementById('profitBreakdownChart').getContext('2d');
+      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
+
+      if (profitBreakdownChart) {
+        profitBreakdownChart.destroy();
+      }
+
+      profitBreakdownChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Annual Rental Income', 'Operating Costs', 'Net Profit'],
+          datasets: [{
+            data: [rental, operating, rental - operating],
+            backgroundColor: [
+              accentColor,
+              'rgba(255, 107, 107, 0.7)',
+              'rgba(144, 238, 144, 0.7)'
+            ],
+            borderColor: [
+              accentColor,
+              '#FF6B6B',
+              '#90EE90'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: { size: 11, weight: 'bold' },
+                padding: 15
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Language support
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLang = localStorage.getItem('lang') || 'en';
+      updateLanguageDisplay(currentLang);
+
+      const langToggle = document.getElementById('lang-toggle');
+      if (langToggle) {
+        langToggle.addEventListener('click', function() {
+          const newLang = currentLang === 'en' ? 'es' : 'en';
+          localStorage.setItem('lang', newLang);
+          updateLanguageDisplay(newLang);
+        });
+      }
+    });
+
+    function updateLanguageDisplay(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (lang === 'es' && el.hasAttribute('data-es')) {
+          el.textContent = el.getAttribute('data-es');
+        } else if (lang === 'en') {
+          el.textContent = el.getAttribute('data-en');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
