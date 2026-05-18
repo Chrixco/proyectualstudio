@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectual Studio - Color Palette</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: #1a1a1a;
+      color: #ffffff;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 50px;
+      font-size: 2.5rem;
+      color: #0099FF;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .color-section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      color: #0099FF;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #0099FF;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+
+    .color-card {
+      border: 2px solid #0099FF;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 153, 255, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .color-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 153, 255, 0.4);
+    }
+
+    .color-swatch {
+      height: 120px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .color-info {
+      padding: 15px;
+      background: #000000;
+    }
+
+    .color-name {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #0099FF;
+      text-transform: uppercase;
+    }
+
+    .color-hex {
+      font-size: 0.9rem;
+      color: #cccccc;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 5px;
+    }
+
+    .color-rgb {
+      font-size: 0.8rem;
+      color: #999999;
+      font-family: 'Courier New', monospace;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #0099FF;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .copy-btn:hover {
+      background: #00BFFF;
+      transform: scale(1.05);
+    }
+
+    .usage-note {
+      font-size: 0.85rem;
+      color: #999999;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .css-variables-section {
+      margin-top: 60px;
+      padding: 30px;
+      background: rgba(0, 153, 255, 0.05);
+      border: 2px solid rgba(0, 153, 255, 0.2);
+      border-radius: 8px;
+    }
+
+    .variables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .variable-item {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 153, 255, 0.3);
+      padding: 15px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .var-name {
+      color: #0099FF;
+      font-weight: bold;
+      margin-bottom: 8px;
+      word-break: break-all;
+    }
+
+    .var-value {
+      color: #cccccc;
+      font-size: 0.85rem;
+      word-break: break-all;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .color-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .variables-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <h1>Proyectual Studio Color Palette</h1>
+      <div style="text-align: center; margin-bottom: 20px; color: #0099FF; font-size: 0.9rem;">
+        Centralized Color Management System • <a href="https://github.com" style="color: #00BFFF; text-decoration: none;">Source: /js/colors.js</a>
+      </div>
+      <div>
+        <a href="editor.html" style="display: inline-block; padding: 12px 30px; background: #0099FF; color: #000000; border-radius: 4px; text-decoration: none; font-weight: bold; text-transform: uppercase; transition: all 0.3s ease; margin-bottom: 20px;" onmouseover="this.style.background='#00BFFF'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='#0099FF'; this.style.transform='translateY(0)';">
+          ✏️ Go to Color Editor
+        </a>
+      </div>
+    </div>
+
+    <!-- Primary Colors -->
+    <div class="color-section">
+      <div class="section-title">Primary Colors</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #0099FF;">
+            PRIMARY BLUE
+          </div>
+          <div class="color-info">
+            <div class="color-name">Primary Blue</div>
+            <div class="color-hex">#0099FF</div>
+            <div class="color-rgb">rgb(0, 153, 255)</div>
+            <div class="usage-note">Main accent color for UI elements, buttons, and highlights</div>
+            <button class="copy-btn" onclick="copyToClipboard('#0099FF')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #000000; border: 1px solid #0099FF;">
+            BLACK
+          </div>
+          <div class="color-info">
+            <div class="color-name">Pure Black</div>
+            <div class="color-hex">#000000</div>
+            <div class="color-rgb">rgb(0, 0, 0)</div>
+            <div class="usage-note">Primary background color, text on light backgrounds</div>
+            <button class="copy-btn" onclick="copyToClipboard('#000000')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #FFFFFF; color: #000000;">
+            WHITE
+          </div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+            <div class="color-rgb">rgb(255, 255, 255)</div>
+            <div class="usage-note">Text on dark backgrounds, light UI elements</div>
+            <button class="copy-btn" onclick="copyToClipboard('#FFFFFF')">Copy Hex</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Accent Colors -->
+    <div class="color-section">
+      <div class="section-title">Secondary Accent Colors</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #00BFFF;">
+            SECONDARY BLUE
+          </div>
+          <div class="color-info">
+            <div class="color-name">Secondary Blue</div>
+            <div class="color-hex">#00BFFF</div>
+            <div class="color-rgb">rgb(0, 191, 255)</div>
+            <div class="usage-note">Lighter blue for hover states and secondary accents</div>
+            <button class="copy-btn" onclick="copyToClipboard('#00BFFF')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #FFD500; color: #000000;">
+            GOLDEN YELLOW
+          </div>
+          <div class="color-info">
+            <div class="color-name">Golden Yellow</div>
+            <div class="color-hex">#FFD500</div>
+            <div class="color-rgb">rgb(255, 213, 0)</div>
+            <div class="usage-note">Legacy accent color - original primary accent (archived reference)</div>
+            <button class="copy-btn" onclick="copyToClipboard('#FFD500')">Copy Hex</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gray Scale -->
+    <div class="color-section">
+      <div class="section-title">Grayscale</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #1a1a1a; border: 1px solid #0099FF;">
+            DARK GRAY
+          </div>
+          <div class="color-info">
+            <div class="color-name">Dark Gray</div>
+            <div class="color-hex">#1a1a1a</div>
+            <div class="color-rgb">rgb(26, 26, 26)</div>
+            <div class="usage-note">Secondary background color</div>
+            <button class="copy-btn" onclick="copyToClipboard('#1a1a1a')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #cccccc; color: #000000;">
+            LIGHT GRAY
+          </div>
+          <div class="color-info">
+            <div class="color-name">Light Gray</div>
+            <div class="color-hex">#cccccc</div>
+            <div class="color-rgb">rgb(204, 204, 204)</div>
+            <div class="usage-note">Secondary text color on dark backgrounds</div>
+            <button class="copy-btn" onclick="copyToClipboard('#cccccc')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #333333; border: 1px solid #0099FF;">
+            MID GRAY
+          </div>
+          <div class="color-info">
+            <div class="color-name">Mid Gray</div>
+            <div class="color-hex">#333333</div>
+            <div class="color-rgb">rgb(51, 51, 51)</div>
+            <div class="usage-note">Tertiary background and border color</div>
+            <button class="copy-btn" onclick="copyToClipboard('#333333')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #999999; color: #000000;">
+            MEDIUM GRAY
+          </div>
+          <div class="color-info">
+            <div class="color-name">Medium Gray</div>
+            <div class="color-hex">#999999</div>
+            <div class="color-rgb">rgb(153, 153, 153)</div>
+            <div class="usage-note">Disabled states and subtle text</div>
+            <button class="copy-btn" onclick="copyToClipboard('#999999')">Copy Hex</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: #f5f5f5; color: #000000;">
+            VERY LIGHT GRAY
+          </div>
+          <div class="color-info">
+            <div class="color-name">Very Light Gray</div>
+            <div class="color-hex">#f5f5f5</div>
+            <div class="color-rgb">rgb(245, 245, 245)</div>
+            <div class="usage-note">Light theme background</div>
+            <button class="copy-btn" onclick="copyToClipboard('#f5f5f5')">Copy Hex</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transparent & Special Colors -->
+    <div class="color-section">
+      <div class="section-title">Transparent & Glass Effects</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: rgba(0, 0, 0, 0.7); border: 1px solid #0099FF;">
+            GLASS BG (70%)
+          </div>
+          <div class="color-info">
+            <div class="color-name">Glass Background</div>
+            <div class="color-hex">rgba(0, 0, 0, 0.7)</div>
+            <div class="color-rgb">Black + 70% Opacity</div>
+            <div class="usage-note">Semi-transparent background with backdrop blur</div>
+            <button class="copy-btn" onclick="copyToClipboard('rgba(0, 0, 0, 0.7)')">Copy</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: rgba(0, 153, 255, 0.3); border: 1px solid #0099FF;">
+            BLUE GLASS (30%)
+          </div>
+          <div class="color-info">
+            <div class="color-name">Blue Glass Border</div>
+            <div class="color-hex">rgba(0, 153, 255, 0.3)</div>
+            <div class="color-rgb">Blue + 30% Opacity</div>
+            <div class="usage-note">Subtle blue accent borders</div>
+            <button class="copy-btn" onclick="copyToClipboard('rgba(0, 153, 255, 0.3)')">Copy</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: rgba(255, 255, 255, 0.7); color: #000000;">
+            LIGHT GLASS (70%)
+          </div>
+          <div class="color-info">
+            <div class="color-name">Light Glass Background</div>
+            <div class="color-hex">rgba(255, 255, 255, 0.7)</div>
+            <div class="color-rgb">White + 70% Opacity</div>
+            <div class="usage-note">Light theme glass effect</div>
+            <button class="copy-btn" onclick="copyToClipboard('rgba(255, 255, 255, 0.7)')">Copy</button>
+          </div>
+        </div>
+
+        <div class="color-card">
+          <div class="color-swatch" style="background: rgba(0, 153, 255, 1);">
+            SHADOW COLOR (100%)
+          </div>
+          <div class="color-info">
+            <div class="color-name">Shadow Color</div>
+            <div class="color-hex">rgba(0, 153, 255, 1)</div>
+            <div class="color-rgb">Blue - Full Opacity</div>
+            <div class="usage-note">Drop shadows and glow effects</div>
+            <button class="copy-btn" onclick="copyToClipboard('rgba(0, 153, 255, 1)')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSS Variables Reference -->
+    <div class="color-section">
+      <div class="section-title">CSS Variables Reference</div>
+      <div style="background: #000000; border: 2px solid #0099FF; padding: 20px; border-radius: 8px; overflow-x: auto;">
+        <pre style="color: #0099FF; font-size: 0.85rem; line-height: 1.8;">
+:root {
+  /* Dark Theme (Default) */
+  --brutalist-yellow: #0099FF;
+  --brutalist-black: #000000;
+  --brutalist-white: #FFFFFF;
+  --brutalist-shadow: 8px 8px 0px rgba(0, 153, 255, 1);
+  --glass-bg: rgba(0, 0, 0, 0.7);
+  --glass-border: rgba(0, 153, 255, 0.3);
+  --panel-border-radius: 0.75rem;
+
+  /* Theme Colors */
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #FFFFFF;
+  --text-secondary: #cccccc;
+  --accent-primary: #0099FF;
+  --accent-secondary: #00BFFF;
+  --shadow-color: rgba(0, 153, 255, 1);
+  --glass-overlay: rgba(0, 0, 0, 0.7);
+}
+
+/* Light Theme */
+:root[data-theme="light"] {
+  --brutalist-yellow: #000000;
+  --brutalist-black: #FFFFFF;
+  --brutalist-white: #000000;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --accent-primary: #0099FF;
+  --accent-secondary: #00BFFF;
+}
+        </pre>
+      </div>
+    </div>
+
+    <!-- CSS Variables Reference -->
+    <div class="css-variables-section">
+      <div class="section-title">📌 CSS Variables in Use (Linked to colors.js)</div>
+      <p style="color: #cccccc; margin-bottom: 20px; font-size: 0.9rem;">
+        These CSS custom properties are defined in <strong>/js/colors.js</strong> and used throughout the web app.
+        Update colors.js to change these values everywhere instantly.
+      </p>
+      <div class="variables-grid" id="variablesGrid"></div>
+    </div>
+  </div>
+
+  <script src="../js/colors.js"></script>
+  <script>
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied: ' + text);
+      }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Copied: ' + text);
+      });
+    }
+
+    // Dynamically load colors from centralized system
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('✓ Color system loaded from /js/colors.js');
+      console.log('✓ Colors available:', PROYECTUAL_COLORS);
+
+      renderColorPalette();
+      renderCSSVariables();
+    });
+
+    function renderColorPalette() {
+      // Get colors as array from centralized system
+      const colors = getColorsAsArray();
+
+      // Group by category
+      const categories = {};
+      colors.forEach(color => {
+        if (!categories[color.category]) {
+          categories[color.category] = [];
+        }
+        categories[color.category].push(color);
+      });
+
+      // Render each category
+      Object.keys(categories).forEach(category => {
+        const section = document.querySelector(`.color-section:has(.section-title:contains("${category}"))`);
+
+        // Find section by checking text content
+        let foundSection = null;
+        document.querySelectorAll('.color-section').forEach(sec => {
+          if (sec.querySelector('.section-title')?.textContent === category) {
+            foundSection = sec;
+          }
+        });
+
+        if (foundSection) {
+          const grid = foundSection.querySelector('.color-grid');
+          // Replace grid with dynamically generated colors
+          grid.innerHTML = '';
+
+          categories[category].forEach(color => {
+            const card = createColorCard(color);
+            grid.appendChild(card);
+          });
+        }
+      });
+
+      // Update CSS Variables Reference section
+      updateCSSVariablesSection();
+    }
+
+    function createColorCard(color) {
+      const card = document.createElement('div');
+      card.className = 'color-card';
+
+      const isLight = isLightColor(color.hex);
+      const textColor = isLight ? '#000000' : '#FFFFFF';
+
+      card.innerHTML = `
+        <div class="color-swatch" style="background: ${color.hex}; color: ${textColor};">
+          ${color.hex.startsWith('rgba') ? 'TRANSPARENT' : color.hex.toUpperCase()}
+        </div>
+        <div class="color-info">
+          <div class="color-name">${color.name}</div>
+          <div class="color-hex">${color.hex}</div>
+          ${color.hex.startsWith('rgba') ? '' : `<div class="color-rgb">${hexToRgb(color.hex)}</div>`}
+          <div class="usage-note">${color.usage}</div>
+          <button class="copy-btn" onclick="copyToClipboard('${color.hex}')">Copy ${color.hex.startsWith('rgba') ? 'Value' : 'Hex'}</button>
+        </div>
+      `;
+
+      return card;
+    }
+
+    function isLightColor(color) {
+      if (color.startsWith('rgba')) return false;
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+      return (r + g + b) > 384;
+    }
+
+    function hexToRgb(hex) {
+      if (hex.startsWith('rgba')) return hex;
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})` : hex;
+    }
+
+    function renderCSSVariables() {
+      const grid = document.getElementById('variablesGrid');
+      if (!grid) return;
+
+      const darkThemeVars = PROYECTUAL_COLORS.cssVariables.darkTheme;
+
+      // Create variable items
+      for (let [varName, varValue] of Object.entries(darkThemeVars)) {
+        const item = document.createElement('div');
+        item.className = 'variable-item';
+
+        item.innerHTML = `
+          <div class="var-name">${varName}</div>
+          <div class="var-value">${varValue}</div>
+          <button class="copy-btn" style="margin-top: 10px; width: 100%; padding: 8px;" onclick="copyToClipboard('${varValue}')">
+            Copy Value
+          </button>
+        `;
+
+        grid.appendChild(item);
+      }
+
+      console.log('✓ CSS Variables rendered:', Object.keys(darkThemeVars).length, 'variables');
+    }
+
+    function updateCSSVariablesSection() {
+      const darkThemeVars = PROYECTUAL_COLORS.cssVariables.darkTheme;
+      const lightThemeVars = PROYECTUAL_COLORS.cssVariables.lightTheme;
+
+      let css = ':root {\n  /* Dark Theme (Default) */\n';
+      for (let [key, value] of Object.entries(darkThemeVars)) {
+        css += `  ${key}: ${value};\n`;
+      }
+      css += '}\n\n/* Light Theme */\n:root[data-theme="light"] {\n';
+      for (let [key, value] of Object.entries(lightThemeVars)) {
+        css += `  ${key}: ${value};\n`;
+      }
+      css += '}';
+
+      // Find pre element and update it
+      const preElement = document.querySelector('.color-section:last-child pre');
+      if (preElement) {
+        preElement.textContent = css;
+      }
+    }
+
+    // Helper function to find elements by text content
+    Element.prototype.contains = function(str) {
+      return this.textContent.includes(str);
+    };
+  </script>
+</body>
+</html>

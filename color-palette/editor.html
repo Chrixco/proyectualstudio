@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Palette Editor - Proyectual Studio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: #1a1a1a;
+      color: #ffffff;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #0099FF;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #cccccc;
+      font-size: 0.95rem;
+    }
+
+    /* Palette Management */
+    .palette-manager {
+      background: #000000;
+      border: 2px solid #0099FF;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .palette-controls {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .control-label {
+      color: #0099FF;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    input[type="text"],
+    select {
+      padding: 10px 15px;
+      background: rgba(0, 153, 255, 0.1);
+      border: 2px solid #0099FF;
+      color: #ffffff;
+      border-radius: 4px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+    }
+
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 10px #0099FF;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #0099FF;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #00BFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 153, 255, 0.3);
+    }
+
+    button.secondary {
+      background: #333333;
+      color: #ffffff;
+    }
+
+    button.secondary:hover {
+      background: #444444;
+    }
+
+    button.danger {
+      background: #FF6B6B;
+      color: #ffffff;
+    }
+
+    button.danger:hover {
+      background: #FF4444;
+    }
+
+    .active-palette {
+      color: #0099FF;
+      font-weight: bold;
+      padding: 10px;
+      background: rgba(0, 153, 255, 0.1);
+      border-radius: 4px;
+      flex: 1;
+      text-align: center;
+    }
+
+    /* Color Grid */
+    .color-editor {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .color-category {
+      background: #000000;
+      border: 2px solid #0099FF;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .category-title {
+      font-size: 1.1rem;
+      color: #0099FF;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .color-row {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
+    }
+
+    .color-row:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .color-label {
+      font-size: 0.85rem;
+      color: #cccccc;
+      margin-bottom: 8px;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .color-input-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="color"] {
+      width: 60px;
+      height: 40px;
+      border: 2px solid #0099FF;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="color"]:hover {
+      box-shadow: 0 0 10px #0099FF;
+    }
+
+    .hex-input {
+      flex: 1;
+      padding: 8px 12px;
+      background: rgba(0, 153, 255, 0.1);
+      border: 2px solid #0099FF;
+      color: #0099FF;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    /* Palette Preview */
+    .palette-preview {
+      background: #000000;
+      border: 2px solid #0099FF;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .preview-title {
+      font-size: 1.1rem;
+      color: #0099FF;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .color-swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .swatch {
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .swatch:hover {
+      transform: scale(1.05);
+      border-color: #0099FF;
+    }
+
+    .swatch-name {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    /* Export/Import */
+    .export-section {
+      background: #000000;
+      border: 2px solid #0099FF;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      color: #0099FF;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 15px;
+      background: rgba(0, 153, 255, 0.1);
+      border: 2px solid #0099FF;
+      color: #0099FF;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      resize: vertical;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .success {
+      color: #90EE90;
+      padding: 10px;
+      background: rgba(144, 238, 144, 0.1);
+      border-radius: 4px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .success.show {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .palette-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .control-group {
+        width: 100%;
+      }
+
+      input[type="text"],
+      select {
+        width: 100%;
+      }
+
+      .active-palette {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Color Palette Editor</h1>
+      <p class="subtitle">Create, manage, and switch between color palettes for Proyectual Studio</p>
+      <div style="margin-top: 15px;">
+        <a href="index.html" style="display: inline-block; padding: 8px 20px; background: #333333; color: #ffffff; border-radius: 4px; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; transition: all 0.3s ease;" onmouseover="this.style.background='#444444'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='#333333'; this.style.transform='translateY(0)';">
+          ← Back to Palette View
+        </a>
+      </div>
+    </header>
+
+    <!-- Palette Management -->
+    <div class="palette-manager">
+      <div class="palette-controls">
+        <div class="control-group">
+          <label class="control-label">Palette Name:</label>
+          <input type="text" id="paletteName" placeholder="Enter palette name" value="Default">
+        </div>
+        <div class="control-group">
+          <label class="control-label">Active Palette:</label>
+          <div class="active-palette" id="activePaletteDisplay">Default</div>
+        </div>
+        <button onclick="savePalette()">Save Palette</button>
+        <button class="secondary" onclick="showPalettes()">View All</button>
+        <button class="secondary" onclick="loadDefaultPalette()">Reset to Default</button>
+      </div>
+    </div>
+
+    <!-- Palette Selector -->
+    <div class="palette-manager" id="paletteSelector" style="display: none;">
+      <div class="section-title">Saved Palettes</div>
+      <div id="paletteList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;"></div>
+    </div>
+
+    <!-- Color Editor -->
+    <div class="color-editor" id="colorEditor"></div>
+
+    <!-- Palette Preview -->
+    <div class="palette-preview">
+      <div class="preview-title">Live Preview</div>
+      <div class="color-swatches" id="previewSwatches"></div>
+    </div>
+
+    <!-- Export/Import -->
+    <div class="export-section">
+      <div class="section-title">Export/Import Palettes</div>
+      <button onclick="exportPalette()">Export Current Palette as JSON</button>
+      <button class="secondary" onclick="exportAllPalettes()">Export All Palettes</button>
+      <textarea id="paletteJSON" placeholder="Paste JSON palette data here to import"></textarea>
+      <div class="button-group">
+        <button class="secondary" onclick="importPalette()">Import Palette</button>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        <button class="secondary" onclick="downloadAsJSON()">Download as File</button>
+      </div>
+      <div class="success" id="successMessage">✓ Palette saved successfully!</div>
+    </div>
+  </div>
+
+  <script src="../js/colors.js"></script>
+  <script>
+    let paletteStorage = {};
+    let currentPalette = 'Default';
+
+    // Initialize
+    function init() {
+      loadFromStorage();
+      renderColorEditor();
+      renderPreview();
+      updateActivePaletteDisplay();
+    }
+
+    // Storage management
+    function loadFromStorage() {
+      const stored = localStorage.getItem('colorPalettes');
+      if (stored) {
+        paletteStorage = JSON.parse(stored);
+      } else {
+        paletteStorage = {
+          'Default': { ...PROYECTUAL_COLORS }
+        };
+        saveToStorage();
+      }
+
+      const savedActivePalette = localStorage.getItem('activePalette');
+      if (savedActivePalette && paletteStorage[savedActivePalette]) {
+        currentPalette = savedActivePalette;
+        loadPaletteData(currentPalette);
+      }
+    }
+
+    function saveToStorage() {
+      localStorage.setItem('colorPalettes', JSON.stringify(paletteStorage));
+    }
+
+    function updateActivePaletteDisplay() {
+      document.getElementById('activePaletteDisplay').textContent = currentPalette;
+      document.getElementById('paletteName').value = currentPalette;
+    }
+
+    // Palette management
+    function savePalette() {
+      const paletteName = document.getElementById('paletteName').value.trim();
+      if (!paletteName) {
+        alert('Please enter a palette name');
+        return;
+      }
+
+      // Collect all color values from inputs
+      const paletteData = collectColorData();
+      paletteStorage[paletteName] = paletteData;
+      saveToStorage();
+      currentPalette = paletteName;
+      localStorage.setItem('activePalette', paletteName);
+      updateActivePaletteDisplay();
+
+      showSuccessMessage('Palette saved successfully!');
+    }
+
+    function collectColorData() {
+      const data = {};
+      document.querySelectorAll('.hex-input').forEach(input => {
+        const colorPath = input.dataset.colorPath;
+        const colorValue = input.value;
+        if (colorPath) {
+          const keys = colorPath.split('.');
+          let obj = data;
+          for (let i = 0; i < keys.length - 1; i++) {
+            if (!obj[keys[i]]) obj[keys[i]] = {};
+            obj = obj[keys[i]];
+          }
+          obj[keys[keys.length - 1]] = colorValue;
+        }
+      });
+      return data;
+    }
+
+    function loadPaletteData(paletteName) {
+      if (paletteStorage[paletteName]) {
+        const palette = paletteStorage[paletteName];
+        // Update inputs with palette colors
+        updateColorInputs(palette);
+        currentPalette = paletteName;
+        updateActivePaletteDisplay();
+        renderPreview();
+      }
+    }
+
+    function updateColorInputs(palette) {
+      const flatPalette = flattenObject(palette);
+      for (let [path, value] of Object.entries(flatPalette)) {
+        const input = document.querySelector(`[data-color-path="${path}"]`);
+        if (input) {
+          input.value = value;
+        }
+      }
+    }
+
+    function flattenObject(obj, prefix = '') {
+      let result = {};
+      for (let key in obj) {
+        const value = obj[key];
+        const newKey = prefix ? `${prefix}.${key}` : key;
+        if (typeof value === 'object' && value !== null && !value.startsWith?.('#') && !value.startsWith?.('rgb')) {
+          result = { ...result, ...flattenObject(value, newKey) };
+        } else {
+          result[newKey] = value;
+        }
+      }
+      return result;
+    }
+
+    function loadDefaultPalette() {
+      const defaultColors = {
+        primary: { blue: '#0099FF', black: '#000000', white: '#FFFFFF' },
+        secondary: { blue: '#00BFFF', yellow: '#FFD500' },
+        gray: { darkGray: '#1a1a1a', midGray: '#333333', mediumGray: '#999999', lightGray: '#cccccc', veryLightGray: '#f5f5f5' },
+        glass: { darkBg: 'rgba(0, 0, 0, 0.7)', blueBorder: 'rgba(0, 153, 255, 0.3)', lightBg: 'rgba(255, 255, 255, 0.7)', shadowColor: 'rgba(0, 153, 255, 1)' }
+      };
+      updateColorInputs(defaultColors);
+      renderPreview();
+    }
+
+    // UI Rendering
+    function renderColorEditor() {
+      const editor = document.getElementById('colorEditor');
+      editor.innerHTML = '';
+
+      const categories = {
+        'Primary Colors': PROYECTUAL_COLORS.primary,
+        'Secondary Colors': PROYECTUAL_COLORS.secondary,
+        'Grayscale': PROYECTUAL_COLORS.gray,
+        'Glass Effects': PROYECTUAL_COLORS.glass
+      };
+
+      for (let [categoryName, colors] of Object.entries(categories)) {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'color-category';
+        categoryDiv.innerHTML = `<div class="category-title">${categoryName}</div>`;
+
+        for (let [colorName, colorValue] of Object.entries(colors)) {
+          const colorPath = Object.keys(PROYECTUAL_COLORS).reduce((acc, key) => {
+            if (PROYECTUAL_COLORS[key][colorName] === colorValue) {
+              return `${key}.${colorName}`;
+            }
+            return acc;
+          }, `${Object.keys(categories).find(k => k.includes(categoryName)).split(' ')[0].toLowerCase()}.${colorName}`);
+
+          const row = document.createElement('div');
+          row.className = 'color-row';
+          row.innerHTML = `
+            <label class="color-label">${colorName}</label>
+            <div class="color-input-group">
+              <input type="color" value="${colorValue.startsWith('rgb') ? rgbToHex(colorValue) : colorValue}"
+                     onchange="updateColorFromPicker(this, '${colorPath}')">
+              <input type="text" class="hex-input" data-color-path="${colorPath}" value="${colorValue}"
+                     placeholder="#FFFFFF" onchange="updateColorFromInput(this)">
+            </div>
+          `;
+          categoryDiv.appendChild(row);
+        }
+
+        editor.appendChild(categoryDiv);
+      }
+    }
+
+    function renderPreview() {
+      const preview = document.getElementById('previewSwatches');
+      preview.innerHTML = '';
+
+      const colors = [
+        { name: 'Primary Blue', color: getColorFromInputs('primary.blue') },
+        { name: 'Black', color: getColorFromInputs('primary.black') },
+        { name: 'White', color: getColorFromInputs('primary.white') },
+        { name: 'Secondary Blue', color: getColorFromInputs('secondary.blue') },
+        { name: 'Dark Gray', color: getColorFromInputs('gray.darkGray') },
+        { name: 'Light Gray', color: getColorFromInputs('gray.lightGray') }
+      ];
+
+      colors.forEach(({ name, color }) => {
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        swatch.style.backgroundColor = color;
+        swatch.style.color = shouldUseLightText(color) ? '#ffffff' : '#000000';
+        swatch.innerHTML = `
+          <strong>${color}</strong>
+          <div class="swatch-name">${name}</div>
+        `;
+        preview.appendChild(swatch);
+      });
+    }
+
+    function getColorFromInputs(colorPath) {
+      const input = document.querySelector(`[data-color-path="${colorPath}"]`);
+      return input ? input.value : '#000000';
+    }
+
+    function showPalettes() {
+      const selector = document.getElementById('paletteSelector');
+      selector.style.display = selector.style.display === 'none' ? 'block' : 'none';
+
+      if (selector.style.display !== 'none') {
+        const list = document.getElementById('paletteList');
+        list.innerHTML = '';
+        for (let [name, _] of Object.entries(paletteStorage)) {
+          const btn = document.createElement('button');
+          btn.textContent = name;
+          btn.style.padding = '10px';
+          btn.className = name === currentPalette ? '' : 'secondary';
+          btn.onclick = () => {
+            loadPaletteData(name);
+            renderColorEditor();
+            renderPreview();
+          };
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = '✕';
+          deleteBtn.className = 'danger';
+          deleteBtn.style.width = '40px';
+          deleteBtn.style.padding = '10px';
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (confirm(`Delete palette "${name}"?`)) {
+              delete paletteStorage[name];
+              saveToStorage();
+              showPalettes();
+            }
+          };
+
+          const wrapper = document.createElement('div');
+          wrapper.style.display = 'flex';
+          wrapper.style.gap = '5px';
+          wrapper.appendChild(btn);
+          wrapper.appendChild(deleteBtn);
+          list.appendChild(wrapper);
+        }
+      }
+    }
+
+    // Color updates
+    function updateColorFromPicker(input, colorPath) {
+      const hexInput = document.querySelector(`[data-color-path="${colorPath}"]`);
+      if (hexInput) {
+        hexInput.value = input.value;
+        renderPreview();
+      }
+    }
+
+    function updateColorFromInput(input) {
+      renderPreview();
+    }
+
+    // Export/Import
+    function exportPalette() {
+      const data = collectColorData();
+      const json = JSON.stringify(data, null, 2);
+      document.getElementById('paletteJSON').value = json;
+      showSuccessMessage('Palette exported to textarea');
+    }
+
+    function exportAllPalettes() {
+      const json = JSON.stringify(paletteStorage, null, 2);
+      document.getElementById('paletteJSON').value = json;
+      showSuccessMessage('All palettes exported');
+    }
+
+    function importPalette() {
+      try {
+        const json = document.getElementById('paletteJSON').value;
+        const data = JSON.parse(json);
+        const paletteName = prompt('Enter name for imported palette:', 'Imported');
+        if (paletteName) {
+          paletteStorage[paletteName] = data;
+          saveToStorage();
+          loadPaletteData(paletteName);
+          renderColorEditor();
+          renderPreview();
+          showSuccessMessage(`Palette "${paletteName}" imported successfully!`);
+        }
+      } catch (e) {
+        alert('Invalid JSON format');
+      }
+    }
+
+    function downloadAsJSON() {
+      const allPalettes = paletteStorage;
+      const json = JSON.stringify(allPalettes, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `proyectual-palettes-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyToClipboard() {
+      const textarea = document.getElementById('paletteJSON');
+      textarea.select();
+      document.execCommand('copy');
+      showSuccessMessage('Copied to clipboard!');
+    }
+
+    function showSuccessMessage(msg) {
+      const el = document.getElementById('successMessage');
+      el.textContent = '✓ ' + msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    // Utilities
+    function rgbToHex(rgb) {
+      const match = rgb.match(/\d+/g);
+      if (!match) return rgb;
+      return '#' + match.slice(0, 3).map(x => parseInt(x).toString(16).padStart(2, '0')).join('').toUpperCase();
+    }
+
+    function shouldUseLightText(color) {
+      if (color.startsWith('rgb')) {
+        const match = color.match(/\d+/g);
+        const [r, g, b] = match.map(Number);
+        return (r + g + b) < 384;
+      }
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+      return (r + g + b) < 384;
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
