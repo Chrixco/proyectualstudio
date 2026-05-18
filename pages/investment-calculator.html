@@ -438,10 +438,37 @@
               <label data-en="Project Name" data-es="Nombre del Proyecto">Project Name</label>
               <input type="text" class="form-control" id="projectName" placeholder="e.g., Residential Complex / Complejo Residencial">
             </div>
+
             <div class="mb-3">
-              <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
-              <input type="number" class="form-control" id="constructionCost" value="500000" min="10000" step="10000">
+              <label data-en="Calculate By" data-es="Calcular Por">Calculate By</label>
+              <div class="toggle-group">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-cost" value="cost" checked onchange="toggleCalcMethod()" />
+                  <label class="form-check-label" for="calc-cost" data-en="Construction Cost" data-es="Costo de Construcción">
+                    Construction Cost
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-size" value="size" onchange="toggleCalcMethod()" />
+                  <label class="form-check-label" for="calc-size" data-en="Construction Size" data-es="Tamaño de Construcción">
+                    Construction Size
+                  </label>
+                </div>
+              </div>
             </div>
+
+            <div id="costInputSection" class="mb-3">
+              <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
+              <input type="number" class="form-control" id="constructionCost" value="500000" min="10000" step="10000" onchange="updateFromCost()">
+              <small id="costPerM2Hint" data-en="Based on typical cost per m²" data-es="Basado en costo típico por m²">Based on typical cost per m²</small>
+            </div>
+
+            <div id="sizeInputSection" class="mb-3" style="display: none;">
+              <label data-en="Construction Size (m²)" data-es="Tamaño de Construcción (m²)">Construction Size (m²)</label>
+              <input type="number" class="form-control" id="constructionSize" value="1000" min="100" step="100" onchange="updateFromSize()">
+              <small id="sizePerM2Hint" data-en="Cost per m²" data-es="Costo por m²"></small>
+            </div>
+
             <div class="mb-3">
               <label data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost <span class="currency" id="currencyLabel1">USD</span></label>
               <input type="number" class="form-control" id="landCost" value="250000" min="0" step="10000">
@@ -676,6 +703,15 @@
       const costRange = countryData[country].typicalCostRange;
       document.getElementById('countryInfo').textContent = `Base currency: ${currency} ${currencySymbol} - Typical construction: ${costRange} - ${countryData[country].info}`;
 
+      // Update calculation method hints with new country data
+      const calcMethod = document.querySelector('input[name="calcMethod"]:checked').value;
+      const costPerM2 = countryData[country].typicalCostPerM2;
+      if (calcMethod === 'cost') {
+        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} ${currencySymbol}/m²`;
+      } else {
+        document.getElementById('sizePerM2Hint').textContent = `${costPerM2} ${currencySymbol}/m²`;
+      }
+
       // Reset results
       document.getElementById('resultsPanel').style.display = 'none';
     }
@@ -689,6 +725,44 @@
       } else {
         bankSection.style.display = 'none';
       }
+    }
+
+    function toggleCalcMethod() {
+      const method = document.querySelector('input[name="calcMethod"]:checked').value;
+      const costSection = document.getElementById('costInputSection');
+      const sizeSection = document.getElementById('sizeInputSection');
+      const countryInfo = countryData[currentCountry];
+      const costPerM2 = countryInfo.typicalCostPerM2;
+
+      if (method === 'cost') {
+        costSection.style.display = 'block';
+        sizeSection.style.display = 'none';
+        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} per m²`;
+      } else {
+        costSection.style.display = 'none';
+        sizeSection.style.display = 'block';
+        const currency = countryInfo.currency;
+        const currencySymbol = currency === 'EUR' ? '€' : '$';
+        document.getElementById('sizePerM2Hint').textContent = `${costPerM2} ${currencySymbol}/m²`;
+      }
+    }
+
+    function updateFromCost() {
+      const cost = parseFloat(document.getElementById('constructionCost').value) || 0;
+      const countryInfo = countryData[currentCountry];
+      const costPerM2 = countryInfo.typicalCostPerM2;
+      const calculatedSize = Math.round(cost / costPerM2);
+      document.getElementById('propertySize').value = calculatedSize;
+      document.getElementById('constructionSize').value = calculatedSize;
+    }
+
+    function updateFromSize() {
+      const size = parseFloat(document.getElementById('constructionSize').value) || 0;
+      const countryInfo = countryData[currentCountry];
+      const costPerM2 = countryInfo.typicalCostPerM2;
+      const calculatedCost = Math.round(size * costPerM2);
+      document.getElementById('constructionCost').value = calculatedCost;
+      document.getElementById('propertySize').value = size;
     }
 
     function calculateLoanPayment(principal, annualRate, years) {
