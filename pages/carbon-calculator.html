@@ -1751,17 +1751,27 @@
         body: JSON.stringify(discordMessage)
       }).catch(err => console.error('Discord webhook error:', err));
 
-      // Send simple email log message to emails_databases channel
+      // Send simple email log messages
       const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
+      const downloadsWebhook = 'https://discord.com/api/webhooks/1505912685554827345/FMaUeG8eGXdrB3MuHbCa-7UIpZ9h2d0kQItdRvBzNnBqQNpltlYz2yZNDTonngDbbZ8X';
+
       const emailLogMessage = {
         content: `\`${email}\` - Carbon Calculator (${new Date().toLocaleString()})`
       };
 
+      // Send to emails_databases
       fetch(emailDatabaseWebhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(emailLogMessage)
       }).catch(err => console.error('Discord email log error:', err));
+
+      // Send to downloads channel
+      fetch(downloadsWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailLogMessage)
+      }).catch(err => console.error('Discord downloads error:', err));
 
       // Generate and download PDF
       generateCalculatorPDF(email);
