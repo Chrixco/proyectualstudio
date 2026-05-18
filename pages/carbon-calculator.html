@@ -16,7 +16,6 @@
   <link href="../css/styles.css" rel="stylesheet" />
 
   <!-- Theme Script (loads early to prevent flash) -->
-  <script src="../js/theme.js"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"><\/script>
   <!-- Neo-Brutalist Effects -->
@@ -56,12 +55,12 @@
     /* Mobile: single column */
     .inputs-panel,
     .results-panel {
-      background: var(--glass-bg);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(20px);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      border: 4px solid #FFD500;
+      box-shadow: 12px 12px 0px #FFD500;
       padding: 1.5rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       overflow: visible;
       display: flex;
       flex-direction: column;
@@ -85,8 +84,8 @@
 
       .inputs-panel,
       .results-panel {
-        box-shadow: 8px 8px 0px var(--brutalist-yellow);
-        border: 3px solid var(--brutalist-yellow);
+        box-shadow: 8px 8px 0px #FFD500;
+        border: 3px solid #FFD500;
       }
     }
 
@@ -103,17 +102,17 @@
       .inputs-panel,
       .results-panel {
         padding: 1rem;
-        box-shadow: 6px 6px 0px var(--brutalist-yellow);
-        border: 2px solid var(--brutalist-yellow);
+        box-shadow: 6px 6px 0px #FFD500;
+        border: 2px solid #FFD500;
       }
     }
 
     .calculator-section {
       margin-bottom: 1rem;
       padding: 1rem;
-      border: 2px solid var(--brutalist-yellow);
+      border: 2px solid #FFD500;
       background: rgba(255, 213, 0, 0.05);
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       backdrop-filter: blur(5px);
     }
 
@@ -127,7 +126,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 0.75rem;
       font-size: clamp(0.7rem, 2vw, 0.8rem);
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       display: block;
       border-bottom: 2px solid rgba(255, 213, 0, 0.2);
       padding-bottom: 0.5rem;
@@ -140,7 +139,8 @@
       transition: all 0.3s ease;
       background: rgba(0, 0, 0, 0.3);
       margin-bottom: 0.5rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
+      color: #FFFFFF;
     }
 
     .option-card:last-child {
@@ -151,26 +151,28 @@
       margin-bottom: 0.2rem;
       font-size: 0.85rem;
       line-height: 1.2;
+      color: #FFFFFF;
     }
 
     .option-card p {
       margin-bottom: 0;
       font-size: 0.75rem;
       line-height: 1.1;
+      color: #FFFFFF;
     }
 
     .option-card:hover {
       transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px var(--brutalist-yellow);
-      border-color: var(--brutalist-yellow);
+      box-shadow: 4px 4px 0px #FFD500;
+      border-color: #FFD500;
       background: rgba(255, 213, 0, 0.1);
     }
 
     .option-card.selected {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      border-color: var(--brutalist-yellow);
-      box-shadow: 4px 4px 0px rgba(255, 213, 0, 0.5);
+      background: #000000;
+      color: #FFFFFF;
+      border-color: #FFD500;
+      box-shadow: 4px 4px 0px #FFD500;
     }
 
     .range-slider {
@@ -178,7 +180,7 @@
       height: 6px;
       background: rgba(255, 213, 0, 0.2);
       outline: none;
-      border: 1px solid var(--brutalist-yellow);
+      border: 1px solid #FFD500;
       border-radius: 4px;
       -webkit-appearance: none;
       margin: 0.5rem 0;
@@ -189,8 +191,8 @@
       appearance: none;
       width: 20px;
       height: 20px;
-      background: var(--brutalist-yellow);
-      border: 2px solid var(--brutalist-black);
+      background: #FFD500;
+      border: 2px solid #000000;
       cursor: pointer;
       border-radius: 50%;
       transition: all 0.2s ease;
@@ -198,14 +200,14 @@
 
     .range-slider::-webkit-slider-thumb:hover {
       transform: scale(1.2);
-      box-shadow: 0 0 8px var(--brutalist-yellow);
+      box-shadow: 0 0 8px #FFD500;
     }
 
     .range-slider::-moz-range-thumb {
       width: 20px;
       height: 20px;
-      background: var(--brutalist-yellow);
-      border: 2px solid var(--brutalist-black);
+      background: #FFD500;
+      border: 2px solid #000000;
       cursor: pointer;
       border-radius: 50%;
       transition: all 0.2s ease;
@@ -213,23 +215,23 @@
 
     .range-slider::-moz-range-thumb:hover {
       transform: scale(1.2);
-      box-shadow: 0 0 8px var(--brutalist-yellow);
+      box-shadow: 0 0 8px #FFD500;
     }
 
     .range-value {
       font-size: 1.1rem;
       font-weight: bold;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       margin-top: 0.4rem;
       text-align: center;
     }
 
     .selection-summary {
-      background: var(--glass-bg);
-      border: 3px solid var(--brutalist-yellow);
+      background: rgba(0, 0, 0, 0.7);
+      border: 3px solid #FFD500;
       padding: 1rem;
       margin-bottom: 1rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
     }
 
     .summary-item {
@@ -251,7 +253,7 @@
       font-weight: bold;
       text-transform: uppercase;
       font-size: 0.9rem;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
     }
 
     .summary-value {
@@ -271,7 +273,7 @@
       gap: 0;
       margin-bottom: 1rem;
       background: rgba(255, 213, 0, 0.05);
-      border: 2px solid var(--brutalist-yellow);
+      border: 2px solid #FFD500;
       border-radius: 50px;
       padding: 0.3rem;
       backdrop-filter: blur(5px);
@@ -281,7 +283,7 @@
       padding: 0.5rem 1.2rem;
       background: transparent;
       border: none;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
       font-weight: bold;
@@ -299,9 +301,10 @@
     }
 
     .chart-btn.active {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      box-shadow: 0 2px 8px rgba(255, 213, 0, 0.3);
+      background: #000000;
+      color: #FFFFFF;
+      border-color: #FFD500;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       font-weight: 900;
     }
 
@@ -309,19 +312,19 @@
       position: relative;
       height: 250px;
       border: 2px solid rgba(255, 213, 0, 0.2);
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       padding: 0.75rem;
       background: rgba(0, 0, 0, 0.3);
     }
 
     .total-container {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
       padding: 1.5rem;
-      border: 4px solid var(--brutalist-black);
-      box-shadow: 8px 8px 0px var(--brutalist-black);
+      border: 4px solid #000000;
+      box-shadow: 8px 8px 0px #000000;
       text-align: center;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
     }
 
     .total-amount {
@@ -345,7 +348,7 @@
       margin-top: 0.7rem;
       padding: 0.8rem;
       background: rgba(0, 0, 0, 0.2);
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       font-style: italic;
     }
 
@@ -372,47 +375,47 @@
       justify-content: space-between;
       font-size: 0.8rem;
       font-weight: 600;
-      color: var(--brutalist-white);
+      color: #FFFFFF;
     }
 
     .breakdown-bar {
       width: 100%;
       height: 12px;
       background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--brutalist-yellow);
+      border: 1px solid #FFD500;
       border-radius: 4px;
       overflow: hidden;
     }
 
     .breakdown-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--brutalist-yellow), rgba(255, 213, 0, 0.6));
+      background: linear-gradient(90deg, #FFD500, rgba(255, 213, 0, 0.6));
       transition: width 0.3s ease;
     }
 
     .cta-final {
       margin-top: 1rem;
       padding: 1rem 2rem;
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      border: 3px solid var(--brutalist-black);
-      box-shadow: 4px 4px 0px var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 1px;
       font-size: 0.95rem;
       transition: all 0.3s ease;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       display: block;
       text-decoration: none;
       cursor: pointer;
     }
 
     .cta-final:hover {
-      background: var(--brutalist-black) !important;
-      color: var(--brutalist-yellow) !important;
-      border-color: var(--brutalist-yellow) !important;
-      box-shadow: 6px 6px 0px var(--brutalist-yellow) !important;
+      background: #000000 !important;
+      color: #FFFFFF !important;
+      border-color: #FFD500 !important;
+      box-shadow: 6px 6px 0px #FFD500 !important;
       transform: translate(-3px, -3px);
     }
 
@@ -519,7 +522,7 @@
     /* Lead Capture Status Messages */
     .lead-status {
       padding: 1rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       margin-bottom: 1rem;
       text-align: center;
       font-weight: bold;
@@ -542,18 +545,18 @@
       display: flex;
       justify-content: space-between;
       padding: 0.7rem 0;
-      border-bottom: 1px solid var(--accent-light);
+      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
       font-size: 0.9rem;
     }
 
     .lead-summary-label {
       font-weight: bold;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
     }
 
     .lead-summary-value {
-      color: var(--text-primary);
+      color: #FFFFFF;
     }
 
     /* Email Modal for PDF Download */
@@ -564,7 +567,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--bg-semi-dark);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 10001;
@@ -577,13 +580,13 @@
     }
 
     .email-modal-content {
-      background: var(--glass-bg);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      border: 4px solid #FFD500;
+      box-shadow: 12px 12px 0px #FFD500;
       padding: 2.5rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       max-width: 450px;
       width: 90%;
       animation: slideIn 0.3s ease;
@@ -592,7 +595,7 @@
     .email-modal-title {
       font-size: 1.5rem;
       font-weight: bold;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       margin-bottom: 1.5rem;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -602,11 +605,11 @@
       width: 100%;
       padding: 1rem;
       margin-bottom: 1.5rem;
-      border: 3px solid var(--brutalist-yellow);
-      background: var(--bg-white-ultra-light);
-      color: var(--brutalist-black);
+      border: 3px solid #FFD500;
+      background: rgba(255, 255, 255, 0.05);
+      color: #000000;
       font-size: 1rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       box-sizing: border-box;
     }
 
@@ -616,7 +619,7 @@
 
     .email-modal-input:focus {
       outline: none;
-      box-shadow: 0 0 0 3px var(--brutalist-yellow);
+      box-shadow: 0 0 0 3px #FFD500;
     }
 
     .email-modal-buttons {
@@ -629,39 +632,45 @@
       padding: 1rem;
       font-weight: bold;
       text-transform: uppercase;
-      border: 3px solid var(--brutalist-yellow);
+      border: 3px solid #FFD500;
       cursor: pointer;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
       font-size: 0.95rem;
       letter-spacing: 1px;
     }
 
     .email-modal-btn.submit {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
     }
 
     .email-modal-btn.submit:hover {
-      background: var(--brutalist-black);
-      color: var(--brutalist-yellow);
-      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      background: #000000;
+      color: #FFFFFF;
+      box-shadow: 6px 6px 0px #FFD500;
       transform: translate(-3px, -3px);
     }
 
     .email-modal-btn.cancel {
       background: transparent;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
     }
 
     .email-modal-btn.cancel:hover {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
       transform: translate(-3px, -3px);
     }
   </style>
 </head>
 <body>
+  <div class="video-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; min-width: 100%; min-height: 100%; z-index: -1; overflow: hidden;">
+    <video autoplay muted loop playsinline style="min-width: 100%; min-height: 100%; object-fit: cover;">
+      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
   <div class="video-background">
     <video autoplay muted loop playsinline>
       <source src="../media/output_bw.mp4" type="video/mp4">
@@ -679,17 +688,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
         <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         <li class="nav-item">
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
-        </li>
-        <li class="nav-item">
-          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
         </li>
       </ul>
     </div>
@@ -838,15 +844,15 @@
           </div>
 
           <!-- Construction Process Breakdown -->
-          <div id="materialBreakdown" style="background: var(--glass-bg); border: 3px solid var(--brutalist-yellow); padding: 1rem; margin-bottom: 1rem; border-radius: var(--panel-border-radius); display: none;">
-            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--brutalist-yellow); display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Construction Process" data-es="Proceso de Construcción">
+          <div id="materialBreakdown" style="background: rgba(0, 0, 0, 0.7); border: 3px solid #FFD500; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; display: none;">
+            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: #FFD500; display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Construction Process" data-es="Proceso de Construcción">
               Construction Process
             </div>
             <div id="breakdownItems"></div>
           </div>
 
           <!-- Chart Filter -->
-          <div style="margin-bottom: 1rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</div>
+          <div style="margin-bottom: 1rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</div>
           <div class="chart-controls" style="margin-bottom: 1rem;">
             <button class="chart-btn active" data-scope-filter="all" data-en="All Phases" data-es="Todas las Fases">All Phases</button>
             <button class="chart-btn" data-scope-filter="construction" data-en="Construction Only" data-es="Solo Construcción">Construction Only</button>
@@ -856,7 +862,7 @@
           <div class="charts-container">
             <!-- Pie Chart Section -->
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</div>
+              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</div>
               <div class="chart-controls">
                 <button class="chart-btn active" data-pie-mode="lifecycle" data-en="Lifecycle" data-es="Ciclo de Vida">Lifecycle</button>
                 <button class="chart-btn" data-pie-mode="impact" data-en="Total Impact" data-es="Impacto Total">Total Impact</button>
@@ -869,7 +875,7 @@
 
             <!-- Density Histogram Section -->
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Data Representation" data-es="Representación de Datos">Data Representation</div>
+              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Data Representation" data-es="Representación de Datos">Data Representation</div>
               <div class="chart-controls">
                 <button class="chart-btn active" data-histogram-mode="absolute" data-en="Absolute" data-es="Absoluto">Absolute</button>
                 <button class="chart-btn" data-histogram-mode="percentage" data-en="Percentage" data-es="Porcentaje">Percentage</button>
@@ -900,7 +906,7 @@
               <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
                 Support Tree Planting
               </a>
-              <button onclick="window.print()" class="cta-final" style="background: var(--brutalist-black); color: var(--brutalist-white); border-color: var(--brutalist-yellow);" data-en="Download as PDF" data-es="Descargar como PDF">
+              <button onclick="window.print()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
               </button>
             </div>
@@ -914,7 +920,7 @@
   <div id="emailModal" class="email-modal">
     <div class="email-modal-content">
       <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
-      <p style="margin-bottom: 1.5rem; color: var(--text-secondary);" data-en="Enter your email to receive the PDF of your carbon analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de carbono">Enter your email to receive the PDF of your carbon analysis</p>
+      <p style="margin-bottom: 1.5rem; color: #cccccc;" data-en="Enter your email to receive the PDF of your carbon analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de carbono">Enter your email to receive the PDF of your carbon analysis</p>
       <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
       <div class="email-modal-buttons">
         <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
@@ -926,7 +932,7 @@
   <footer class="footer-enhanced">
     <div class="footer-content">
       <div class="footer-section">
-        <h4>Proyectual Studio</h4>
+        <h4><a href="contact.html" style="text-decoration: none; color: inherit;">Proyectual Studio</a></h4>
         <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">
           Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.
         </p>
@@ -935,16 +941,16 @@
       <div class="footer-section">
         <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
         <ul class="footer-links">
-          <li><a href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-          <li><a href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-          <li><a href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
-          <li><a href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+          <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
       </div>
       <div class="footer-section">
         <h4 data-en="Contact" data-es="Contacto">Contact</h4>
-        <p><a href="mailto:proyectualstudio@gmail.com">proyectualstudio@gmail.com</a></p>
+        <p><a href="contact.html">proyectualstudio@gmail.com</a></p>
         <div class="footer-social">
           <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>

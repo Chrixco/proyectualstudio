@@ -108,9 +108,59 @@
 
     <!-- Call to Action Panels -->
     <section class="py-5 my-5 scroll-fade-in">
-      <div class="row g-4">
+      <style>
+        .cta-row {
+          display: grid;
+          gap: 1rem;
+        }
+        .cta-row.first-row {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .cta-row.second-row {
+          grid-template-columns: 1fr;
+        }
+        .cta-container {
+          box-shadow: 0 0 30px rgba(0, 153, 255, 0.3), 0 0 60px rgba(0, 153, 255, 0.15);
+          border-radius: 8px;
+          padding: 2rem;
+          background: linear-gradient(135deg, rgba(0, 153, 255, 0.05) 0%, transparent 100%);
+        }
+        .cta-container .btn {
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(0, 153, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .cta-container .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0, 153, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        .cta-container .cta-container {
+          box-shadow: 0 4px 20px rgba(0, 153, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+        .cta-container .cta-container:hover {
+          box-shadow: 0 8px 35px rgba(0, 153, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        @media (max-width: 1200px) {
+          .cta-row.first-row {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .cta-row.first-row {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .cta-row.first-row {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      </style>
+      <div class="cta-container" style="display: flex; flex-direction: column; gap: 2rem;">
+        <!-- First Row: 4 buttons -->
+        <div class="cta-row first-row row g-4">
         <!-- Contact Panel -->
-        <div class="col-lg-3 col-md-6">
+        <div style="display: flex;">
           <div class="cta-container h-100 p-4 border border-4 rounded-4" style="background: var(--glass-bg); backdrop-filter: blur(10px);">
             <h3 class="mb-3 fw-bold"
                 data-en="Let's Build Something Meaningful Together"
@@ -132,7 +182,7 @@
         </div>
 
         <!-- Calculator Panel -->
-        <div class="col-lg-3 col-md-6">
+        <div style="display: flex;">
           <div class="cta-container panel-highlight h-100 p-4 border border-4 rounded-4" style="background: var(--glass-bg); backdrop-filter: blur(10px);">
             <h3 class="mb-3 fw-bold"
                 data-en="Calculate Your Project Budget"
@@ -154,7 +204,7 @@
         </div>
 
         <!-- Carbon Footprint Panel -->
-        <div class="col-lg-3 col-md-6">
+        <div style="display: flex;">
           <div class="cta-container h-100 p-4 border border-4 rounded-4" style="background: var(--glass-bg); backdrop-filter: blur(10px);">
             <h3 class="mb-3 fw-bold"
                 data-en="Calculate Your Carbon Footprint"
@@ -176,7 +226,7 @@
         </div>
 
         <!-- Solar Panel Calculator -->
-        <div class="col-lg-3 col-md-6">
+        <div style="display: flex;">
           <div class="cta-container h-100 p-4 border border-4 rounded-4" style="background: var(--glass-bg); backdrop-filter: blur(10px);">
             <h3 class="mb-3 fw-bold"
                 data-en="Calculate Your Solar Potential"
@@ -194,6 +244,31 @@
                data-es="Solar">
               Solar
             </a>
+          </div>
+        </div>
+
+        </div>
+        <!-- Second Row: Tools button -->
+        <div class="cta-row second-row row g-4">
+          <div style="display: flex;">
+            <div class="cta-container h-100 p-4 border border-4 rounded-4" style="background: var(--glass-bg); backdrop-filter: blur(10px);">
+              <h3 class="mb-3 fw-bold"
+                  data-en="Online free tools. No prior knowledge needed."
+                  data-es="Herramientas en línea gratuitas. No se necesita conocimiento previo.">
+                Online free tools. No prior knowledge needed.
+              </h3>
+              <p class="mb-4"
+                 data-en="Access a comprehensive suite of design tools to evaluate your projects: cost estimates, environmental impacts, renewable energy potential, and more."
+                 data-es="Accede a una suite completa de herramientas de diseño para evaluar tus proyectos: estimaciones de costos, impactos ambientales, potencial de energía renovable, y más.">
+                Access a comprehensive suite of design tools to evaluate your projects: cost estimates, environmental impacts, renewable energy potential, and more.
+              </p>
+              <a href="pages/tools.html" class="btn btn-lg w-100"
+                 style="background: var(--brutalist-yellow); color: #FFFFFF; border: 4px solid var(--brutalist-black); box-shadow: 6px 6px 0px var(--brutalist-black); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
+                 data-en="Tools"
+                 data-es="Herramientas">
+                Tools
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -257,6 +332,28 @@
         </div>
       </div>
 
+      <!-- Call to Action - Explore Architecture -->
+      <div class="col-12 mb-5">
+        <div class="form-container border border-4 border-white rounded-4 p-4 text-center">
+          <h3 class="mb-3 fw-bold"
+              data-en="Discover All Our Architecture Projects"
+              data-es="Descubre Todos Nuestros Proyectos de Arquitectura">
+            Discover All Our Architecture Projects
+          </h3>
+          <p class="mb-4"
+             data-en="Explore our complete portfolio of residential, commercial, and mixed-use architecture projects that prioritise sustainable design and local craftsmanship."
+             data-es="Explora nuestro portafolio completo de proyectos de arquitectura residencial, comercial y de uso mixto que priorizan el diseño sostenible y la artesanía local.">
+            Explore our complete portfolio of residential, commercial, and mixed-use architecture projects that prioritise sustainable design and local craftsmanship.
+          </p>
+          <a href="pages/architecture.html" class="btn btn-lg"
+             style="background: var(--brutalist-yellow); color: #FFFFFF; border: 4px solid var(--brutalist-black); box-shadow: 6px 6px 0px var(--brutalist-black); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
+             data-en="View Architecture"
+             data-es="Ver Arquitectura">
+            View Architecture
+          </a>
+        </div>
+      </div>
+
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-right">
         <div class="form-container border border-4 border-white rounded-4 p-4">
@@ -273,6 +370,28 @@
             </a>
           </div>
         </div>
+        </div>
+      </div>
+
+      <!-- Call to Action - Explore Urban Design -->
+      <div class="col-12 mb-5">
+        <div class="form-container border border-4 border-white rounded-4 p-4 text-center">
+          <h3 class="mb-3 fw-bold"
+              data-en="Discover All Our Urban Design Projects"
+              data-es="Descubre Todos Nuestros Proyectos de Diseño Urbano">
+            Discover All Our Urban Design Projects
+          </h3>
+          <p class="mb-4"
+             data-en="Explore our complete portfolio of urban interventions that prioritise ecological restoration, climate resilience, and inclusive public space."
+             data-es="Explora nuestro portafolio completo de intervenciones urbanas que priorizan la restauración ecológica, la resiliencia climática y el espacio público inclusivo.">
+            Explore our complete portfolio of urban interventions that prioritise ecological restoration, climate resilience, and inclusive public space.
+          </p>
+          <a href="pages/urban_design.html" class="btn btn-lg"
+             style="background: var(--brutalist-black); color: #FFFFFF; border: 4px solid var(--brutalist-yellow); box-shadow: 6px 6px 0px var(--brutalist-yellow); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;"
+             data-en="View Urban Design"
+             data-es="Ver Diseño Urbano">
+            View Urban Design
+          </a>
         </div>
       </div>
 
@@ -376,7 +495,7 @@
   <footer class="footer-enhanced">
     <div class="footer-content">
       <div class="footer-section">
-        <h4>Proyectual Studio</h4>
+        <h4><a href="pages/contact.html" style="text-decoration: none; color: inherit;">Proyectual Studio</a></h4>
         <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
         <p><strong>Cuenca, Ecuador</strong></p>
       </div>
@@ -392,7 +511,7 @@
       </div>
       <div class="footer-section">
         <h4 data-en="Contact" data-es="Contacto">Contact</h4>
-        <p><a href="mailto:proyectualstudio@gmail.com">proyectualstudio@gmail.com</a></p>
+        <p><a href="pages/contact.html">proyectualstudio@gmail.com</a></p>
         <div class="footer-social">
           <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>

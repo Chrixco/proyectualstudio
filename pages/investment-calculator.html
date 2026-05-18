@@ -238,7 +238,7 @@
 
     .btn-calculate:hover {
       background: var(--brutalist-black);
-      color: var(--brutalist-yellow);
+      color: var(--brutalist-white);
       border-color: var(--brutalist-yellow);
       box-shadow: 8px 8px 0px var(--brutalist-yellow);
       transform: translate(-3px, -3px);
@@ -574,9 +574,9 @@
     }
 
     .option-card.active {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      box-shadow: 8px 8px 0px var(--brutalist-black);
+      background: #000000;
+      color: #FFFFFF;
+      box-shadow: 8px 8px 0px #FFD500;
     }
 
     .option-card-title {
@@ -662,19 +662,71 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         <li class="nav-item">
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
         </li>
-        <li class="nav-item">
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <a href="tools.html" class="brutal-btn-yellow go-back-btn mb-4" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </a>
+    <h1 class="title-main" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
+
+    <div class="calculator-wrapper">
+      <div class="calculator-layout">
+        <!-- Inputs Panel -->
+        <div class="inputs-panel">
+          <!-- 1. Market Selection Section -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="Select Market" data-es="Selecciona Mercado">Select Market</label>
+            <div class="country-selector">
+              <button class="country-btn active" data-country="ecuador" onclick="selectCountry('ecuador')" data-en="Ecuador" data-es="Ecuador">Ecuador</button>
               <button class="country-btn" data-country="germany" onclick="selectCountry('germany')" data-en="Germany" data-es="Alemania">Germany</button>
             </div>
             <div class="info-badge" id="countryInfo">Base currency: USD</div>
+          </div>
+
+          <!-- 1b. Project Purpose Section (Moved before other inputs) -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="1b. Project Purpose" data-es="1b. Propósito del Proyecto">1b. Project Purpose</label>
+
+            <div class="option-cards">
+              <div class="option-card" id="purpose-sale" onclick="selectPurpose('sale')">
+                <div class="option-card-title" data-en="Sale Only" data-es="Solo Venta">Sale Only</div>
+                <div class="option-card-subtitle" data-en="Focus on appreciation" data-es="Enfoque en apreciación">Focus on appreciation</div>
+              </div>
+              <div class="option-card active" id="purpose-rent" onclick="selectPurpose('rent')">
+                <div class="option-card-title" data-en="Rent Only" data-es="Solo Alquiler">Rent Only</div>
+                <div class="option-card-subtitle" data-en="Focus on income" data-es="Enfoque en ingresos">Focus on income</div>
+              </div>
+              <div class="option-card" id="purpose-both" onclick="selectPurpose('both')">
+                <div class="option-card-title" data-en="Sale &amp; Rent" data-es="Venta y Alquiler">Sale &amp; Rent</div>
+                <div class="option-card-subtitle" data-en="Both income streams" data-es="Ambos flujos">Both income streams</div>
+              </div>
+            </div>
+
+            <div id="purposePercentageSection" style="display: none;">
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Rental Income (%)" data-es="Ingresos de Alquiler (%)">Rental Income (%)</label>
+                  <span class="slider-value" id="rentalPurposeValue">50</span>
+                </div>
+                <input type="range" id="rentalPurposePercent" min="10" max="90" step="10" value="50" oninput="syncSlider(this); updatePurposePercentages(); debouncedCalculate();">
+                <div class="slider-range-labels"><span>10%</span><span>90%</span></div>
+                <span class="hint-text" id="salePurposeHint">Sale focus: 50%</span>
+              </div>
+            </div>
           </div>
 
           <!-- 2. Project Section -->
@@ -758,22 +810,26 @@
           <div class="calculator-section">
             <label class="calculator-label" data-en="4. Income &amp; Returns" data-es="4. Ingresos y Retornos">4. Income &amp; Returns</label>
 
-            <div class="mb-3">
-              <label data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
-              <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5" oninput="debouncedCalculate();">
-              <span class="hint-text" data-en="Ecuador: $8–20/m² · Germany: €10–18/m²" data-es="Ecuador: $8–20/m² · Alemania: €10–18/m²">Ecuador: $8–20/m² · Germany: €10–18/m²</span>
-            </div>
-
-            <div class="slider-field">
-              <div class="slider-header">
-                <label data-en="Annual Operating Costs (%)" data-es="Costos Operativos Anuales (%)">Annual Operating Costs (%)</label>
-                <span class="slider-value" id="operatingCostsValue">30</span>
+            <!-- Rental Income Fields (hidden for sale-only) -->
+            <div id="rentalIncomeSection">
+              <div class="mb-3">
+                <label data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
+                <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5" oninput="debouncedCalculate();">
+                <span class="hint-text" data-en="Ecuador: $8–20/m² · Germany: €10–18/m²" data-es="Ecuador: $8–20/m² · Alemania: €10–18/m²">Ecuador: $8–20/m² · Germany: €10–18/m²</span>
               </div>
-              <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" oninput="syncSlider(this); debouncedCalculate();">
-              <div class="slider-range-labels"><span>0%</span><span>70%</span></div>
-              <span class="hint-text" data-en="Includes maintenance, taxes, insurance, vacancy (30% is typical)" data-es="Incluye mantenimiento, impuestos, seguros, vacancia (30% es típico)">Includes maintenance, taxes, insurance, vacancy</span>
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Annual Operating Costs (%)" data-es="Costos Operativos Anuales (%)">Annual Operating Costs (%)</label>
+                  <span class="slider-value" id="operatingCostsValue">30</span>
+                </div>
+                <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>0%</span><span>70%</span></div>
+                <span class="hint-text" data-en="Includes maintenance, taxes, insurance, vacancy (30% is typical)" data-es="Incluye mantenimiento, impuestos, seguros, vacancia (30% es típico)">Includes maintenance, taxes, insurance, vacancy</span>
+              </div>
             </div>
 
+            <!-- Appreciation (shown for both rent and sale) -->
             <div class="slider-field">
               <div class="slider-header">
                 <label data-en="Annual Appreciation (%)" data-es="Apreciación Anual (%)">Annual Appreciation (%)</label>
@@ -785,37 +841,6 @@
             </div>
           </div>
 
-          <!-- 4b. Project Purpose Section -->
-          <div class="calculator-section">
-            <label class="calculator-label" data-en="4b. Project Purpose" data-es="4b. Propósito del Proyecto">4b. Project Purpose</label>
-
-            <div class="option-cards">
-              <div class="option-card" id="purpose-sale" onclick="selectPurpose('sale')">
-                <div class="option-card-title" data-en="Sale Only" data-es="Solo Venta">Sale Only</div>
-                <div class="option-card-subtitle" data-en="Focus on appreciation" data-es="Enfoque en apreciación">Focus on appreciation</div>
-              </div>
-              <div class="option-card active" id="purpose-rent" onclick="selectPurpose('rent')">
-                <div class="option-card-title" data-en="Rent Only" data-es="Solo Alquiler">Rent Only</div>
-                <div class="option-card-subtitle" data-en="Focus on income" data-es="Enfoque en ingresos">Focus on income</div>
-              </div>
-              <div class="option-card" id="purpose-both" onclick="selectPurpose('both')">
-                <div class="option-card-title" data-en="Sale &amp; Rent" data-es="Venta y Alquiler">Sale &amp; Rent</div>
-                <div class="option-card-subtitle" data-en="Both income streams" data-es="Ambos flujos">Both income streams</div>
-              </div>
-            </div>
-
-            <div id="purposePercentageSection" style="display: none;">
-              <div class="slider-field">
-                <div class="slider-header">
-                  <label data-en="Rental Income (%)" data-es="Ingresos de Alquiler (%)">Rental Income (%)</label>
-                  <span class="slider-value" id="rentalPurposeValue">50</span>
-                </div>
-                <input type="range" id="rentalPurposePercent" min="10" max="90" step="10" value="50" oninput="syncSlider(this); updatePurposePercentages(); debouncedCalculate();">
-                <div class="slider-range-labels"><span>10%</span><span>90%</span></div>
-                <span class="hint-text" id="salePurposeHint">Sale focus: 50%</span>
-              </div>
-            </div>
-          </div>
 
           <!-- 5. Financing Section -->
           <div class="calculator-section">
@@ -881,7 +906,7 @@
         <!-- Results Panel -->
         <div class="results-panel" id="resultsPanel" style="opacity: 0.6;">
           <div style="text-align: center; margin-bottom: 1.5rem;">
-            <span style="background: var(--brutalist-yellow); color: var(--brutalist-black); padding: 0.4rem 0.8rem; border-radius: var(--panel-border-radius); font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
+            <span id="resultStatusBadge" style="background: var(--brutalist-yellow); color: var(--brutalist-black); padding: 0.4rem 0.8rem; border-radius: var(--panel-border-radius); font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
           </div>
           <div class="result-section">
             <div class="result-section-title" data-en="Investment Summary" data-es="Resumen de Inversión">Investment Summary</div>
@@ -932,10 +957,12 @@
             <div class="result-item">
               <span class="result-label" data-en="ROI (%)" data-es="ROI (%)">ROI (%)</span>
               <span class="result-value" id="resultROI">-</span>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Payback Period" data-es="Período de Retorno">Payback Period</span>
               <span class="result-value" id="resultPayback">-</span>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Property Value (end)" data-es="Valor de Propiedad (final)">Property Value (end)</span>
@@ -964,24 +991,24 @@
   <footer class="footer-enhanced">
     <div class="footer-content">
       <div class="footer-section">
-        <h4>Proyectual Studio</h4>
+        <h4><a href="contact.html" style="text-decoration: none; color: inherit;">Proyectual Studio</a></h4>
         <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
         <p><strong>Cuenca, Ecuador</strong></p>
       </div>
       <div class="footer-section">
         <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
         <ul class="footer-links">
-          <li><a href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-          <li><a href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-          <li><a href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-          <li><a href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
-          <li><a href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+          <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
       </div>
       <div class="footer-section">
         <h4 data-en="Contact" data-es="Contacto">Contact</h4>
-        <p><a href="mailto:christianxcorral@gmail.com">christianxcorral@gmail.com</a></p>
+        <p><a href="contact.html">christianxcorral@gmail.com</a></p>
         <div class="footer-social">
           <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -1043,7 +1070,11 @@
     function markResultsAsUpdating() {
       if (hasCalculated) {
         const resultsPanel = document.getElementById('resultsPanel');
+        const badge = document.getElementById('resultStatusBadge');
         resultsPanel.classList.add('calculating');
+        badge.textContent = 'UPDATING...';
+        badge.style.background = 'var(--accent-light)';
+        badge.style.color = 'var(--accent-primary)';
       }
     }
 
@@ -1112,6 +1143,14 @@
       document.getElementById(`purpose-${purpose}`).classList.add('active');
 
       currentProjectPurpose = purpose;
+
+      // Show/hide rental income section based on purpose
+      const rentalSection = document.getElementById('rentalIncomeSection');
+      if (purpose === 'sale') {
+        rentalSection.style.display = 'none';
+      } else {
+        rentalSection.style.display = 'block';
+      }
 
       // Show/hide percentage section
       const percentageSection = document.getElementById('purposePercentageSection');
@@ -1262,6 +1301,12 @@
         currency: currency === 'EUR' ? 'EUR' : 'USD',
         minimumFractionDigits: 0
       });
+
+      // Update badge to show preview
+      const badge = document.getElementById('resultStatusBadge');
+      if (badge && !hasCalculated) {
+        badge.textContent = 'PREVIEW';
+      }
 
       // Sample values
       const sampleDownPayment = 350000;
@@ -1425,9 +1470,13 @@
 
       // Show results panel with full opacity
       const resultsPanel = document.getElementById('resultsPanel');
+      const badge = document.getElementById('resultStatusBadge');
       resultsPanel.style.display = 'block';
       resultsPanel.style.opacity = '1';
       resultsPanel.classList.remove('calculating');
+      badge.textContent = 'RESULTS';
+      badge.style.background = 'var(--brutalist-yellow)';
+      badge.style.color = 'var(--brutalist-black)';
       hasCalculated = true;
 
       // Draw charts

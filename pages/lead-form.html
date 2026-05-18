@@ -176,7 +176,7 @@
 
     .btn-submit:hover:not(:disabled) {
       background: var(--brutalist-black);
-      color: var(--brutalist-yellow);
+      color: var(--brutalist-white);
       border-color: var(--brutalist-yellow);
       box-shadow: 8px 8px 0px var(--brutalist-yellow);
       transform: translate(-3px, -3px);
@@ -312,7 +312,7 @@
 
     body[data-theme="light"] .btn-submit:hover:not(:disabled) {
       background: var(--brutalist-black);
-      color: var(--brutalist-yellow);
+      color: var(--brutalist-white);
     }
 
     body[data-theme="light"] .btn-cancel {
@@ -409,12 +409,12 @@
 <body class="body-white-text">
   <div class="video-background">
     <video autoplay muted loop playsinline>
-      <source src="../media/output_bw.mp4" type="video/mp4">
+      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: rgba(0, 153, 255, 0.95)">
     <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
       <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
       <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
@@ -424,24 +424,137 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         <li class="nav-item">
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
         </li>
-        <li class="nav-item">
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <h1 data-en="Project Request" data-es="Solicitud de Proyecto">Project Request</h1>
+        <div class="calculator-type-badge" id="calculatorTypeBadge" data-en="General Inquiry" data-es="Consulta General">General Inquiry</div>
       </div>
 
-      <!-- Form Actions -->
-      <div class="form-actions">
-        <button type="button" class="btn-cancel" onclick="goBackToCalculator()" data-en="Back" data-es="Volver">Back</button>
-        <button type="submit" class="btn-submit" id="submitBtn" onclick="submitLeadForm()" data-en="Send Request" data-es="Enviar Solicitud">Send Request</button>
+      <div id="statusMessage" class="status-message"></div>
+
+      <!-- Calculator Data Section (if available) -->
+      <div id="calculatorDataSection" class="form-section" style="display: none;">
+        <h3 class="form-section-title" data-en="Project Details" data-es="Detalles del Proyecto">Project Details</h3>
+        <div class="calculator-data" id="calculatorDataDisplay"></div>
       </div>
 
+      <!-- Main Form -->
+      <form id="leadForm">
+        <!-- Contact Information -->
+        <div class="form-section">
+          <h3 class="form-section-title" data-en="Contact Information" data-es="Información de Contacto">Contact Information</h3>
+
+          <div class="form-group">
+            <label for="name" data-en="Full Name" data-es="Nombre Completo">Full Name <span class="required-field">*</span></label>
+            <input type="text" id="name" class="form-control" placeholder="Enter your full name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email" data-en="Email Address" data-es="Correo Electrónico">Email Address <span class="required-field">*</span></label>
+            <input type="email" id="email" class="form-control" placeholder="your.email@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone" data-en="Phone Number" data-es="Número de Teléfono">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 123-4567" />
+          </div>
+
+          <div class="form-group">
+            <label for="company" data-en="Company/Organization" data-es="Empresa/Organización">Company/Organization</label>
+            <input type="text" id="company" class="form-control" placeholder="Your company name" />
+          </div>
+        </div>
+
+        <!-- Project Interest -->
+        <div class="form-section">
+          <h3 class="form-section-title" data-en="Project Interest" data-es="Interés del Proyecto">Project Interest</h3>
+
+          <div class="form-group">
+            <label for="fieldOfInterest" data-en="Field of Interest" data-es="Área de Interés">Field of Interest <span class="required-field">*</span></label>
+            <select id="fieldOfInterest" class="form-control" required>
+              <option value="">Select an area...</option>
+              <option value="Architecture" data-en="Architecture" data-es="Arquitectura">Architecture</option>
+              <option value="Urban Design" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</option>
+              <option value="Sustainability" data-en="Sustainability" data-es="Sostenibilidad">Sustainability</option>
+              <option value="Climate Resilience" data-en="Climate Resilience" data-es="Resiliencia Climática">Climate Resilience</option>
+              <option value="Object Design" data-en="Object Design" data-es="Diseño de Objetos">Object Design</option>
+              <option value="Other" data-en="Other" data-es="Otro">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Contact Preferences -->
+        <div class="form-section">
+          <h3 class="form-section-title" data-en="Contact Preferences" data-es="Preferencias de Contacto">Contact Preferences</h3>
+
+          <div class="form-group">
+            <label data-en="Preferred Contact Method" data-es="Método de Contacto Preferido">Preferred Contact Method <span class="required-field">*</span></label>
+            <div class="toggle-group toggle-group-vertical">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="preferredContact" id="contactEmail" value="Email" checked />
+                <label class="form-check-label" for="contactEmail" data-en="Email" data-es="Correo Electrónico">Email</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="preferredContact" id="contactPhone" value="Phone" />
+                <label class="form-check-label" for="contactPhone" data-en="Phone" data-es="Teléfono">Phone</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="preferredContact" id="contactBoth" value="Both" />
+                <label class="form-check-label" for="contactBoth" data-en="Both" data-es="Ambos">Both</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-en="Project Timeline" data-es="Cronograma del Proyecto">Project Timeline <span class="required-field">*</span></label>
+            <div class="toggle-group toggle-group-vertical">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="projectTimeline" id="timelineASAP" value="ASAP" checked />
+                <label class="form-check-label" for="timelineASAP" data-en="ASAP" data-es="Lo Antes Posible">ASAP</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="projectTimeline" id="timeline1-3m" value="1-3 months" />
+                <label class="form-check-label" for="timeline1-3m" data-en="1-3 Months" data-es="1-3 Meses">1-3 Months</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="projectTimeline" id="timeline3-6m" value="3-6 months" />
+                <label class="form-check-label" for="timeline3-6m" data-en="3-6 Months" data-es="3-6 Meses">3-6 Months</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="projectTimeline" id="timeline6m-plus" value="6+ months" />
+                <label class="form-check-label" for="timeline6m-plus" data-en="6+ Months" data-es="6+ Meses">6+ Months</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-section">
+          <div class="form-group">
+            <label for="message" data-en="Additional Message" data-es="Mensaje Adicional">Additional Message</label>
+            <textarea id="message" class="form-control" placeholder="Tell us more about your project..."></textarea>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="goBackToCalculator()" data-en="Back" data-es="Volver">Back</button>
+          <button type="button" class="btn-submit" id="submitBtn" onclick="submitLeadForm()" data-en="Send Request" data-es="Enviar Solicitud">Send Request</button>
+        </div>
       </form>
     </div>
   </main>
@@ -456,12 +569,12 @@
       <div class="footer-section">
         <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
         <ul class="footer-links">
-          <li><a href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-          <li><a href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-          <li><a href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-          <li><a href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
-          <li><a href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+          <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
       </div>
       <div class="footer-section">
@@ -489,40 +602,32 @@
     let currentLang = localStorage.getItem('lang') || 'en';
 
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('🚀 Lead Form Page Loaded');
-
-      // Load calculator data from sessionStorage (optional)
+      // Load calculator data from sessionStorage
       const storedData = sessionStorage.getItem('leadCaptureData');
-      console.log('📦 SessionStorage Data:', storedData);
 
       if (storedData) {
         try {
           const leadData = JSON.parse(storedData);
-          console.log('✅ Data parsed successfully:', leadData);
-
-          currentCalculatorType = leadData.calculatorType;
-          currentCalculatorData = leadData.data;
-
-          console.log('📋 Calculator Type:', currentCalculatorType);
-          console.log('📊 Calculator Data:', currentCalculatorData);
+          currentCalculatorType = leadData.calculatorType || 'Unknown';
+          currentCalculatorData = leadData.data || {};
 
           // Update UI
           document.getElementById('calculatorTypeBadge').textContent = currentCalculatorType;
-          populateCalculatorData(leadData.data);
+
+          if (currentCalculatorData.summary && Object.keys(currentCalculatorData.summary).length > 0) {
+            document.getElementById('calculatorDataSection').style.display = 'block';
+            populateCalculatorData(currentCalculatorData);
+          }
 
           // Clear stored data after loading
           sessionStorage.removeItem('leadCaptureData');
-          console.log('🧹 SessionStorage cleared');
         } catch (error) {
-          console.error('❌ Error parsing calculator data:', error);
+          console.error('Error parsing calculator data:', error);
         }
       } else {
-        console.log('ℹ️ No calculator data - form can still be used independently');
-        document.getElementById('calculatorTypeBadge').textContent = 'General Inquiry';
-        populateCalculatorData({});
+        document.getElementById('calculatorTypeBadge').textContent = currentLang === 'en' ? 'General Inquiry' : 'Consulta General';
       }
 
-      // Update language if needed
       updateLanguageDisplay();
     });
 
@@ -552,11 +657,6 @@
       const statusEl = document.getElementById('statusMessage');
       statusEl.textContent = message;
       statusEl.className = `status-message show status-${type}`;
-    }
-
-    function clearStatus() {
-      const statusEl = document.getElementById('statusMessage');
-      statusEl.className = 'status-message';
     }
 
     function submitLeadForm() {
@@ -598,12 +698,11 @@
       // Send to Discord webhook
       const webhookUrl = 'https://discord.com/api/webhooks/1505911523003076678/16NKDREJeWs8hLBBpUoOJLJkP6P1w--Or-hjJ5223OAxqP5fhnNrLcymkMax2UVWPy-b';
 
-      // Prepare Discord embed
       const discordMessage = {
         content: `📝 New Proposal Request - ${fieldOfInterest}`,
         embeds: [{
           title: '🚀 Lead Form Submission',
-          color: 16760576, // Yellow color
+          color: 16760576,
           fields: [
             { name: '📋 Calculator Type', value: currentCalculatorType, inline: false },
             { name: '👤 Name', value: name, inline: true },
@@ -619,7 +718,6 @@
         }]
       };
 
-      // Add project details if available
       if (currentCalculatorData && currentCalculatorData.summary && Object.keys(currentCalculatorData.summary).length > 0) {
         const summaryFields = Object.entries(currentCalculatorData.summary).map(([key, value]) => ({
           name: formatLabel(key),
@@ -633,7 +731,6 @@
         );
       }
 
-      // Send to Discord
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -641,7 +738,6 @@
       })
       .then(response => {
         if (response.ok) {
-          // Also send email to emails_databases channel
           const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
           const emailLogMessage = {
             content: `\`${email}\` - Lead Form (${new Date().toLocaleString()})`
@@ -656,7 +752,7 @@
           throw new Error('Discord webhook error');
         }
       })
-      .then(response => {
+      .then(() => {
         showStatus(
           currentLang === 'en'
             ? '✅ Request sent successfully! We will contact you soon.'
@@ -664,17 +760,15 @@
           'success'
         );
 
-        // Clear form
         document.getElementById('leadForm').reset();
-        document.getElementById('calculatorTypeBadge').textContent = 'Unknown';
+        document.getElementById('calculatorTypeBadge').textContent = currentLang === 'en' ? 'General Inquiry' : 'Consulta General';
 
-        // Redirect after 3 seconds
         setTimeout(() => {
           window.location.href = '../main.html';
         }, 3000);
       })
       .catch(error => {
-        console.error('❌ Error submitting form:', error);
+        console.error('Error submitting form:', error);
         showStatus(
           currentLang === 'en'
             ? '❌ Error sending request. Please try again.'
@@ -685,59 +779,7 @@
       });
     }
 
-    function fillDebugData() {
-      // Populate calculator data if not present
-      if (!currentCalculatorData || !currentCalculatorData.summary) {
-        if (currentLang === 'es') {
-          currentCalculatorData = {
-            summary: {
-              discipline: 'Residencial',
-              location: 'Cuenca, Ecuador',
-              size: '150 m²',
-              estimatedCost: '$45,000'
-            }
-          };
-          currentCalculatorType = 'Presupuesto del Proyecto';
-        } else {
-          currentCalculatorData = {
-            summary: {
-              discipline: 'Residential',
-              location: 'Cuenca, Ecuador',
-              size: '150 m²',
-              estimatedCost: '$45,000'
-            }
-          };
-          currentCalculatorType = 'Project Budget';
-        }
-        document.getElementById('calculatorTypeBadge').textContent = currentCalculatorType;
-        populateCalculatorData(currentCalculatorData);
-      }
-
-      // Fill form fields based on current language
-      if (currentLang === 'es') {
-        document.getElementById('name').value = 'Juan Pérez García';
-        document.getElementById('email').value = 'juan.perez@ejemplo.com';
-        document.getElementById('phone').value = '+593 (7) 123-4567';
-        document.getElementById('company').value = 'Construcciones Andinas';
-        document.getElementById('message').value = 'Este es un envío de prueba. Por favor revisa los detalles del proyecto arriba.';
-      } else {
-        document.getElementById('name').value = 'John Doe';
-        document.getElementById('email').value = 'john.doe@example.com';
-        document.getElementById('phone').value = '+1 (555) 123-4567';
-        document.getElementById('company').value = 'Acme Construction';
-        document.getElementById('message').value = 'This is a test submission. Please review the project details above.';
-      }
-
-      showStatus(
-        currentLang === 'en'
-          ? 'Debug data loaded successfully!'
-          : '¡Datos de prueba cargados correctamente!',
-        'success'
-      );
-    }
-
     function goBackToCalculator() {
-      // Try to go back, or redirect to main
       if (document.referrer && document.referrer.includes('/pages/')) {
         history.back();
       } else {
@@ -746,7 +788,6 @@
     }
 
     function updateLanguageDisplay() {
-      // Update all data-en/data-es elements
       document.querySelectorAll('[data-en]').forEach(el => {
         if (currentLang === 'es' && el.hasAttribute('data-es')) {
           el.textContent = el.getAttribute('data-es');
@@ -756,7 +797,6 @@
       });
     }
 
-    // Listen for language changes
     const originalSetItem = Storage.prototype.setItem;
     Storage.prototype.setItem = function(key, value) {
       originalSetItem.apply(this, arguments);
@@ -766,11 +806,10 @@
       }
     };
 
-    // Language toggle functionality
     let currentLangToggle = localStorage.getItem('lang') || 'en';
     function updateLanguageToggle(lang) {
       document.querySelectorAll('[data-en]').forEach(el => {
-        el.innerHTML = el.getAttribute(`data-${lang}`);
+        el.textContent = el.getAttribute(`data-${lang}`);
       });
       const toggleBtn = document.getElementById('lang-toggle');
       if (toggleBtn) {
@@ -788,7 +827,6 @@
           updateLanguageToggle(currentLangToggle);
         });
       }
-
     });
   </script>
 </body>

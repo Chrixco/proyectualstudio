@@ -7,6 +7,312 @@
   <script src="../js/cookie-consent.js"></script>
   <link rel="icon" href="../images/logo03.ico" type="image/x-icon" />
   <title>Superblock Cuenca — Proyectual Studio</title>
-  <link href="../css/styles.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="../css/styles.css" rel="stylesheet" />
 
+  <!-- Centralized Color System -->
+  <script src="../js/colors.js"><\/script>
+  <!-- Neo-Brutalist Effects -->
+  <script src="../js/neobrutalist.js"></script>
+  <!-- Image Lightbox -->
+  <script src="../js/lightbox.js"></script>
+</head>
+<body class="body-white-text">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
+      <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
+      <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item">
+          <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container mt-5 px-3 px-md-4">
+    <section class="brutal-hero scroll-fade-in">
+      <h2 class="fw-bold" data-en="Superblock Cuenca"
+          data-es="Superblock Cuenca">
+        Superblock Cuenca
+      </h2>
+    </section>
+
+    <hr class="brutal-divider" />
+    <section class="row g-4 align-items-start">
+      <div class="col-12 col-lg-7">
+        <div class="form-container border border-4 border-white rounded-4 p-4 h-100">
+          <h3 class="fw-bold brutal-text-yellow"
+              data-en="Project Overview"
+              data-es="Resumen del Proyecto">Project Overview</h3>
+          <p style="text-align: justify;" class="mb-3"
+             data-en="A historic center. Cars everywhere. Streets belong to traffic. But the center belongs to people. We take back the streets. Move cars to the edges. Open the interior for walking. For cycling. For gathering. For markets. For children. For trees. The streets become linear parks. Connected corridors. The center becomes a network of plazas and streets that breathe together. No single center. Many centers. Each block is a community. Connected. The river moves through it all."
+             data-es="Un centro histórico. Autos en todas partes. Las calles pertenecen al tráfico. Pero el centro pertenece a la gente. Recuperamos las calles. Movemos los autos a los bordes. Abrimos el interior para caminar. Para pedalear. Para reunirse. Para mercados. Para niños. Para árboles. Las calles se convierten en parques lineales. Corredores conectados. El centro se convierte en una red de plazas y calles que respiran juntas. Sin un centro único. Muchos centros. Cada bloque es una comunidad. Conectada. El río pasa por todo.">
+            A historic center. Cars everywhere. Streets belong to traffic. But the center belongs to people. We take back the streets. Move cars to the edges. Open the interior for walking. For cycling. For gathering. For markets. For children. For trees. The streets become linear parks. Connected corridors. The center becomes a network of plazas and streets that breathe together. No single center. Many centers. Each block is a community. Connected. The river moves through it all.
+          </p>
+          <ul class="mb-0 brutal-text-white" style="text-align: justify;">
+            <li data-en="Typology: Urban design, public space, mobility strategy"
+                data-es="Tipología: Diseño urbano, espacio público, estrategia de movilidad">
+              Typology: Urban design, public space, mobility strategy
+            </li>
+            <li data-en="Location: Cuenca, Ecuador — Historic Centre"
+                data-es="Ubicación: Cuenca, Ecuador — Centro Histórico">
+              Location: Cuenca, Ecuador — Historic Centre
+            </li>
+            <li data-en="Status: Research & strategic design proposal"
+                data-es="Estado: Investigación y propuesta estratégica de diseño">
+              Status: Research & strategic design proposal
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-lg-5">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <img src="../images/superblock cuenca/20180515_vision.jpg"
+               alt="Axonometric representation of Superblock Cuenca"
+               class="img-fluid border border-4 border-white rounded-4 panel-image"
+               style="aspect-ratio: 4 / 3; object-fit: cover;" />
+        </div>
+      </div>
+    </section>
+
+    <hr class="brutal-divider" />
+    <section class="form-container border border-4 border-white rounded-4 p-4">
+      <h3 class="fw-bold brutal-text-yellow"
+          data-en="Design Principles"
+          data-es="Principios de Diseño">Design Principles</h3>
+      <div class="row g-4 mt-2">
+        <div class="col-12 col-lg-4">
+          <div class="form-container border border-4 border-white rounded-4 p-4 h-100">
+            <h4 class="fw-bold brutal-text-yellow"
+                data-en="Mobility Hierarchy"
+                data-es="Jerarquía de Movilidad">Mobility Hierarchy</h4>
+            <p style="text-align: justify;" class="mb-0"
+               data-en="Traffic is re-routed to the edges while interior streets become shared surfaces prioritising pedestrians, cyclists, and micro-mobility. Service vehicles operate during limited windows to minimise conflicts."
+               data-es="El tráfico se redirige hacia los bordes mientras las calles interiores se convierten en superficies compartidas que priorizan peatones, ciclistas y micromovilidad. Los vehículos de servicio operan en ventanas limitadas para minimizar conflictos.">
+              Traffic is re-routed to the edges while interior streets become shared surfaces prioritising pedestrians, cyclists, and micro-mobility. Service vehicles operate during limited windows to minimise conflicts.
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="form-container border border-4 border-white rounded-4 p-4 h-100">
+            <h4 class="fw-bold brutal-text-yellow"
+                data-en="Ecological Corridors"
+                data-es="Corredores Ecológicos">Ecological Corridors</h4>
+            <p style="text-align: justify;" class="mb-0"
+               data-en="Linear parks and planted streets stitch together existing green pockets, improving biodiversity, storm-water management, and thermal comfort while connecting to the Tomebamba river landscape."
+               data-es="Parques lineales y calles arboladas conectan los bolsillos verdes existentes, mejorando la biodiversidad, la gestión de aguas pluviales y el confort térmico, a la vez que enlazan con el paisaje del río Tomebamba.">
+              Linear parks and planted streets stitch together existing green pockets, improving biodiversity, storm-water management, and thermal comfort while connecting to the Tomebamba river landscape.
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="form-container border border-4 border-white rounded-4 p-4 h-100">
+            <h4 class="fw-bold brutal-text-yellow"
+                data-en="Civic Nodes"
+                data-es="Nodos Cívicos">Civic Nodes</h4>
+            <p style="text-align: justify;" class="mb-0"
+               data-en="Plazas, school yards, and market forecourts are reprogrammed as active nodes that support community-led events, cultural programming, and everyday social life across the superblock network."
+               data-es="Plazas, patios escolares y atrios de mercados se reprograman como nodos activos que soportan eventos comunitarios, programación cultural y la vida social cotidiana a lo largo de la red de supermanzanas.">
+              Plazas, school yards, and market forecourts are reprogrammed as active nodes that support community-led events, cultural programming, and everyday social life across the superblock network.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="brutal-divider" />
+    <section class="row g-4">
+      <!-- Row 1: Vision + text panel -->
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180617_gausa_cuenca_zoom Large.jpeg"
+             alt="Vision of the Superblock Cuenca proposal"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="display-6 fw-bold brutal-text-yellow text-center"
+                data-en="Streets for people"
+                data-es="Calles para la gente">Streets for people</span>
+        </div>
+      </div>
+
+      <!-- Row 2: Text panel + mobility diagram -->
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="fs-4 fw-bold brutal-text-white text-center"
+                data-en="Cars to the edges. Walking takes over."
+                data-es="Autos a los bordes. Caminar toma el control.">Cars to the edges. Walking takes over.</span>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180621_superblock_concept-2 Large.jpeg"
+             alt="Mobility hierarchy diagram"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+
+      <!-- Row 3: Grid structure + text panel -->
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180624_superblock_cuenca_3x3 Large.jpeg"
+             alt="3x3 block structure"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="display-6 fw-bold brutal-text-yellow text-center"
+                data-en="Many centers. One network."
+                data-es="Muchos centros. Una red.">Many centers. One network.</span>
+        </div>
+      </div>
+
+      <!-- Row 4: Text panel + ecological corridors -->
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="fs-4 fw-bold brutal-text-white text-center"
+                data-en="Green lines. Trees. Water. Life."
+                data-es="Líneas verdes. Árboles. Agua. Vida.">Green lines. Trees. Water. Life.</span>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180625_nodos_zoom_3x3 Large.jpeg"
+             alt="Nodal connections and green corridors"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+
+      <!-- Row 5: Text panel + baseline analysis -->
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="display-6 fw-bold brutal-text-yellow text-center"
+                data-en="Read the city. Understand it."
+                data-es="Lee la ciudad. Entiéndela.">Read the city. Understand it.</span>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180416_superblockanalisis.jpg"
+             alt="Baseline analysis"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+
+      <!-- Row 6: Quality assessment + text panel -->
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180627_evaluacion de calidades_3x3 Large.jpeg"
+             alt="Quality assessment"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="fs-4 fw-bold brutal-text-white text-center"
+                data-en="Measure quality. Plan growth."
+                data-es="Mide la calidad. Planifica el crecimiento.">Measure quality. Plan growth.</span>
+        </div>
+      </div>
+
+      <!-- Row 7: Text panel + perspective -->
+      <div class="col-12 col-lg-4">
+        <div class="form-container border border-4 border-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center">
+          <span class="display-6 fw-bold brutal-text-yellow text-center"
+                data-en="Plazas for gathering"
+                data-es="Plazas para reunirse">Plazas for gathering</span>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <img src="../images/superblock cuenca/20180414_Superblock_Esucela y plaza rotari Large.jpeg"
+             alt="Perspective of reclaimed street and plaza"
+             class="img-fluid border border-4 border-white rounded-4 panel-image"
+             style="object-fit: cover;" />
+      </div>
+    </section>
+
+    <hr class="brutal-divider" />
+    <section class="form-container border border-4 border-white rounded-4 p-4">
+      <h3 class="fw-bold brutal-text-yellow mb-3"
+          data-en="Credits"
+          data-es="Créditos">Credits</h3>
+      <p style="text-align: justify;" class="mb-0"
+         data-en="Proyectual Studio"
+         data-es="Proyectual Studio">
+        Proyectual Studio
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer-enhanced">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4><a href="contact.html" style="text-decoration: none; color: inherit;">Proyectual Studio</a></h4>
+        <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
+        <p><strong>Cuenca, Ecuador</strong></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Contact" data-es="Contacto">Contact</h4>
+        <p><a href="contact.html">proyectualstudio@gmail.com</a></p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/proyectualstudioau/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© Christian Corral</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function updateLanguage(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.innerHTML = el.getAttribute(`data-${lang}`);
+      });
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+      }
+      localStorage.setItem('lang', lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLang);
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          currentLang = currentLang === 'en' ? 'es' : 'en';
+          updateLanguage(currentLang);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
