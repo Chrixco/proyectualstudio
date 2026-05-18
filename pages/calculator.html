@@ -44,3 +44,1757 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
 
+  <!-- Theme Script (loads early to prevent flash) -->
+  <script src="../js/theme.js"></script>
+  <!-- Centralized Color System -->
+  <script src="../js/colors.js"><\/script>
+
+  <!-- Neo-Brutalist Effects -->
+  <script src="../js/neobrutalist.js"></script>
+
+  <!-- jsPDF for PDF generation -->
+
+  <style>
+    /* Two-panel calculator layout for desktop */
+    main.container {
+      max-width: 100% !important;
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box;
+    }
+
+    .calculator-wrapper {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .calculator-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Tablet: 768px and below */
+    @media (max-width: 768px) {
+      main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 0 auto;
+      }
+
+      .calculator-wrapper {
+        margin: 0 auto;
+      }
+
+      .calculator-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        box-shadow: 8px 8px 0px var(--brutalist-yellow);
+        border: 3px solid var(--brutalist-yellow);
+      }
+    }
+
+    /* Mobile: 480px and below */
+    @media (max-width: 480px) {
+      main.container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .calculator-wrapper {
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .calculator-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        padding: 1rem;
+        box-shadow: 6px 6px 0px var(--brutalist-yellow);
+        border: 2px solid var(--brutalist-yellow);
+      }
+    }
+
+    .inputs-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 1.5rem;
+      border-radius: var(--panel-border-radius);
+      min-width: 0;
+    }
+
+    .results-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 1.5rem;
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      border-radius: var(--panel-border-radius);
+      min-width: 0;
+    }
+
+    .calculator-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: var(--bg-white-ultra-light);
+      border-radius: var(--panel-border-radius);
+    }
+
+    .calculator-label {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      color: var(--brutalist-yellow);
+    }
+
+    .option-card {
+      padding: 1rem;
+      border: 3px solid var(--brutalist-white);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: var(--glass-bg);
+      margin-bottom: 1rem;
+      border-radius: var(--panel-border-radius);
+    }
+
+    .option-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+    }
+
+    .option-card.selected {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      border-color: var(--brutalist-yellow);
+      box-shadow: 6px 6px 0px var(--brutalist-white);
+    }
+
+    /* Yellow range slider for both themes */
+    .range-slider {
+      width: 100%;
+      height: 10px;
+      background: var(--brutalist-yellow);
+      outline: none;
+      border: 2px solid var(--brutalist-black);
+      border-radius: 5px;
+      -webkit-appearance: none;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      background: var(--brutalist-black);
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .range-slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      background: var(--brutalist-black);
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .range-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      margin-top: 0.5rem;
+    }
+
+    .unit-toggle {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .unit-toggle button {
+      padding: 0.5rem 1.5rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: var(--glass-bg);
+      color: var(--brutalist-white);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: var(--panel-border-radius);
+    }
+
+    .unit-toggle button.active {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+    }
+
+    .total-container {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      padding: 2rem;
+      border: 4px solid var(--brutalist-black);
+      box-shadow: 8px 8px 0px var(--brutalist-black);
+      text-align: center;
+      border-radius: var(--panel-border-radius);
+    }
+
+    .total-amount {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      word-break: break-word;
+    }
+
+    .disclaimer {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      opacity: 0.8;
+    }
+
+    .cta-final {
+      margin-top: 2rem;
+      padding: 1.5rem 3rem;
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      border: 4px solid var(--brutalist-black);
+      box-shadow: 6px 6px 0px var(--brutalist-black);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      border-radius: var(--panel-border-radius);
+    }
+
+    .cta-final:hover {
+      background: var(--brutalist-black) !important;
+      color: var(--brutalist-white) !important;
+      border-color: var(--brutalist-yellow) !important;
+      box-shadow: 6px 6px 0px var(--brutalist-yellow) !important;
+      transform: translate(-3px, -3px);
+    }
+
+    /* Info buttons - square with yellow titles */
+    .info-btn {
+      width: 100%;
+      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 4px solid var(--brutalist-yellow);
+      color: var(--brutalist-yellow);
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+      border-radius: var(--panel-border-radius);
+    }
+
+    .info-btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+    }
+
+    /* Frosted glass modal */
+    .info-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-semi-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10000;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+    }
+
+    .info-modal.active {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .info-modal-content {
+      position: relative;
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 3rem;
+      background: var(--bg-white-opaque);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .info-modal-content h3 {
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--brutalist-yellow);
+      text-shadow: 2px 2px 0px var(--bg-dark);
+    }
+
+    .info-modal-content h4 {
+      color: var(--brutalist-black);
+      font-weight: bold;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      font-size: 1.1rem;
+    }
+
+    .info-modal-content p {
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .info-modal-content ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 1rem;
+    }
+
+    .info-modal-content li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .info-modal-content li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--brutalist-yellow);
+      font-weight: bold;
+    }
+
+    .info-modal-content a {
+      color: var(--brutalist-black);
+      font-weight: bold;
+      text-decoration: underline;
+      transition: all 0.2s ease;
+    }
+
+    .info-modal-content a:hover {
+      color: var(--brutalist-yellow);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      border: 3px solid var(--brutalist-black);
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      background: var(--brutalist-black);
+      color: var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+      transform: rotate(90deg);
+    }
+
+    .reference-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--bg-darker);
+    }
+
+    /* Summary section in results panel */
+    .selection-summary {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-white-ultra-light);
+      border: 3px solid var(--brutalist-yellow);
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: var(--brutalist-yellow);
+    }
+
+    .summary-value {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .results-panel {
+        margin-top: 2rem;
+      }
+    }
+
+    /* Lead Capture Status Messages */
+    .lead-status {
+      padding: 1rem;
+      border-radius: var(--panel-border-radius);
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .lead-status-success {
+      background: rgba(144, 238, 144, 0.2);
+      color: #90EE90;
+      border: 2px solid #90EE90;
+    }
+
+    .lead-status-error {
+      background: rgba(255, 107, 107, 0.2);
+      color: #FF6B6B;
+      border: 2px solid #FF6B6B;
+    }
+
+    /* Lead Capture Summary */
+    .lead-summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--accent-light);
+      font-size: 0.9rem;
+    }
+
+    .lead-summary-label {
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+    }
+
+    .lead-summary-value {
+      color: var(--text-primary);
+    }
+
+    /* Email Modal for PDF Download */
+    .email-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-semi-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .email-modal.active {
+      display: flex;
+    }
+
+    .email-modal-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 4px solid var(--brutalist-yellow);
+      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      padding: 2.5rem;
+      border-radius: var(--panel-border-radius);
+      max-width: 450px;
+      width: 90%;
+      animation: slideIn 0.3s ease;
+    }
+
+    .email-modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 3px solid var(--brutalist-yellow);
+      background: var(--bg-white-ultra-light);
+      color: var(--brutalist-black);
+      font-size: 1rem;
+      border-radius: var(--panel-border-radius);
+      box-sizing: border-box;
+    }
+
+    .email-modal-input::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .email-modal-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--brutalist-yellow);
+    }
+
+    .email-modal-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .email-modal-btn {
+      flex: 1;
+      padding: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: 3px solid var(--brutalist-yellow);
+      cursor: pointer;
+      border-radius: var(--panel-border-radius);
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-btn.submit {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+    }
+
+    .email-modal-btn.submit:hover {
+      background: var(--brutalist-black);
+      color: var(--brutalist-yellow);
+      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      transform: translate(-3px, -3px);
+    }
+
+    .email-modal-btn.cancel {
+      background: transparent;
+      color: var(--brutalist-yellow);
+    }
+
+    .email-modal-btn.cancel:hover {
+      background: var(--brutalist-yellow);
+      color: var(--brutalist-black);
+      transform: translate(-3px, -3px);
+    }
+  </style>
+</head>
+<body class="body-white-text">
+  <video autoplay loop muted playsinline class="bg-video">
+    <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
+      <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
+      <span data-en="Proyectual Studio" data-es="Proyectual Studio">Proyectual Studio</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item">
+          <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+        <li class="nav-item">
+          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <h1 class="text-center mb-4 fw-bold scroll-fade-in"
+        data-en="Project Cost Calculator"
+        data-es="Calculadora de Costos del Proyecto">
+      Project Cost Calculator
+    </h1>
+    <p class="text-center mb-5 scroll-fade-in"
+       data-en="Get a rough estimate for your project"
+       data-es="Obtén una estimación aproximada para tu proyecto">
+      Get a rough estimate for your project
+    </p>
+
+    <div class="calculator-wrapper" style="opacity: 1; transform: translateY(0);">
+      <div class="calculator-layout">
+        <!-- LEFT PANEL: Inputs -->
+        <div class="inputs-panel">
+      <!-- 1. Project Discipline -->
+      <div class="calculator-section">
+        <div class="calculator-label"
+             data-en="1. Project Type"
+             data-es="1. Tipo de Proyecto">
+          1. Project Type
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="option-card selected" data-discipline="architecture" onclick="selectDiscipline(this)">
+              <h5 data-en="Architecture" data-es="Arquitectura">Architecture</h5>
+              <p class="small mb-0" data-en="Buildings and structures" data-es="Edificios y estructuras">Buildings and structures</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="option-card" data-discipline="urban" onclick="selectDiscipline(this)">
+              <h5 data-en="Urban Design" data-es="Diseño Urbano">Urban Design</h5>
+              <p class="small mb-0" data-en="Public spaces and planning" data-es="Espacios públicos y planificación">Public spaces and planning</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Location (Pricing) -->
+      <div class="calculator-section">
+        <div class="calculator-label"
+             data-en="2. Project Location"
+             data-es="2. Ubicación del Proyecto">
+          2. Project Location
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="option-card selected" data-location="ecuador" data-rate-arch="600" data-rate-urban="50000" onclick="selectOption(this, 'location')">
+              <h5 data-en="Ecuador" data-es="Ecuador">Ecuador</h5>
+              <p class="small mb-0" data-en="Latin American pricing" data-es="Precios de América Latina">Latin American pricing</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="option-card" data-location="germany" data-rate-arch="2500" data-rate-urban="120000" onclick="selectOption(this, 'location')">
+              <h5 data-en="Germany" data-es="Alemania">Germany</h5>
+              <p class="small mb-0" data-en="European pricing" data-es="Precios europeos">European pricing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Project Size (Dynamic based on discipline) -->
+      <div class="calculator-section">
+        <div class="calculator-label">
+          <span id="sizeLabel" data-en="3. Project Size" data-es="3. Tamaño del Proyecto">3. Project Size</span>
+        </div>
+
+        <!-- Unit toggle for Architecture -->
+        <div class="unit-toggle" id="unitToggle" style="display: none;">
+          <button class="active" onclick="switchUnit('sqm')" id="sqmBtn" data-en="m²" data-es="m²">m²</button>
+          <button onclick="switchUnit('apartments')" id="apartmentsBtn" data-en="Apartments" data-es="Departamentos">Apartments</button>
+          <button onclick="switchUnit('people')" id="peopleBtn" data-en="People" data-es="Personas">People</button>
+        </div>
+
+        <input type="range" min="50" max="500" value="150" class="range-slider" id="sizeSlider" oninput="updateSize(this.value)">
+        <div class="range-value text-center">
+          <span id="sizeValue">150</span> <span id="sizeUnit">m²</span>
+        </div>
+      </div>
+
+      <!-- 4. Architecture-specific options -->
+      <div id="architectureOptions">
+        <!-- Project Subtype -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="4. Building Type"
+               data-es="4. Tipo de Edificio">
+            4. Building Type
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'buildingType')">
+                <h5 data-en="New House" data-es="Casa Nueva">New House</h5>
+                <p class="small mb-0" data-en="Residential" data-es="Residencial">Residential</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="0.7" onclick="selectOption(this, 'buildingType')">
+                <h5 data-en="Renovation" data-es="Renovación">Renovation</h5>
+                <p class="small mb-0" data-en="Existing structure" data-es="Estructura existente">Existing structure</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.3" onclick="selectOption(this, 'buildingType')">
+                <h5 data-en="Commercial" data-es="Comercial">Commercial</h5>
+                <p class="small mb-0" data-en="Office/Retail" data-es="Oficina/Comercio">Office/Retail</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finish Quality -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="5. Finish Quality"
+               data-es="5. Calidad de Acabados">
+            5. Finish Quality
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="0.8" onclick="selectOption(this, 'quality')">
+                <h5 data-en="Essential" data-es="Esencial">Essential</h5>
+                <p class="small mb-0" data-en="Basic finishes" data-es="Acabados básicos">Basic finishes</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'quality')">
+                <h5 data-en="Standard" data-es="Estándar">Standard</h5>
+                <p class="small mb-0" data-en="Good quality" data-es="Buena calidad">Good quality</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.5" onclick="selectOption(this, 'quality')">
+                <h5 data-en="Premium" data-es="Premium">Premium</h5>
+                <p class="small mb-0" data-en="High-end finishes" data-es="Acabados de lujo">High-end finishes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sustainability -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="6. Sustainability Features"
+               data-es="6. Características Sustentables">
+            6. Sustainability Features
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.0" onclick="selectOption(this, 'sustainability')">
+                <h5 data-en="Standard" data-es="Estándar">Standard</h5>
+                <p class="small mb-0" data-en="Basic efficiency" data-es="Eficiencia básica">Basic efficiency</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.15" onclick="selectOption(this, 'sustainability')">
+                <h5 data-en="Sustainable" data-es="Sustentable">Sustainable</h5>
+                <p class="small mb-0" data-en="Eco-friendly materials" data-es="Materiales ecológicos">Eco-friendly materials</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.35" onclick="selectOption(this, 'sustainability')">
+                <h5 data-en="Net-Zero" data-es="Cero Neto">Net-Zero</h5>
+                <p class="small mb-0" data-en="Carbon neutral" data-es="Carbono neutro">Carbon neutral</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Urban Design-specific options -->
+      <div id="urbanOptions" style="display: none;">
+        <!-- Scope -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="4. Project Scope"
+               data-es="4. Alcance del Proyecto">
+            4. Project Scope
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'scope')">
+                <h5 data-en="Basic" data-es="Básico">Basic</h5>
+                <p class="small mb-0" data-en="Concept design" data-es="Diseño conceptual">Concept design</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.4" onclick="selectOption(this, 'scope')">
+                <h5 data-en="Detailed" data-es="Detallado">Detailed</h5>
+                <p class="small mb-0" data-en="Full planning" data-es="Planificación completa">Full planning</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.8" onclick="selectOption(this, 'scope')">
+                <h5 data-en="Comprehensive" data-es="Integral">Comprehensive</h5>
+                <p class="small mb-0" data-en="+ Implementation" data-es="+ Implementación">+ Implementation</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complexity -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="5. Project Complexity"
+               data-es="5. Complejidad del Proyecto">
+            5. Project Complexity
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="0.8" onclick="selectOption(this, 'complexity')">
+                <h5 data-en="Simple" data-es="Simple">Simple</h5>
+                <p class="small mb-0" data-en="Single zone" data-es="Zona única">Single zone</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.0" onclick="selectOption(this, 'complexity')">
+                <h5 data-en="Moderate" data-es="Moderado">Moderate</h5>
+                <p class="small mb-0" data-en="Multiple zones" data-es="Múltiples zonas">Multiple zones</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.3" onclick="selectOption(this, 'complexity')">
+                <h5 data-en="Complex" data-es="Complejo">Complex</h5>
+                <p class="small mb-0" data-en="High integration" data-es="Alta integración">High integration</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Participation -->
+        <div class="calculator-section">
+          <div class="calculator-label"
+               data-en="6. Community Participation"
+               data-es="6. Participación Comunitaria">
+            6. Community Participation
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.0" onclick="selectOption(this, 'participation')">
+                <h5 data-en="Standard" data-es="Estándar">Standard</h5>
+                <p class="small mb-0" data-en="Basic engagement" data-es="Participación básica">Basic engagement</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card selected" data-multiplier="1.2" onclick="selectOption(this, 'participation')">
+                <h5 data-en="Participatory" data-es="Participativo">Participatory</h5>
+                <p class="small mb-0" data-en="Active involvement" data-es="Participación activa">Active involvement</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="option-card" data-multiplier="1.4" onclick="selectOption(this, 'participation')">
+                <h5 data-en="Co-design" data-es="Co-diseño">Co-design</h5>
+                <p class="small mb-0" data-en="Full collaboration" data-es="Colaboración total">Full collaboration</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+
+        <!-- RIGHT PANEL: Results (Sticky) -->
+        <div class="results-panel">
+          <h3 class="mb-4 fw-bold text-center"
+              data-en="Your Estimate"
+              data-es="Tu Estimación">
+            Your Estimate
+          </h3>
+
+          <!-- Selection Summary -->
+          <div class="selection-summary">
+            <div class="summary-item">
+              <span class="summary-label" data-en="Project Type" data-es="Tipo de Proyecto">Project Type</span>
+              <span class="summary-value" id="summaryDiscipline" data-en="Architecture" data-es="Arquitectura">Architecture</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label" data-en="Location" data-es="Ubicación">Location</span>
+              <span class="summary-value" id="summaryLocation" data-en="Ecuador" data-es="Ecuador">Ecuador</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label" data-en="Size" data-es="Tamaño">Size</span>
+              <span class="summary-value" id="summarySize">150 m²</span>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="total-container">
+            <h3 class="mb-3"
+                data-en="Estimated Project Cost"
+                data-es="Costo Estimado del Proyecto">
+              Estimated Project Cost
+            </h3>
+            <div class="total-amount" id="totalCost">$90,000</div>
+            <p class="disclaimer" id="disclaimer"
+               data-en-arch="* This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote."
+               data-es-arch="* Esta es una estimación aproximada para diseño arquitectónico y construcción. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada."
+               data-en-urban="* This estimate covers urban design services including planning, community engagement, and design documentation. Does not include construction or implementation costs. Contact us for a detailed scope and quote."
+               data-es-urban="* Esta estimación cubre servicios de diseño urbano incluyendo planificación, participación comunitaria y documentación de diseño. No incluye costos de construcción o implementación. Contáctanos para un alcance detallado y cotización.">
+              * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
+            </p>
+
+            <div style="display: flex; gap: 1rem; flex-direction: column;">
+              <button onclick="navigateToLeadForm()" class="cta-final btn"
+                 data-en="Get Detailed Quote"
+                 data-es="Obtener Cotización Detallada">
+                Get Detailed Quote
+              </button>
+              <button onclick="window.print()" class="cta-final btn"
+                 style="background: var(--brutalist-black); color: var(--brutalist-white); border-color: var(--brutalist-yellow);"
+                 data-en="Download as PDF"
+                 data-es="Descargar como PDF">
+                Download as PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panels Section -->
+    <div class="row mt-5 scroll-fade-in">
+      <div class="col-12 text-center mb-4">
+        <h2 class="fw-bold" data-en="Helpful Information" data-es="Información Útil">Helpful Information</h2>
+        <p data-en="Learn more about construction costs and pricing" data-es="Aprende más sobre costos de construcción y precios">Learn more about construction costs and pricing</p>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <button class="info-btn" onclick="openInfoPanel('ecuador')">
+          <span data-en="Ecuador Costs" data-es="Costos Ecuador">Ecuador Costs</span>
+        </button>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <button class="info-btn" onclick="openInfoPanel('germany')">
+          <span data-en="Germany Costs" data-es="Costos Alemania">Germany Costs</span>
+        </button>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <button class="info-btn" onclick="openInfoPanel('fees')">
+          <span data-en="Design Fees" data-es="Honorarios">Design Fees</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Info Modal Overlay -->
+    <div id="infoModal" class="info-modal" onclick="closeInfoPanel(event)">
+      <div class="info-modal-content" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="closeInfoPanel()">&times;</button>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Email Modal for PDF Download -->
+  <div id="emailModal" class="email-modal">
+    <div class="email-modal-content">
+      <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--text-secondary);" data-en="Enter your email to receive the PDF of your calculation" data-es="Ingresa tu email para recibir el PDF de tu cálculo">Enter your email to receive the PDF of your calculation</p>
+      <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
+      <div class="email-modal-buttons">
+        <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
+        <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-enhanced">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Proyectual Studio</h4>
+        <p data-en="Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures." data-es="Estudio de arquitectura y diseño urbano especializado en diseño sostenible, resiliencia climática y futuros decoloniales.">Architecture and urban design studio specialising in sustainable design, climate resilience, and decolonial futures.</p>
+        <p><strong>Cuenca, Ecuador</strong></p>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4 data-en="Contact" data-es="Contacto">Contact</h4>
+        <p><a href="mailto:proyectualstudio@gmail.com">proyectualstudio@gmail.com</a></p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/proyectualstudioau/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© Christian Corral</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Calculator state
+    let calculatorState = {
+      discipline: 'architecture',
+      location: 'ecuador',
+      size: 150,
+      unit: 'sqm', // sqm or people
+      buildingType: 1.0,
+      quality: 1.0,
+      sustainability: 1.15,
+      scope: 1.0,
+      complexity: 1.0,
+      participation: 1.2
+    };
+
+    // Pricing rates
+    const RATES = {
+      architecture: {
+        ecuador: 600,  // per m²
+        germany: 2500  // per m²
+      },
+      urban: {
+        ecuador: 50000,  // base project cost
+        germany: 120000  // base project cost
+      }
+    };
+
+    // People to sqm conversion (average 30m² per person for residential)
+    const SQM_PER_PERSON = 30;
+
+    // Select discipline
+    function selectDiscipline(element) {
+      const siblings = element.parentElement.parentElement.querySelectorAll('.option-card');
+      siblings.forEach(card => card.classList.remove('selected'));
+      element.classList.add('selected');
+
+      calculatorState.discipline = element.getAttribute('data-discipline');
+
+      // Update summary
+      const summaryDiscipline = document.getElementById('summaryDiscipline');
+      if (calculatorState.discipline === 'architecture') {
+        summaryDiscipline.setAttribute('data-en', 'Architecture');
+        summaryDiscipline.setAttribute('data-es', 'Arquitectura');
+        summaryDiscipline.textContent = currentLang === 'en' ? 'Architecture' : 'Arquitectura';
+      } else {
+        summaryDiscipline.setAttribute('data-en', 'Urban Design');
+        summaryDiscipline.setAttribute('data-es', 'Diseño Urbano');
+        summaryDiscipline.textContent = currentLang === 'en' ? 'Urban Design' : 'Diseño Urbano';
+      }
+
+      // Show/hide relevant sections
+      const archOptions = document.getElementById('architectureOptions');
+      const urbanOptions = document.getElementById('urbanOptions');
+      const unitToggle = document.getElementById('unitToggle');
+      const slider = document.getElementById('sizeSlider');
+      const sizeLabel = document.getElementById('sizeLabel');
+
+      if (calculatorState.discipline === 'architecture') {
+        archOptions.style.display = 'block';
+        urbanOptions.style.display = 'none';
+        unitToggle.style.display = 'flex';
+        slider.min = 50;
+        slider.max = 500;
+        slider.value = 150;
+        updateSize(150);
+      } else {
+        archOptions.style.display = 'none';
+        urbanOptions.style.display = 'block';
+        unitToggle.style.display = 'none';
+        calculatorState.unit = 'ha';
+        slider.min = 0.5;
+        slider.max = 20;
+        slider.step = 0.5;
+        slider.value = 5;
+        updateSize(5);
+      }
+
+      updateDisclaimer();
+      calculateTotal();
+    }
+
+    // Switch unit for architecture
+    function switchUnit(unit) {
+      calculatorState.unit = unit;
+      const sqmBtn = document.getElementById('sqmBtn');
+      const apartmentsBtn = document.getElementById('apartmentsBtn');
+      const peopleBtn = document.getElementById('peopleBtn');
+      const slider = document.getElementById('sizeSlider');
+
+      if (unit === 'sqm') {
+        sqmBtn.classList.add('active');
+        apartmentsBtn.classList.remove('active');
+        peopleBtn.classList.remove('active');
+        slider.min = 50;
+        slider.max = 500;
+        slider.value = 150;
+      } else if (unit === 'apartments') {
+        sqmBtn.classList.remove('active');
+        apartmentsBtn.classList.add('active');
+        peopleBtn.classList.remove('active');
+        slider.min = 1;
+        slider.max = 20;
+        slider.value = 3;
+      } else {
+        sqmBtn.classList.remove('active');
+        apartmentsBtn.classList.remove('active');
+        peopleBtn.classList.add('active');
+        slider.min = 2;
+        slider.max = 20;
+        slider.value = 5;
+      }
+
+      updateSize(slider.value);
+      calculateTotal();
+    }
+
+    // Select option
+    function selectOption(element, category) {
+      const siblings = element.parentElement.parentElement.querySelectorAll('.option-card');
+      siblings.forEach(card => card.classList.remove('selected'));
+      element.classList.add('selected');
+
+      if (category === 'location') {
+        calculatorState.location = element.getAttribute('data-location');
+
+        // Update summary
+        const summaryLocation = document.getElementById('summaryLocation');
+        const locationName = calculatorState.location.charAt(0).toUpperCase() + calculatorState.location.slice(1);
+        summaryLocation.textContent = locationName;
+      } else {
+        const multiplier = parseFloat(element.getAttribute('data-multiplier'));
+        calculatorState[category] = multiplier;
+      }
+
+      calculateTotal();
+    }
+
+    // Update size
+    function updateSize(value) {
+      const sizeValue = document.getElementById('sizeValue');
+      const sizeUnit = document.getElementById('sizeUnit');
+      const summarySize = document.getElementById('summarySize');
+
+      if (calculatorState.discipline === 'architecture') {
+        if (calculatorState.unit === 'sqm') {
+          calculatorState.size = parseInt(value);
+          sizeValue.textContent = value;
+          sizeUnit.textContent = 'm²';
+          summarySize.textContent = value + ' m²';
+        } else if (calculatorState.unit === 'apartments') {
+          const apartments = parseInt(value);
+          calculatorState.size = apartments * 80;
+          sizeValue.textContent = apartments;
+          sizeUnit.textContent = currentLang === 'en' ? 'Apartments' : 'Departamentos';
+          summarySize.textContent = apartments + (currentLang === 'en' ? ' Apartments' : ' Departamentos');
+        } else {
+          const people = parseInt(value);
+          calculatorState.size = people * SQM_PER_PERSON;
+          sizeValue.textContent = people;
+          sizeUnit.textContent = currentLang === 'en' ? 'People' : 'Personas';
+          summarySize.textContent = people + (currentLang === 'en' ? ' People' : ' Personas');
+        }
+      } else {
+        calculatorState.size = parseFloat(value);
+        sizeValue.textContent = value;
+        sizeUnit.textContent = 'ha';
+        summarySize.textContent = value + ' ha';
+      }
+
+      calculateTotal();
+    }
+
+    // Update disclaimer
+    function updateDisclaimer() {
+      const disclaimer = document.getElementById('disclaimer');
+      const suffix = calculatorState.discipline === 'architecture' ? 'arch' : 'urban';
+      const key = `data-${currentLang}-${suffix}`;
+      disclaimer.textContent = disclaimer.getAttribute(key);
+    }
+
+    // Calculate total
+    function calculateTotal() {
+      let total = 0;
+
+      if (calculatorState.discipline === 'architecture') {
+        const baseRate = RATES.architecture[calculatorState.location];
+        total = baseRate * calculatorState.size * calculatorState.buildingType *
+                calculatorState.quality * calculatorState.sustainability;
+      } else {
+        const baseRate = RATES.urban[calculatorState.location];
+        // For urban design, size is in hectares, scale accordingly
+        const sizeMultiplier = calculatorState.size / 5; // normalized to 5ha
+        total = baseRate * sizeMultiplier * calculatorState.scope *
+                calculatorState.complexity * calculatorState.participation;
+      }
+
+      const formatted = '$' + Math.round(total).toLocaleString();
+      document.getElementById('totalCost').textContent = formatted;
+    }
+
+    // Language toggle
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function updateLanguage(lang) {
+      document.querySelectorAll('[data-en]').forEach(el => {
+        const key = `data-${lang}`;
+        if (el.hasAttribute(key)) {
+          el.textContent = el.getAttribute(key);
+        }
+      });
+
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+      }
+
+      localStorage.setItem('lang', lang);
+      currentLang = lang;
+
+      // Update size unit text if in people mode
+      if (calculatorState.unit === 'people') {
+        updateSize(document.getElementById('sizeSlider').value);
+      }
+
+      updateDisclaimer();
+    }
+
+    // Info panel content
+    const infoContent = {
+      ecuador: {
+        en: {
+          title: 'Ecuador Construction Costs',
+          content: `
+            <p><strong>Average residential construction costs in Ecuador range from $800-$1,200 per m²</strong>, depending on location, materials, and quality standards.</p>
+
+            <p><strong>Key factors affecting costs:</strong></p>
+            <ul>
+              <li>Location: Quito and Guayaquil tend to be 15-20% more expensive than smaller cities</li>
+              <li>Materials: Imported materials can be 30-50% more expensive than local alternatives</li>
+              <li>Labor: Skilled labor costs approximately $15-25 per hour</li>
+              <li>Sustainability features: Eco-friendly materials and systems add 10-20% to base costs</li>
+            </ul>
+
+            <p><strong>Typical breakdown:</strong></p>
+            <ul>
+              <li>Basic residential (essential finishes): $800-900/m²</li>
+              <li>Standard residential (good quality): $900-1,100/m²</li>
+              <li>Premium residential (high-end finishes): $1,200-1,500/m²</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>References</h4>
+              <ul>
+                <li><a href="https://www.globalpropertyguide.com/Latin-America/Ecuador/square-meter-prices" target="_blank">Global Property Guide - Ecuador Construction Costs</a></li>
+                <li><a href="https://www.preciosmundi.com/ecuador/construccion" target="_blank">PreciosMundi - Construction Prices Ecuador</a></li>
+                <li>Based on 2024-2025 market research and local contractor data</li>
+              </ul>
+            </div>
+          `
+        },
+        es: {
+          title: 'Costos de Construcción en Ecuador',
+          content: `
+            <p><strong>Los costos promedio de construcción residencial en Ecuador varían entre $800-$1,200 por m²</strong>, dependiendo de la ubicación, materiales y estándares de calidad.</p>
+
+            <p><strong>Factores clave que afectan los costos:</strong></p>
+            <ul>
+              <li>Ubicación: Quito y Guayaquil tienden a ser 15-20% más caros que ciudades pequeñas</li>
+              <li>Materiales: Materiales importados pueden ser 30-50% más caros que alternativas locales</li>
+              <li>Mano de obra: Mano de obra calificada cuesta aproximadamente $15-25 por hora</li>
+              <li>Características sustentables: Materiales y sistemas ecológicos añaden 10-20% a costos base</li>
+            </ul>
+
+            <p><strong>Desglose típico:</strong></p>
+            <ul>
+              <li>Residencial básico (acabados esenciales): $800-900/m²</li>
+              <li>Residencial estándar (buena calidad): $900-1,100/m²</li>
+              <li>Residencial premium (acabados de lujo): $1,200-1,500/m²</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>Referencias</h4>
+              <ul>
+                <li><a href="https://www.globalpropertyguide.com/Latin-America/Ecuador/square-meter-prices" target="_blank">Global Property Guide - Costos de Construcción Ecuador</a></li>
+                <li><a href="https://www.preciosmundi.com/ecuador/construccion" target="_blank">PreciosMundi - Precios de Construcción Ecuador</a></li>
+                <li>Basado en investigación de mercado 2024-2025 y datos de contratistas locales</li>
+              </ul>
+            </div>
+          `
+        }
+      },
+      germany: {
+        en: {
+          title: 'Germany Construction Costs',
+          content: `
+            <p><strong>Construction costs in Germany for 2025 are estimated at €3,500-€5,500 per m²</strong> for residential buildings, making it one of the more expensive markets in Europe.</p>
+
+            <p><strong>Key factors affecting costs:</strong></p>
+            <ul>
+              <li>Regional variations: Munich and Hamburg are 20-30% more expensive than smaller cities</li>
+              <li>Building regulations: Strict energy efficiency standards (GEG 2024) add significant costs</li>
+              <li>Labor shortage: Skilled construction workers command premium wages (€40-70/hour)</li>
+              <li>Materials: High quality standards and environmental regulations increase material costs</li>
+            </ul>
+
+            <p><strong>Typical breakdown:</strong></p>
+            <ul>
+              <li>Basic residential (KfW 55 standard): €3,500-4,000/m²</li>
+              <li>Standard residential (good quality): €4,000-4,800/m²</li>
+              <li>Premium/Passive house: €5,000-6,500/m²</li>
+            </ul>
+
+            <p><strong>2025 trends:</strong></p>
+            <ul>
+              <li>Increased focus on sustainable materials and carbon-neutral construction</li>
+              <li>Rising costs for energy-efficient systems (heat pumps, solar, insulation)</li>
+              <li>Government subsidies available for KfW 40 and Passive House standards</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>References</h4>
+              <ul>
+                <li><a href="https://www.smartest-home.com/en/construction-costs-square-meter-housebuilding/" target="_blank">Smartest Home - Construction Costs per Square Meter 2025</a></li>
+                <li><a href="https://www.baukosten.net/" target="_blank">Baukosten.net - German Construction Cost Database</a></li>
+                <li>KfW Bank - Energy Efficiency Standards Documentation</li>
+              </ul>
+            </div>
+          `
+        },
+        es: {
+          title: 'Costos de Construcción en Alemania',
+          content: `
+            <p><strong>Los costos de construcción en Alemania para 2025 se estiman en €3,500-€5,500 por m²</strong> para edificios residenciales, siendo uno de los mercados más caros de Europa.</p>
+
+            <p><strong>Factores clave que afectan los costos:</strong></p>
+            <ul>
+              <li>Variaciones regionales: Munich y Hamburgo son 20-30% más caros que ciudades pequeñas</li>
+              <li>Regulaciones de construcción: Estrictos estándares de eficiencia energética (GEG 2024) añaden costos significativos</li>
+              <li>Escasez de mano de obra: Trabajadores calificados demandan salarios premium (€40-70/hora)</li>
+              <li>Materiales: Altos estándares de calidad y regulaciones ambientales aumentan costos de materiales</li>
+            </ul>
+
+            <p><strong>Desglose típico:</strong></p>
+            <ul>
+              <li>Residencial básico (estándar KfW 55): €3,500-4,000/m²</li>
+              <li>Residencial estándar (buena calidad): €4,000-4,800/m²</li>
+              <li>Premium/Casa pasiva: €5,000-6,500/m²</li>
+            </ul>
+
+            <p><strong>Tendencias 2025:</strong></p>
+            <ul>
+              <li>Mayor enfoque en materiales sustentables y construcción carbono neutral</li>
+              <li>Costos crecientes para sistemas eficientes (bombas de calor, solar, aislamiento)</li>
+              <li>Subsidios gubernamentales disponibles para estándares KfW 40 y Casa Pasiva</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>Referencias</h4>
+              <ul>
+                <li><a href="https://www.smartest-home.com/en/construction-costs-square-meter-housebuilding/" target="_blank">Smartest Home - Costos de Construcción por Metro Cuadrado 2025</a></li>
+                <li><a href="https://www.baukosten.net/" target="_blank">Baukosten.net - Base de Datos de Costos de Construcción Alemana</a></li>
+                <li>Banco KfW - Documentación de Estándares de Eficiencia Energética</li>
+              </ul>
+            </div>
+          `
+        }
+      },
+      fees: {
+        en: {
+          title: 'Design & Professional Fees',
+          content: `
+            <p><strong>Architectural and urban design fees typically range from 8-15% of total construction cost</strong>, varying based on project complexity, scope, and location.</p>
+
+            <p><strong>Architecture Project Fees:</strong></p>
+            <ul>
+              <li>Basic design package (concept + planning): 8-10% of construction cost</li>
+              <li>Full service (design through construction oversight): 12-15% of construction cost</li>
+              <li>Renovation/retrofit projects: 10-18% due to increased complexity</li>
+              <li>Small residential projects: Often charged hourly ($80-200/hour) or fixed fee</li>
+            </ul>
+
+            <p><strong>Urban Design Project Fees:</strong></p>
+            <ul>
+              <li>Concept/vision plans: $30,000-80,000 for small districts (1-5 ha)</li>
+              <li>Comprehensive planning: $80,000-250,000 for medium projects (5-15 ha)</li>
+              <li>Large-scale masterplans: $250,000+ for extensive urban areas (15+ ha)</li>
+              <li>Community engagement adds 15-25% to base fees</li>
+            </ul>
+
+            <p><strong>What's included in professional fees:</strong></p>
+            <ul>
+              <li>Site analysis and feasibility studies</li>
+              <li>Concept and schematic design</li>
+              <li>Design development and documentation</li>
+              <li>Permit applications and approvals</li>
+              <li>Construction documentation</li>
+              <li>Bidding and contractor selection assistance</li>
+              <li>Construction administration (site visits, quality control)</li>
+            </ul>
+
+            <p><strong>Fee structures:</strong></p>
+            <ul>
+              <li>Percentage of construction cost (most common)</li>
+              <li>Hourly rates with maximum cap</li>
+              <li>Fixed fee for defined scope</li>
+              <li>Hybrid: Fixed fee for design + hourly for additional services</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>References</h4>
+              <ul>
+                <li><a href="https://mkarchitectures.com/how-much-does-it-cost-to-hire-an-architect-architect-fees-guide-2025/" target="_blank">MK Architecture - Architect Fees Guide 2025</a></li>
+                <li><a href="https://www.architectmagazine.com/practice/the-basics-of-architecture-fees_o" target="_blank">Architect Magazine - The Basics of Architecture Fees</a></li>
+                <li>AIA (American Institute of Architects) - Compensation Guidelines</li>
+                <li>HOAI (Germany) & CAE (Ecuador) - Professional Fee Schedules</li>
+              </ul>
+            </div>
+          `
+        },
+        es: {
+          title: 'Honorarios de Diseño y Profesionales',
+          content: `
+            <p><strong>Los honorarios de arquitectura y diseño urbano típicamente varían del 8-15% del costo total de construcción</strong>, dependiendo de la complejidad del proyecto, alcance y ubicación.</p>
+
+            <p><strong>Honorarios Proyectos de Arquitectura:</strong></p>
+            <ul>
+              <li>Paquete de diseño básico (concepto + planificación): 8-10% del costo de construcción</li>
+              <li>Servicio completo (diseño hasta supervisión de obra): 12-15% del costo de construcción</li>
+              <li>Proyectos de renovación: 10-18% debido a mayor complejidad</li>
+              <li>Proyectos residenciales pequeños: A menudo se cobran por hora ($80-200/hora) o tarifa fija</li>
+            </ul>
+
+            <p><strong>Honorarios Proyectos de Diseño Urbano:</strong></p>
+            <ul>
+              <li>Planes concepto/visión: $30,000-80,000 para distritos pequeños (1-5 ha)</li>
+              <li>Planificación integral: $80,000-250,000 para proyectos medianos (5-15 ha)</li>
+              <li>Planes maestros gran escala: $250,000+ para áreas urbanas extensas (15+ ha)</li>
+              <li>Participación comunitaria añade 15-25% a honorarios base</li>
+            </ul>
+
+            <p><strong>Qué incluyen los honorarios profesionales:</strong></p>
+            <ul>
+              <li>Análisis de sitio y estudios de factibilidad</li>
+              <li>Diseño conceptual y esquemático</li>
+              <li>Desarrollo de diseño y documentación</li>
+              <li>Solicitudes de permisos y aprobaciones</li>
+              <li>Documentación de construcción</li>
+              <li>Asistencia en licitación y selección de contratistas</li>
+              <li>Administración de construcción (visitas, control de calidad)</li>
+            </ul>
+
+            <p><strong>Estructuras de honorarios:</strong></p>
+            <ul>
+              <li>Porcentaje del costo de construcción (más común)</li>
+              <li>Tarifas por hora con tope máximo</li>
+              <li>Tarifa fija para alcance definido</li>
+              <li>Híbrido: Tarifa fija para diseño + por hora para servicios adicionales</li>
+            </ul>
+
+            <div class="reference-section">
+              <h4>Referencias</h4>
+              <ul>
+                <li><a href="https://mkarchitectures.com/how-much-does-it-cost-to-hire-an-architect-architect-fees-guide-2025/" target="_blank">MK Architecture - Guía de Honorarios de Arquitectos 2025</a></li>
+                <li><a href="https://www.architectmagazine.com/practice/the-basics-of-architecture-fees_o" target="_blank">Architect Magazine - Fundamentos de Honorarios de Arquitectura</a></li>
+                <li>AIA (Instituto Americano de Arquitectos) - Lineamientos de Compensación</li>
+                <li>HOAI (Alemania) & CAE (Ecuador) - Aranceles de Honorarios Profesionales</li>
+              </ul>
+            </div>
+          `
+        }
+      }
+    };
+
+    // Open info panel
+    function openInfoPanel(type) {
+      const modal = document.getElementById('infoModal');
+      const modalBody = document.getElementById('modalBody');
+
+      const content = infoContent[type][currentLang];
+      modalBody.innerHTML = `
+        <h3>${content.title}</h3>
+        ${content.content}
+      `;
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close info panel
+    function closeInfoPanel(event) {
+      const modal = document.getElementById('infoModal');
+
+      // Close if clicking outside the modal content or explicitly calling close
+      if (!event || event.target.id === 'infoModal' || event.target.classList.contains('close-btn')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeInfoPanel();
+      }
+    });
+
+    // Function to navigate to lead form page (GLOBAL - available before page loads)
+    window.navigateToLeadForm = function() {
+      console.log('🔍 navigateToLeadForm called');
+
+      const totalCost = document.getElementById('totalCost')?.textContent || 'Not calculated';
+      const discipline = document.getElementById('summaryDiscipline')?.textContent || 'Not selected';
+      const location = document.getElementById('summaryLocation')?.textContent || 'Not selected';
+      const size = document.getElementById('summarySize')?.textContent || 'Not set';
+
+      console.log('📊 Calculator Data:', {
+        totalCost,
+        discipline,
+        location,
+        size
+      });
+
+      const leadData = {
+        calculatorType: 'Project Budget',
+        data: {
+          summary: {
+            discipline: discipline,
+            location: location,
+            size: size,
+            estimatedCost: totalCost
+          },
+          full: {
+            projectDiscipline: discipline,
+            projectLocation: location,
+            projectSize: size,
+            estimatedTotalCost: totalCost
+          }
+        }
+      };
+
+      console.log('📝 Lead Data prepared:', leadData);
+      sessionStorage.setItem('leadCaptureData', JSON.stringify(leadData));
+      console.log('✅ Data saved to sessionStorage');
+      console.log('🔗 Navigating to lead-form.html');
+
+      window.location.href = 'lead-form.html';
+    };
+
+    // Email Modal Functions
+    window.openEmailModal = function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.getElementById('emailInput').focus();
+      }
+    };
+
+    window.closeEmailModal = function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.getElementById('emailInput').value = '';
+      }
+    };
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('emailModal');
+      if (modal && e.target === modal) {
+        window.closeEmailModal();
+      }
+    });
+
+    window.submitPdfDownload = function() {
+      const email = document.getElementById('emailInput').value.trim();
+
+      if (!email) {
+        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
+        return;
+      }
+
+      // Send email to Discord
+      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
+
+      const discordMessage = {
+        content: `📊 New Budget Calculator PDF Download Request`,
+        embeds: [{
+          title: '💰 Budget Calculator PDF Request',
+          color: 16760576, // Yellow color
+          fields: [
+            { name: 'Email', value: email, inline: false },
+            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
+            { name: 'Project Type', value: document.getElementById('summaryDiscipline')?.textContent || 'Not specified', inline: true },
+            { name: 'Location', value: document.getElementById('summaryLocation')?.textContent || 'Not specified', inline: true },
+            { name: 'Estimated Cost', value: document.getElementById('totalCost')?.textContent || 'Not calculated', inline: true }
+          ]
+        }]
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordMessage)
+      }).catch(err => console.error('Discord webhook error:', err));
+
+      // Send simple email log messages
+      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
+      const downloadsWebhook = 'https://discord.com/api/webhooks/1505912685554827345/FMaUeG8eGXdrB3MuHbCa-7UIpZ9h2d0kQItdRvBzNnBqQNpltlYz2yZNDTonngDbbZ8X';
+
+      const emailLogMessage = {
+        content: `\`${email}\` - Budget Calculator (${new Date().toLocaleString()})`
+      };
+
+      // Send to emails_databases
+      fetch(emailDatabaseWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailLogMessage)
+      }).catch(err => console.error('Discord email log error:', err));
+
+      // Send to downloads channel
+      fetch(downloadsWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailLogMessage)
+      }).catch(err => console.error('Discord downloads error:', err));
+
+      // Generate and download PDF
+      generateCalculatorPDF(email);
+
+      // Close modal
+      window.closeEmailModal();
+
+      alert(currentLang === 'en'
+        ? 'PDF downloaded successfully! Check your email for a copy.'
+        : '¡PDF descargado exitosamente! Revisa tu email para una copia.');
+    };
+
+    window.generateCalculatorPDF = async function(email) {
+      try {
+        const totalCost = document.getElementById('totalCost')?.textContent || 'Not calculated';
+        const discipline = document.getElementById('summaryDiscipline')?.textContent || 'Not selected';
+        const location = document.getElementById('summaryLocation')?.textContent || 'Not selected';
+        const size = document.getElementById('summarySize')?.textContent || 'Not set';
+
+        const leadData = {
+          summary: {
+            discipline: discipline,
+            location: location,
+            size: size,
+            estimatedCost: totalCost
+          },
+          full: {
+            projectDiscipline: discipline,
+            projectLocation: location,
+            projectSize: size,
+            estimatedTotalCost: totalCost
+          }
+        };
+
+        const response = await fetch('http://localhost:3001/generate-budget-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, data: leadData })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'proyectual-budget-estimate.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('PDF generation error:', error);
+        alert('Error generating PDF. Make sure the PDF service is running on http://localhost:3001');
+      }
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLanguage(currentLang);
+      calculateTotal();
+
+      const toggleBtn = document.getElementById('lang-toggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          currentLang = currentLang === 'en' ? 'es' : 'en';
+          updateLanguage(currentLang);
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
