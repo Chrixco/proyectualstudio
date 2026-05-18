@@ -913,6 +913,9 @@
 
     // Language support
     document.addEventListener('DOMContentLoaded', function() {
+      // Initialize currency display for default country
+      selectCountry(currentCountry);
+
       const currentLang = localStorage.getItem('lang') || 'en';
       updateLanguageDisplay(currentLang);
 
