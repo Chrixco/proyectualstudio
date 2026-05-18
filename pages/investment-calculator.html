@@ -452,6 +452,22 @@
           </div>
 
           <div class="result-section">
+            <div class="result-section-title" data-en="Construction Breakdown" data-es="Desglose de Construcción">Construction Breakdown</div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost</span>
+              <span class="result-value" id="resultConstructionCost">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Property Size" data-es="Tamaño de Propiedad">Property Size</span>
+              <span class="result-value" id="resultPropertySize">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Cost per m²" data-es="Costo por m²">Cost per m²</span>
+              <span class="result-value" id="resultCostPerM2">-</span>
+            </div>
+          </div>
+
+          <div class="result-section">
             <div class="result-section-title" data-en="Financial Performance" data-es="Desempeño Financiero">Financial Performance</div>
             <div class="result-item">
               <span class="result-label" data-en="Total Profit (10y)" data-es="Ganancia Total (10a)">Total Profit</span>
@@ -538,7 +554,9 @@
         propertyTax: 0.01,
         rentalYield: 0.05,
         appreciation: 0.03,
-        info: 'Growing sustainable market, lower construction costs'
+        info: 'Growing sustainable market, lower construction costs',
+        typicalCostPerM2: 1200,
+        typicalCostRange: '800-1500 USD/m²'
       },
       germany: {
         currency: 'EUR',
@@ -546,7 +564,9 @@
         propertyTax: 0.006,
         rentalYield: 0.04,
         appreciation: 0.03,
-        info: 'Stable market, high energy efficiency standards'
+        info: 'Stable market, high energy efficiency standards',
+        typicalCostPerM2: 2000,
+        typicalCostRange: '1500-2500 EUR/m²'
       }
     };
 
@@ -672,6 +692,9 @@
         minimumFractionDigits: 0
       });
 
+      // Calculate cost per m²
+      const costPerM2 = constructionCost / propertySize;
+
       // Update results
       document.getElementById('resultInvestment').textContent = formatter.format(downPayment);
       document.getElementById('resultAnnualRental').textContent = formatter.format(annualRental);
@@ -680,6 +703,11 @@
       document.getElementById('resultROI').textContent = roi + '%';
       document.getElementById('resultPayback').textContent = paybackYear ? `${paybackYear} years` : 'Not in analysis period';
       document.getElementById('resultPropertyValue').textContent = formatter.format(propertyValue);
+
+      // Update construction breakdown
+      document.getElementById('resultConstructionCost').textContent = formatter.format(constructionCost);
+      document.getElementById('resultPropertySize').textContent = propertySize.toLocaleString() + ' m²';
+      document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
 
       // Show results panel
       document.getElementById('resultsPanel').style.display = 'block';
