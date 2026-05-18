@@ -378,6 +378,62 @@
         gap: 1rem;
       }
     }
+
+    /* Loading animation */
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .loading-logo {
+      width: 100px;
+      height: 100px;
+      animation: rotate 2s linear infinite, breathe 2s ease-in-out infinite;
+    }
+
+    .loading-text {
+      color: var(--brutalist-yellow);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 1.2rem;
+    }
   </style>
 </head>
 <body class="body-white-text">
@@ -413,6 +469,14 @@
       </ul>
     </div>
   </nav>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-container">
+      <img src="../images/logo03.png" alt="Proyectual Logo" class="loading-logo">
+      <div class="loading-text" data-en="Calculating..." data-es="Calculando...">Calculating...</div>
+    </div>
+  </div>
 
   <main class="container py-5">
     <div class="calculator-wrapper">
@@ -816,6 +880,16 @@
     }
 
     function calculateProfitability() {
+      // Show loading animation
+      document.getElementById('loadingOverlay').style.display = 'flex';
+
+      // Simulate calculation delay for animation effect
+      setTimeout(() => {
+        executeCalculation();
+      }, 800);
+    }
+
+    function executeCalculation() {
       const projectName = document.getElementById('projectName').value || 'Investment Project';
       const constructionCost = parseFloat(document.getElementById('constructionCost').value);
       const landCost = parseFloat(document.getElementById('landCost').value) || 0;
@@ -927,6 +1001,9 @@
       const resultsPanel = document.getElementById('resultsPanel');
       resultsPanel.style.display = 'block';
       resultsPanel.style.opacity = '1';
+
+      // Hide loading animation
+      document.getElementById('loadingOverlay').style.display = 'none';
 
       // Draw charts
       drawCashFlowChart(yearLabels, cashFlows, propertyValues, currency);
