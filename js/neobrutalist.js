@@ -65,7 +65,13 @@ function initScrollAnimations() {
   }, observerOptions);
 
   // Observe all elements with scroll animation classes
-  document.querySelectorAll('.scroll-fade-in, .scroll-slide-left, .scroll-slide-right').forEach(el => {
+  document.querySelectorAll('.scroll-fade-in, .scroll-slide-left, .scroll-slide-right').forEach((el, index) => {
+    // Check if element is already in viewport and make it visible immediately
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0) translateX(0)';
+    }
     observer.observe(el);
   });
 }
