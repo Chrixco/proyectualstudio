@@ -1751,6 +1751,17 @@
         body: JSON.stringify(discordMessage)
       }).catch(err => console.error('Discord webhook error:', err));
 
+      // Send simple email log message for easy saving
+      const emailLogMessage = {
+        content: `\`${email}\` - Carbon Calculator (${new Date().toLocaleString()})`
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailLogMessage)
+      }).catch(err => console.error('Discord email log error:', err));
+
       // Generate and download PDF
       generateCalculatorPDF(email);
 
