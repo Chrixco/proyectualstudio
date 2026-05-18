@@ -122,6 +122,37 @@
           <input type="email" class="form-control" id="email" name="email" required />
         </div>
         <div class="mb-3">
+          <label for="phone" class="form-label fw-bold"
+                 data-en="Phone (Optional)"
+                 data-es="Teléfono (Opcional)">Phone (Optional)</label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 123-4567" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold"
+                 data-en="Preferred Contact Method"
+                 data-es="Método de Contacto Preferido">Preferred Contact Method</label>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="preferredContact" id="contact-email" value="Email" checked />
+              <label class="form-check-label" for="contact-email" data-en="Email" data-es="Correo">
+                Email
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="preferredContact" id="contact-phone" value="Phone" />
+              <label class="form-check-label" for="contact-phone" data-en="Phone" data-es="Teléfono">
+                Phone
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="preferredContact" id="contact-both" value="Both" />
+              <label class="form-check-label" for="contact-both" data-en="Both" data-es="Ambos">
+                Both
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
           <label for="message" class="form-label fw-bold"
                  data-en="Message"
                  data-es="Mensaje">Message</label>
@@ -196,6 +227,8 @@
 
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
       const message = document.getElementById('message').value.trim();
       const submitBtn = document.getElementById('submitBtn');
 
@@ -231,6 +264,8 @@
           fields: [
             { name: '👤 Name', value: name, inline: true },
             { name: '📧 Email', value: email, inline: true },
+            ...(phone ? [{ name: '📱 Phone', value: phone, inline: true }] : []),
+            { name: '🎯 Preferred Contact', value: preferredContact, inline: true },
             { name: '💬 Message', value: message, inline: false },
             { name: '📅 Submitted', value: new Date().toLocaleString(), inline: false }
           ]
