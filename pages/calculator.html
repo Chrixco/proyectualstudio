@@ -1702,12 +1702,13 @@
         body: JSON.stringify(discordMessage)
       }).catch(err => console.error('Discord webhook error:', err));
 
-      // Send simple email log message for easy saving
+      // Send simple email log message to emails_databases channel
+      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
       const emailLogMessage = {
         content: `\`${email}\` - Budget Calculator (${new Date().toLocaleString()})`
       };
 
-      fetch(webhookUrl, {
+      fetch(emailDatabaseWebhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(emailLogMessage)
