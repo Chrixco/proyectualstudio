@@ -443,6 +443,10 @@
               <input type="number" class="form-control" id="constructionCost" value="500000" min="10000" step="10000">
             </div>
             <div class="mb-3">
+              <label data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost <span class="currency" id="currencyLabel1">USD</span></label>
+              <input type="number" class="form-control" id="landCost" value="250000" min="0" step="10000">
+            </div>
+            <div class="mb-3">
               <label data-en="Property Size (m²)" data-es="Tamaño de Propiedad (m²)">Property Size (m²)</label>
               <input type="number" class="form-control" id="propertySize" value="1000" min="100" step="100">
             </div>
@@ -469,9 +473,9 @@
             <label class="calculator-label" data-en="Financing Method" data-es="Método de Financiamiento">Financing Method</label>
             <div class="toggle-group">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="financingMethod" id="financing-cash" value="cash" checked onchange="toggleFinancingInputs()" />
-                <label class="form-check-label" for="financing-cash" data-en="Cash Payment" data-es="Pago en Efectivo">
-                  Cash Payment
+                <input class="form-check-input" type="radio" name="financingMethod" id="financing-direct" value="cash" checked onchange="toggleFinancingInputs()" />
+                <label class="form-check-label" for="financing-direct" data-en="Direct Payment" data-es="Pago Directo">
+                  Direct Payment
                 </label>
               </div>
               <div class="form-check">
@@ -528,10 +532,18 @@
           </div>
 
           <div class="result-section">
-            <div class="result-section-title" data-en="Construction Breakdown" data-es="Desglose de Construcción">Construction Breakdown</div>
+            <div class="result-section-title" data-en="Property Breakdown" data-es="Desglose de Propiedad">Property Breakdown</div>
             <div class="result-item">
-              <span class="result-label" data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost</span>
+              <span class="result-label" data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost</span>
+              <span class="result-value" id="resultLandCost">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Construction Cost" data-es="Costo de Construcción">Construction Cost</span>
               <span class="result-value" id="resultConstructionCost">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Project Cost" data-es="Costo Total del Proyecto">Total Project Cost</span>
+              <span class="result-value" id="resultTotalProjectCost">-</span>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Property Size" data-es="Tamaño de Propiedad">Property Size</span>
@@ -659,6 +671,7 @@
       const currency = countryData[country].currency;
       const currencySymbol = currency === 'EUR' ? '€' : '$';
       document.getElementById('currencyLabel').textContent = currencySymbol;
+      document.getElementById('currencyLabel1').textContent = currencySymbol;
       document.getElementById('currencyLabel2').textContent = currencySymbol;
       const costRange = countryData[country].typicalCostRange;
       document.getElementById('countryInfo').textContent = `Base currency: ${currency} ${currencySymbol} - Typical construction: ${costRange} - ${countryData[country].info}`;
@@ -696,6 +709,7 @@
     function calculateProfitability() {
       const projectName = document.getElementById('projectName').value || 'Investment Project';
       const constructionCost = parseFloat(document.getElementById('constructionCost').value);
+      const landCost = parseFloat(document.getElementById('landCost').value) || 0;
       const propertySize = parseFloat(document.getElementById('propertySize').value);
       const rentalPerM2 = parseFloat(document.getElementById('rentalPerM2').value);
       const operatingCostPercent = parseFloat(document.getElementById('operatingCosts').value) / 100;
@@ -704,7 +718,8 @@
 
       // Financing parameters
       const financingMethod = document.querySelector('input[name="financingMethod"]:checked').value;
-      let downPayment = constructionCost;
+      const totalProjectCost = constructionCost + landCost;
+      let downPayment = totalProjectCost;
       let annualLoanPayment = 0;
 
       if (financingMethod === 'bank') {
@@ -712,8 +727,8 @@
         const interestRate = parseFloat(document.getElementById('interestRate').value);
         const loanTerm = parseInt(document.getElementById('loanTerm').value);
 
-        const loanAmount = constructionCost * loanPercent;
-        downPayment = constructionCost - loanAmount;
+        const loanAmount = totalProjectCost * loanPercent;
+        downPayment = totalProjectCost - loanAmount;
         annualLoanPayment = calculateLoanPayment(loanAmount, interestRate, loanTerm);
       }
 
@@ -730,10 +745,11 @@
       // Calculate annual net income (after all costs including loan)
       const annualNetIncome = annualRental - annualOperatingCost;
 
-      // Calculate cash flows and profits
+      // Calculate cash flows and property value over time
       let cumulativeProfit = 0;
       let paybackYear = null;
       const cashFlows = [];
+      const propertyValues = [];
       const yearLabels = [];
 
       for (let year = 0; year <= years; year++) {
@@ -745,7 +761,15 @@
         }
 
         cumulativeProfit += yearProfit;
+
+        // Calculate property value appreciation over time
+        let propertyValue = totalProjectCost;
+        for (let i = 0; i < year; i++) {
+          propertyValue = propertyValue * (1 + appreciation);
+        }
+
         cashFlows.push(cumulativeProfit);
+        propertyValues.push(propertyValue);
         yearLabels.push(`Year ${year}`);
 
         if (paybackYear === null && cumulativeProfit >= 0 && year > 0) {
@@ -753,14 +777,14 @@
         }
       }
 
-      // Calculate property value at end
-      let propertyValue = constructionCost;
+      // Calculate final property value
+      let propertyValue = totalProjectCost;
       for (let i = 0; i < years; i++) {
         propertyValue = propertyValue * (1 + appreciation);
       }
 
       // Calculate total profit (based on initial investment)
-      const totalProfit = cumulativeProfit + propertyValue - constructionCost;
+      const totalProfit = cumulativeProfit + propertyValue - totalProjectCost;
       const roi = ((totalProfit / downPayment) * 100).toFixed(2);
 
       // Format currency with proper locale
@@ -771,7 +795,7 @@
         minimumFractionDigits: 0
       });
 
-      // Calculate cost per m²
+      // Calculate cost per m² (construction only)
       const costPerM2 = constructionCost / propertySize;
 
       // Update results
@@ -783,8 +807,10 @@
       document.getElementById('resultPayback').textContent = paybackYear ? `${paybackYear} years` : 'Not in analysis period';
       document.getElementById('resultPropertyValue').textContent = formatter.format(propertyValue);
 
-      // Update construction breakdown
+      // Update property breakdown
+      document.getElementById('resultLandCost').textContent = formatter.format(landCost);
       document.getElementById('resultConstructionCost').textContent = formatter.format(constructionCost);
+      document.getElementById('resultTotalProjectCost').textContent = formatter.format(totalProjectCost);
       document.getElementById('resultPropertySize').textContent = propertySize.toLocaleString() + ' m²';
       document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
 
@@ -792,11 +818,11 @@
       document.getElementById('resultsPanel').style.display = 'block';
 
       // Draw charts
-      drawCashFlowChart(yearLabels, cashFlows, currency);
+      drawCashFlowChart(yearLabels, cashFlows, propertyValues, currency);
       drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency);
     }
 
-    function drawCashFlowChart(labels, data, currency) {
+    function drawCashFlowChart(labels, data, propertyValues, currency) {
       const ctx = document.getElementById('cashFlowChart').getContext('2d');
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
       const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
@@ -809,19 +835,35 @@
         type: 'line',
         data: {
           labels: labels,
-          datasets: [{
-            label: 'Cumulative Profit',
-            data: data,
-            borderColor: accentColor,
-            backgroundColor: accentLight,
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 4,
-            pointBackgroundColor: accentColor,
-            pointBorderColor: accentColor,
-            pointBorderWidth: 2
-          }]
+          datasets: [
+            {
+              label: 'Cumulative Profit',
+              data: data,
+              borderColor: accentColor,
+              backgroundColor: accentLight,
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4,
+              pointBackgroundColor: accentColor,
+              pointBorderColor: accentColor,
+              pointBorderWidth: 2,
+              yAxisID: 'y'
+            },
+            {
+              label: 'Property Value',
+              data: propertyValues,
+              borderColor: '#90EE90',
+              borderWidth: 2,
+              fill: false,
+              tension: 0.4,
+              pointRadius: 3,
+              pointBackgroundColor: '#90EE90',
+              pointBorderColor: '#90EE90',
+              borderDash: [5, 5],
+              yAxisID: 'y1'
+            }
+          ]
         },
         options: {
           responsive: true,
@@ -848,7 +890,9 @@
               }
             },
             y: {
+              type: 'linear',
               display: true,
+              position: 'left',
               grid: {
                 color: 'rgba(255, 213, 0, 0.1)',
                 drawBorder: false
@@ -859,6 +903,30 @@
                 callback: function(value) {
                   return '$' + (value / 1000).toFixed(0) + 'k';
                 }
+              },
+              title: {
+                display: true,
+                text: 'Cumulative Profit'
+              }
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              grid: {
+                drawOnChartArea: false
+              },
+              ticks: {
+                color: '#90EE90',
+                font: { size: 10 },
+                callback: function(value) {
+                  return '$' + (value / 1000).toFixed(0) + 'k';
+                }
+              },
+              title: {
+                display: true,
+                text: 'Property Value',
+                color: '#90EE90'
               }
             }
           }
