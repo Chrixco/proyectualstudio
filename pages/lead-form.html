@@ -325,6 +325,86 @@
       background: var(--brutalist-yellow);
       color: var(--brutalist-black);
     }
+
+    /* Custom Radio Button Styling */
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-check-input {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--brutalist-yellow);
+      border: 3px solid var(--brutalist-yellow);
+      border-radius: 50%;
+      background: var(--glass-bg);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .form-check-input:hover {
+      box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
+      transform: scale(1.1);
+    }
+
+    .form-check-input:checked {
+      background: var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+      box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
+    }
+
+    .form-check-label {
+      cursor: pointer;
+      margin: 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-check-input:hover + .form-check-label {
+      color: var(--brutalist-yellow);
+    }
+
+    .form-check-input:checked + .form-check-label {
+      color: var(--brutalist-yellow);
+      font-weight: 700;
+    }
+
+    /* Toggle Container Styling */
+    .toggle-group {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding: 1rem;
+      background: rgba(255, 213, 0, 0.05);
+      border: 2px solid rgba(255, 213, 0, 0.3);
+      border-radius: var(--panel-border-radius);
+      backdrop-filter: blur(5px);
+    }
+
+    .toggle-group-vertical {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      .form-check-input {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--brutalist-yellow);
+      }
+
+      .toggle-group {
+        padding: 0.75rem;
+        gap: 1rem;
+      }
+    }
   </style>
 </head>
 <body class="body-white-text">
@@ -430,7 +510,7 @@
       <!-- Preferred Contact Method -->
       <div class="form-section">
         <div class="form-section-title" data-en="Preferred Contact Method" data-es="Método de Contacto Preferido">Preferred Contact Method</div>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <div class="toggle-group">
           <div class="form-check">
             <input class="form-check-input" type="radio" name="preferredContact" id="contact-email" value="Email" checked />
             <label class="form-check-label" for="contact-email" data-en="Email" data-es="Correo">
@@ -455,7 +535,7 @@
       <!-- Project Timeline -->
       <div class="form-section">
         <div class="form-section-title" data-en="When are you planning to begin?" data-es="¿Cuándo planeas comenzar?">When are you planning to begin?</div>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; flex-direction: column;">
+        <div class="toggle-group toggle-group-vertical">
           <div class="form-check">
             <input class="form-check-input" type="radio" name="projectTimeline" id="timeline-3months" value="In 3 months" checked />
             <label class="form-check-label" for="timeline-3months" data-en="In 3 months" data-es="En 3 meses">
@@ -629,6 +709,11 @@
 
       if (!fieldOfInterest) {
         showStatus(currentLang === 'en' ? 'Please select a field of interest' : 'Por favor selecciona un área de interés', 'error');
+        return;
+      }
+
+      if ((preferredContact === 'Phone' || preferredContact === 'Both') && !phone) {
+        showStatus(currentLang === 'en' ? 'Please enter your phone number' : 'Por favor ingresa tu número de teléfono', 'error');
         return;
       }
 

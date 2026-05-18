@@ -66,6 +66,81 @@
         transform: translateY(0);
       }
     }
+
+    /* Custom Radio Button Styling */
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-check-input {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--brutalist-yellow);
+      border: 3px solid var(--brutalist-yellow);
+      border-radius: 50%;
+      background: var(--glass-bg);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .form-check-input:hover {
+      box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
+      transform: scale(1.1);
+    }
+
+    .form-check-input:checked {
+      background: var(--brutalist-yellow);
+      border-color: var(--brutalist-yellow);
+      box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
+    }
+
+    .form-check-label {
+      cursor: pointer;
+      margin: 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-check-input:hover + .form-check-label {
+      color: var(--brutalist-yellow);
+    }
+
+    .form-check-input:checked + .form-check-label {
+      color: var(--brutalist-yellow);
+      font-weight: 700;
+    }
+
+    /* Toggle Container Styling */
+    .toggle-group {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding: 1rem;
+      background: rgba(255, 213, 0, 0.05);
+      border: 2px solid rgba(255, 213, 0, 0.3);
+      border-radius: 4px;
+      backdrop-filter: blur(5px);
+    }
+
+    @media (max-width: 480px) {
+      .form-check-input {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--brutalist-yellow);
+      }
+
+      .toggle-group {
+        padding: 0.75rem;
+        gap: 1rem;
+      }
+    }
   </style>
 </head>
 <body class="body-white-text">
@@ -245,6 +320,11 @@
 
       if (!message) {
         showFormStatus(currentLang === 'en' ? 'Please enter a message' : 'Por favor ingresa un mensaje', 'error');
+        return;
+      }
+
+      if ((preferredContact === 'Phone' || preferredContact === 'Both') && !phone) {
+        showFormStatus(currentLang === 'en' ? 'Please enter your phone number' : 'Por favor ingresa tu número de teléfono', 'error');
         return;
       }
 
