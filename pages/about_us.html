@@ -3,15 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Cookie Consent & Analytics -->
   <script src="../js/cookie-consent.js"></script>
-  <script src="../js/colors.js"></script>
   <link rel="icon" href="../images/logo03.ico" type="image/x-icon" />
   <title>About Us | Proyectual Studio | Christian Corral</title>
   <meta name="description" content="About Proyectual Studio and founder Christian Corral. Architecture, urbanism, and critical research founded in Cuenca, Ecuador in 2018."/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta name="keywords" content="Christian Corral, architect, urban planner, PhD, Cuenca, Ecuador, Leibniz University"/>
+  <meta property="og:title" content="About Us | Proyectual Studio"/>
+  <meta property="og:description" content="Architecture, urbanism, and critical research founded in Cuenca, Ecuador."/>
+  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
+  <meta property="og:url" content="https://proyectualst.com/pages/about_us.html"/>
   <link href="../css/styles.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Theme Script (loads early to prevent flash) -->
+  <script src="../js/theme.js"></script>
+  <!-- Centralized Color System -->
+  <script src="../js/colors.js"><\/script>
+
+  <!-- Neo-Brutalist Effects -->
+  <script src="../js/neobrutalist.js"></script>
+  <!-- Image Lightbox -->
+  <script src="../js/lightbox.js"></script>
 </head>
 <body class="body-white-text">
+   <video autoplay loop muted playsinline class="bg-video">
+  <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
       <img src="../images/logo03.png" alt="Proyectual Logo" style="height: 32px;" />
@@ -22,28 +42,124 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-        <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
-        <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         <li class="nav-item">
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
+        </li>
+        <li class="nav-item">
+          <button id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
         </li>
       </ul>
     </div>
   </nav>
 
   <main class="container mt-5 px-3 px-md-4">
-    <section class="py-5 my-5">
-      <div class="brutal-hero">
-        <h1 class="mb-4" data-en="About Us" data-es="Sobre Nosotros">About Us</h1>
-        <p class="fs-5" data-en="Proyectual Studio - Architecture, urbanism, and critical research founded in Cuenca, Ecuador." data-es="Proyectual Studio - Arquitectura, urbanismo e investigación crítica fundada en Cuenca, Ecuador.">
-          Proyectual Studio - Architecture, urbanism, and critical research founded in Cuenca, Ecuador.
-        </p>
+    <h1 class="text-center mb-4"></h1>
+    <div class="brutal-hero scroll-fade-in">
+      <h2 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: bold;"
+          data-en="Architecture, urbanism, and critical research founded in Cuenca, Ecuador."
+          data-es="Arquitectura, urbanismo e investigación crítica fundada en Cuenca, Ecuador.">
+        Architecture, urbanism, and critical research founded in Cuenca, Ecuador.
+      </h2>
+    </div>
+
+    <style>
+      .golden-text {
+        font-size: clamp(1rem, 2.5vw, 1.4rem);
+        line-height: 1.6;
+      }
+      .golden-text strong {
+        font-size: clamp(1.618rem, 4vw, 2.25rem);
+        line-height: 1.2;
+        display: inline;
+        color: var(--brutalist-yellow);
+      }
+    </style>
+    <div id="projectContainer" class="row g-4 mosaic-view">
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-left">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <div class="row align-items-start">
+            <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+              <h3 class="fw-bold mb-3 brutal-text-yellow"
+                  data-en="my motivation and background"
+                  data-es="mi motivación y trayectoria">my motivation and background</h3>
+              <p style="text-align: justify;" class="mb-0"
+                 data-en="I founded &lt;b&gt;Proyectual Studio&lt;/b&gt; in 2018 as a way to respond—both personally and professionally—to the profound spatial inequalities I witnessed growing up in Ecuador. Trained as an architect and urban planner, my work has always been driven by a desire to question established systems of knowledge and to imagine other ways of living, building, and belonging in the city.
+
+Based between Latin America and Europe, my practice weaves together critical research, collective processes, and design experimentation to engage with the complexities of urban life—particularly in informal and climate-vulnerable territories. &lt;b&gt;Proyectual Studio&lt;/b&gt; emerged from this intersection: a space for architectural thinking rooted in lived experience, guided by decolonial perspectives, and committed to making room for the voices and practices too often left out of urban transformation.
+This initiative stems from a deep personal conviction to confront spatial injustice through design, and a persistent motivation to build inclusive, critical, and context-aware urban futures."
+                 data-es="Fundé &lt;b&gt;Proyectual Studio&lt;/b&gt; en 2018 como una forma de responder —tanto personal como profesionalmente— a las profundas desigualdades espaciales que presencié al crecer en Ecuador. Formado como arquitecto y urbanista, mi trabajo siempre ha estado impulsado por el deseo de cuestionar los sistemas establecidos de conocimiento y de imaginar otras formas de habitar, construir y pertenecer a la ciudad.
+
+Con base entre América Latina y Europa, mi práctica entrelaza investigación crítica, procesos colectivos y experimentación en diseño para abordar las complejidades de la vida urbana—particularmente en territorios informales y vulnerables al clima. &lt;b&gt;Proyectual Studio&lt;/b&gt; surgió de esta intersección: un espacio para el pensamiento arquitectónico arraigado en la experiencia vivida, guiado por perspectivas decoloniales y comprometido con abrir espacio a las voces y prácticas frecuentemente excluidas de la transformación urbana.
+Esta iniciativa surge de una profunda convicción personal de enfrentar la injusticia espacial a través del diseño y una motivación persistente por construir futuros urbanos inclusivos, críticos y conscientes del contexto.">
+                I founded <b>Proyectual Studio</b> in 2018 as a way to respond—both personally and professionally—to the profound spatial inequalities I witnessed growing up in Ecuador. Trained as an architect and urban planner, my work has always been driven by a desire to question established systems of knowledge and to imagine other ways of living, building, and belonging in the city.
+
+Based between Latin America and Europe, my practice weaves together critical research, collective processes, and design experimentation to engage with the complexities of urban life—particularly in informal and climate-vulnerable territories. <b>Proyectual Studio</b> emerged from this intersection: a space for architectural thinking rooted in lived experience, guided by decolonial perspectives, and committed to making room for the voices and practices too often left out of urban transformation.
+This initiative stems from a deep personal conviction to confront spatial injustice through design, and a persistent motivation to build inclusive, critical, and context-aware urban futures.</p>
+<p></p>
+<p style="text-align: justify;"
+   data-en="My academic path began in Cuenca, where I graduated from the &lt;b&gt;German School Stiehle&lt;/b&gt; in 2012. Soon after, I moved to Germany to pursue architectural studies, beginning at the &lt;b&gt;Niedersächsisches Studienkolleg&lt;/b&gt; in Hannover. I earned my &lt;b&gt;Bachelor’s degree in Architecture&lt;/b&gt; at the &lt;b&gt;Bielefeld University of Applied Sciences&lt;/b&gt;, where my final project &lt;b&gt;Wohnen an der Leine&lt;/b&gt;—an exploration of housing along the river—was awarded the &lt;b&gt;BDA Master Prize&lt;/b&gt; in 2016. I later completed a &lt;b&gt;Master’s degree in Architecture and Urban Design&lt;/b&gt; at &lt;b&gt;Leibniz University Hannover&lt;/b&gt; with the project &lt;b&gt;Superblock Cuenca&lt;/b&gt;, which reimagined urban form in my home city through the lens of mobility, collective space, and ecological integration.
+
+In 2025, I completed my &lt;b&gt;cotutelle PhD&lt;/b&gt; between &lt;b&gt;Leibniz University Hannover&lt;/b&gt; and &lt;b&gt;Universidade Presbiteriana Mackenzie&lt;/b&gt; in São Paulo, awarded &lt;b&gt;summa cum laude&lt;/b&gt; and supported by a full &lt;b&gt;DAAD scholarship&lt;/b&gt;. My &lt;b&gt;doctoral research&lt;/b&gt;, &lt;b&gt;Urban Resilience in the Context of Climate Change&lt;/b&gt;, explores transition scenarios for informal settlements in Guayaquil, Ecuador, addressing the intersections of climate vulnerability, urban informality, and spatial justice."
+   data-es="Mi camino académico comenzó en Cuenca, donde me gradué del &lt;b&gt;Colegio Alemán Stiehle&lt;/b&gt; en 2012. Poco después, me mudé a Alemania para seguir estudios de arquitectura, comenzando en el &lt;b&gt;Studienkolleg de Baja Sajonia&lt;/b&gt; en Hannover. Obtuve mi &lt;b&gt;licenciatura en Arquitectura&lt;/b&gt; en la &lt;b&gt;Universidad de Ciencias Aplicadas de Bielefeld&lt;/b&gt;, donde mi proyecto final &lt;b&gt;Wohnen an der Leine&lt;/b&gt; —una exploración sobre la vivienda a lo largo del río— fue galardonado con el &lt;b&gt;Premio BDA&lt;/b&gt; en 2016. Más tarde completé una &lt;b&gt;maestría en Arquitectura y Urbanismo&lt;/b&gt; en la &lt;b&gt;Universidad Leibniz de Hannover&lt;/b&gt; con el proyecto &lt;b&gt;Superblock Cuenca&lt;/b&gt;, que reimaginó la forma urbana de mi ciudad natal a través de la movilidad, el espacio colectivo y la integración ecológica.
+
+En 2025, completé mi &lt;b&gt;doctorado cotutela&lt;/b&gt; entre la &lt;b&gt;Universidad Leibniz de Hannover&lt;/b&gt; y la &lt;b&gt;Universidad Presbiteriana Mackenzie&lt;/b&gt; en São Paulo, con calificación &lt;b&gt;summa cum laude&lt;/b&gt; y apoyado por una &lt;b&gt;beca completa del DAAD&lt;/b&gt;. Mi &lt;b&gt;investigación doctoral&lt;/b&gt;, &lt;b&gt;Resiliencia Urbana en el Contexto del Cambio Climático&lt;/b&gt;, explora escenarios de transición para asentamientos informales en Guayaquil, Ecuador, abordando las intersecciones entre vulnerabilidad climática, informalidad urbana y justicia espacial.">
+    My academic path began in Cuenca, where I graduated from the <b>German School Stiehle</b> in 2012. Soon after, I moved to Germany to pursue architectural studies, beginning at the <b>Niedersächsisches Studienkolleg</b> in Hannover. I earned my <b>Bachelor's degree in Architecture</b> at the <b>Bielefeld University of Applied Sciences</b>, where my final project <b>Wohnen an der Leine</b>—an exploration of housing along the river—was awarded the <b>BDA Master Prize</b> in 2016. I later completed a <b>Master's degree in Architecture and Urban Design</b> at <b>Leibniz University Hannover</b> with the project <b>Superblock Cuenca</b>, which reimagined urban form in my home city through the lens of mobility, collective space, and ecological integration.
+
+In 2025, I completed my <b>cotutelle PhD</b> between <b>Leibniz University Hannover</b> and <b>Universidade Presbiteriana Mackenzie</b> in São Paulo, awarded <b>summa cum laude</b> and supported by a full <b>DAAD scholarship</b>. My <b>doctoral research</b>, <b>Urban Resilience in the Context of Climate Change</b>, explores transition scenarios for informal settlements in Guayaquil, Ecuador, addressing the intersections of climate vulnerability, urban informality, and spatial justice.</p>
+
+<p style="text-align: justify;">-Christian Xavier Corral Burau</p>
+          </div>
+          <div class="col-12 col-lg-4 text-center">
+              <img src="../images/IMG_0204 2 Large.jpeg" alt="Christian Corral" class="img-fluid border border-4 border-white rounded-4 panel-image" style="max-width: 100%; height: auto; object-fit: contain;" />
+          </div>
+        </div>
+        <div class="text-center mt-4 d-flex flex-wrap justify-content-center gap-3">
+          <a href="../pages/contact.html" class="brutal-btn-yellow brutal-btn-lg"
+             data-en="Get in Touch"
+             data-es="Contáctanos">
+            Get in Touch
+          </a>
+          <a href="../documents/CV_Christian_Corral.pdf" class="brutal-btn-yellow brutal-btn-lg" download
+             data-en="Download CV"
+             data-es="Descargar CV">
+            Download CV
+          </a>
+        </div>
+        </div>
       </div>
-    </section>
+
+      <hr class="brutal-divider" />
+      <div class="col-12 mb-5 scroll-slide-right">
+        <div class="form-container border border-4 border-white rounded-4 p-4">
+          <h3 class="fw-bold mb-4 brutal-text-yellow text-center"
+              data-en="Awards & Recognition"
+              data-es="Premios y Reconocimientos">Awards & Recognition</h3>
+        <div class="row">
+          <div class="col-12 col-md-6 mb-4">
+            <div class="p-3 border border-2 border-white rounded-3 h-100">
+              <h4 class="fw-bold brutal-text-yellow">2025</h4>
+              <h5 class="fw-bold" data-en="PhD Summa Cum Laude" data-es="Doctorado Summa Cum Laude">PhD Summa Cum Laude</h5>
+              <p class="mb-0" data-en="Cotutelle PhD between Leibniz University Hannover and Universidade Presbiteriana Mackenzie, São Paulo. Supported by a full DAAD scholarship." data-es="Doctorado cotutela entre la Universidad Leibniz de Hannover y la Universidad Presbiteriana Mackenzie, São Paulo. Apoyado por una beca completa del DAAD.">Cotutelle PhD between Leibniz University Hannover and Universidade Presbiteriana Mackenzie, São Paulo. Supported by a full DAAD scholarship.</p>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mb-4">
+            <div class="p-3 border border-2 border-white rounded-3 h-100">
+              <h4 class="fw-bold brutal-text-yellow">2016</h4>
+              <h5 class="fw-bold" data-en="BDA Master Prize" data-es="Premio BDA">BDA Master Prize</h5>
+              <p class="mb-0" data-en="Awarded for the project 'Wohnen an der Leine' — an exploration of housing along the river at Bielefeld University of Applied Sciences." data-es="Otorgado por el proyecto 'Wohnen an der Leine' — una exploración de vivienda a lo largo del río en la Universidad de Ciencias Aplicadas de Bielefeld.">Awarded for the project 'Wohnen an der Leine' — an exploration of housing along the river at Bielefeld University of Applied Sciences.</p>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="footer-enhanced">
@@ -56,16 +172,24 @@
       <div class="footer-section">
         <h4 data-en="Navigation" data-es="Navegación">Navigation</h4>
         <ul class="footer-links">
-          <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
-          <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
-          <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+          <li><a href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+          <li><a href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+          <li><a href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
+          <li><a href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
       </div>
       <div class="footer-section">
         <h4 data-en="Contact" data-es="Contacto">Contact</h4>
         <p><a href="mailto:proyectualstudio@gmail.com">proyectualstudio@gmail.com</a></p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/christian-corral-burau-0a2bba1b1/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/proyectualstudioau/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -74,26 +198,30 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    let currentLang = localStorage.getItem('lang') || 'en';
-    function updateLanguage(lang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        el.textContent = el.getAttribute(`data-${lang}`);
-      });
-      const toggleBtn = document.getElementById('lang-toggle');
-      if (toggleBtn) toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
-      localStorage.setItem('lang', lang);
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      updateLanguage(currentLang);
-      const toggleBtn = document.getElementById('lang-toggle');
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-          currentLang = currentLang === 'en' ? 'es' : 'en';
-          updateLanguage(currentLang);
-        });
-      }
+<script>
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function updateLanguage(lang) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.innerHTML = el.getAttribute(`data-${lang}`);
     });
-  </script>
+    const toggleBtn = document.getElementById('lang-toggle');
+    if (toggleBtn) {
+      toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
+    }
+    localStorage.setItem('lang', lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateLanguage(currentLang);
+    const toggleBtn = document.getElementById('lang-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'es' : 'en';
+        updateLanguage(currentLang);
+      });
+    }
+  });
+</script>
 </body>
 </html>
