@@ -540,7 +540,10 @@
         </div>
 
         <!-- Results Panel -->
-        <div class="results-panel" id="resultsPanel" style="display: none;">
+        <div class="results-panel" id="resultsPanel" style="opacity: 0.6;">
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <span style="background: var(--brutalist-yellow); color: var(--brutalist-black); padding: 0.4rem 0.8rem; border-radius: var(--panel-border-radius); font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
+          </div>
           <div class="result-section">
             <div class="result-section-title" data-en="Investment Summary" data-es="Resumen de Inversión">Investment Summary</div>
             <div class="result-item">
@@ -764,6 +767,39 @@
       document.getElementById('propertySize').value = size;
     }
 
+    function showPreviewData() {
+      const countryInfo = countryData[currentCountry];
+      const currency = countryInfo.currency;
+      const locale = currency === 'EUR' ? 'de-DE' : 'en-US';
+      const formatter = new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currency === 'EUR' ? 'EUR' : 'USD',
+        minimumFractionDigits: 0
+      });
+
+      // Sample values
+      const sampleDownPayment = 350000;
+      const sampleRental = 180000;
+      const sampleNetIncome = 126000;
+      const sampleProfit = 450000;
+      const samplePropertyValue = 1200000;
+
+      // Update results with sample data
+      document.getElementById('resultInvestment').textContent = formatter.format(sampleDownPayment);
+      document.getElementById('resultAnnualRental').textContent = formatter.format(sampleRental);
+      document.getElementById('resultNetIncome').textContent = formatter.format(sampleNetIncome);
+      document.getElementById('resultTotalProfit').textContent = formatter.format(sampleProfit);
+      document.getElementById('resultROI').textContent = '28.6%';
+      document.getElementById('resultPayback').textContent = '3 years';
+      document.getElementById('resultPropertyValue').textContent = formatter.format(samplePropertyValue);
+
+      document.getElementById('resultLandCost').textContent = formatter.format(250000);
+      document.getElementById('resultConstructionCost').textContent = formatter.format(500000);
+      document.getElementById('resultTotalProjectCost').textContent = formatter.format(750000);
+      document.getElementById('resultPropertySize').textContent = '1,000 m²';
+      document.getElementById('resultCostPerM2').textContent = formatter.format(500) + '/m²';
+    }
+
     function calculateLoanPayment(principal, annualRate, years) {
       const monthlyRate = annualRate / 100 / 12;
       const numberOfPayments = years * 12;
@@ -887,8 +923,10 @@
       document.getElementById('resultPropertySize').textContent = propertySize.toLocaleString() + ' m²';
       document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
 
-      // Show results panel
-      document.getElementById('resultsPanel').style.display = 'block';
+      // Show results panel with full opacity
+      const resultsPanel = document.getElementById('resultsPanel');
+      resultsPanel.style.display = 'block';
+      resultsPanel.style.opacity = '1';
 
       // Draw charts
       drawCashFlowChart(yearLabels, cashFlows, propertyValues, currency);
@@ -1056,6 +1094,9 @@
     document.addEventListener('DOMContentLoaded', function() {
       // Initialize currency display for default country
       selectCountry(currentCountry);
+
+      // Show sample preview data
+      showPreviewData();
 
       const currentLang = localStorage.getItem('lang') || 'en';
       updateLanguageDisplay(currentLang);
