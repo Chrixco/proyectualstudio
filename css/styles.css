@@ -2100,3 +2100,30 @@ html {
     max-width: 150px;
   }
 }
+
+/* ===========================
+   PANEL HIGHLIGHT VARIANT
+   Highlight specific panels with colored border, title, and buttons
+   =========================== */
+.panel-highlight {
+  border-color: var(--accent-primary) !important;
+}
+
+.panel-highlight h3,
+.panel-highlight h2,
+.panel-highlight h1 {
+  color: var(--accent-primary) !important;
+}
+
+.panel-highlight .btn {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 4px 4px 0px var(--accent-primary) !important;
+}
+
+.panel-highlight .btn:hover {
+  box-shadow: 6px 6px 0px var(--accent-primary) !important;
+}
+
+.panel-highlight p {
+  color: #000000 !important;
+}
