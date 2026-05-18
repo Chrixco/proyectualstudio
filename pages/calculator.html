@@ -46,32 +46,96 @@
 
   <!-- Theme Script (loads early to prevent flash) -->
   <script src="../js/theme.js"></script>
+  <!-- Centralized Color System -->
+  <script src="../js/colors.js"><\/script>
 
   <!-- Neo-Brutalist Effects -->
   <script src="../js/neobrutalist.js"></script>
 
   <style>
     /* Two-panel calculator layout for desktop */
+    main.container {
+      max-width: 100% !important;
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box;
+    }
+
     .calculator-wrapper {
-      max-width: 1400px;
+      width: 100%;
+      max-width: 1600px;
       margin: 0 auto;
+      box-sizing: border-box;
     }
 
     .calculator-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    /* Mobile: single column */
-    @media (max-width: 991px) {
+    /* Tablet: 768px and below */
+    @media (max-width: 768px) {
+      main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin: 0 auto;
+      }
+
+      .calculator-wrapper {
+        margin: 0 auto;
+      }
+
       .calculator-layout {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
 
       .results-panel {
         position: static !important;
         top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        box-shadow: 8px 8px 0px var(--brutalist-yellow);
+        border: 3px solid var(--brutalist-yellow);
+      }
+    }
+
+    /* Mobile: 480px and below */
+    @media (max-width: 480px) {
+      main.container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .calculator-wrapper {
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .calculator-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        padding: 1rem;
+        box-shadow: 6px 6px 0px var(--brutalist-yellow);
+        border: 2px solid var(--brutalist-yellow);
       }
     }
 
@@ -80,8 +144,9 @@
       backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
-      padding: 2rem;
+      padding: 1.5rem;
       border-radius: var(--panel-border-radius);
+      min-width: 0;
     }
 
     .results-panel {
@@ -89,20 +154,19 @@
       backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
-      padding: 2rem;
+      padding: 1.5rem;
       position: sticky;
       top: 100px;
       height: fit-content;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
       border-radius: var(--panel-border-radius);
+      min-width: 0;
     }
 
     .calculator-section {
       margin-bottom: 2rem;
       padding: 1.5rem;
       border: 3px solid var(--brutalist-yellow);
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-white-ultra-light);
       border-radius: var(--panel-border-radius);
     }
 
@@ -240,7 +304,7 @@
 
     .cta-final:hover {
       background: var(--brutalist-black) !important;
-      color: #FFFFFF !important;
+      color: var(--brutalist-white) !important;
       border-color: var(--brutalist-yellow) !important;
       box-shadow: 6px 6px 0px var(--brutalist-yellow) !important;
       transform: translate(-3px, -3px);
@@ -275,7 +339,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: var(--bg-semi-dark);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 10000;
@@ -295,12 +359,12 @@
       width: 100%;
       margin: 2rem auto;
       padding: 3rem;
-      background: rgba(255, 255, 255, 0.98);
+      background: var(--bg-white-opaque);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
-      color: #000;
+      color: var(--brutalist-black);
       animation: slideIn 0.3s ease;
     }
 
@@ -323,11 +387,11 @@
       margin-bottom: 1.5rem;
       padding-bottom: 1rem;
       border-bottom: 3px solid var(--brutalist-yellow);
-      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+      text-shadow: 2px 2px 0px var(--bg-dark);
     }
 
     .info-modal-content h4 {
-      color: #000;
+      color: var(--brutalist-black);
       font-weight: bold;
       margin-top: 2rem;
       margin-bottom: 1rem;
@@ -362,7 +426,7 @@
     }
 
     .info-modal-content a {
-      color: #000;
+      color: var(--brutalist-black);
       font-weight: bold;
       text-decoration: underline;
       transition: all 0.2s ease;
@@ -379,8 +443,8 @@
       width: 40px;
       height: 40px;
       background: var(--brutalist-yellow);
-      color: #000;
-      border: 3px solid #000;
+      color: var(--brutalist-black);
+      border: 3px solid var(--brutalist-black);
       font-size: 1.5rem;
       font-weight: bold;
       cursor: pointer;
@@ -392,7 +456,7 @@
     }
 
     .close-btn:hover {
-      background: #000;
+      background: var(--brutalist-black);
       color: var(--brutalist-yellow);
       border-color: var(--brutalist-yellow);
       transform: rotate(90deg);
@@ -401,14 +465,14 @@
     .reference-section {
       margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 2px solid rgba(0, 0, 0, 0.2);
+      border-top: 2px solid var(--bg-darker);
     }
 
     /* Summary section in results panel */
     .selection-summary {
       margin-bottom: 2rem;
       padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-white-ultra-light);
       border: 3px solid var(--brutalist-yellow);
     }
 
@@ -417,7 +481,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(255, 213, 0, 0.3);
+      border-bottom: 1px solid var(--glass-border);
     }
 
     .summary-item:last-child {
@@ -436,10 +500,50 @@
       font-size: 1rem;
     }
 
-    @media (max-width: 991px) {
+    @media (max-width: 768px) {
       .results-panel {
         margin-top: 2rem;
       }
+    }
+
+    /* Lead Capture Status Messages */
+    .lead-status {
+      padding: 1rem;
+      border-radius: var(--panel-border-radius);
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .lead-status-success {
+      background: rgba(144, 238, 144, 0.2);
+      color: #90EE90;
+      border: 2px solid #90EE90;
+    }
+
+    .lead-status-error {
+      background: rgba(255, 107, 107, 0.2);
+      color: #FF6B6B;
+      border: 2px solid #FF6B6B;
+    }
+
+    /* Lead Capture Summary */
+    .lead-summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--accent-light);
+      font-size: 0.9rem;
+    }
+
+    .lead-summary-label {
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+    }
+
+    .lead-summary-value {
+      color: var(--text-primary);
     }
   </style>
 </head>
@@ -461,6 +565,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
@@ -486,7 +591,7 @@
       Get a rough estimate for your project
     </p>
 
-    <div class="calculator-wrapper scroll-fade-in">
+    <div class="calculator-wrapper" style="opacity: 1; transform: translateY(0);">
       <div class="calculator-layout">
         <!-- LEFT PANEL: Inputs -->
         <div class="inputs-panel">
@@ -776,11 +881,11 @@
               * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
             </p>
 
-            <a href="contact.html" class="cta-final btn"
+            <button onclick="navigateToLeadForm()" class="cta-final btn"
                data-en="Get Detailed Quote"
                data-es="Obtener Cotización Detallada">
               Get Detailed Quote
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -1364,6 +1469,48 @@
       }
     });
 
+    // Function to navigate to lead form page (GLOBAL - available before page loads)
+    window.navigateToLeadForm = function() {
+      console.log('🔍 navigateToLeadForm called');
+
+      const totalCost = document.getElementById('totalCost')?.textContent || 'Not calculated';
+      const discipline = document.getElementById('summaryDiscipline')?.textContent || 'Not selected';
+      const location = document.getElementById('summaryLocation')?.textContent || 'Not selected';
+      const size = document.getElementById('summarySize')?.textContent || 'Not set';
+
+      console.log('📊 Calculator Data:', {
+        totalCost,
+        discipline,
+        location,
+        size
+      });
+
+      const leadData = {
+        calculatorType: 'Project Budget',
+        data: {
+          summary: {
+            discipline: discipline,
+            location: location,
+            size: size,
+            estimatedCost: totalCost
+          },
+          full: {
+            projectDiscipline: discipline,
+            projectLocation: location,
+            projectSize: size,
+            estimatedTotalCost: totalCost
+          }
+        }
+      };
+
+      console.log('📝 Lead Data prepared:', leadData);
+      sessionStorage.setItem('leadCaptureData', JSON.stringify(leadData));
+      console.log('✅ Data saved to sessionStorage');
+      console.log('🔗 Navigating to lead-form.html');
+
+      window.location.href = 'lead-form.html';
+    };
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       updateLanguage(currentLang);
@@ -1378,5 +1525,6 @@
       }
     });
   </script>
+
 </body>
 </html>

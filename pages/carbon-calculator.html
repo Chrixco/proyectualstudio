@@ -17,6 +17,8 @@
 
   <!-- Theme Script (loads early to prevent flash) -->
   <script src="../js/theme.js"></script>
+  <!-- Centralized Color System -->
+  <script src="../js/colors.js"><\/script>
   <!-- Neo-Brutalist Effects -->
   <script src="../js/neobrutalist.js"></script>
 
@@ -28,47 +30,78 @@
     .calculator-wrapper {
       max-width: 1400px;
       margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main.container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box;
     }
 
     .calculator-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     /* Mobile: single column */
-    @media (max-width: 991px) {
-      .calculator-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
-    }
-
-    .inputs-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
-      padding: 1.5rem;
-      border-radius: var(--panel-border-radius);
-      max-height: none;
-      overflow: visible;
-    }
-
+    .inputs-panel,
     .results-panel {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       border: 4px solid var(--brutalist-yellow);
       box-shadow: 12px 12px 0px var(--brutalist-yellow);
       padding: 1.5rem;
+      border-radius: var(--panel-border-radius);
+      overflow: visible;
+    }
+
+    .results-panel {
       position: relative;
       height: fit-content;
-      overflow: visible;
-      border-radius: var(--panel-border-radius);
+    }
+
+    @media (max-width: 768px) {
+      .calculator-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .results-panel {
+        position: static !important;
+        top: auto !important;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        box-shadow: 8px 8px 0px var(--brutalist-yellow);
+        border: 3px solid var(--brutalist-yellow);
+      }
+    }
+
+    @media (max-width: 480px) {
+      main.container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      .calculator-wrapper {
+        padding: 0 0.75rem;
+      }
+
+      .inputs-panel,
+      .results-panel {
+        padding: 1rem;
+        box-shadow: 6px 6px 0px var(--brutalist-yellow);
+        border: 2px solid var(--brutalist-yellow);
+      }
     }
 
     .calculator-section {
@@ -89,7 +122,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: 0.75rem;
-      font-size: 0.8rem;
+      font-size: clamp(0.7rem, 2vw, 0.8rem);
       color: var(--brutalist-yellow);
       display: block;
       border-bottom: 2px solid rgba(255, 213, 0, 0.2);
@@ -379,21 +412,82 @@
       transform: translate(-3px, -3px);
     }
 
+    /* Responsive adjustments - Carbon calculator specific */
     @media (max-width: 768px) {
       .calculator-wrapper {
         padding: 0 1rem;
       }
 
-      .inputs-panel, .results-panel {
-        padding: 1.5rem;
+      .calculator-section {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
       }
 
       .charts-container {
         grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .chart-wrapper {
+        height: 300px;
+      }
+
+      .chart-btn {
+        padding: 0.5rem 1rem;
+        font-size: clamp(0.75rem, 2vw, 0.85rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .calculator-wrapper {
+        padding: 0 0.75rem;
+        margin: 0 auto;
+      }
+
+      main.container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .calculator-section {
+        padding: 0.7rem;
+        margin-bottom: 0.7rem;
+      }
+
+      .option-card {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
+        font-size: clamp(0.8rem, 2vw, 0.85rem);
+      }
+
+      .range-value {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+      }
+
+      .charts-container {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
       }
 
       .chart-wrapper {
         height: 250px;
+      }
+
+      .chart-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+        margin-bottom: 0.5rem;
+      }
+
+      .cta-final {
+        padding: 0.9rem;
+        font-size: clamp(0.85rem, 2vw, 0.9rem);
+        width: 100%;
+        margin-bottom: 0.5rem;
+        min-height: 44px;
       }
     }
 
@@ -417,6 +511,46 @@
       position: relative;
       z-index: 1;
     }
+
+    /* Lead Capture Status Messages */
+    .lead-status {
+      padding: 1rem;
+      border-radius: var(--panel-border-radius);
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .lead-status-success {
+      background: rgba(144, 238, 144, 0.2);
+      color: #90EE90;
+      border: 2px solid #90EE90;
+    }
+
+    .lead-status-error {
+      background: rgba(255, 107, 107, 0.2);
+      color: #FF6B6B;
+      border: 2px solid #FF6B6B;
+    }
+
+    /* Lead Capture Summary */
+    .lead-summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--accent-light);
+      font-size: 0.9rem;
+    }
+
+    .lead-summary-label {
+      font-weight: bold;
+      color: var(--brutalist-yellow);
+      text-transform: uppercase;
+    }
+
+    .lead-summary-value {
+      color: var(--text-primary);
+    }
   </style>
 </head>
 <body>
@@ -439,6 +573,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="../pages/architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
+        <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/research.html" data-en="Research" data-es="Investigación">Research</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
         <li class="nav-item"><a class="nav-link" href="../pages/contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
@@ -650,9 +785,14 @@
             <p class="disclaimer" data-en="This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources. Contact us for a detailed audit." data-es="Esta es una estimación aproximada. La huella de carbono final depende de materiales específicos, métodos de transporte y fuentes de energía. Contáctanos para una auditoría detallada.">
               This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources.
             </p>
-            <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
-              Support Tree Planting
-            </a>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <button onclick="navigateToLeadForm()" class="cta-final" data-en="Request Custom Analysis" data-es="Solicitar Análisis Personalizado">
+                Request Custom Analysis
+              </button>
+              <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
+                Support Tree Planting
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -995,7 +1135,7 @@
     }
 
     function updatePieChart(embodied, operational, transport, waste, trees) {
-      let labels, data, colors;
+      let labels = [], data = [], colors = [];
 
       if (currentPieMode === 'lifecycle') {
         // Process-based breakdown (Extraction → Processing → Transportation → Installation)
@@ -1094,6 +1234,13 @@
       }
 
       const borderColor = 'rgba(255, 213, 0, 0.2)';
+
+      // Ensure labels and data are not empty
+      if (!labels || labels.length === 0) {
+        labels = [currentLang === 'en' ? 'No Data' : 'Sin Datos'];
+        data = [0];
+        colors = ['#FFD500'];
+      }
 
       // Update Pie Chart
       if (pieChart) {
@@ -1347,7 +1494,74 @@
           langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
         });
       }
+
     });
+
+    // Function to navigate to lead form page (GLOBAL - available before page loads)
+    window.navigateToLeadForm = function() {
+      console.log('🔍 navigateToLeadForm called (Carbon Calculator)');
+
+      const totalEmissions = document.getElementById('totalCO2')?.textContent || 'Not calculated';
+
+      console.log('📊 Carbon Data:', {
+        totalEmissions,
+        projectSize: carbonState.projectSize,
+        location: carbonState.location,
+        buildingType: carbonState.buildingType,
+        concrete: carbonState.concrete,
+        steel: carbonState.steel,
+        timber: carbonState.timber,
+        transport: carbonState.transport,
+        energySource: carbonState.energySource,
+        waste: carbonState.waste,
+        trees: carbonState.trees
+      });
+
+      const leadData = {
+        calculatorType: 'Carbon Analysis',
+        data: {
+          summary: {
+            totalEmissions: totalEmissions,
+            constructionArea: carbonState.projectSize + ' m²',
+            location: carbonState.location,
+            buildingType: carbonState.buildingType,
+            primaryMaterial: (carbonState.concrete > 0 ? 'Concrete' : carbonState.steel > 0 ? 'Steel' : 'Timber')
+          },
+          full: {
+            totalEmissions: totalEmissions,
+            constructionArea: carbonState.projectSize + ' m²',
+            location: carbonState.location,
+            buildingType: carbonState.buildingType,
+            materials: {
+              concreteAmount: carbonState.concrete + ' m³',
+              steelAmount: carbonState.steel + ' kg',
+              timberAmount: carbonState.timber + ' m³'
+            },
+            transportation: {
+              distance: carbonState.transport + ' km (avg)',
+              transportCO2: (carbonState.projectSize * carbonState.transport * 0.12).toFixed(2) + ' kgCO₂e'
+            },
+            operationalEnergy: {
+              energySource: carbonState.energySource,
+              energyCO2: (carbonState.projectSize * carbonState.energyCO2).toFixed(2) + ' kgCO₂e/year'
+            },
+            sustainability: {
+              recyclingWasteReduction: carbonState.waste + '%',
+              treesPlanted: carbonState.trees + ' trees',
+              carbonOffset: (carbonState.trees * 25).toFixed(2) + ' kgCO₂e/year'
+            }
+          }
+        }
+      };
+
+      console.log('📝 Lead Data prepared:', leadData);
+      sessionStorage.setItem('leadCaptureData', JSON.stringify(leadData));
+      console.log('✅ Data saved to sessionStorage');
+      console.log('🔗 Navigating to lead-form.html');
+
+      window.location.href = 'lead-form.html';
+    };
   </script>
+
 </body>
 </html>
