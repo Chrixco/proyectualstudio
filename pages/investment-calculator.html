@@ -145,7 +145,7 @@
 
     select.form-control {
       appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFD500' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230099FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 0.75rem center;
       background-size: 20px;
@@ -270,9 +270,9 @@
 
     .info-badge {
       display: inline-block;
-      background: rgba(0, 153, 255, 0.2);
-      border: 1px solid #0099FF;
-      color: #0099FF;
+      background: var(--accent-light);
+      border: 1px solid var(--accent-primary);
+      color: var(--accent-primary);
       padding: 0.5rem 0.75rem;
       border-radius: 4px;
       font-size: 0.75rem;
@@ -281,8 +281,29 @@
     }
 
     .currency {
-      color: #0099FF;
+      color: var(--accent-primary);
       font-weight: 600;
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-background video {
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
+
+    main.container {
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
