@@ -617,40 +617,39 @@
     document.addEventListener('DOMContentLoaded', function() {
       console.log('🚀 Lead Form Page Loaded');
 
-      // Load calculator data from sessionStorage
+      // Load calculator data from sessionStorage (optional)
       const storedData = sessionStorage.getItem('leadCaptureData');
       console.log('📦 SessionStorage Data:', storedData);
 
-      if (!storedData) {
-        console.error('❌ No calculator data found in sessionStorage');
-        showStatus('No calculator data found. Please go back and try again.', 'error');
-        return;
+      if (storedData) {
+        try {
+          const leadData = JSON.parse(storedData);
+          console.log('✅ Data parsed successfully:', leadData);
+
+          currentCalculatorType = leadData.calculatorType;
+          currentCalculatorData = leadData.data;
+
+          console.log('📋 Calculator Type:', currentCalculatorType);
+          console.log('📊 Calculator Data:', currentCalculatorData);
+
+          // Update UI
+          document.getElementById('calculatorTypeBadge').textContent = currentCalculatorType;
+          populateCalculatorData(leadData.data);
+
+          // Clear stored data after loading
+          sessionStorage.removeItem('leadCaptureData');
+          console.log('🧹 SessionStorage cleared');
+        } catch (error) {
+          console.error('❌ Error parsing calculator data:', error);
+        }
+      } else {
+        console.log('ℹ️ No calculator data - form can still be used independently');
+        document.getElementById('calculatorTypeBadge').textContent = 'General Inquiry';
+        populateCalculatorData({});
       }
 
-      try {
-        const leadData = JSON.parse(storedData);
-        console.log('✅ Data parsed successfully:', leadData);
-
-        currentCalculatorType = leadData.calculatorType;
-        currentCalculatorData = leadData.data;
-
-        console.log('📋 Calculator Type:', currentCalculatorType);
-        console.log('📊 Calculator Data:', currentCalculatorData);
-
-        // Update UI
-        document.getElementById('calculatorTypeBadge').textContent = currentCalculatorType;
-        populateCalculatorData(leadData.data);
-
-        // Clear stored data after loading
-        sessionStorage.removeItem('leadCaptureData');
-        console.log('🧹 SessionStorage cleared');
-
-        // Update language if needed
-        updateLanguageDisplay();
-      } catch (error) {
-        console.error('❌ Error parsing calculator data:', error);
-        showStatus('Error loading calculator data. Please try again.', 'error');
-      }
+      // Update language if needed
+      updateLanguageDisplay();
     });
 
     function populateCalculatorData(data) {
@@ -747,7 +746,7 @@
       };
 
       // Add project details if available
-      if (currentCalculatorData.summary) {
+      if (currentCalculatorData && currentCalculatorData.summary && Object.keys(currentCalculatorData.summary).length > 0) {
         const summaryFields = Object.entries(currentCalculatorData.summary).map(([key, value]) => ({
           name: formatLabel(key),
           value: String(value),
