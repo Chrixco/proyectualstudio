@@ -581,9 +581,11 @@
 
       // Update currency labels
       const currency = countryData[country].currency;
-      document.getElementById('currencyLabel').textContent = currency;
-      document.getElementById('currencyLabel2').textContent = currency;
-      document.getElementById('countryInfo').textContent = `Base currency: ${currency} - ${countryData[country].info}`;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
+      document.getElementById('currencyLabel').textContent = currencySymbol;
+      document.getElementById('currencyLabel2').textContent = currencySymbol;
+      const costRange = countryData[country].typicalCostRange;
+      document.getElementById('countryInfo').textContent = `Base currency: ${currency} ${currencySymbol} - Typical construction: ${costRange} - ${countryData[country].info}`;
 
       // Reset results
       document.getElementById('resultsPanel').style.display = 'none';
@@ -685,8 +687,9 @@
       const totalProfit = cumulativeProfit + propertyValue - constructionCost;
       const roi = ((totalProfit / downPayment) * 100).toFixed(2);
 
-      // Format currency
-      const formatter = new Intl.NumberFormat('en-US', {
+      // Format currency with proper locale
+      const locale = currency === 'EUR' ? 'de-DE' : 'en-US';
+      const formatter = new Intl.NumberFormat(locale, {
         style: 'currency',
         currency: currency === 'EUR' ? 'EUR' : 'USD',
         minimumFractionDigits: 0
