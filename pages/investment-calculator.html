@@ -931,6 +931,15 @@
               </div>
             </div>
 
+            <!-- Selling Price (shown for sale mode only) -->
+            <div id="sellingPriceSection" style="display: none;">
+              <div class="mb-3">
+                <label for="sellingPricePerM2" data-en="Selling Price per m²" data-es="Precio de Venta por m²">Selling Price per m² <span class="currency" id="currencyLabel3">USD</span></label>
+                <input type="number" class="form-control" id="sellingPricePerM2" value="1500" min="100" step="100" oninput="debouncedCalculate();">
+                <span class="hint-text" id="sellingPriceHint" data-en="Market price at time of sale (not appreciation based)" data-es="Precio de mercado al momento de venta (no basado en apreciación)">Market price at time of sale</span>
+              </div>
+            </div>
+
             <!-- Appreciation (shown for both rent and sale) -->
             <div class="slider-field">
               <div class="slider-header">
@@ -1198,9 +1207,22 @@
       }
     };
 
+    function updateSellingPriceHint() {
+      const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
+      const propertySize = parseFloat(document.getElementById('propertySize').value) || 1;
+      const costPerM2 = Math.round(constructionCost / propertySize);
+      const currencySymbol = currentCountry === 'germany' ? '€' : '$';
+
+      const hint = document.getElementById('sellingPriceHint');
+      hint.textContent = currentLang === 'en'
+        ? `Your construction cost: ${currencySymbol}${costPerM2}/m² (enter higher to make profit)`
+        : `Tu costo de construcción: ${currencySymbol}${costPerM2}/m² (ingresa más para ganancia)`;
+    }
+
     function debouncedCalculate() {
       clearTimeout(calcDebounceTimer);
       markResultsAsUpdating();
+      updateSellingPriceHint();
       calcDebounceTimer = setTimeout(() => {
         calculateProfitability();
       }, 300);
@@ -1302,12 +1324,16 @@
       // Show/hide rental income section based on purpose
       const rentalSection = document.getElementById('rentalIncomeSection');
       const rentalResults = document.getElementById('rentalResultsSection');
+      const sellingPriceSection = document.getElementById('sellingPriceSection');
+
       if (purpose === 'sale') {
         rentalSection.style.display = 'none';
         rentalResults.style.display = 'none';
+        sellingPriceSection.style.display = 'block';
       } else {
         rentalSection.style.display = 'block';
         rentalResults.style.display = 'block';
+        sellingPriceSection.style.display = 'none';
       }
 
       // Show/hide percentage section
@@ -1666,24 +1692,35 @@
         }
       }
 
-      // Calculate final property value
+      // Calculate final property value based on investment purpose
       let propertyValue = totalProjectCost;
-      for (let i = 0; i < years; i++) {
-        propertyValue = propertyValue * (1 + appreciation);
+      let appreciationGain = 0;
+
+      if (currentProjectPurpose === 'sale') {
+        // SALE MODE: Use selling price per m² input (NOT appreciation-based!)
+        // You set the market price you expect to sell at
+        const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
+        propertyValue = sellingPricePerM2 * propertySize;
+      } else {
+        // RENT/BOTH MODE: Calculate value using appreciation rates
+        for (let i = 0; i < years; i++) {
+          propertyValue = propertyValue * (1 + appreciation);
+        }
       }
+
+      appreciationGain = propertyValue - totalProjectCost;
 
       // CRITICAL: Calculate profit based on investment purpose to avoid mixing incompatible scenarios
       // DO NOT mix rental income with sale scenarios or vice versa
-      const appreciationGain = propertyValue - totalProjectCost;
       let totalProfit = 0;
       let annualizedROI = 0;
 
       if (currentProjectPurpose === 'sale') {
-        // SALE MODE: You invest X, sell for Y → Profit = Y - X (appreciation gain only)
+        // SALE MODE: You invest X, sell for Y at selling price/m² → Profit = Y - X
         // DO NOT include cumulativeProfit (rental income) in sale scenarios
         totalProfit = appreciationGain;
-        const annualAppreciation = years > 0 ? (appreciationGain / years) : 0;
-        annualizedROI = years > 0 ? ((annualAppreciation / downPayment) * 100) : 0;
+        const annualProfit = years > 0 ? (appreciationGain / years) : 0;
+        annualizedROI = years > 0 ? ((annualProfit / downPayment) * 100) : 0;
       } else if (currentProjectPurpose === 'rent') {
         // RENT MODE: You invest X, collect Y per year → Profit = annual × years (operational income only)
         // DO NOT include appreciation gain (unrealized) in rent scenarios
