@@ -842,19 +842,19 @@
             <div class="mb-3">
               <label data-en="Finish Quality" data-es="Calidad de Acabados">Finish Quality</label>
               <div class="option-cards">
-                <div class="option-card" id="card-essential" onclick="selectFinish('essential')" data-multiplier="0.8">
+                <div class="option-card" id="card-essential" onclick="selectFinish('essential')">
                   <div class="option-card-title" data-en="Essential" data-es="Esencial">Essential</div>
-                  <div class="option-card-subtitle">0.8×</div>
+                  <div class="option-card-subtitle" id="essential-cost">$960/m²</div>
                   <div class="option-card-subtitle" style="font-size: 0.7rem; font-weight: normal;" data-en="Basic materials" data-es="Materiales básicos">Basic materials</div>
                 </div>
-                <div class="option-card active" id="card-standard" onclick="selectFinish('standard')" data-multiplier="1.0">
+                <div class="option-card active" id="card-standard" onclick="selectFinish('standard')">
                   <div class="option-card-title" data-en="Standard" data-es="Estándar">Standard</div>
-                  <div class="option-card-subtitle">1.0×</div>
+                  <div class="option-card-subtitle" id="standard-cost">$1,200/m²</div>
                   <div class="option-card-subtitle" style="font-size: 0.7rem; font-weight: normal;" data-en="Good quality" data-es="Buena calidad">Good quality</div>
                 </div>
-                <div class="option-card" id="card-premium" onclick="selectFinish('premium')" data-multiplier="1.5">
+                <div class="option-card" id="card-premium" onclick="selectFinish('premium')">
                   <div class="option-card-title" data-en="Premium" data-es="Premium">Premium</div>
-                  <div class="option-card-subtitle">1.5×</div>
+                  <div class="option-card-subtitle" id="premium-cost">$1,800/m²</div>
                   <div class="option-card-subtitle" style="font-size: 0.7rem; font-weight: normal;" data-en="High-end" data-es="Lujo">High-end</div>
                 </div>
               </div>
@@ -1193,7 +1193,12 @@
         appreciation: 0.03,
         info: 'Growing sustainable market, lower construction costs',
         typicalCostPerM2: 1200,
-        typicalCostRange: '800-1500 USD/m²'
+        typicalCostRange: '800-1500 USD/m²',
+        finishCosts: {
+          essential: 960,    // $1,200 × 0.8
+          standard: 1200,    // $1,200 × 1.0
+          premium: 1800      // $1,200 × 1.5
+        }
       },
       germany: {
         currency: 'EUR',
@@ -1203,7 +1208,12 @@
         appreciation: 0.03,
         info: 'Stable market, high energy efficiency standards',
         typicalCostPerM2: 2000,
-        typicalCostRange: '1500-2500 EUR/m²'
+        typicalCostRange: '1500-2500 EUR/m²',
+        finishCosts: {
+          essential: 1600,   // €2,000 × 0.8
+          standard: 2000,    // €2,000 × 1.0
+          premium: 3000      // €2,000 × 1.5
+        }
       }
     };
 
@@ -1268,6 +1278,16 @@
       }
     }
 
+    function updateFinishCosts() {
+      // Update finish quality costs when country changes
+      const costs = countryData[currentCountry].finishCosts;
+      const currencySymbol = countryData[currentCountry].currency === 'EUR' ? '€' : '$';
+
+      document.getElementById('essential-cost').textContent = `${currencySymbol}${costs.essential}/m²`;
+      document.getElementById('standard-cost').textContent = `${currencySymbol}${costs.standard}/m²`;
+      document.getElementById('premium-cost').textContent = `${currencySymbol}${costs.premium}/m²`;
+    }
+
     function selectFinish(quality) {
       // Remove active class from all finish cards
       document.getElementById('card-essential').classList.remove('active');
@@ -1275,8 +1295,11 @@
       document.getElementById('card-premium').classList.remove('active');
       // Add active class to selected card
       document.getElementById(`card-${quality}`).classList.add('active');
-      // Update multiplier
-      currentFinishMultiplier = parseFloat(document.getElementById(`card-${quality}`).getAttribute('data-multiplier'));
+
+      // Store the actual cost per m² instead of a multiplier
+      const finishCost = countryData[currentCountry].finishCosts[quality];
+      currentFinishMultiplier = finishCost / countryData[currentCountry].typicalCostPerM2;
+
       updateFinishMultiplier();
       debouncedCalculate();
     }
@@ -1394,6 +1417,9 @@
 
       // Update interest rate slider based on country-specific typical ranges
       updateInterestRateRange(country);
+
+      // Update finish quality costs display for new country
+      updateFinishCosts();
 
       // Sync construction cost slider to update visual appearance with country change
       syncSlider(document.getElementById('constructionCost'));
