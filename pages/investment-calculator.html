@@ -1062,6 +1062,52 @@
             </div>
           </div>
 
+          <!-- Loan Breakdown Panel (shown only when bank financing is selected) -->
+          <div class="result-section" id="loanBreakdownSection" style="display: none;">
+            <div class="result-section-title" data-en="Loan Breakdown" data-es="Desglose del Préstamo">Loan Breakdown</div>
+            <div class="result-item">
+              <span class="result-label" data-en="Loan Amount" data-es="Monto del Préstamo">Loan Amount</span>
+              <span class="result-value" id="resultLoanAmount">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Interest Rate" data-es="Tasa de Interés">Interest Rate</span>
+              <span class="result-value" id="resultInterestRate">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Loan Term" data-es="Plazo del Préstamo">Loan Term</span>
+              <span class="result-value" id="resultLoanTerm">-</span>
+            </div>
+            <div class="result-item" style="border-top: 2px solid rgba(255, 213, 0, 0.3); padding-top: 0.75rem; margin-top: 0.75rem;">
+              <span class="result-label" data-en="Monthly Payment" data-es="Pago Mensual">Monthly Payment</span>
+              <span class="result-value" id="resultMonthlyPayment">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Annual Loan Payment" data-es="Pago Anual del Préstamo">Annual Loan Payment</span>
+              <span class="result-value" id="resultAnnualLoanPayment">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Interest Paid" data-es="Interés Total Pagado">Total Interest Paid</span>
+              <span class="result-value" id="resultTotalInterest">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Amount to Bank" data-es="Monto Total al Banco">Total Amount to Bank</span>
+              <span class="result-value" id="resultTotalToBank">-</span>
+            </div>
+            <div class="result-item" style="border-top: 2px solid rgba(255, 213, 0, 0.3); padding-top: 0.75rem; margin-top: 0.75rem;">
+              <span class="result-label" data-en="Monthly Rental Income" data-es="Ingreso Mensual por Alquiler">Monthly Rental Income</span>
+              <span class="result-value" id="resultMonthlyRental">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Monthly Net Cash Flow" data-es="Flujo de Caja Neto Mensual">Monthly Net Cash Flow</span>
+              <span class="result-value" id="resultMonthlyNetCash">-</span>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Rental income minus loan payment" data-es="Ingreso de alquiler menos pago del préstamo">Rental income minus loan payment</small>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Loan Payoff Year" data-es="Año de Pago del Préstamo">Loan Payoff Year</span>
+              <span class="result-value" id="resultLoanPayoffYear">-</span>
+            </div>
+          </div>
+
           <div class="result-section">
             <div class="result-section-title" data-en="Financial Performance" data-es="Desempeño Financiero">Financial Performance</div>
             <div class="result-item">
@@ -1833,6 +1879,60 @@
       document.getElementById('resultTotalProjectCost').textContent = formatter.format(totalProjectCost);
       document.getElementById('resultPropertySize').textContent = propertySize.toLocaleString() + ' m²';
       document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
+
+      // Update loan breakdown panel if bank financing is selected
+      const loanBreakdownSection = document.getElementById('loanBreakdownSection');
+      if (financingMethod === 'bank') {
+        loanBreakdownSection.style.display = 'block';
+
+        const loanPercent = parseFloat(document.getElementById('loanPercent').value) / 100;
+        const interestRate = parseFloat(document.getElementById('interestRate').value);
+        const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+        const loanAmount = totalProjectCost * loanPercent;
+        const monthlyPayment = loanAmount / (loanTerm * 12) * (1 + (interestRate / 100 / 12 * loanTerm * 12)); // Approximation for display
+        const monthlyRate = interestRate / 100 / 12;
+        const numberOfPayments = loanTerm * 12;
+
+        // Calculate exact monthly payment for interest calculation
+        let exactMonthlyPayment;
+        if (monthlyRate === 0) {
+          exactMonthlyPayment = loanAmount / numberOfPayments;
+        } else {
+          exactMonthlyPayment = loanAmount *
+            (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+            (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+        }
+
+        const totalAmountToPay = exactMonthlyPayment * numberOfPayments;
+        const totalInterestPaid = totalAmountToPay - loanAmount;
+        const monthlyRental = currentProjectPurpose === 'sale' ? 0 : (annualRental / 12);
+        const monthlyNetCash = monthlyRental - exactMonthlyPayment;
+
+        // Display loan breakdown
+        document.getElementById('resultLoanAmount').textContent = formatter.format(loanAmount);
+        document.getElementById('resultInterestRate').textContent = interestRate.toFixed(1) + '%';
+        document.getElementById('resultLoanTerm').textContent = loanTerm + ' ' + (currentLang === 'en' ? 'years' : 'años');
+        document.getElementById('resultMonthlyPayment').textContent = formatter.format(exactMonthlyPayment);
+        document.getElementById('resultAnnualLoanPayment').textContent = formatter.format(annualLoanPayment);
+        document.getElementById('resultTotalInterest').textContent = formatter.format(totalInterestPaid);
+        document.getElementById('resultTotalToBank').textContent = formatter.format(totalAmountToPay);
+        document.getElementById('resultMonthlyRental').textContent = monthlyRental > 0 ? formatter.format(monthlyRental) : '$ 0';
+        document.getElementById('resultMonthlyNetCash').textContent = formatter.format(monthlyNetCash);
+
+        // Display loan term - this is when the loan is contractually paid off
+        // Also note: if monthlyNetCash > 0, rental income covers loan payment
+        let loanPayoffDisplay = loanTerm + ' ' + (currentLang === 'en' ? 'years' : 'años');
+        if (currentProjectPurpose !== 'sale' && monthlyNetCash > 0) {
+          // Rental income covers the monthly payment from year 1
+          loanPayoffDisplay += (currentLang === 'en' ? ' (covered by rent)' : ' (cubierto por renta)');
+        } else if (currentProjectPurpose === 'sale') {
+          loanPayoffDisplay = currentLang === 'en' ? 'N/A (Sale mode)' : 'N/A (Modo Venta)';
+        }
+        document.getElementById('resultLoanPayoffYear').textContent = loanPayoffDisplay;
+      } else {
+        loanBreakdownSection.style.display = 'none';
+      }
 
       // Show results panel with full opacity
       const resultsPanel = document.getElementById('resultsPanel');
