@@ -1016,13 +1016,15 @@
               <span class="result-label" data-en="Total Investment" data-es="Inversión Total">Total Investment</span>
               <span class="result-value" id="resultInvestment">-</span>
             </div>
-            <div class="result-item">
-              <span class="result-label" data-en="Annual Rental Income" data-es="Ingreso Anual de Alquiler">Annual Rental Income</span>
-              <span class="result-value" id="resultAnnualRental">-</span>
-            </div>
-            <div class="result-item">
-              <span class="result-label" data-en="Annual Net Income" data-es="Ingreso Neto Anual">Annual Net Income</span>
-              <span class="result-value" id="resultNetIncome">-</span>
+            <div id="rentalResultsSection">
+              <div class="result-item">
+                <span class="result-label" data-en="Annual Rental Income" data-es="Ingreso Anual de Alquiler">Annual Rental Income</span>
+                <span class="result-value" id="resultAnnualRental">-</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label" data-en="Annual Net Income" data-es="Ingreso Neto Anual">Annual Net Income</span>
+                <span class="result-value" id="resultNetIncome">-</span>
+              </div>
             </div>
           </div>
 
@@ -1267,10 +1269,13 @@
 
       // Show/hide rental income section based on purpose
       const rentalSection = document.getElementById('rentalIncomeSection');
+      const rentalResults = document.getElementById('rentalResultsSection');
       if (purpose === 'sale') {
         rentalSection.style.display = 'none';
+        rentalResults.style.display = 'none';
       } else {
         rentalSection.style.display = 'block';
+        rentalResults.style.display = 'block';
       }
 
       // Show/hide percentage section
