@@ -889,7 +889,7 @@
                   <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
                   <span class="slider-value" id="constructionCostValue">500000</span>
                 </div>
-                <input type="range" id="constructionCost" min="100000" max="5000000" step="50000" value="500000" aria-label="Construction cost slider" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
+                <input type="range" id="constructionCost" min="100000" max="5000000" step="50000" value="1200000" aria-label="Construction cost slider" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
                 <div class="slider-range-labels"><span>100K</span><span>5M</span></div>
                 <span class="hint-text" id="costPerM2Hint"></span>
               </div>
@@ -903,7 +903,7 @@
 
             <div class="mb-3">
               <label for="landCost" data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost <span class="currency" id="currencyLabel1">USD</span></label>
-              <input type="number" class="form-control" id="landCost" value="250000" min="0" step="10000" oninput="debouncedCalculate();">
+              <input type="number" class="form-control" id="landCost" value="400000" min="0" step="10000" oninput="debouncedCalculate();">
               <span class="hint-text" data-en="Typically 20–40% of project cost" data-es="Típicamente 20–40% del costo total">Typically 20–40% of project cost</span>
             </div>
           </div>
@@ -1325,15 +1325,18 @@
       const rentalSection = document.getElementById('rentalIncomeSection');
       const rentalResults = document.getElementById('rentalResultsSection');
       const sellingPriceSection = document.getElementById('sellingPriceSection');
+      const appreciationSlider = document.querySelector('input[id="appreciation"]').closest('.slider-field');
 
       if (purpose === 'sale') {
         rentalSection.style.display = 'none';
         rentalResults.style.display = 'none';
         sellingPriceSection.style.display = 'block';
+        appreciationSlider.style.display = 'none'; // SALE MODE: No appreciation calculation
       } else {
         rentalSection.style.display = 'block';
         rentalResults.style.display = 'block';
         sellingPriceSection.style.display = 'none';
+        appreciationSlider.style.display = 'block';
       }
 
       // Show/hide percentage section
