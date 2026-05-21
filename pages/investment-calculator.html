@@ -1656,27 +1656,28 @@
         propertyValue = propertyValue * (1 + appreciation);
       }
 
-      // Calculate profit based on investment purpose
+      // CRITICAL: Calculate profit based on investment purpose to avoid mixing incompatible scenarios
+      // DO NOT mix rental income with sale scenarios or vice versa
       const appreciationGain = propertyValue - totalProjectCost;
       let totalProfit = 0;
       let annualizedROI = 0;
 
       if (currentProjectPurpose === 'sale') {
-        // SALE MODE: Profit = Sale Price - Initial Investment
+        // SALE MODE: You invest X, sell for Y → Profit = Y - X (appreciation gain only)
+        // DO NOT include cumulativeProfit (rental income) in sale scenarios
         totalProfit = appreciationGain;
-        // ROI = appreciation gain / initial investment, annualized
         const annualAppreciation = years > 0 ? (appreciationGain / years) : 0;
         annualizedROI = years > 0 ? ((annualAppreciation / downPayment) * 100) : 0;
       } else if (currentProjectPurpose === 'rent') {
-        // RENT MODE: Profit = cumulative operational income only (no appreciation)
+        // RENT MODE: You invest X, collect Y per year → Profit = annual × years (operational income only)
+        // DO NOT include appreciation gain (unrealized) in rent scenarios
         totalProfit = cumulativeProfit;
-        // ROI = annual operational profit / initial investment
         const averageAnnualOperationalProfit = years > 0 ? (cumulativeProfit / years) : 0;
         annualizedROI = years > 0 ? ((averageAnnualOperationalProfit / downPayment) * 100) : 0;
       } else {
-        // BOTH MODE: Profit = operational income + appreciation gain
+        // BOTH MODE: You invest X, collect Y per year, sell for Z → Profit = (annual × years) + appreciation
+        // This is a blended scenario combining both operational and appreciation returns
         totalProfit = cumulativeProfit + appreciationGain;
-        // ROI = blended return from both sources
         const totalReturn = totalProfit;
         annualizedROI = years > 0 ? ((totalReturn / years / downPayment) * 100) : 0;
       }
