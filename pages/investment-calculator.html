@@ -1689,7 +1689,7 @@
       // Calculate annual net income after tax
       const annualNetIncome = annualNetBeforeTax - annualIncomeTax;
 
-      // Calculate cash flows and property value over time
+      // Calculate cash flows based on investment purpose
       let cumulativeProfit = 0;
       let paybackYear = null;
       const cashFlows = [];
@@ -1699,10 +1699,33 @@
 
       for (let year = 0; year <= years; year++) {
         let yearProfit;
+
         if (year === 0) {
+          // Year 0: Initial investment (down payment)
           yearProfit = -downPayment;
-        } else {
+        } else if (currentProjectPurpose === 'sale') {
+          // SALE MODE: No annual returns, only at sale year
+          if (year === years) {
+            // Final year: Realize the sale profit
+            const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
+            const sellingPrice = sellingPricePerM2 * propertySize;
+            yearProfit = sellingPrice - totalProjectCost;
+          } else {
+            // No cash flow in years 1 to N-1
+            yearProfit = 0;
+          }
+        } else if (currentProjectPurpose === 'rent') {
+          // RENT MODE: Annual rental income
           yearProfit = annualNetIncome;
+        } else {
+          // BOTH MODE: Annual rental income + sale profit in final year
+          yearProfit = annualNetIncome;
+          if (year === years) {
+            // Add sale profit in final year
+            const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
+            const sellingPrice = sellingPricePerM2 * propertySize;
+            yearProfit += (sellingPrice - totalProjectCost);
+          }
         }
 
         cumulativeProfit += yearProfit;
@@ -1823,23 +1846,55 @@
       hasCalculated = true;
 
       // Draw charts (pass purpose to determine what to display)
-      drawCashFlowChart(yearLabels, cashFlows, propertyValues, plotValues, currency);
+      drawCashFlowChart(yearLabels, cashFlows, propertyValues, plotValues, currency, currentProjectPurpose);
       drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency, currentProjectPurpose, totalProjectCost);
     }
 
-    function drawCashFlowChart(labels, data, propertyValues, plotValues, currency) {
+    function drawCashFlowChart(labels, data, propertyValues, plotValues, currency, investmentPurpose) {
       const ctx = document.getElementById('cashFlowChart').getContext('2d');
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
       const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
       const currencySymbol = currency === 'EUR' ? '€' : '$';
 
-      // Get translated labels
-      const labelCumulativeProfit = currentLang === 'en' ? 'Cumulative Profit' : 'Ganancia Acumulativa';
-      const labelPropertyValue = currentLang === 'en' ? 'Property Value' : 'Valor de la Propiedad';
-      const labelPlotValue = currentLang === 'en' ? 'Plot Value' : 'Valor del Terreno';
+      // Get translated labels based on investment purpose
+      let labelCumulativeProfit, labelPropertyValue, labelPlotValue;
+
+      if (investmentPurpose === 'sale') {
+        labelCumulativeProfit = currentLang === 'en' ? 'Cumulative Cash Flow' : 'Flujo de Caja Acumulado';
+        labelPropertyValue = currentLang === 'en' ? 'Property Value (Appreciation)' : 'Valor de Propiedad (Apreciación)';
+        labelPlotValue = currentLang === 'en' ? 'Plot Value' : 'Valor del Terreno';
+      } else if (investmentPurpose === 'rent') {
+        labelCumulativeProfit = currentLang === 'en' ? 'Cumulative Rental Income' : 'Ingresos Acumulados por Renta';
+        labelPropertyValue = currentLang === 'en' ? 'Property Value (Appreciation)' : 'Valor de Propiedad (Apreciación)';
+        labelPlotValue = currentLang === 'en' ? 'Plot Value' : 'Valor del Terreno';
+      } else {
+        labelCumulativeProfit = currentLang === 'en' ? 'Cumulative Cash Flow (Rent + Sale)' : 'Flujo Acumulado (Renta + Venta)';
+        labelPropertyValue = currentLang === 'en' ? 'Property Value (Appreciation)' : 'Valor de Propiedad (Apreciación)';
+        labelPlotValue = currentLang === 'en' ? 'Plot Value' : 'Valor del Terreno';
+      }
 
       if (cashFlowChart) {
         cashFlowChart.destroy();
+      }
+
+      // Customize line styling based on investment purpose
+      let mainLineColor, mainLineBackColor, mainLineTension;
+
+      if (investmentPurpose === 'sale') {
+        // Sale mode: Emphasize the one-time profit realization
+        mainLineColor = '#FF6B6B';  // Red for dramatic one-time gain
+        mainLineBackColor = 'rgba(255, 107, 107, 0.15)';
+        mainLineTension = 0.2;  // Sharp line to show the jump
+      } else if (investmentPurpose === 'rent') {
+        // Rent mode: Steady income growth
+        mainLineColor = accentColor;
+        mainLineBackColor = accentLight;
+        mainLineTension = 0.4;  // Smooth curve for steady growth
+      } else {
+        // Both mode: Income growth with sale bonus
+        mainLineColor = '#FFD500';  // Yellow for blended scenario
+        mainLineBackColor = 'rgba(255, 213, 0, 0.15)';
+        mainLineTension = 0.4;
       }
 
       cashFlowChart = new Chart(ctx, {
@@ -1850,14 +1905,14 @@
             {
               label: labelCumulativeProfit,
               data: data,
-              borderColor: accentColor,
-              backgroundColor: accentLight,
+              borderColor: mainLineColor,
+              backgroundColor: mainLineBackColor,
               borderWidth: 3,
               fill: true,
-              tension: 0.4,
-              pointRadius: 4,
-              pointBackgroundColor: accentColor,
-              pointBorderColor: accentColor,
+              tension: mainLineTension,
+              pointRadius: 5,
+              pointBackgroundColor: mainLineColor,
+              pointBorderColor: '#FFFFFF',
               pointBorderWidth: 2,
               yAxisID: 'y'
             },
@@ -1930,7 +1985,7 @@
               },
               title: {
                 display: true,
-                text: 'Cumulative Profit'
+                text: labelCumulativeProfit
               }
             },
             y1: {
