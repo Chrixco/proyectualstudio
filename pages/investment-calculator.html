@@ -835,7 +835,7 @@
           <div class="calculator-section">
             <label class="calculator-label" data-en="2. Project Details" data-es="2. Detalles del Proyecto">2. Project Details</label>
             <div class="mb-3">
-              <label data-en="Project Name" data-es="Nombre del Proyecto">Project Name</label>
+              <label for="projectName" data-en="Project Name" data-es="Nombre del Proyecto">Project Name</label>
               <input type="text" class="form-control" id="projectName" placeholder="e.g., Residential Complex" oninput="debouncedCalculate()">
             </div>
 
@@ -889,20 +889,20 @@
                   <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
                   <span class="slider-value" id="constructionCostValue">500000</span>
                 </div>
-                <input type="range" id="constructionCost" min="100000" max="5000000" step="50000" value="500000" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
+                <input type="range" id="constructionCost" min="100000" max="5000000" step="50000" value="500000" aria-label="Construction cost slider" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
                 <div class="slider-range-labels"><span>100K</span><span>5M</span></div>
                 <span class="hint-text" id="costPerM2Hint"></span>
               </div>
             </div>
 
             <div class="mb-3">
-              <label data-en="Construction Size (m²)" data-es="Tamaño de Construcción (m²)">Construction Size (m²)</label>
-              <input type="number" class="form-control" id="propertySize" value="1000" min="100" step="100" oninput="updateFromSize(); debouncedCalculate();">
+              <label for="propertySize" data-en="Construction Size (m²)" data-es="Tamaño de Construcción (m²)">Construction Size (m²)</label>
+              <input type="number" class="form-control" id="propertySize" value="1000" min="100" max="100000" step="100" oninput="updateFromSize(); debouncedCalculate();">
               <span class="hint-text" id="sizePerM2Hint"></span>
             </div>
 
             <div class="mb-3">
-              <label data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost <span class="currency" id="currencyLabel1">USD</span></label>
+              <label for="landCost" data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost <span class="currency" id="currencyLabel1">USD</span></label>
               <input type="number" class="form-control" id="landCost" value="250000" min="0" step="10000" oninput="debouncedCalculate();">
               <span class="hint-text" data-en="Typically 20–40% of project cost" data-es="Típicamente 20–40% del costo total">Typically 20–40% of project cost</span>
             </div>
@@ -915,7 +915,7 @@
             <!-- Rental Income Fields (hidden for sale-only) -->
             <div id="rentalIncomeSection">
               <div class="mb-3">
-                <label data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
+                <label for="rentalPerM2" data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
                 <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5" oninput="debouncedCalculate();">
                 <span class="hint-text" data-en="Ecuador: $8–20/m² · Germany: €10–18/m²" data-es="Ecuador: $8–20/m² · Alemania: €10–18/m²">Ecuador: $8–20/m² · Germany: €10–18/m²</span>
               </div>
@@ -925,7 +925,7 @@
                   <label data-en="Annual Operating Costs (%)" data-es="Costos Operativos Anuales (%)">Annual Operating Costs (%)</label>
                   <span class="slider-value" id="operatingCostsValue">30</span>
                 </div>
-                <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" oninput="syncSlider(this); debouncedCalculate();">
+                <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" aria-label="Operating costs percentage" oninput="syncSlider(this); debouncedCalculate();">
                 <div class="slider-range-labels"><span>0%</span><span>70%</span></div>
                 <span class="hint-text" data-en="Includes maintenance, taxes, insurance, vacancy (30% is typical)" data-es="Incluye mantenimiento, impuestos, seguros, vacancia (30% es típico)">Includes maintenance, taxes, insurance, vacancy</span>
               </div>
@@ -1006,7 +1006,7 @@
         </div>
 
         <!-- Results Panel -->
-        <div class="results-panel" id="resultsPanel" style="opacity: 0.6;">
+        <div class="results-panel" id="resultsPanel" style="opacity: 0.6;" aria-live="polite" aria-atomic="true">
           <div style="text-align: center; margin-bottom: 1.5rem;">
             <span id="resultStatusBadge" style="background: #0099FF; color: #000000; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
           </div>
@@ -1099,11 +1099,12 @@
   </main>
 
   <!-- Email Modal for PDF Download -->
-  <div class="email-modal-overlay" id="emailModal">
+  <div class="email-modal-overlay" id="emailModal" role="dialog" aria-labelledby="emailModalTitle" aria-modal="true">
     <div class="email-modal-content">
-      <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
-      <p style="margin-bottom: 1.5rem; color: #cccccc;" data-en="Enter your email to receive the PDF of your investment analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de inversión">Enter your email to receive the PDF of your investment analysis</p>
-      <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
+      <h2 class="email-modal-title" id="emailModalTitle" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
+      <p style="margin-bottom: 1.5rem; color: #cccccc;" id="emailModalDesc" data-en="Enter your email to receive the PDF of your investment analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de inversión">Enter your email to receive the PDF of your investment analysis</p>
+      <label for="emailInput" style="display: block; margin-bottom: 0.5rem; color: #0099FF; font-weight: bold;" data-en="Email Address" data-es="Dirección de Correo">Email Address</label>
+      <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" aria-describedby="emailModalDesc" />
       <div class="email-modal-buttons">
         <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
         <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
@@ -1149,6 +1150,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // State variables
     let currentCountry = 'ecuador';
     let currentFinishMultiplier = 1.0;
     let baseCostPerM2 = null;
@@ -1158,6 +1160,18 @@
     let hasCalculated = false;
     let currentProjectPurpose = 'rent';
     let rentalPurposePercent = 100;
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    // Input constraints and validation limits
+    const INPUT_LIMITS = {
+      constructionCost: { min: 100000, max: 5000000, step: 50000 },
+      loanPercent: { min: 10, max: 90, step: 5 },
+      interestRate: { min: 1, max: 15, step: 0.1 },
+      propertySize: { min: 100, max: 100000, step: 100 },
+      operatingCosts: { min: 0, max: 70, step: 1 },
+      appreciation: { min: -5, max: 10, step: 0.5 },
+      years: { min: 1, max: 100, step: 1 }
+    };
 
     const countryData = {
       ecuador: {
@@ -1331,6 +1345,12 @@
         document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
       }
 
+      // Update interest rate slider based on country-specific typical ranges
+      updateInterestRateRange(country);
+
+      // Sync construction cost slider to update visual appearance with country change
+      syncSlider(document.getElementById('constructionCost'));
+
       // Recalculate with new country's finish-adjusted costs
       updateFinishMultiplier();
 
@@ -1338,6 +1358,28 @@
       if (hasCalculated) {
         debouncedCalculate();
       }
+    }
+
+    function updateInterestRateRange(country) {
+      // Set country-specific interest rate ranges based on typical market conditions
+      const slider = document.getElementById('interestRate');
+      const rangeLabels = slider.nextElementSibling;
+
+      if (country === 'ecuador') {
+        slider.min = '8';
+        slider.max = '12';
+        if (parseFloat(slider.value) < 8) slider.value = '8';
+        if (parseFloat(slider.value) > 12) slider.value = '12';
+        rangeLabels.innerHTML = '<span>8%</span><span>12%</span>';
+      } else if (country === 'germany') {
+        slider.min = '3';
+        slider.max = '5';
+        if (parseFloat(slider.value) < 3) slider.value = '3';
+        if (parseFloat(slider.value) > 5) slider.value = '5';
+        rangeLabels.innerHTML = '<span>3%</span><span>5%</span>';
+      }
+
+      syncSlider(slider);
     }
 
     function toggleFinancingInputs() {
@@ -1467,14 +1509,16 @@
       const numberOfPayments = years * 12;
 
       if (monthlyRate === 0) {
-        return principal / numberOfPayments;
+        return Math.round(principal / numberOfPayments * 100) / 100;
       }
 
       const monthlyPayment = principal *
         (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
         (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
 
-      return monthlyPayment * 12; // Return annual payment
+      // Round to 2 decimal places (currency precision) and return annual payment
+      const annualPayment = monthlyPayment * 12;
+      return Math.round(annualPayment * 100) / 100;
     }
 
     function calculateProfitability() {
@@ -1491,6 +1535,28 @@
       const operatingCostPercent = parseFloat(document.getElementById('operatingCosts').value) / 100;
       const appreciation = parseFloat(document.getElementById('appreciation').value) / 100;
       const years = parseInt(document.getElementById('years').value);
+
+      // VALIDATION: Check for invalid inputs
+      if (!constructionCost || isNaN(constructionCost) || constructionCost <= 0) {
+        alert(currentLang === 'en' ? 'Please enter a valid construction cost' : 'Por favor ingresa un costo de construcción válido');
+        return;
+      }
+      if (!propertySize || isNaN(propertySize) || propertySize <= 0) {
+        alert(currentLang === 'en' ? 'Please enter a valid property size' : 'Por favor ingresa un tamaño de propiedad válido');
+        return;
+      }
+      if (currentProjectPurpose !== 'sale' && (!rentalPerM2 || isNaN(rentalPerM2) || rentalPerM2 <= 0)) {
+        alert(currentLang === 'en' ? 'Please enter a valid rental income per m²' : 'Por favor ingresa un ingreso de alquiler válido');
+        return;
+      }
+      if (operatingCostPercent < 0 || operatingCostPercent > 1 || isNaN(operatingCostPercent)) {
+        alert(currentLang === 'en' ? 'Operating costs must be between 0-100%' : 'Los costos operativos deben estar entre 0-100%');
+        return;
+      }
+      if (!years || isNaN(years) || years < 1 || years > 100) {
+        alert(currentLang === 'en' ? 'Analysis period must be between 1-100 years' : 'El período de análisis debe ser entre 1-100 años');
+        return;
+      }
 
       // Financing parameters - get from active financing card
       const activeFinancingCard = document.getElementById('card-direct').classList.contains('active') ? 'cash' : 'bank';
@@ -1511,16 +1577,34 @@
 
       const countryInfo = countryData[currentCountry];
       const currency = countryInfo.currency;
+      const propertyTaxRate = countryInfo.propertyTax;
+      const taxRate = countryData[currentCountry].taxRate;
 
       // Calculate annual rental income
       const monthlyRental = rentalPerM2 * propertySize;
       const annualRental = monthlyRental * 12;
 
       // Calculate annual operating costs (including loan payment if financed)
-      const annualOperatingCost = annualRental * operatingCostPercent + annualLoanPayment;
+      // Apply purpose blending: blend between rental and sale scenarios
+      const rentalFocus = currentProjectPurpose === 'both' ? rentalPurposePercent / 100 :
+                          (currentProjectPurpose === 'rent' ? 1 : 0);
+      const blendedAnnualRental = annualRental * rentalFocus;
 
-      // Calculate annual net income (after all costs including loan)
-      const annualNetIncome = annualRental - annualOperatingCost;
+      // Calculate operating costs as percentage of total property cost (applies to entire property regardless of purpose)
+      const annualOperatingCost = Math.round(totalProjectCost * operatingCostPercent * 100) / 100;
+
+      // Calculate annual property tax (applies to entire property value)
+      const annualPropertyTax = Math.round(totalProjectCost * propertyTaxRate * 100) / 100;
+
+      // Calculate annual net income before tax
+      const annualNetBeforeTax = blendedAnnualRental - annualOperatingCost - annualPropertyTax - annualLoanPayment;
+
+      // Apply income tax only to positive rental income (not to depreciation or loan principal)
+      const taxableIncome = Math.max(0, blendedAnnualRental - annualOperatingCost - annualPropertyTax);
+      const annualIncomeTax = Math.round(taxableIncome * taxRate * 100) / 100;
+
+      // Calculate annual net income after tax
+      const annualNetIncome = annualNetBeforeTax - annualIncomeTax;
 
       // Calculate cash flows and property value over time
       let cumulativeProfit = 0;
@@ -1568,9 +1652,15 @@
         propertyValue = propertyValue * (1 + appreciation);
       }
 
-      // Calculate total profit (based on initial investment)
-      const totalProfit = cumulativeProfit + propertyValue - totalProjectCost;
-      const roi = ((totalProfit / downPayment) * 100).toFixed(2);
+      // Calculate total profit: operational profit + appreciation gain
+      const appreciationGain = propertyValue - totalProjectCost;
+      const totalProfit = cumulativeProfit + appreciationGain;
+
+      // Calculate annualized ROI on down payment (cash-on-cash return)
+      // Based on operational income only, not property appreciation (unrealized gain)
+      const averageAnnualOperationalProfit = years > 0 ? (cumulativeProfit / years) : 0;
+      const annualizedROI = years > 0 ? ((averageAnnualOperationalProfit / downPayment) * 100) : 0;
+      const roi = annualizedROI.toFixed(2);
 
       // Format currency with proper locale
       const locale = currency === 'EUR' ? 'de-DE' : 'en-US';
@@ -1621,6 +1711,11 @@
       const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
       const currencySymbol = currency === 'EUR' ? '€' : '$';
 
+      // Get translated labels
+      const labelCumulativeProfit = currentLang === 'en' ? 'Cumulative Profit' : 'Ganancia Acumulativa';
+      const labelPropertyValue = currentLang === 'en' ? 'Property Value' : 'Valor de la Propiedad';
+      const labelPlotValue = currentLang === 'en' ? 'Plot Value' : 'Valor del Terreno';
+
       if (cashFlowChart) {
         cashFlowChart.destroy();
       }
@@ -1631,7 +1726,7 @@
           labels: labels,
           datasets: [
             {
-              label: 'Cumulative Profit',
+              label: labelCumulativeProfit,
               data: data,
               borderColor: accentColor,
               backgroundColor: accentLight,
@@ -1645,7 +1740,7 @@
               yAxisID: 'y'
             },
             {
-              label: 'Property Value',
+              label: labelPropertyValue,
               data: propertyValues,
               borderColor: '#90EE90',
               borderWidth: 2,
@@ -1658,7 +1753,7 @@
               yAxisID: 'y1'
             },
             {
-              label: 'Plot Value',
+              label: labelPlotValue,
               data: plotValues,
               borderColor: '#FFB347',
               borderWidth: 2,
@@ -1745,6 +1840,11 @@
       const ctx = document.getElementById('profitBreakdownChart').getContext('2d');
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
 
+      // Get translated labels
+      const labelRentalIncome = currentLang === 'en' ? 'Annual Rental Income' : 'Ingreso Anual de Alquiler';
+      const labelOperatingCosts = currentLang === 'en' ? 'Operating Costs' : 'Costos Operativos';
+      const labelNetProfit = currentLang === 'en' ? 'Net Profit' : 'Ganancia Neta';
+
       if (profitBreakdownChart) {
         profitBreakdownChart.destroy();
       }
@@ -1752,7 +1852,7 @@
       profitBreakdownChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: ['Annual Rental Income', 'Operating Costs', 'Net Profit'],
+          labels: [labelRentalIncome, labelOperatingCosts, labelNetProfit],
           datasets: [{
             data: [rental, operating, rental - operating],
             backgroundColor: [
@@ -1861,59 +1961,41 @@
         return;
       }
 
-      if (!email.includes('@')) {
+      // Email validation: check for valid format with proper domain
+      // Pattern: local-part@domain.tld (allows letters, numbers, dots, hyphens, underscores in local part)
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
         alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
         return;
       }
 
-      // Send email to Discord
-      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
-
+      // Send data to backend API (webhooks should never be exposed in client code)
+      // Backend at /api/investment-calculator/notify handles Discord notifications securely
       const totalInvestment = parseInt(document.getElementById('resultInvestment').textContent.replace(/[^0-9]/g, '')) || 0;
       const annualRental = parseInt(document.getElementById('resultAnnualRental').textContent.replace(/[^0-9]/g, '')) || 0;
       const roi = document.getElementById('resultROI').textContent || 'N/A';
       const currency = currentCountry === 'germany' ? 'EUR' : 'USD';
 
-      const discordMessage = {
-        content: `📊 New Investment Calculator PDF Download Request`,
-        embeds: [{
-          title: '💰 Investment Calculator PDF Request',
-          color: 16760576,
-          fields: [
-            { name: 'Email', value: email, inline: false },
-            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
-            { name: 'Total Investment', value: currency + ' ' + totalInvestment.toLocaleString(), inline: true },
-            { name: 'Annual Rental Income', value: currency + ' ' + annualRental.toLocaleString(), inline: true },
-            { name: 'ROI', value: roi, inline: true }
-          ]
-        }]
+      const notificationData = {
+        email: email,
+        calculator: 'investment',
+        timestamp: new Date().toISOString(),
+        data: {
+          totalInvestment: totalInvestment,
+          annualRental: annualRental,
+          roi: roi,
+          currency: currency,
+          country: currentCountry
+        }
       };
 
-      fetch(webhookUrl, {
+      // Send to backend API endpoint (replace with your actual backend URL)
+      // TODO: Implement backend endpoint at /api/investment-calculator/notify
+      fetch('/api/investment-calculator/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
-      }).catch(err => console.error('Discord webhook error:', err));
-
-      // Send to email database
-      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
-      const emailLogMessage = {
-        content: `\`${email}\` - Investment Calculator (${new Date().toLocaleString()})`
-      };
-
-      fetch(emailDatabaseWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailLogMessage)
-      }).catch(err => console.error('Discord email log error:', err));
-
-      // Send to downloads channel
-      const downloadsWebhook = 'https://discord.com/api/webhooks/1505912685554827345/FMaUeG8eGXdrB3MuHbCa-7UIpZ9h2d0kQItdRvBzNnBqQNpltlYz2yZNDTonngDbbZ8X';
-      fetch(downloadsWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailLogMessage)
-      }).catch(err => console.error('Discord downloads error:', err));
+        body: JSON.stringify(notificationData)
+      }).catch(err => console.error('Notification error:', err));
 
       // Close modal
       closeEmailModal();
