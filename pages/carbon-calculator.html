@@ -1490,9 +1490,9 @@
         itemsEl.appendChild(item);
       });
 
-      // Display operational energy (5-year window)
+      // Display operational energy (50-year window)
       if (currentScopeFilter === 'all') {
-        const operCO2 = carbonState.area * carbonState.energyCO2 * 5;
+        const operCO2 = carbonState.area * carbonState.energyCO2 * 50;
         const operPct = (operCO2 / totalStructuralCO2 * 100).toFixed(0);
         const operColor = PROCESS_COLORS['Operational'] || 'rgba(200,220,200,0.7)';
 
@@ -1500,7 +1500,7 @@
         item.className = 'breakdown-item';
         item.innerHTML = `
           <div class="breakdown-label">
-            <span><strong>Operational</strong> — Energy use (5yr window)</span>
+            <span><strong>Operational</strong> — Energy use (50yr window)</span>
             <span>${operPct}% (${operCO2.toFixed(0)} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
