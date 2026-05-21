@@ -311,39 +311,43 @@
 
     /* Tab System */
     .input-tabs-container {
-      display: flex;
-      gap: 0.5rem;
+      display: inline-flex;
+      gap: 0;
       margin-bottom: 1.5rem;
-      flex-wrap: wrap;
+      background: rgba(0, 153, 255, 0.05);
+      border: 2px solid #0099FF;
+      border-radius: 50px;
+      padding: 0.3rem;
+      backdrop-filter: blur(5px);
     }
 
     .input-tab-btn {
-      padding: 0.7rem 1.2rem;
-      background: rgba(255, 213, 0, 0.1);
-      border: 2px solid #FFD500;
-      color: #000000;
+      padding: 0.5rem 1.2rem;
+      background: transparent;
+      border: none;
+      color: #0099FF;
       font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
-      border-radius: 0.5rem;
+      border-radius: 40px;
       transition: all 0.3s ease;
       white-space: nowrap;
     }
 
     .input-tab-btn:hover {
-      background: rgba(255, 213, 0, 0.2);
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(255, 213, 0, 0.3);
+      background: rgba(0, 153, 255, 0.1);
+      transform: translateY(-1px);
     }
 
     .input-tab-btn.active {
-      background: #FFD500;
-      color: #000000;
-      border-color: #FFD500;
-      box-shadow: 4px 4px 0px rgba(255, 213, 0, 0.5);
+      background: #0099FF;
+      color: #FFFFFF;
+      border-color: #0099FF;
+      box-shadow: 0 2px 8px rgba(0, 153, 255, 0.5);
+      font-weight: 900;
     }
 
     .tab-content {
