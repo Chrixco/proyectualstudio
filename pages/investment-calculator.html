@@ -1395,11 +1395,16 @@
       const calculatedSize = Math.round(cost / adjustedCost);
       document.getElementById('propertySize').value = calculatedSize;
 
-      // Update cost per m² hint if in size mode
+      // Update hints based on current calculation method
       const method = document.querySelector('input[name="calcMethod"]:checked').value;
-      if (method === 'size') {
-        const currency = countryInfo.currency;
-        const currencySymbol = currency === 'EUR' ? '€' : '$';
+      const currency = countryInfo.currency;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
+
+      if (method === 'cost') {
+        // In cost mode, show adjusted cost per m²
+        document.getElementById('costPerM2Hint').textContent = `Based on typical ${Math.round(adjustedCost)} ${currencySymbol}/m² (adjusted for finish quality)`;
+      } else {
+        // In size mode, show adjusted cost per m²
         document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
       }
     }
