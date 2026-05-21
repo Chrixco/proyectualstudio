@@ -910,7 +910,7 @@
 
           <!-- 4. Income & Returns Section -->
           <div class="calculator-section">
-            <label class="calculator-label" data-en="4. Income &amp; Returns" data-es="4. Ingresos y Retornos">4. Income &amp; Returns</label>
+            <label class="calculator-label" id="incomeReturnsLabel" data-en="4. Income &amp; Returns" data-es="4. Ingresos y Retornos">4. Income &amp; Returns</label>
 
             <!-- Rental Income Fields (hidden for sale-only) -->
             <div id="rentalIncomeSection">
@@ -1282,6 +1282,22 @@
       document.getElementById(`purpose-${purpose}`).classList.add('active');
 
       currentProjectPurpose = purpose;
+
+      // Update section title based on purpose
+      const titleLabel = document.getElementById('incomeReturnsLabel');
+      if (purpose === 'sale') {
+        titleLabel.textContent = currentLang === 'en' ? '4. Property Appreciation' : '4. Apreciación de Propiedad';
+        titleLabel.setAttribute('data-en', '4. Property Appreciation');
+        titleLabel.setAttribute('data-es', '4. Apreciación de Propiedad');
+      } else if (purpose === 'rent') {
+        titleLabel.textContent = currentLang === 'en' ? '4. Income & Returns' : '4. Ingresos y Retornos';
+        titleLabel.setAttribute('data-en', '4. Income & Returns');
+        titleLabel.setAttribute('data-es', '4. Ingresos y Retornos');
+      } else {
+        titleLabel.textContent = currentLang === 'en' ? '4. Income, Returns & Appreciation' : '4. Ingresos, Retornos y Apreciación';
+        titleLabel.setAttribute('data-en', '4. Income, Returns & Appreciation');
+        titleLabel.setAttribute('data-es', '4. Ingresos, Retornos y Apreciación');
+      }
 
       // Show/hide rental income section based on purpose
       const rentalSection = document.getElementById('rentalIncomeSection');
