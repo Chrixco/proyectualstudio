@@ -309,6 +309,51 @@
       font-weight: 900;
     }
 
+    /* Tab System */
+    .input-tabs-container {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .input-tab-btn {
+      padding: 0.7rem 1.2rem;
+      background: rgba(255, 213, 0, 0.1);
+      border: 2px solid #FFD500;
+      color: #000000;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .input-tab-btn:hover {
+      background: rgba(255, 213, 0, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(255, 213, 0, 0.3);
+    }
+
+    .input-tab-btn.active {
+      background: #FFD500;
+      color: #000000;
+      border-color: #FFD500;
+      box-shadow: 4px 4px 0px rgba(255, 213, 0, 0.5);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
     .chart-wrapper {
       position: relative;
       height: 250px;
@@ -727,6 +772,15 @@
       <div class="calculator-layout">
         <!-- LEFT PANEL: INPUTS -->
         <div class="inputs-panel">
+          <!-- Tab Navigation -->
+          <div class="input-tabs-container">
+            <button class="input-tab-btn active" onclick="switchInputTab('project')" data-en="Project" data-es="Proyecto">Project</button>
+            <button class="input-tab-btn" onclick="switchInputTab('structure')" data-en="Structure" data-es="Estructura">Structure</button>
+            <button class="input-tab-btn" onclick="switchInputTab('environment')" data-en="Environment" data-es="Ambiente">Environment</button>
+          </div>
+
+          <!-- TAB 1: PROJECT -->
+          <div class="tab-content active" id="tab-project">
           <!-- 1. Project Location (Country) -->
           <div class="calculator-section">
             <div class="calculator-label" data-en="1. Project Location" data-es="1. Ubicación del Proyecto">
@@ -792,7 +846,10 @@
               <span id="storyHeightValue">3.0</span> m
             </div>
           </div>
+          </div>
 
+          <!-- TAB 2: STRUCTURE -->
+          <div class="tab-content" id="tab-structure">
           <!-- 4. Wall System -->
           <div class="calculator-section">
             <div class="calculator-label">4. Wall System</div>
@@ -874,7 +931,10 @@
             </div>
             <div class="vol-badge" id="beamVolBadge">— m³ beams</div>
           </div>
+          </div>
 
+          <!-- TAB 3: ENVIRONMENT -->
+          <div class="tab-content" id="tab-environment">
           <!-- 7. Transport Distance -->
           <div class="calculator-section">
             <div class="calculator-label" data-en="5. Transport Distance" data-es="5. Distancia de Transporte">
@@ -914,6 +974,7 @@
             <div class="range-value text-center">
               <span id="treesValue">50</span> <span data-en="trees" data-es="árboles">trees</span>
             </div>
+          </div>
           </div>
         </div>
 
@@ -1233,6 +1294,21 @@
         }
       }
     };
+
+    function switchInputTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      // Deactivate all buttons
+      document.querySelectorAll('.input-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      // Show selected tab
+      document.getElementById('tab-' + tabName).classList.add('active');
+      // Activate selected button
+      event.target.classList.add('active');
+    }
 
     function selectCountry(country) {
       carbonState.country = country;
