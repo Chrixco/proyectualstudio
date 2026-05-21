@@ -1069,9 +1069,9 @@
               <span class="result-value" id="resultTotalProfit">-</span>
             </div>
             <div class="result-item">
-              <span class="result-label" data-en="ROI (%)" data-es="ROI (%)">ROI (%)</span>
+              <span class="result-label" id="roiLabel" data-en="ROI (%)" data-es="ROI (%)">ROI (%)</span>
               <span class="result-value" id="resultROI">-</span>
-              <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
+              <small class="result-context" id="roiContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Cash Flow Breakeven" data-es="Punto de Equilibrio de Flujo">Cash Flow Breakeven</span>
@@ -1572,6 +1572,9 @@
       document.getElementById('resultNetIncome').textContent = formatter.format(sampleNetIncome);
       document.getElementById('resultTotalProfit').textContent = formatter.format(sampleProfit);
       document.getElementById('resultROI').textContent = '28.6%';
+      // Reset labels to defaults for sample calculation
+      document.getElementById('roiLabel').textContent = currentLang === 'en' ? 'ROI (%)' : 'ROI (%)';
+      document.getElementById('roiContext').textContent = currentLang === 'en' ? 'vs ~4% savings account' : 'vs ~4% cuenta de ahorros';
       document.getElementById('resultPayback').textContent = '3 years';
       document.getElementById('resultPropertyValue').textContent = formatter.format(samplePropertyValue);
 
@@ -1748,13 +1751,18 @@
       // DO NOT mix rental income with sale scenarios or vice versa
       let totalProfit = 0;
       let annualizedROI = 0;
+      let roiMetricLabel = 'ROI (%)';
+      let roiContextText = 'vs ~4% savings account';
 
       if (currentProjectPurpose === 'sale') {
         // SALE MODE: You invest X, sell for Y at selling price/m² → Profit = Y - X
+        // Display PROFIT MARGIN % instead of ROI (which doesn't apply to one-time sales)
         // DO NOT include cumulativeProfit (rental income) in sale scenarios
         totalProfit = appreciationGain;
-        const annualProfit = years > 0 ? (appreciationGain / years) : 0;
-        annualizedROI = years > 0 ? ((annualProfit / downPayment) * 100) : 0;
+        // Profit Margin % = (Profit / Total Investment Cost) × 100
+        annualizedROI = totalProjectCost > 0 ? ((appreciationGain / totalProjectCost) * 100) : 0;
+        roiMetricLabel = currentLang === 'en' ? 'Profit Margin (%)' : 'Margen de Ganancia (%)';
+        roiContextText = currentLang === 'en' ? 'one-time sale return' : 'retorno de venta única';
       } else if (currentProjectPurpose === 'rent') {
         // RENT MODE: You invest X, collect Y per year → Profit = annual × years (operational income only)
         // DO NOT include appreciation gain (unrealized) in rent scenarios
@@ -1788,6 +1796,11 @@
       document.getElementById('resultNetIncome').textContent = formatter.format(annualNetIncome);
       document.getElementById('resultTotalProfit').textContent = formatter.format(totalProfit);
       document.getElementById('resultROI').textContent = roi + '%';
+
+      // Update ROI label and context dynamically based on mode
+      document.getElementById('roiLabel').textContent = roiMetricLabel;
+      document.getElementById('roiContext').textContent = roiContextText;
+
       document.getElementById('resultPayback').textContent = paybackYear ? `${paybackYear} years` : 'Not in analysis period';
       document.getElementById('resultPropertyValue').textContent = formatter.format(propertyValue);
 
