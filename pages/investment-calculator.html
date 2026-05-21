@@ -1780,7 +1780,7 @@
 
       // Draw charts (pass purpose to determine what to display)
       drawCashFlowChart(yearLabels, cashFlows, propertyValues, plotValues, currency);
-      drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency, currentProjectPurpose);
+      drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency, currentProjectPurpose, totalProjectCost);
     }
 
     function drawCashFlowChart(labels, data, propertyValues, plotValues, currency) {
@@ -1914,7 +1914,7 @@
       });
     }
 
-    function drawProfitBreakdownChart(rental, operating, total, currency, purpose) {
+    function drawProfitBreakdownChart(rental, operating, total, currency, purpose, totalProjectCost) {
       const ctx = document.getElementById('profitBreakdownChart').getContext('2d');
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
 
@@ -1934,10 +1934,21 @@
       let chartColors = [];
 
       if (purpose === 'sale') {
-        // SALE: Only show appreciation gain
-        chartLabels = [labelAppreciation];
-        chartData = [Math.max(0, total)];
-        chartColors = ['rgba(144, 238, 144, 0.7)'];
+        // SALE: Show cost vs selling price breakdown
+        const salePrice = Math.max(0, total + totalProjectCost); // Back-calculate sale price
+        const costLabel = currentLang === 'en' ? 'Total Investment' : 'Inversión Total';
+        const profitLabel = currentLang === 'en' ? 'Profit/Loss' : 'Ganancia/Pérdida';
+
+        chartLabels = [costLabel, profitLabel];
+        chartData = [totalProjectCost, Math.max(0, total)]; // Investment + Profit
+
+        if (total < 0) {
+          // Loss scenario - show red
+          chartColors = ['rgba(100, 100, 100, 0.7)', 'rgba(255, 107, 107, 0.7)'];
+        } else {
+          // Profit scenario - show green
+          chartColors = ['rgba(100, 100, 100, 0.7)', 'rgba(144, 238, 144, 0.7)'];
+        }
       } else if (purpose === 'rent') {
         // RENT: Show rental income, operating costs, net profit
         chartLabels = [labelRentalIncome, labelOperatingCosts, labelNetProfit];
@@ -1953,7 +1964,9 @@
       // Determine border colors based on purpose
       let borderColors = [];
       if (purpose === 'sale') {
-        borderColors = ['#90EE90'];
+        borderColors = total < 0
+          ? ['rgba(100, 100, 100, 1)', '#FF6B6B']  // Loss: gray + red
+          : ['rgba(100, 100, 100, 1)', '#90EE90']; // Profit: gray + green
       } else if (purpose === 'rent') {
         borderColors = [accentColor, '#FF6B6B', '#90EE90'];
       } else {
