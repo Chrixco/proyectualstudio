@@ -1,18 +1,25 @@
 /* ===========================
    NEO-BRUTALIST DESIGN SYSTEM
-   Color Palette:
-   - Primary: #0099FF (Yellow)
-   - Background: #000000 (Black)
-   - Text: #FFFFFF (White)
-   - Accent: #0099FF (Yellow)
+   Centralized Color Palette
    =========================== */
 
-/* ===========================
-   LIGHT MODE (Default - no data-theme attribute)
-   White background, black text, blue accents
-   =========================== */
 :root {
-  /* All CSS variables have been replaced with hardcoded colors */
+  /* Core Colors */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-blue: #0099FF;
+  --color-blue-light: #00BFFF;
+  --color-yellow: #FFD500;
+
+  /* Light Mode (Default) */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --accent-primary: #0099FF;
+  --accent-secondary: #00BFFF;
+  --border-color: #0099FF;
+  --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Theme transitions removed - light mode only */
@@ -435,7 +442,7 @@ h1, h2, h3 {
   color: #0099FF;
   letter-spacing: 2px;
   position: relative;
-  display: inline-block;
+  display: block;
 }
 
 h1::after, h2::after, h3::after {
@@ -451,14 +458,17 @@ h1::after, h2::after, h3::after {
 
 h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
 }
 
 h2 {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
 }
 
 h3 {
   font-size: clamp(1.2rem, 3vw, 2rem);
+  text-align: center;
 }
 
 /* Page Heading Group Class */
@@ -1347,8 +1357,6 @@ html {
   box-shadow:
     0 32px 60px rgba(0, 0, 0, 0.6),
     0 0 40px rgba(0, 153, 255, 0.45);
-}
-
 }
 
 /* --- TEXT ACCENTS --- */

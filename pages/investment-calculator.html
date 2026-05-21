@@ -49,8 +49,8 @@
 
       .inputs-panel,
       .results-panel {
-        box-shadow: 8px 8px 0px var(--brutalist-yellow);
-        border: 3px solid var(--brutalist-yellow);
+        box-shadow: 8px 8px 0px #FFD500;
+        border: 3px solid #FFD500;
       }
     }
 
@@ -77,36 +77,36 @@
       .inputs-panel,
       .results-panel {
         padding: 1rem;
-        box-shadow: 6px 6px 0px var(--brutalist-yellow);
-        border: 2px solid var(--brutalist-yellow);
+        box-shadow: 6px 6px 0px #FFD500;
+        border: 2px solid #FFD500;
       }
     }
 
     .inputs-panel {
-      background: var(--bg-secondary);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      background: #1a1a1a;
+      border: 4px solid #FFD500;
+      box-shadow: 12px 12px 0px #FFD500;
       padding: 1.5rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       overflow: visible;
       min-width: 0;
     }
 
     .results-panel {
-      background: var(--bg-secondary);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      background: #1a1a1a;
+      border: 4px solid #FFD500;
+      box-shadow: 12px 12px 0px #FFD500;
       padding: 1.5rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       min-width: 0;
     }
 
     .calculator-section {
       margin-bottom: 1rem;
       padding: 1rem;
-      border: 2px solid var(--brutalist-yellow);
-      background: var(--bg-primary);
-      border-radius: var(--panel-border-radius);
+      border: 2px solid #FFD500;
+      background: #000000;
+      border-radius: 0.75rem;
     }
 
     .calculator-label {
@@ -115,16 +115,16 @@
       letter-spacing: 0.5px;
       margin-bottom: 0.75rem;
       font-size: 0.8rem;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       display: block;
-      border-bottom: 2px solid var(--accent-fade);
+      border-bottom: 2px solid rgba(0, 153, 255, 0.1);
       padding-bottom: 0.5rem;
     }
 
     .form-control {
-      border: 3px solid var(--brutalist-yellow);
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      border: 3px solid #FFD500;
+      background: #000000;
+      color: #FFFFFF;
       font-family: 'Space Mono', monospace;
       padding: 0.75rem 1rem;
       font-size: 0.95rem;
@@ -133,19 +133,19 @@
     }
 
     .form-control:hover {
-      border-color: var(--brutalist-yellow);
-      box-shadow: 0 0 8px var(--brutalist-yellow);
+      border-color: #FFD500;
+      box-shadow: 0 0 8px #FFD500;
     }
 
     .form-control:focus {
       outline: none;
-      border-color: var(--brutalist-yellow);
-      box-shadow: 0 0 12px var(--brutalist-yellow);
-      background: var(--bg-primary);
+      border-color: #FFD500;
+      box-shadow: 0 0 12px #FFD500;
+      background: #000000;
     }
 
     .form-control::placeholder {
-      color: var(--text-secondary);
+      color: #cccccc;
       opacity: 0.7;
     }
 
@@ -162,18 +162,24 @@
     .title-main {
       font-size: 2rem;
       font-weight: 900;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 1.5rem;
       text-align: center;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      padding: 0 2rem;
+      box-sizing: border-box;
     }
 
     .result-item {
       display: flex;
       justify-content: space-between;
       padding: 0.75rem 0;
-      border-bottom: 1px solid var(--accent-light);
+      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
       font-size: 0.95rem;
     }
 
@@ -183,12 +189,12 @@
 
     .result-label {
       font-weight: bold;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
     }
 
     .result-value {
-      color: var(--text-primary);
+      color: #FFFFFF;
       font-weight: 600;
       font-family: 'Space Mono', monospace;
     }
@@ -202,34 +208,34 @@
     .result-section {
       margin-bottom: 1.5rem;
       padding: 1rem;
-      border: 2px solid var(--brutalist-yellow);
-      background: var(--bg-primary);
-      border-radius: var(--panel-border-radius);
+      border: 2px solid #FFD500;
+      background: #000000;
+      border-radius: 0.75rem;
     }
 
     .result-section-title {
       font-size: 0.85rem;
       font-weight: 900;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 1rem;
-      border-bottom: 2px solid var(--brutalist-yellow);
+      border-bottom: 2px solid #FFD500;
       padding-bottom: 0.5rem;
     }
 
     .btn-calculate {
       width: 100%;
       padding: 1rem;
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      border: 3px solid var(--brutalist-black);
-      box-shadow: 6px 6px 0px var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
+      border: 3px solid #000000;
+      box-shadow: 6px 6px 0px #000000;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
       font-size: 1rem;
       font-family: 'Space Mono', monospace;
@@ -237,10 +243,10 @@
     }
 
     .btn-calculate:hover {
-      background: var(--brutalist-black);
-      color: var(--brutalist-white);
-      border-color: var(--brutalist-yellow);
-      box-shadow: 8px 8px 0px var(--brutalist-yellow);
+      background: #000000;
+      color: #FFFFFF;
+      border-color: #FFD500;
+      box-shadow: 8px 8px 0px #FFD500;
       transform: translate(-3px, -3px);
     }
 
@@ -253,22 +259,22 @@
 
     .country-btn {
       padding: 1rem;
-      border: 3px solid var(--brutalist-yellow);
+      border: 3px solid #FFD500;
       background: transparent;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
       font-family: 'Space Mono', monospace;
     }
 
     .country-btn.active {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      box-shadow: 4px 4px 0px var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
+      box-shadow: 4px 4px 0px #000000;
     }
 
     .country-btn:hover {
@@ -277,9 +283,9 @@
 
     .info-badge {
       display: inline-block;
-      background: var(--accent-light);
-      border: 1px solid var(--accent-primary);
-      color: var(--accent-primary);
+      background: rgba(0, 153, 255, 0.2);
+      border: 1px solid #0099FF;
+      color: #0099FF;
       padding: 0.5rem 0.75rem;
       border-radius: 4px;
       font-size: 0.75rem;
@@ -288,7 +294,7 @@
     }
 
     .currency {
-      color: var(--accent-primary);
+      color: #0099FF;
       font-weight: 600;
     }
 
@@ -325,10 +331,10 @@
       height: 24px;
       margin: 0;
       cursor: pointer;
-      accent-color: var(--brutalist-yellow);
-      border: 3px solid var(--brutalist-yellow);
+      accent-color: #FFD500;
+      border: 3px solid #FFD500;
       border-radius: 50%;
-      background: var(--glass-bg);
+      background: rgba(0, 0, 0, 0.7);
       transition: all 0.3s ease;
       flex-shrink: 0;
     }
@@ -339,8 +345,8 @@
     }
 
     .form-check-input:checked {
-      background: var(--brutalist-yellow);
-      border-color: var(--brutalist-yellow);
+      background: #FFD500;
+      border-color: #FFD500;
       box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
     }
 
@@ -355,11 +361,11 @@
     }
 
     .form-check-input:hover + .form-check-label {
-      color: var(--brutalist-yellow);
+      color: #FFD500;
     }
 
     .form-check-input:checked + .form-check-label {
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       font-weight: 700;
     }
 
@@ -371,7 +377,7 @@
       padding: 1rem;
       background: rgba(255, 213, 0, 0.05);
       border: 2px solid rgba(255, 213, 0, 0.3);
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       backdrop-filter: blur(5px);
     }
 
@@ -379,7 +385,7 @@
       .form-check-input {
         width: 20px;
         height: 20px;
-        border: 2px solid var(--brutalist-yellow);
+        border: 2px solid #FFD500;
       }
 
       .toggle-group {
@@ -437,7 +443,7 @@
     }
 
     .loading-text {
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -461,13 +467,13 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       font-size: 0.9rem;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
     }
 
     .slider-value {
-      background: var(--accent-light);
-      border: 2px solid var(--brutalist-yellow);
-      color: var(--brutalist-yellow);
+      background: rgba(0, 153, 255, 0.2);
+      border: 2px solid #FFD500;
+      color: #FFD500;
       padding: 0.4rem 0.8rem;
       border-radius: 4px;
       font-weight: bold;
@@ -479,20 +485,20 @@
       width: 100%;
       height: 6px;
       border-radius: 3px;
-      background: linear-gradient(to right, var(--brutalist-yellow) 0%, var(--brutalist-yellow) 50%, var(--accent-fade) 50%, var(--accent-fade) 100%);
+      background: linear-gradient(to right, #FFD500 0%, #FFD500 50%, rgba(0, 153, 255, 0.1) 50%, rgba(0, 153, 255, 0.1) 100%);
       outline: none;
       -webkit-appearance: none;
       appearance: none;
     }
 
     input[type="range"]::-webkit-slider-runnable-track {
-      background: linear-gradient(to right, var(--brutalist-yellow) 0%, var(--brutalist-yellow) 50%, var(--accent-fade) 50%, var(--accent-fade) 100%);
+      background: linear-gradient(to right, #FFD500 0%, #FFD500 50%, rgba(0, 153, 255, 0.1) 50%, rgba(0, 153, 255, 0.1) 100%);
       height: 6px;
       border-radius: 3px;
     }
 
     input[type="range"]::-moz-range-track {
-      background: linear-gradient(to right, var(--brutalist-yellow) 0%, var(--brutalist-yellow) 50%, var(--accent-fade) 50%, var(--accent-fade) 100%);
+      background: linear-gradient(to right, #FFD500 0%, #FFD500 50%, rgba(0, 153, 255, 0.1) 50%, rgba(0, 153, 255, 0.1) 100%);
       height: 6px;
       border-radius: 3px;
       border: none;
@@ -504,9 +510,9 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--brutalist-yellow);
+      background: #FFD500;
       cursor: pointer;
-      border: 3px solid var(--brutalist-black);
+      border: 3px solid #000000;
       box-shadow: 0 0 8px rgba(255, 213, 0, 0.5);
       transition: all 0.2s ease;
     }
@@ -520,9 +526,9 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--brutalist-yellow);
+      background: #FFD500;
       cursor: pointer;
-      border: 3px solid var(--brutalist-black);
+      border: 3px solid #000000;
       box-shadow: 0 0 8px rgba(255, 213, 0, 0.5);
       transition: all 0.2s ease;
     }
@@ -536,7 +542,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.75rem;
-      color: var(--text-secondary);
+      color: #cccccc;
       margin-top: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -555,10 +561,10 @@
     }
 
     .option-card {
-      border: 3px solid var(--brutalist-yellow);
+      border: 3px solid #FFD500;
       background: transparent;
       padding: 1.25rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
@@ -570,7 +576,7 @@
 
     .option-card:hover {
       transform: translate(-3px, -3px);
-      box-shadow: 6px 6px 0px var(--brutalist-yellow);
+      box-shadow: 6px 6px 0px #FFD500;
     }
 
     .option-card.active {
@@ -594,7 +600,7 @@
 
     .option-card.active .option-card-subtitle {
       opacity: 1;
-      color: var(--brutalist-black);
+      color: #000000;
     }
 
     @media (max-width: 480px) {
@@ -615,7 +621,7 @@
     /* Hint text styling */
     .hint-text {
       font-size: 0.75rem;
-      color: var(--text-secondary);
+      color: #cccccc;
       margin-top: 0.4rem;
       display: block;
       font-style: italic;
@@ -628,8 +634,8 @@
 
     .updating-badge {
       display: inline-block;
-      background: var(--accent-light);
-      color: var(--accent-primary);
+      background: rgba(0, 153, 255, 0.2);
+      color: #0099FF;
       padding: 0.4rem 0.8rem;
       border-radius: 4px;
       font-size: 0.7rem;
@@ -641,6 +647,100 @@
     @keyframes pulse {
       0%, 100% { opacity: 0.7; }
       50% { opacity: 1; }
+    }
+
+    /* Email Modal for PDF Download */
+    .email-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .email-modal-overlay.active {
+      display: flex;
+    }
+
+    .email-modal-content {
+      background: #000000;
+      border: 4px solid #FFD500;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 50px rgba(255, 213, 0, 0.3);
+    }
+
+    .email-modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #FFD500;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .email-modal-input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 3px solid #FFD500;
+      background: rgba(255, 255, 255, 0.05);
+      color: #FFFFFF;
+      font-size: 1rem;
+      border-radius: 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .email-modal-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .email-modal-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px #FFD500;
+    }
+
+    .email-modal-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .email-modal-btn {
+      flex: 1;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: 3px solid #FFD500;
+      background: #FFD500;
+      color: #000000;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .email-modal-btn:hover {
+      background: #ffeb3b;
+      box-shadow: 0 8px 20px rgba(255, 213, 0, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .email-modal-btn.cancel {
+      background: transparent;
+      color: #FFD500;
+    }
+
+    .email-modal-btn.cancel:hover {
+      background: rgba(255, 213, 0, 0.1);
     }
   </style>
 </head>
@@ -676,12 +776,14 @@
   </nav>
 
   <main class="container py-5">
-    <a href="tools.html" class="brutal-btn-yellow go-back-btn mb-4" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </a>
-    <h1 class="title-main" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
+    <div style="text-align: left; margin-bottom: 1.5rem;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+    </div>
+    <h1 class="title-main" style="text-align: center; width: 100%;" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
 
     <div class="calculator-wrapper">
       <div class="calculator-layout">
@@ -906,7 +1008,7 @@
         <!-- Results Panel -->
         <div class="results-panel" id="resultsPanel" style="opacity: 0.6;">
           <div style="text-align: center; margin-bottom: 1.5rem;">
-            <span id="resultStatusBadge" style="background: var(--brutalist-yellow); color: var(--brutalist-black); padding: 0.4rem 0.8rem; border-radius: var(--panel-border-radius); font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
+            <span id="resultStatusBadge" style="background: #FFD500; color: #000000; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
           </div>
           <div class="result-section">
             <div class="result-section-title" data-en="Investment Summary" data-es="Resumen de Inversión">Investment Summary</div>
@@ -957,12 +1059,12 @@
             <div class="result-item">
               <span class="result-label" data-en="ROI (%)" data-es="ROI (%)">ROI (%)</span>
               <span class="result-value" id="resultROI">-</span>
-              <small class="result-context" style="display: block; font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Payback Period" data-es="Período de Retorno">Payback Period</span>
               <span class="result-value" id="resultPayback">-</span>
-              <small class="result-context" style="display: block; font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Property Value (end)" data-es="Valor de Propiedad (final)">Property Value (end)</span>
@@ -983,10 +1085,29 @@
               <canvas id="profitBreakdownChart"></canvas>
             </div>
           </div>
+
+          <div style="text-align: center; margin-top: 2rem;">
+            <button onclick="openEmailModal()" class="email-download-btn" style="padding: 0.8rem 2rem; background: #FFD500; color: #000000; border: 3px solid #FFD500; font-weight: bold; border-radius: 0.75rem; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 8px 20px rgba(255, 213, 0, 0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'" data-en="Download as PDF" data-es="Descargar como PDF">
+              Download as PDF
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </main>
+
+  <!-- Email Modal for PDF Download -->
+  <div class="email-modal-overlay" id="emailModal">
+    <div class="email-modal-content">
+      <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
+      <p style="margin-bottom: 1.5rem; color: #cccccc;" data-en="Enter your email to receive the PDF of your investment analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de inversión">Enter your email to receive the PDF of your investment analysis</p>
+      <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
+      <div class="email-modal-buttons">
+        <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
+        <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer-enhanced">
     <div class="footer-content">
@@ -1073,8 +1194,8 @@
         const badge = document.getElementById('resultStatusBadge');
         resultsPanel.classList.add('calculating');
         badge.textContent = 'UPDATING...';
-        badge.style.background = 'var(--accent-light)';
-        badge.style.color = 'var(--accent-primary)';
+        badge.style.background = 'rgba(0, 153, 255, 0.2)';
+        badge.style.color = '#0099FF';
       }
     }
 
@@ -1475,8 +1596,8 @@
       resultsPanel.style.opacity = '1';
       resultsPanel.classList.remove('calculating');
       badge.textContent = 'RESULTS';
-      badge.style.background = 'var(--brutalist-yellow)';
-      badge.style.color = 'var(--brutalist-black)';
+      badge.style.background = '#FFD500';
+      badge.style.color = '#000000';
       hasCalculated = true;
 
       // Draw charts
@@ -1709,6 +1830,101 @@
         }
       });
     }
+
+    // Email Modal and PDF Download Functions
+    function openEmailModal() {
+      document.getElementById('emailModal').classList.add('active');
+      document.getElementById('emailInput').focus();
+    }
+
+    function closeEmailModal() {
+      document.getElementById('emailModal').classList.remove('active');
+      document.getElementById('emailInput').value = '';
+    }
+
+    window.submitPdfDownload = function() {
+      const email = document.getElementById('emailInput').value.trim();
+      const currentLang = localStorage.getItem('lang') || 'en';
+
+      if (!email) {
+        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
+        return;
+      }
+
+      // Send email to Discord
+      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
+
+      const totalInvestment = parseInt(document.getElementById('resultInvestment').textContent.replace(/[^0-9]/g, '')) || 0;
+      const annualRental = parseInt(document.getElementById('resultAnnualRental').textContent.replace(/[^0-9]/g, '')) || 0;
+      const roi = document.getElementById('resultROI').textContent || 'N/A';
+      const currency = currentCountry === 'germany' ? 'EUR' : 'USD';
+
+      const discordMessage = {
+        content: `📊 New Investment Calculator PDF Download Request`,
+        embeds: [{
+          title: '💰 Investment Calculator PDF Request',
+          color: 16760576,
+          fields: [
+            { name: 'Email', value: email, inline: false },
+            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
+            { name: 'Total Investment', value: currency + ' ' + totalInvestment.toLocaleString(), inline: true },
+            { name: 'Annual Rental Income', value: currency + ' ' + annualRental.toLocaleString(), inline: true },
+            { name: 'ROI', value: roi, inline: true }
+          ]
+        }]
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordMessage)
+      }).catch(err => console.error('Discord webhook error:', err));
+
+      // Send to email database
+      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
+      const emailLogMessage = {
+        content: `\`${email}\` - Investment Calculator (${new Date().toLocaleString()})`
+      };
+
+      fetch(emailDatabaseWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailLogMessage)
+      }).catch(err => console.error('Discord email log error:', err));
+
+      // Send to downloads channel
+      const downloadsWebhook = 'https://discord.com/api/webhooks/1505912685554827345/FMaUeG8eGXdrB3MuHbCa-7UIpZ9h2d0kQItdRvBzNnBqQNpltlYz2yZNDTonngDbbZ8X';
+      fetch(downloadsWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailLogMessage)
+      }).catch(err => console.error('Discord downloads error:', err));
+
+      // Close modal
+      closeEmailModal();
+
+      // Trigger browser print dialog
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    };
+
+    // Close modal when clicking outside
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('emailModal');
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            closeEmailModal();
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>

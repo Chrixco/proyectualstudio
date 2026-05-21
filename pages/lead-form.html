@@ -30,11 +30,11 @@
     .form-wrapper {
       width: 100%;
       max-width: 700px;
-      background: var(--glass-bg);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(20px);
-      border: 4px solid var(--brutalist-yellow);
-      box-shadow: 20px 20px 0px var(--brutalist-yellow);
-      border-radius: var(--panel-border-radius);
+      border: 4px solid #FFD500;
+      box-shadow: 20px 20px 0px #FFD500;
+      border-radius: 0.75rem;
       padding: 3rem;
     }
 
@@ -46,7 +46,7 @@
     .form-header h1 {
       font-size: 2rem;
       font-weight: 900;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 0.5rem;
@@ -54,10 +54,10 @@
 
     .calculator-type-badge {
       display: inline-block;
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
       padding: 0.5rem 1rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       font-weight: bold;
       font-size: 0.9rem;
       margin-top: 0.5rem;
@@ -70,19 +70,19 @@
     .form-section-title {
       font-size: 0.95rem;
       font-weight: 900;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 1rem;
-      border-bottom: 3px solid var(--brutalist-yellow);
+      border-bottom: 3px solid #FFD500;
       padding-bottom: 0.75rem;
     }
 
     .calculator-data {
       background: rgba(255, 213, 0, 0.05);
-      border: 2px solid var(--brutalist-yellow);
+      border: 2px solid #FFD500;
       padding: 1.25rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       margin-bottom: 1.5rem;
     }
 
@@ -90,7 +90,7 @@
       display: flex;
       justify-content: space-between;
       padding: 0.6rem 0;
-      border-bottom: 1px solid var(--accent-light);
+      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
       font-size: 0.95rem;
     }
 
@@ -100,12 +100,12 @@
 
     .data-label {
       font-weight: bold;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
     }
 
     .data-value {
-      color: var(--text-primary);
+      color: #FFFFFF;
       font-weight: 600;
     }
 
@@ -116,7 +116,7 @@
     .form-group label {
       display: block;
       font-weight: bold;
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       text-transform: uppercase;
       font-size: 0.85rem;
       letter-spacing: 0.5px;
@@ -126,10 +126,10 @@
     .form-control {
       width: 100%;
       padding: 0.85rem;
-      border: 2px solid var(--brutalist-yellow);
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      border-radius: var(--panel-border-radius);
+      border: 2px solid #FFD500;
+      background: #000000;
+      color: #FFFFFF;
+      border-radius: 0.75rem;
       font-family: 'Space Mono', monospace;
       font-size: 0.95rem;
       box-sizing: border-box;
@@ -142,8 +142,8 @@
 
     .form-control:focus {
       outline: none;
-      box-shadow: 0 0 12px var(--brutalist-yellow);
-      background: var(--bg-primary);
+      box-shadow: 0 0 12px #FFD500;
+      background: #000000;
     }
 
     textarea.form-control {
@@ -160,25 +160,25 @@
     .btn-submit {
       flex: 1;
       padding: 1rem;
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      border: 3px solid var(--brutalist-black);
-      box-shadow: 6px 6px 0px var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
+      border: 3px solid #000000;
+      box-shadow: 6px 6px 0px #000000;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
       font-size: 1rem;
       font-family: 'Space Mono', monospace;
     }
 
     .btn-submit:hover:not(:disabled) {
-      background: var(--brutalist-black);
-      color: var(--brutalist-white);
-      border-color: var(--brutalist-yellow);
-      box-shadow: 8px 8px 0px var(--brutalist-yellow);
+      background: #000000;
+      color: #FFFFFF;
+      border-color: #FFD500;
+      box-shadow: 8px 8px 0px #FFD500;
       transform: translate(-3px, -3px);
     }
 
@@ -191,28 +191,28 @@
       flex: 1;
       padding: 1rem;
       background: transparent;
-      color: var(--brutalist-yellow);
-      border: 3px solid var(--brutalist-yellow);
+      color: #FFD500;
+      border: 3px solid #FFD500;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       transition: all 0.3s ease;
       font-size: 1rem;
       font-family: 'Space Mono', monospace;
     }
 
     .btn-cancel:hover {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      box-shadow: 6px 6px 0px var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
+      box-shadow: 6px 6px 0px #000000;
       transform: translate(-3px, -3px);
     }
 
     .status-message {
       padding: 1rem;
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       margin-bottom: 1.5rem;
       text-align: center;
       font-weight: bold;
@@ -279,50 +279,50 @@
     }
 
     body[data-theme="light"] .form-wrapper {
-      background: var(--glass-bg);
-      box-shadow: 12px 12px 0px var(--brutalist-yellow);
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 12px 12px 0px #FFD500;
     }
 
     body[data-theme="light"] .calculator-section {
-      background: var(--bg-white-ultra-light);
-      border-color: var(--brutalist-yellow);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #FFD500;
     }
 
     body[data-theme="light"] .form-control {
-      background: var(--bg-primary);
-      border-color: var(--brutalist-yellow);
-      color: var(--text-primary);
+      background: #000000;
+      border-color: #FFD500;
+      color: #FFFFFF;
     }
 
     body[data-theme="light"] .form-control:focus {
-      background: var(--bg-primary);
-      box-shadow: 0 0 12px var(--brutalist-yellow);
+      background: #000000;
+      box-shadow: 0 0 12px #FFD500;
     }
 
     body[data-theme="light"] select.form-control option {
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      background: #000000;
+      color: #FFFFFF;
     }
 
     body[data-theme="light"] .btn-submit {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
-      border-color: var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
+      border-color: #000000;
     }
 
     body[data-theme="light"] .btn-submit:hover:not(:disabled) {
-      background: var(--brutalist-black);
-      color: var(--brutalist-white);
+      background: #000000;
+      color: #FFFFFF;
     }
 
     body[data-theme="light"] .btn-cancel {
-      color: var(--brutalist-yellow);
-      border-color: var(--brutalist-yellow);
+      color: #FFD500;
+      border-color: #FFD500;
     }
 
     body[data-theme="light"] .btn-cancel:hover {
-      background: var(--brutalist-yellow);
-      color: var(--brutalist-black);
+      background: #FFD500;
+      color: #000000;
     }
 
     /* Custom Radio Button Styling */
@@ -337,10 +337,10 @@
       height: 24px;
       margin: 0;
       cursor: pointer;
-      accent-color: var(--brutalist-yellow);
-      border: 3px solid var(--brutalist-yellow);
+      accent-color: #FFD500;
+      border: 3px solid #FFD500;
       border-radius: 50%;
-      background: var(--glass-bg);
+      background: rgba(0, 0, 0, 0.7);
       transition: all 0.3s ease;
       flex-shrink: 0;
     }
@@ -351,8 +351,8 @@
     }
 
     .form-check-input:checked {
-      background: var(--brutalist-yellow);
-      border-color: var(--brutalist-yellow);
+      background: #FFD500;
+      border-color: #FFD500;
       box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
     }
 
@@ -367,11 +367,11 @@
     }
 
     .form-check-input:hover + .form-check-label {
-      color: var(--brutalist-yellow);
+      color: #FFD500;
     }
 
     .form-check-input:checked + .form-check-label {
-      color: var(--brutalist-yellow);
+      color: #FFD500;
       font-weight: 700;
     }
 
@@ -383,7 +383,7 @@
       padding: 1rem;
       background: rgba(255, 213, 0, 0.05);
       border: 2px solid rgba(255, 213, 0, 0.3);
-      border-radius: var(--panel-border-radius);
+      border-radius: 0.75rem;
       backdrop-filter: blur(5px);
     }
 
@@ -396,7 +396,7 @@
       .form-check-input {
         width: 20px;
         height: 20px;
-        border: 2px solid var(--brutalist-yellow);
+        border: 2px solid #FFD500;
       }
 
       .toggle-group {

@@ -55,10 +55,10 @@
     /* Mobile: single column */
     .inputs-panel,
     .results-panel {
-      background: rgba(0, 0, 0, 0.7);
+      background: #FFFFFF;
       backdrop-filter: blur(20px);
-      border: 4px solid #FFD500;
-      box-shadow: 12px 12px 0px #FFD500;
+      border: 4px solid #0099FF;
+      box-shadow: 12px 12px 0px #0099FF;
       padding: 1.5rem;
       border-radius: 0.75rem;
       overflow: visible;
@@ -110,7 +110,7 @@
     .calculator-section {
       margin-bottom: 1rem;
       padding: 1rem;
-      border: 2px solid #FFD500;
+      border: 2px solid #0099FF;
       background: rgba(255, 213, 0, 0.05);
       border-radius: 0.75rem;
       backdrop-filter: blur(5px);
@@ -126,7 +126,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 0.75rem;
       font-size: clamp(0.7rem, 2vw, 0.8rem);
-      color: #FFD500;
+      color: #000000;
       display: block;
       border-bottom: 2px solid rgba(255, 213, 0, 0.2);
       padding-bottom: 0.5rem;
@@ -134,13 +134,13 @@
 
     .option-card {
       padding: 0.8rem;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(0, 153, 255, 0.3);
       cursor: pointer;
       transition: all 0.3s ease;
-      background: rgba(0, 0, 0, 0.3);
+      background: #FFFFFF;
       margin-bottom: 0.5rem;
       border-radius: 0.75rem;
-      color: #FFFFFF;
+      color: #000000;
     }
 
     .option-card:last-child {
@@ -151,36 +151,36 @@
       margin-bottom: 0.2rem;
       font-size: 0.85rem;
       line-height: 1.2;
-      color: #FFFFFF;
+      color: #000000;
     }
 
     .option-card p {
       margin-bottom: 0;
       font-size: 0.75rem;
       line-height: 1.1;
-      color: #FFFFFF;
+      color: #000000;
     }
 
     .option-card:hover {
       transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px #FFD500;
-      border-color: #FFD500;
-      background: rgba(255, 213, 0, 0.1);
+      box-shadow: 4px 4px 0px #0099FF;
+      border-color: #0099FF;
+      background: rgba(0, 153, 255, 0.1);
     }
 
     .option-card.selected {
-      background: #000000;
+      background: #0099FF;
       color: #FFFFFF;
-      border-color: #FFD500;
-      box-shadow: 4px 4px 0px #FFD500;
+      border-color: #0099FF;
+      box-shadow: 4px 4px 0px #0099FF;
     }
 
     .range-slider {
       width: 100%;
       height: 6px;
-      background: rgba(255, 213, 0, 0.2);
+      background: rgba(0, 153, 255, 0.2);
       outline: none;
-      border: 1px solid #FFD500;
+      border: 1px solid #0099FF;
       border-radius: 4px;
       -webkit-appearance: none;
       margin: 0.5rem 0;
@@ -191,8 +191,8 @@
       appearance: none;
       width: 20px;
       height: 20px;
-      background: #FFD500;
-      border: 2px solid #000000;
+      background: #0099FF;
+      border: 2px solid #FFFFFF;
       cursor: pointer;
       border-radius: 50%;
       transition: all 0.2s ease;
@@ -200,14 +200,14 @@
 
     .range-slider::-webkit-slider-thumb:hover {
       transform: scale(1.2);
-      box-shadow: 0 0 8px #FFD500;
+      box-shadow: 0 0 8px #0099FF;
     }
 
     .range-slider::-moz-range-thumb {
       width: 20px;
       height: 20px;
-      background: #FFD500;
-      border: 2px solid #000000;
+      background: #0099FF;
+      border: 2px solid #FFFFFF;
       cursor: pointer;
       border-radius: 50%;
       transition: all 0.2s ease;
@@ -215,20 +215,20 @@
 
     .range-slider::-moz-range-thumb:hover {
       transform: scale(1.2);
-      box-shadow: 0 0 8px #FFD500;
+      box-shadow: 0 0 8px #0099FF;
     }
 
     .range-value {
       font-size: 1.1rem;
       font-weight: bold;
-      color: #FFD500;
+      color: #0099FF;
       margin-top: 0.4rem;
       text-align: center;
     }
 
     .selection-summary {
-      background: rgba(0, 0, 0, 0.7);
-      border: 3px solid #FFD500;
+      background: rgba(0, 0, 0, 0.05);
+      border: 3px solid #0099FF;
       padding: 1rem;
       margin-bottom: 1rem;
       border-radius: 0.75rem;
@@ -239,7 +239,7 @@
       justify-content: space-between;
       padding-bottom: 0.7rem;
       margin-bottom: 0.7rem;
-      border-bottom: 2px solid rgba(255, 213, 0, 0.3);
+      border-bottom: 2px solid rgba(0, 153, 255, 0.3);
       font-size: 0.95rem;
     }
 
@@ -253,12 +253,13 @@
       font-weight: bold;
       text-transform: uppercase;
       font-size: 0.9rem;
-      color: #FFD500;
+      color: #0099FF;
     }
 
     .summary-value {
       font-weight: 600;
       font-size: 1rem;
+      color: #000000;
     }
 
     .charts-container {
@@ -272,8 +273,8 @@
       display: inline-flex;
       gap: 0;
       margin-bottom: 1rem;
-      background: rgba(255, 213, 0, 0.05);
-      border: 2px solid #FFD500;
+      background: rgba(0, 153, 255, 0.05);
+      border: 2px solid #0099FF;
       border-radius: 50px;
       padding: 0.3rem;
       backdrop-filter: blur(5px);
@@ -283,7 +284,7 @@
       padding: 0.5rem 1.2rem;
       background: transparent;
       border: none;
-      color: #FFD500;
+      color: #0099FF;
       font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
       font-weight: bold;
@@ -296,33 +297,33 @@
     }
 
     .chart-btn:hover {
-      background: rgba(255, 213, 0, 0.1);
+      background: rgba(0, 153, 255, 0.1);
       transform: translateY(-1px);
     }
 
     .chart-btn.active {
-      background: #000000;
+      background: #0099FF;
       color: #FFFFFF;
-      border-color: #FFD500;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      border-color: #0099FF;
+      box-shadow: 0 2px 8px rgba(0, 153, 255, 0.5);
       font-weight: 900;
     }
 
     .chart-wrapper {
       position: relative;
       height: 250px;
-      border: 2px solid rgba(255, 213, 0, 0.2);
+      border: 2px solid rgba(0, 153, 255, 0.2);
       border-radius: 0.75rem;
       padding: 0.75rem;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.05);
     }
 
     .total-container {
-      background: #FFD500;
-      color: #000000;
+      background: #0099FF;
+      color: #FFFFFF;
       padding: 1.5rem;
-      border: 4px solid #000000;
-      box-shadow: 8px 8px 0px #000000;
+      border: 4px solid #0099FF;
+      box-shadow: 8px 8px 0px #0099FF;
       text-align: center;
       border-radius: 0.75rem;
     }
@@ -375,31 +376,31 @@
       justify-content: space-between;
       font-size: 0.8rem;
       font-weight: 600;
-      color: #FFFFFF;
+      color: var(--color-white);
     }
 
     .breakdown-bar {
       width: 100%;
       height: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #FFD500;
+      background: rgba(0, 153, 255, 0.1);
+      border: 1px solid #0099FF;
       border-radius: 4px;
       overflow: hidden;
     }
 
     .breakdown-fill {
       height: 100%;
-      background: linear-gradient(90deg, #FFD500, rgba(255, 213, 0, 0.6));
+      background: linear-gradient(90deg, #0099FF, rgba(0, 153, 255, 0.6));
       transition: width 0.3s ease;
     }
 
     .cta-final {
       margin-top: 1rem;
       padding: 1rem 2rem;
-      background: #FFD500;
-      color: #000000;
-      border: 3px solid #000000;
-      box-shadow: 4px 4px 0px #000000;
+      background: #FFFFFF;
+      color: #0099FF;
+      border: 3px solid #0099FF;
+      box-shadow: 4px 4px 0px #0099FF;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -412,10 +413,10 @@
     }
 
     .cta-final:hover {
-      background: #000000 !important;
+      background: #0099FF !important;
       color: #FFFFFF !important;
-      border-color: #FFD500 !important;
-      box-shadow: 6px 6px 0px #FFD500 !important;
+      border-color: #0099FF !important;
+      box-shadow: 6px 6px 0px #0099FF !important;
       transform: translate(-3px, -3px);
     }
 
@@ -551,12 +552,12 @@
 
     .lead-summary-label {
       font-weight: bold;
-      color: #FFD500;
+      color: #0099FF;
       text-transform: uppercase;
     }
 
     .lead-summary-value {
-      color: #FFFFFF;
+      color: #000000;
     }
 
     /* Email Modal for PDF Download */
@@ -580,11 +581,11 @@
     }
 
     .email-modal-content {
-      background: rgba(0, 0, 0, 0.7);
+      background: #FFFFFF;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 4px solid #FFD500;
-      box-shadow: 12px 12px 0px #FFD500;
+      border: 4px solid #0099FF;
+      box-shadow: 12px 12px 0px #0099FF;
       padding: 2.5rem;
       border-radius: 0.75rem;
       max-width: 450px;
@@ -595,7 +596,7 @@
     .email-modal-title {
       font-size: 1.5rem;
       font-weight: bold;
-      color: #FFD500;
+      color: #0099FF;
       margin-bottom: 1.5rem;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -605,8 +606,8 @@
       width: 100%;
       padding: 1rem;
       margin-bottom: 1.5rem;
-      border: 3px solid #FFD500;
-      background: rgba(255, 255, 255, 0.05);
+      border: 3px solid #0099FF;
+      background: #FFFFFF;
       color: #000000;
       font-size: 1rem;
       border-radius: 0.75rem;
@@ -614,12 +615,12 @@
     }
 
     .email-modal-input::placeholder {
-      color: rgba(0, 0, 0, 0.5);
+      color: rgba(0, 153, 255, 0.5);
     }
 
     .email-modal-input:focus {
       outline: none;
-      box-shadow: 0 0 0 3px #FFD500;
+      box-shadow: 0 0 0 3px #0099FF;
     }
 
     .email-modal-buttons {
@@ -632,7 +633,7 @@
       padding: 1rem;
       font-weight: bold;
       text-transform: uppercase;
-      border: 3px solid #FFD500;
+      border: 3px solid #0099FF;
       cursor: pointer;
       border-radius: 0.75rem;
       transition: all 0.3s ease;
@@ -641,39 +642,45 @@
     }
 
     .email-modal-btn.submit {
-      background: #FFD500;
-      color: #000000;
+      background: #0099FF;
+      color: #FFFFFF;
     }
 
     .email-modal-btn.submit:hover {
-      background: #000000;
-      color: #FFFFFF;
-      box-shadow: 6px 6px 0px #FFD500;
+      background: #FFFFFF;
+      color: #0099FF;
+      box-shadow: 6px 6px 0px #0099FF;
       transform: translate(-3px, -3px);
     }
 
     .email-modal-btn.cancel {
       background: transparent;
-      color: #FFD500;
+      color: #0099FF;
     }
 
     .email-modal-btn.cancel:hover {
-      background: #FFD500;
-      color: #000000;
+      background: #0099FF;
+      color: #FFFFFF;
       transform: translate(-3px, -3px);
     }
+
+    .toggle-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: rgba(0,153,255,0.2); border: 2px solid #0099FF; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+    .toggle-slider:before { content:''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: #0099FF; border-radius: 50%; transition: 0.3s; }
+    input:checked + .toggle-slider { background: #0099FF; }
+    input:checked + .toggle-slider:before { transform: translateX(20px); background: #FFF; }
+    .option-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .option-chip { padding: 0.4rem 0.85rem; border: 2px solid rgba(0,153,255,0.4); border-radius: 50px; font-size: 0.75rem; font-weight: bold; cursor: pointer; background: #FFF; color: #000; transition: all 0.2s; }
+    .option-chip.selected { background: #0099FF; color: #FFF; border-color: #0099FF; }
+    .vol-badge { font-size: 0.7rem; color: #0099FF; font-weight: bold; margin-top: 0.25rem; }
   </style>
 </head>
 <body>
-  <div class="video-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; min-width: 100%; min-height: 100%; z-index: -1; overflow: hidden;">
-    <video autoplay muted loop playsinline style="min-width: 100%; min-height: 100%; object-fit: cover;">
-      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
   <div class="video-background">
     <video autoplay muted loop playsinline>
-      <source src="../media/output_bw.mp4" type="video/mp4">
+      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
   </div>
@@ -702,10 +709,17 @@
   </nav>
 
   <main class="container mt-5 px-3 px-md-4 py-5">
-    <h1 class="fw-bold text-center mb-2 text-white" data-en="Carbon Footprint Calculator" data-es="Calculadora de Huella de Carbono">
+    <div style="text-align: left; margin-bottom: 1.5rem;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%; background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+    </div>
+    <h1 class="fw-bold text-center mb-2 text-white" style="text-align: center;" data-en="Carbon Footprint Calculator" data-es="Calculadora de Huella de Carbono">
       Carbon Footprint Calculator
     </h1>
-    <p class="text-center text-secondary mb-5" data-en="Estimate the embodied and operational carbon of your architecture project" data-es="Estima la huella de carbono de tu proyecto de arquitectura">
+    <p class="text-center text-secondary mb-5" style="text-align: center;" data-en="Estimate the embodied and operational carbon of your architecture project" data-es="Estima la huella de carbono de tu proyecto de arquitectura">
       Estimate the embodied and operational carbon of your architecture project
     </p>
 
@@ -713,10 +727,21 @@
       <div class="calculator-layout">
         <!-- LEFT PANEL: INPUTS -->
         <div class="inputs-panel">
-          <!-- 1. Project Type -->
+          <!-- 1. Project Location (Country) -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="1. Project Type" data-es="1. Tipo de Proyecto">
-              1. Project Type
+            <div class="calculator-label" data-en="1. Project Location" data-es="1. Ubicación del Proyecto">
+              1. Project Location
+            </div>
+            <div class="option-row">
+              <div class="option-chip selected" onclick="selectCountry('Ecuador')" id="countryEcuador">Ecuador</div>
+              <div class="option-chip" onclick="selectCountry('Germany')" id="countryGermany">Germany</div>
+            </div>
+          </div>
+
+          <!-- 2. Project Type -->
+          <div class="calculator-section">
+            <div class="calculator-label" data-en="2. Project Type" data-es="2. Tipo de Proyecto">
+              2. Project Type
             </div>
             <div class="row">
               <div class="col-md-6">
@@ -734,46 +759,126 @@
             </div>
           </div>
 
-          <!-- 2. Construction Area -->
+          <!-- 3. Floor Plan -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="2. Construction Area" data-es="2. Área de Construcción">
-              2. Construction Area
+            <div class="calculator-label" data-en="3. Floor Plan" data-es="3. Planta">3. Floor Plan</div>
+            <div class="option-row" id="floorModeRow">
+              <div class="option-chip selected" onclick="setFloorMode('total')" id="fmTotal">Total GFA</div>
+              <div class="option-chip" onclick="setFloorMode('perfloor')" id="fmPerFloor">Per Floor</div>
             </div>
-            <input type="range" min="50" max="1000" value="200" class="range-slider" id="areaSlider" oninput="updateDisplay()">
+            <!-- Total GFA mode -->
+            <div id="totalGfaGroup">
+              <input type="range" min="50" max="2000" value="200" class="range-slider" id="areaSlider" oninput="updateDisplay()">
+              <div class="range-value text-center">
+                <span id="areaValue">200</span> m² GFA
+              </div>
+            </div>
+            <!-- Per-floor mode -->
+            <div id="perFloorGroup" style="display:none;">
+              <label style="font-size:0.75rem; color:#000; font-weight:bold;">Area per Floor (m²)</label>
+              <input type="range" min="30" max="1000" value="100" class="range-slider" id="areaPerFloorSlider" oninput="updateDisplay()">
+              <div class="range-value text-center">
+                <span id="areaPerFloorValue">100</span> m²
+              </div>
+              <label style="font-size:0.75rem; color:#000; font-weight:bold; margin-top:0.5rem;">Floors</label>
+              <input type="range" min="1" max="20" value="2" class="range-slider" id="floorsSlider" oninput="updateDisplay()">
+              <div class="range-value text-center">
+                <span id="floorsValue">2</span> floors
+              </div>
+            </div>
+            <label style="font-size:0.75rem; color:#000; font-weight:bold; margin-top:0.75rem; display:block;">Story Height (m)</label>
+            <input type="range" min="2.5" max="6.0" step="0.1" value="3.0" class="range-slider" id="storyHeightSlider" oninput="updateDisplay()">
             <div class="range-value text-center">
-              <span id="areaValue">200</span> m²
+              <span id="storyHeightValue">3.0</span> m
             </div>
           </div>
 
-          <!-- 3. Primary Material -->
+          <!-- 4. Wall System -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="3. Primary Material" data-es="3. Material Principal">
-              3. Primary Material
+            <div class="calculator-label">4. Wall System</div>
+            <div class="option-row">
+              <div class="option-chip selected" onclick="selectStructuralOption(this,'wallType','masonry')">Masonry</div>
+              <div class="option-chip" onclick="selectStructuralOption(this,'wallType','reinforced_concrete')">RC Wall</div>
+              <div class="option-chip" onclick="selectStructuralOption(this,'wallType','cement_blocks')">Cement Blocks</div>
+              <div class="option-chip" onclick="selectStructuralOption(this,'wallType','steel_frame')">Steel Frame</div>
+              <div class="option-chip" onclick="selectStructuralOption(this,'wallType','timber_frame')">Timber Frame</div>
             </div>
-            <div>
-              <div class="option-card selected" onclick="selectOption(this, 'material')" data-co2="400">
-                <h5 data-en="Concrete" data-es="Concreto">Concrete</h5>
-                <p class="small mb-0">400 kgCO₂e/m²</p>
+            <div class="vol-badge" id="wallVolBadge">— m³ walls</div>
+          </div>
+
+          <!-- 5. Slabs / Floors -->
+          <div class="calculator-section">
+            <div class="toggle-row">
+              <label class="toggle-switch"><input type="checkbox" id="slabToggle" checked onchange="onSlabToggle()"><span class="toggle-slider"></span></label>
+              <span style="font-size:0.8rem; font-weight:bold; color:#000;">5. Slabs / Floors</span>
+            </div>
+            <div id="slabOptions">
+              <div class="option-row">
+                <div class="option-chip selected" onclick="selectStructuralOption(this,'slabType','flat_slab')">Concrete Flat</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'slabType','ribbed_slab')">Concrete Ribbed</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'slabType','hollow_core')">Concrete Hollow</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'slabType','timber_plank')">Timber Plank</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'slabType','steel_deck')">Steel Deck</div>
               </div>
-              <div class="option-card" onclick="selectOption(this, 'material')" data-co2="600">
-                <h5 data-en="Steel" data-es="Acero">Steel</h5>
-                <p class="small mb-0">600 kgCO₂e/m²</p>
-              </div>
-              <div class="option-card" onclick="selectOption(this, 'material')" data-co2="80">
-                <h5 data-en="Timber" data-es="Madera">Timber</h5>
-                <p class="small mb-0">80 kgCO₂e/m²</p>
-              </div>
-              <div class="option-card" onclick="selectOption(this, 'material')" data-co2="180">
-                <h5 data-en="Brick" data-es="Ladrillo">Brick</h5>
-                <p class="small mb-0">180 kgCO₂e/m²</p>
-              </div>
+              <div class="vol-badge" id="slabVolBadge">— m³ slabs</div>
             </div>
           </div>
 
-          <!-- 4. Transport Distance -->
+          <!-- 6. Columns -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="4. Transport Distance" data-es="4. Distancia de Transporte">
-              4. Transport Distance
+            <div class="toggle-row">
+              <label class="toggle-switch"><input type="checkbox" id="columnsToggle" checked onchange="onColumnsToggle()"><span class="toggle-slider"></span></label>
+              <span style="font-size:0.8rem; font-weight:bold; color:#000;">6. Columns</span>
+            </div>
+            <div id="columnOptions">
+              <div class="option-row">
+                <div class="option-chip selected" onclick="selectStructuralOption(this,'columnType','rc_square')">RC Square</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'columnType','rc_round')">RC Round</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'columnType','steel')">Steel</div>
+                <div class="option-chip" onclick="selectStructuralOption(this,'columnType','timber')">Timber</div>
+              </div>
+              <div id="rebarPctGroup" style="display:block;">
+                <label style="font-size:0.75rem; color:#000; font-weight:bold; margin-top:0.5rem; display:block;">Rebar % (RC only)</label>
+                <input type="range" min="1" max="6" step="0.5" value="3" class="range-slider" id="rebarPctSlider" oninput="updateDisplay()">
+                <div class="range-value text-center">
+                  <span id="rebarPctValue">3.0</span>%
+                </div>
+              </div>
+              <label style="font-size:0.75rem; color:#000; font-weight:bold; margin-top:0.5rem; display:block;">Column Spacing (m)</label>
+              <input type="range" min="3" max="9" step="0.5" value="5" class="range-slider" id="columnSpacingSlider" oninput="updateDisplay()">
+              <div class="range-value text-center">
+                <span id="columnSpacingValue">5</span> m
+              </div>
+              <div class="vol-badge" id="colVolBadge">— m³ columns</div>
+            </div>
+          </div>
+
+          <!-- 6b. Foundations (Auto-calculated) -->
+          <div class="calculator-section">
+            <div style="font-size:0.75rem; color:#0099FF; font-weight:bold; margin-bottom:0.5rem;">6b. Foundations (Auto-calculated)</div>
+            <div class="vol-badge" id="foundVolBadge">— m³ foundations</div>
+          </div>
+
+          <!-- 6c. Beams (Vigas) -->
+          <div class="calculator-section">
+            <div style="font-size:0.75rem; color:#0099FF; font-weight:bold; margin-bottom:0.5rem;">6c. Beams / Vigas - Material</div>
+            <div class="option-row">
+              <div class="option-chip selected" onclick="selectStructuralOption(this,'beamType','concrete')">Concrete</div>
+              <div class="option-chip" onclick="selectStructuralOption(this,'beamType','steel')">Steel</div>
+              <div class="option-chip" onclick="selectStructuralOption(this,'beamType','timber')">Timber</div>
+            </div>
+            <label style="font-size:0.75rem; color:#000; font-weight:bold; display:block; margin-top:0.5rem;">Beam Spacing (m)</label>
+            <input type="range" min="3" max="9" step="0.5" value="5" class="range-slider" id="beamSpacingSlider" oninput="updateDisplay()">
+            <div class="range-value text-center">
+              <span id="beamSpacingValue">5</span> m
+            </div>
+            <div class="vol-badge" id="beamVolBadge">— m³ beams</div>
+          </div>
+
+          <!-- 7. Transport Distance -->
+          <div class="calculator-section">
+            <div class="calculator-label" data-en="5. Transport Distance" data-es="5. Distancia de Transporte">
+              5. Transport Distance
             </div>
             <input type="range" min="0" max="500" value="100" class="range-slider" id="transportSlider" oninput="updateDisplay()">
             <div class="range-value text-center">
@@ -781,31 +886,18 @@
             </div>
           </div>
 
-          <!-- 5. Operational Energy -->
+          <!-- 6. Operational Energy -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="5. Operational Energy" data-es="5. Energía Operacional">
-              5. Operational Energy
+            <div class="calculator-label" data-en="6. Operational Energy" data-es="6. Energía Operacional">
+              6. Operational Energy
             </div>
-            <div>
-              <div class="option-card selected" onclick="selectOption(this, 'energy')" data-co2="200">
-                <h5 data-en="Electric" data-es="Eléctrica">Electric</h5>
-                <p class="small mb-0">200 kgCO₂e/m²/yr</p>
-              </div>
-              <div class="option-card" onclick="selectOption(this, 'energy')" data-co2="320">
-                <h5 data-en="Gas" data-es="Gas">Gas</h5>
-                <p class="small mb-0">320 kgCO₂e/m²/yr</p>
-              </div>
-              <div class="option-card" onclick="selectOption(this, 'energy')" data-co2="50">
-                <h5 data-en="Renewable" data-es="Renovable">Renewable</h5>
-                <p class="small mb-0">50 kgCO₂e/m²/yr</p>
-              </div>
-            </div>
+            <div id="energyOptions"></div>
           </div>
 
-          <!-- 6. Construction Waste Recycled -->
+          <!-- 7. Construction Waste Recycled -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="6. Waste Recycled" data-es="6. Residuos Reciclados">
-              6. Waste Recycled
+            <div class="calculator-label" data-en="7. Waste Recycled" data-es="7. Residuos Reciclados">
+              7. Waste Recycled
             </div>
             <input type="range" min="0" max="100" value="50" class="range-slider" id="wasteSlider" oninput="updateDisplay()">
             <div class="range-value text-center">
@@ -813,10 +905,10 @@
             </div>
           </div>
 
-          <!-- 7. Trees Planted -->
+          <!-- 8. Trees Planted -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="7. Trees Planted (Offset)" data-es="7. Árboles Plantados (Compensación)">
-              7. Trees Planted (Offset)
+            <div class="calculator-label" data-en="8. Trees Planted (Offset)" data-es="8. Árboles Plantados (Compensación)">
+              8. Trees Planted (Offset)
             </div>
             <input type="range" min="0" max="500" value="50" class="range-slider" id="treesSlider" oninput="updateDisplay()">
             <div class="range-value text-center">
@@ -906,7 +998,7 @@
               <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
                 Support Tree Planting
               </a>
-              <button onclick="window.print()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
+              <button onclick="openEmailModal()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
               </button>
             </div>
@@ -980,16 +1072,76 @@
       material: 'Concrete',
       materialCO2: 400,
       transport: 100,
+      country: 'Ecuador',
       energy: 'Electric',
-      energyCO2: 200,
+      energyCO2: 85,
       waste: 50,
-      trees: 50
+      trees: 50,
+      floorMode: 'total',
+      areaPerFloor: 100,
+      floors: 2,
+      storyHeight: 3.0,
+      wallType: 'masonry',
+      slabEnabled: true,
+      slabType: 'flat_slab',
+      columnsEnabled: true,
+      columnType: 'rc_square',
+      columnRebarPct: 3,
+      columnSpacing: 5,
+      beamSpacing: 5,
+      beamType: 'concrete'
+    };
+
+    const ENERGY_BY_COUNTRY = {
+      'Ecuador': {
+        Electric: { co2: 85, label: 'Electric (Ecuador: ~65% hydro)' },
+        Gas: { co2: 220, label: 'Gas (Limited availability)' },
+        Renewable: { co2: 25, label: 'Renewable (Solar/Wind)' }
+      },
+      'Germany': {
+        Electric: { co2: 380, label: 'Electric (Germany: Mixed grid)' },
+        Gas: { co2: 280, label: 'Gas (Common heating)' },
+        Renewable: { co2: 60, label: 'Renewable (Wind/Solar)' }
+      }
     };
 
     const CO2_FACTORS = {
       transport: 0.5, // kgCO2e per km per m²
       waste: -2, // kgCO2e per % recycled
       treeOffset: -22 // kgCO2e per tree per year
+    };
+
+    const STRUCTURAL_CONSTANTS = {
+      wall: {
+        thickness: { masonry: 0.25, reinforced_concrete: 0.20, cement_blocks: 0.20, steel_frame: 0.10, timber_frame: 0.15 },
+        co2PerM3: { masonry: 250, reinforced_concrete: 300, cement_blocks: 200, steel_frame: 1800, timber_frame: 120 }
+      },
+      slab: {
+        thickness: { flat_slab: 0.25, ribbed_slab: 0.20, hollow_core: 0.20, timber_plank: 0.30, steel_deck: 0.12 },
+        co2PerM3: { flat_slab: 320, ribbed_slab: 280, hollow_core: 250, timber_plank: 140, steel_deck: 2500 },
+        rebarPct: { flat_slab: 0.009, ribbed_slab: 0.008, hollow_core: 0.007, timber_plank: 0, steel_deck: 0 }
+      },
+      column: {
+        section: { rc_square: 0.16, rc_round: 0.14, steel: 0.02, timber: 0.08 },
+        co2PerM3: { rc_square: 350, rc_round: 350, steel: 2900, timber: 140 },
+        rebarPct: { rc_square: 0.03, rc_round: 0.03, steel: 0, timber: 0 }
+      },
+      foundation: {
+        depthRatio: 1.0,
+        widthRatio: 2.5,
+        co2PerM3: 300,
+        rebarPct: 0.007
+      },
+      beam: {
+        depth: 0.60,
+        width: 0.30,
+        co2PerM3: { concrete: 320, steel: 2500, timber: 140 },
+        rebarPct: { concrete: 0.015, steel: 0, timber: 0 }
+      },
+      rebar: {
+        density: 7850,
+        co2PerKg: 1.8
+      }
     };
 
     // Consistent color mapping for all diagrams
@@ -1019,7 +1171,26 @@
       'Total Impact': '#FFC700',
       'Impacto Total': '#FFC700',
       'Breakdown': 'rgba(255,213,0,0.5)',
-      'Desglose': 'rgba(255,213,0,0.5)'
+      'Desglose': 'rgba(255,213,0,0.5)',
+      'Walls': '#FFD500',           // Yellow
+      'Muros': '#FFD500',
+      'Slabs': '#FFC700',           // Orange
+      'Losas': '#FFC700',
+      'Columns': 'rgba(255,213,0,0.5)',  // Semi-yellow
+      'Columnas': 'rgba(255,213,0,0.5)',
+      'Foundations': 'rgba(255,255,255,0.6)',  // White
+      'Cimentaciones': 'rgba(255,255,255,0.6)',
+      'Beams': 'rgba(200,200,200,0.8)',  // Light gray
+      'Vigas': 'rgba(200,200,200,0.8)',
+      'Steel Frame': 'rgba(150,150,150,0.8)',
+      'Timber Frame': 'rgba(139,69,19,0.8)',
+      'Steel': 'rgba(150,150,150,0.8)',
+      'Acero': 'rgba(150,150,150,0.8)',
+      'Timber': 'rgba(139,69,19,0.8)',
+      'Madera': 'rgba(139,69,19,0.8)',
+      'Concrete Beams': '#FFC700',
+      'Steel Beams': 'rgba(150,150,150,0.8)',
+      'Timber Beams': 'rgba(139,69,19,0.8)'
     };
 
     // Process-based carbon breakdown by construction lifecycle (A1-A5 framework)
@@ -1063,6 +1234,84 @@
       }
     };
 
+    function selectCountry(country) {
+      carbonState.country = country;
+      document.getElementById('countryEcuador').classList.toggle('selected', country === 'Ecuador');
+      document.getElementById('countryGermany').classList.toggle('selected', country === 'Germany');
+      renderEnergyOptions();
+      // Reset energy to first option
+      const energyOptions = ENERGY_BY_COUNTRY[country];
+      carbonState.energy = Object.keys(energyOptions)[0];
+      carbonState.energyCO2 = energyOptions[carbonState.energy].co2;
+      calculateTotal();
+    }
+
+    function renderEnergyOptions() {
+      const energyOptions = ENERGY_BY_COUNTRY[carbonState.country];
+      const energyEl = document.getElementById('energyOptions');
+      energyEl.innerHTML = '';
+
+      let isFirst = true;
+      for (const [key, data] of Object.entries(energyOptions)) {
+        const div = document.createElement('div');
+        div.className = 'option-card' + (isFirst ? ' selected' : '');
+        div.onclick = (e) => selectEnergyOption(e.currentTarget, key, data.co2);
+        div.innerHTML = `
+          <h5>${key}</h5>
+          <p class="small mb-0">${data.label}</p>
+          <p class="small mb-0">${data.co2} kgCO₂e/m²/yr</p>
+        `;
+        energyEl.appendChild(div);
+        isFirst = false;
+      }
+    }
+
+    function selectEnergyOption(element, energy, co2) {
+      carbonState.energy = energy;
+      carbonState.energyCO2 = co2;
+      // Update selected state
+      document.querySelectorAll('#energyOptions .option-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      calculateTotal();
+    }
+
+    function setFloorMode(mode) {
+      carbonState.floorMode = mode;
+      document.getElementById('fmTotal').classList.toggle('selected', mode === 'total');
+      document.getElementById('fmPerFloor').classList.toggle('selected', mode === 'perfloor');
+      document.getElementById('totalGfaGroup').style.display = mode === 'total' ? '' : 'none';
+      document.getElementById('perFloorGroup').style.display = mode === 'perfloor' ? '' : 'none';
+      updateDisplay();
+    }
+
+    function selectStructuralOption(el, key, value) {
+      el.closest('.option-row').querySelectorAll('.option-chip').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      carbonState[key] = value;
+
+      // Show/hide rebar slider based on column type
+      if (key === 'columnType') {
+        const isRC = (value === 'rc_square' || value === 'rc_round');
+        document.getElementById('rebarPctGroup').style.display = isRC ? 'block' : 'none';
+      }
+
+      calculateTotal();
+    }
+
+    function onSlabToggle() {
+      carbonState.slabEnabled = document.getElementById('slabToggle').checked;
+      document.getElementById('slabOptions').style.display = carbonState.slabEnabled ? '' : 'none';
+      calculateTotal();
+    }
+
+    function onColumnsToggle() {
+      carbonState.columnsEnabled = document.getElementById('columnsToggle').checked;
+      document.getElementById('columnOptions').style.display = carbonState.columnsEnabled ? '' : 'none';
+      calculateTotal();
+    }
+
     function selectOption(element, category) {
       const siblings = element.parentElement.querySelectorAll('.option-card');
       siblings.forEach(card => card.classList.remove('selected'));
@@ -1083,20 +1332,44 @@
     }
 
     function updateDisplay() {
-      const area = parseInt(document.getElementById('areaSlider').value);
+      // Floor plan sliders
+      let area = parseInt(document.getElementById('areaSlider').value);
+      if (carbonState.floorMode === 'perfloor') {
+        const areaPerFloor = parseInt(document.getElementById('areaPerFloorSlider').value);
+        const floors = parseInt(document.getElementById('floorsSlider').value);
+        area = areaPerFloor * floors;
+        carbonState.areaPerFloor = areaPerFloor;
+        carbonState.floors = floors;
+        document.getElementById('areaPerFloorValue').textContent = areaPerFloor;
+        document.getElementById('floorsValue').textContent = floors;
+      } else {
+        document.getElementById('areaValue').textContent = area;
+      }
+
+      const storyHeight = parseFloat(document.getElementById('storyHeightSlider').value);
       const transport = parseInt(document.getElementById('transportSlider').value);
       const waste = parseInt(document.getElementById('wasteSlider').value);
       const trees = parseInt(document.getElementById('treesSlider').value);
+      const rebarPct = parseFloat(document.getElementById('rebarPctSlider').value);
+      const columnSpacing = parseFloat(document.getElementById('columnSpacingSlider').value);
+      const beamSpacing = parseFloat(document.getElementById('beamSpacingSlider').value);
 
       carbonState.area = area;
+      carbonState.storyHeight = storyHeight;
       carbonState.transport = transport;
       carbonState.waste = waste;
       carbonState.trees = trees;
+      carbonState.columnRebarPct = rebarPct;
+      carbonState.columnSpacing = columnSpacing;
+      carbonState.beamSpacing = beamSpacing;
 
-      document.getElementById('areaValue').textContent = area;
+      document.getElementById('storyHeightValue').textContent = storyHeight.toFixed(1);
       document.getElementById('transportValue').textContent = transport;
       document.getElementById('wasteValue').textContent = waste;
       document.getElementById('treesValue').textContent = trees;
+      document.getElementById('rebarPctValue').textContent = rebarPct.toFixed(1);
+      document.getElementById('columnSpacingValue').textContent = columnSpacing.toFixed(1);
+      document.getElementById('beamSpacingValue').textContent = beamSpacing.toFixed(1);
 
       document.getElementById('summaryArea').textContent = area + ' m²';
       document.getElementById('summaryType').textContent = carbonState.projectType;
@@ -1105,92 +1378,42 @@
       calculateTotal();
     }
 
-    function updateProcessBreakdown() {
-      const materialData = MATERIAL_PROCESSES[carbonState.material];
+    function updateProcessBreakdown(structural) {
       const breakdownEl = document.getElementById('materialBreakdown');
       const itemsEl = document.getElementById('breakdownItems');
-
-      if (!materialData) {
-        breakdownEl.style.display = 'none';
-        return;
-      }
 
       breakdownEl.style.display = 'block';
       itemsEl.innerHTML = '';
 
-      const processes = materialData.processes;
-      const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
+      // Display structural elements
+      const elements = ['walls', 'slabs', 'columns', 'foundations', 'beams'];
+      let totalStructuralCO2 = structural.totalStructuralCO2;
 
-      // Calculate dynamic values based on sliders
-      let processValues = {};
+      elements.forEach(key => {
+        const el = structural[key];
+        if (el.volume <= 0) return;
 
-      processOrder.forEach(p => {
-        const proc = processes[p];
-        if (!proc) return;
-
-        let value = 0;
-        if (p === 'Transportation') {
-          // Transportation changes with distance slider (A4)
-          value = carbonState.area * carbonState.transport * CO2_FACTORS.transport;
-        } else if (p === 'Installation') {
-          // Installation affected by waste reduction (improves assembly efficiency)
-          const wasteReduction = (carbonState.waste / 100);
-          value = proc.value * carbonState.area * (1 - wasteReduction * 0.1);
-        } else {
-          // Extraction & Processing are base values
-          value = proc.value * carbonState.area;
-        }
-        processValues[p] = Math.max(0, value);
-      });
-
-      // Add operational energy contribution (normalized to 5-year period for visibility)
-      processValues['Operational'] = (carbonState.area * carbonState.energyCO2 * 5); // 5-year window
-
-      // Add tree offset (negative value shown separately)
-      const treeOffset = carbonState.trees * CO2_FACTORS.treeOffset;
-      processValues['Tree Offset'] = Math.abs(treeOffset);
-
-      // Filter for construction-only mode
-      let filteredProcessValues = processValues;
-      if (currentScopeFilter === 'construction') {
-        filteredProcessValues = {};
-        processOrder.forEach(p => {
-          filteredProcessValues[p] = processValues[p];
-        });
-      }
-
-      const maxValue = Math.max(...Object.values(filteredProcessValues));
-      const totalProcessCO2 = Object.values(filteredProcessValues).reduce((a, b) => a + b, 0);
-
-      // Display A1-A5 lifecycle stages
-      processOrder.forEach(processName => {
-        const data = processes[processName];
-        if (!data) return;
-
-        const totalCO2 = filteredProcessValues[processName].toFixed(0);
-        const barWidth = maxValue > 0 ? (filteredProcessValues[processName] / maxValue) * 100 : 0;
-        const pct = totalProcessCO2 > 0 ? ((filteredProcessValues[processName] / totalProcessCO2) * 100).toFixed(0) : 0;
-        const barColor = PROCESS_COLORS[processName] || '#FFD500';
+        const pct = (el.co2 / totalStructuralCO2 * 100).toFixed(0);
+        const barColor = PROCESS_COLORS[el.label] || '#FFD500';
 
         const item = document.createElement('div');
         item.className = 'breakdown-item';
         item.innerHTML = `
           <div class="breakdown-label">
-            <span><strong>${processName}</strong> — ${data.label}</span>
-            <span>${pct}% (${totalCO2} kgCO₂e)</span>
+            <span><strong>${el.label}</strong> — ${el.volume.toFixed(1)} m³</span>
+            <span>${pct}% (${el.co2.toFixed(0)} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${barWidth}%; background: ${barColor};"></div>
+            <div class="breakdown-fill" style="width: ${pct}%; background: ${barColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
       });
 
       // Display operational energy (5-year window)
-      if (processValues['Operational'] > 0 && currentScopeFilter === 'all') {
-        const operCO2 = processValues['Operational'].toFixed(0);
-        const operPct = totalProcessCO2 > 0 ? ((processValues['Operational'] / totalProcessCO2) * 100).toFixed(0) : 0;
-        const operBar = maxValue > 0 ? (processValues['Operational'] / maxValue) * 100 : 0;
+      if (currentScopeFilter === 'all') {
+        const operCO2 = carbonState.area * carbonState.energyCO2 * 5;
+        const operPct = (operCO2 / totalStructuralCO2 * 100).toFixed(0);
         const operColor = PROCESS_COLORS['Operational'] || 'rgba(200,220,200,0.7)';
 
         const item = document.createElement('div');
@@ -1198,20 +1421,19 @@
         item.innerHTML = `
           <div class="breakdown-label">
             <span><strong>Operational</strong> — Energy use (5yr window)</span>
-            <span>${operPct}% (${operCO2} kgCO₂e)</span>
+            <span>${operPct}% (${operCO2.toFixed(0)} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${operBar}%; background: ${operColor};"></div>
+            <div class="breakdown-fill" style="width: ${operPct}%; background: ${operColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
       }
 
       // Display tree offset
-      if (processValues['Tree Offset'] > 0 && currentScopeFilter === 'all') {
-        const treeCO2 = processValues['Tree Offset'].toFixed(0);
-        const treePct = totalProcessCO2 > 0 ? ((processValues['Tree Offset'] / totalProcessCO2) * 100).toFixed(0) : 0;
-        const treeBar = maxValue > 0 ? (processValues['Tree Offset'] / maxValue) * 100 : 0;
+      const treeOffsetCO2 = Math.abs(carbonState.trees * CO2_FACTORS.treeOffset);
+      if (treeOffsetCO2 > 0 && currentScopeFilter === 'all') {
+        const treePct = (treeOffsetCO2 / totalStructuralCO2 * 100).toFixed(0);
         const treeColor = PROCESS_COLORS['Tree Offset'] || 'rgba(100,200,100,0.6)';
 
         const item = document.createElement('div');
@@ -1219,29 +1441,101 @@
         item.innerHTML = `
           <div class="breakdown-label">
             <span><strong>Tree Offset</strong> — Carbon sequestration</span>
-            <span>−${treePct}% (−${treeCO2} kgCO₂e)</span>
+            <span>−${treePct}% (−${treeOffsetCO2.toFixed(0)} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${treeBar}%; background: ${treeColor};"></div>
+            <div class="breakdown-fill" style="width: ${treePct}%; background: ${treeColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
       }
     }
 
-    function calculateTotal() {
-      const { area, materialCO2, transport, energyCO2, waste, trees } = carbonState;
+    function calculateStructural() {
+      const gfa = carbonState.area;
+      const h = carbonState.storyHeight;
+      const nFloors = carbonState.floors;
+      const floorArea = carbonState.floorMode === 'perfloor' ? carbonState.areaPerFloor : gfa / nFloors;
+      const perimeter = 4 * Math.sqrt(floorArea);
 
-      // Embodied carbon (materials + transport)
-      let embodiedCO2 = area * materialCO2; // Material per m²
-      embodiedCO2 += area * transport * CO2_FACTORS.transport; // Transport
-      embodiedCO2 = Math.max(0, embodiedCO2 + area * waste * CO2_FACTORS.waste); // Waste reduction
+      // WALLS
+      const wt = STRUCTURAL_CONSTANTS.wall;
+      const wallThick = wt.thickness[carbonState.wallType];
+      const wallCO2 = wt.co2PerM3[carbonState.wallType];
+      const wallVolume = perimeter * h * nFloors * wallThick * 0.65;
+      const wallCO2Total = wallVolume * wallCO2;
+
+      // SLABS
+      let slabVolume = 0, slabCO2Total = 0, slabRebarCO2 = 0;
+      if (carbonState.slabEnabled) {
+        const st = STRUCTURAL_CONSTANTS.slab;
+        const slabThick = st.thickness[carbonState.slabType];
+        const slabCO2 = st.co2PerM3[carbonState.slabType];
+        const rebarPct = st.rebarPct[carbonState.slabType] || 0;
+        slabVolume = gfa * slabThick;
+        slabCO2Total = slabVolume * slabCO2;
+        slabRebarCO2 = rebarPct > 0 ? slabVolume * rebarPct * STRUCTURAL_CONSTANTS.rebar.density * STRUCTURAL_CONSTANTS.rebar.co2PerKg : 0;
+      }
+
+      // COLUMNS
+      let colVolume = 0, colCO2Total = 0, colRebarCO2 = 0;
+      let nColumns = 0;
+      if (carbonState.columnsEnabled) {
+        const spacing = carbonState.columnSpacing;
+        nColumns = Math.ceil(gfa / (spacing * spacing));
+        const ct = STRUCTURAL_CONSTANTS.column;
+        const section = ct.section[carbonState.columnType];
+        const colCO2 = ct.co2PerM3[carbonState.columnType];
+        const rebarPct = (carbonState.columnType === 'rc_square' || carbonState.columnType === 'rc_round') ? carbonState.columnRebarPct / 100 : 0;
+        colVolume = nColumns * section * h * nFloors;
+        colCO2Total = colVolume * colCO2;
+        colRebarCO2 = rebarPct > 0 ? colVolume * rebarPct * STRUCTURAL_CONSTANTS.rebar.density * STRUCTURAL_CONSTANTS.rebar.co2PerKg : 0;
+      }
+
+      // FOUNDATIONS (only for concrete/RC columns)
+      let foundVolume = 0, foundCO2Total = 0, foundRebarCO2 = 0;
+      if (carbonState.columnsEnabled && nColumns > 0 && (carbonState.columnType === 'rc_square' || carbonState.columnType === 'rc_round')) {
+        const ft = STRUCTURAL_CONSTANTS.foundation;
+        const footingDepth = ft.depthRatio * carbonState.storyHeight;
+        const footingWidth = ft.widthRatio * Math.sqrt(STRUCTURAL_CONSTANTS.column.section[carbonState.columnType]);
+        foundVolume = nColumns * (footingWidth * footingWidth * footingDepth);
+        foundCO2Total = foundVolume * ft.co2PerM3;
+        foundRebarCO2 = foundVolume * ft.rebarPct * STRUCTURAL_CONSTANTS.rebar.density * STRUCTURAL_CONSTANTS.rebar.co2PerKg;
+      }
+
+      // BEAMS (calculated from spacing: 2 directions × beams in each direction)
+      const bt = STRUCTURAL_CONSTANTS.beam;
+      const beamLength = (2 * gfa / carbonState.beamSpacing) * nFloors;
+      const beamVolume = beamLength * bt.depth * bt.width;
+      const beamCO2 = bt.co2PerM3[carbonState.beamType];
+      const beamRebarPct = bt.rebarPct[carbonState.beamType] || 0;
+      const beamCO2Total = beamVolume * beamCO2;
+      const beamRebarCO2 = beamRebarPct > 0 ? beamVolume * beamRebarPct * STRUCTURAL_CONSTANTS.rebar.density * STRUCTURAL_CONSTANTS.rebar.co2PerKg : 0;
+
+      return {
+        walls:       { volume: wallVolume,  co2: wallCO2Total,  label: 'Walls',       unit: 'm³' },
+        slabs:       { volume: slabVolume,  co2: slabCO2Total + slabRebarCO2, label: 'Slabs',  unit: 'm³' },
+        columns:     { volume: colVolume,   co2: colCO2Total + colRebarCO2,   label: 'Columns', unit: 'm³' },
+        foundations: { volume: foundVolume, co2: foundCO2Total + foundRebarCO2, label: 'Foundations', unit: 'm³' },
+        beams:       { volume: beamVolume,  co2: beamCO2Total + beamRebarCO2, label: 'Beams', unit: 'm³' },
+        totalStructuralCO2: wallCO2Total + slabCO2Total + slabRebarCO2 + colCO2Total + colRebarCO2 + foundCO2Total + foundRebarCO2 + beamCO2Total + beamRebarCO2
+      };
+    }
+
+    function calculateTotal() {
+      const { area, transport, energyCO2, waste, trees } = carbonState;
+      const structural = calculateStructural();
+
+      // Embodied carbon from structural + transport
+      let embodiedCO2 = structural.totalStructuralCO2;
+      embodiedCO2 += area * transport * CO2_FACTORS.transport;
+      embodiedCO2 = Math.max(0, embodiedCO2 + area * waste * CO2_FACTORS.waste);
 
       // Operational carbon (annual)
-      let operationalCO2 = area * energyCO2 * 50; // Assume 50-year lifespan
+      let operationalCO2 = area * energyCO2 * 50;
 
       // Offsets
-      let offsetCO2 = trees * CO2_FACTORS.treeOffset * 30; // 30 years of sequestration
+      let offsetCO2 = trees * CO2_FACTORS.treeOffset * 30;
 
       const totalCO2 = embodiedCO2 + operationalCO2 + offsetCO2;
       const totalTonnes = (totalCO2 / 1000).toFixed(2);
@@ -1249,22 +1543,29 @@
       document.getElementById('totalCO2').textContent = totalTonnes + ' t CO₂e';
 
       const treeYears = Math.abs(offsetCO2 / 30);
-      const equivalentDays = totalCO2 / 5; // Average car ~5kg CO2/day
+      const equivalentDays = totalCO2 / 5;
       document.getElementById('equivalence').innerHTML = `
         ≈ ${Math.round(treeYears)} tree-years to offset<br>
         <small>≈ ${Math.round(equivalentDays)} days of car travel</small>
       `;
 
-      updateProcessBreakdown();
-      updateCharts(embodiedCO2, operationalCO2, transport * area * CO2_FACTORS.transport, Math.max(0, waste * area * CO2_FACTORS.waste), trees);
+      // Update volume badges
+      document.getElementById('wallVolBadge').textContent = structural.walls.volume.toFixed(1) + ' m³ walls';
+      document.getElementById('slabVolBadge').textContent = structural.slabs.volume.toFixed(1) + ' m³ slabs';
+      document.getElementById('colVolBadge').textContent = structural.columns.volume.toFixed(1) + ' m³ columns';
+      document.getElementById('foundVolBadge').textContent = structural.foundations.volume.toFixed(1) + ' m³ foundations';
+      document.getElementById('beamVolBadge').textContent = structural.beams.volume.toFixed(1) + ' m³ beams';
+
+      updateProcessBreakdown(structural);
+      updateCharts(embodiedCO2, operationalCO2, transport * area * CO2_FACTORS.transport, Math.max(0, waste * area * CO2_FACTORS.waste), trees, structural);
     }
 
-    function updateCharts(embodied, operational, transport, waste, trees) {
-      updatePieChart(embodied, operational, transport, waste, trees);
-      updateDensityHistogram(embodied, operational, transport, waste, trees);
+    function updateCharts(embodied, operational, transport, waste, trees, structural) {
+      updatePieChart(embodied, operational, transport, waste, trees, structural);
+      updateDensityHistogram(embodied, operational, transport, waste, trees, structural);
     }
 
-    function updatePieChart(embodied, operational, transport, waste, trees) {
+    function updatePieChart(embodied, operational, transport, waste, trees, structural) {
       let labels = [], data = [], colors = [];
 
       if (currentPieMode === 'lifecycle') {
@@ -1338,28 +1639,26 @@
           colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
         }
       } else if (currentPieMode === 'breakdown') {
-        // Original 5-category breakdown
-        labels = [
-          currentLang === 'en' ? 'Materials' : 'Materiales',
-          currentLang === 'en' ? 'Transport' : 'Transporte',
-          currentLang === 'en' ? 'Energy (50yr)' : 'Energía (50yr)',
-          currentLang === 'en' ? 'Waste Reduction' : 'Reducción Residuos',
-          currentLang === 'en' ? 'Tree Offset' : 'Compensação Árboles'
-        ];
-        data = [
-          Math.max(0, embodied - transport - waste),
-          transport,
-          operational,
-          Math.abs(waste),
-          Math.abs(trees * CO2_FACTORS.treeOffset * 30)
-        ];
+        // Structural breakdown
+        const elementsToShow = ['walls', 'slabs', 'columns', 'foundations', 'beams'];
+        labels = elementsToShow.map(k => {
+          const el = structural[k];
+          return currentLang === 'en' ? el.label :
+            k === 'walls' ? 'Muros' :
+            k === 'slabs' ? 'Losas' :
+            k === 'columns' ? 'Columnas' :
+            k === 'foundations' ? 'Cimentaciones' : 'Vigas';
+        });
+        data = elementsToShow.map(k => structural[k].co2);
         colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
 
-        // Filter for construction-only mode
-        if (currentScopeFilter === 'construction') {
-          labels = labels.slice(0, 2); // Keep only Materials and Transport
-          data = data.slice(0, 2);
-          colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+        if (currentScopeFilter === 'all') {
+          labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
+          labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensação');
+          data.push(carbonState.area * carbonState.energyCO2 * 5);
+          data.push(Math.abs(trees * CO2_FACTORS.treeOffset * 30));
+          colors.push(PROCESS_COLORS['Operational'] || 'rgba(200,220,200,0.7)');
+          colors.push(PROCESS_COLORS['Tree Offset'] || 'rgba(100,200,100,0.6)');
         }
       }
 
@@ -1397,7 +1696,7 @@
             plugins: {
               legend: {
                 position: 'bottom',
-                labels: { color: '#FFFFFF', font: { family: "'Space Mono', monospace", size: 10 } }
+                labels: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } }
               }
             }
           }
@@ -1405,7 +1704,7 @@
       }
     }
 
-    function updateDensityHistogram(embodied, operational, transport, waste, trees) {
+    function updateDensityHistogram(embodied, operational, transport, waste, trees, structural) {
       const materialData = MATERIAL_PROCESSES[carbonState.material];
       const processes = materialData ? materialData.processes : {};
       const processOrder = ['Extraction', 'Processing', 'Transportation', 'Installation'];
@@ -1466,8 +1765,19 @@
         });
       }
 
-      // Use consistent color map for all labels
-      const colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
+      // Use consistent color map for structural elements and processes
+      const colors = labels.map(label => {
+        // Try structural element colors first
+        if (PROCESS_COLORS[label]) return PROCESS_COLORS[label];
+        // Try process colors
+        const processName = label === 'Extracción' ? 'Extraction' :
+                           label === 'Procesamiento' ? 'Processing' :
+                           label === 'Transporte' ? 'Transportation' :
+                           label === 'Instalación' ? 'Installation' :
+                           label === 'Operacional' ? 'Operational' :
+                           label === 'Compensación' ? 'Tree Offset' : label;
+        return PROCESS_COLORS[processName] || '#FFD500';
+      });
       const borderColor = 'rgba(255, 213, 0, 0.2)';
 
       // Update Density Histogram Chart
@@ -1522,9 +1832,9 @@
                 type: 'linear',
                 display: true,
                 position: 'left',
-                ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { family: "'Space Mono', monospace", size: 10 } },
+                ticks: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } },
                 grid: { color: borderColor },
-                title: { display: true, text: 'kgCO₂e', color: 'rgba(255, 255, 255, 0.8)' }
+                title: { display: true, text: 'kgCO₂e', color: 'var(--color-black)' }
               },
               y1: {
                 type: 'linear',
@@ -1532,14 +1842,14 @@
                 position: 'right'
               },
               x: {
-                ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { family: "'Space Mono', monospace", size: 9 } },
+                ticks: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 9 } },
                 grid: { color: borderColor }
               }
             },
             plugins: {
               legend: {
                 position: 'bottom',
-                labels: { color: '#FFFFFF', font: { family: "'Space Mono', monospace", size: 10 } }
+                labels: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } }
               },
               tooltip: {
                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -1582,6 +1892,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      renderEnergyOptions();
       updateDisplay();
       updateLanguage(currentLang);
 
@@ -1780,15 +2091,13 @@
         body: JSON.stringify(emailLogMessage)
       }).catch(err => console.error('Discord downloads error:', err));
 
-      // Generate and download PDF
-      generateCalculatorPDF(email);
-
       // Close modal
       window.closeEmailModal();
 
-      alert(currentLang === 'en'
-        ? 'PDF downloaded successfully! Check your email for a copy.'
-        : '¡PDF descargado exitosamente! Revisa tu email para una copia.');
+      // Trigger browser print dialog
+      setTimeout(() => {
+        window.print();
+      }, 300);
     };
 
     window.generateCalculatorPDF = async function(email) {
