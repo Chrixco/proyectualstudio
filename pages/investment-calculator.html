@@ -984,8 +984,9 @@
                   <label data-en="Loan Term (Years)" data-es="Plazo del Préstamo (Años)">Loan Term (Years)</label>
                   <span class="slider-value" id="loanTermValue">15</span>
                 </div>
-                <input type="range" id="loanTerm" min="5" max="30" step="1" value="15" oninput="syncSlider(this); debouncedCalculate();">
-                <div class="slider-range-labels"><span>5 yrs</span><span>30 yrs</span></div>
+                <input type="range" id="loanTerm" min="5" max="50" step="1" value="15" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>5 yrs</span><span>50 yrs</span></div>
+                <span class="hint-text" data-en="Germany allows up to 40-50 year terms" data-es="Alemania permite plazos de hasta 40-50 años">Germany allows up to 40-50 year terms</span>
               </div>
             </div>
           </div>
@@ -1064,8 +1065,9 @@
               <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
             </div>
             <div class="result-item">
-              <span class="result-label" data-en="Payback Period" data-es="Período de Retorno">Payback Period</span>
+              <span class="result-label" data-en="Cash Flow Breakeven" data-es="Punto de Equilibrio de Flujo">Cash Flow Breakeven</span>
               <span class="result-value" id="resultPayback">-</span>
+              <span class="hint-text" data-en="Year operational cash flow turns positive (before loan payoff)" data-es="Año cuando el flujo de efectivo operativo se vuelve positivo">Year operational cash flow turns positive</span>
               <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
             </div>
             <div class="result-item">
@@ -1527,7 +1529,9 @@
     }
 
     function executeCalculation() {
-      const projectName = document.getElementById('projectName').value || 'Investment Project';
+      // Sanitize project name to prevent XSS if displayed in emails/PDFs
+      let projectName = document.getElementById('projectName').value || 'Investment Project';
+      projectName = projectName.replace(/[<>]/g, '').trim();
       const constructionCost = parseFloat(document.getElementById('constructionCost').value);
       const landCost = parseFloat(document.getElementById('landCost').value) || 0;
       const propertySize = parseFloat(document.getElementById('propertySize').value);
