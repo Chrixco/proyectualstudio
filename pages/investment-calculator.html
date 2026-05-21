@@ -1656,14 +1656,31 @@
         propertyValue = propertyValue * (1 + appreciation);
       }
 
-      // Calculate total profit: operational profit + appreciation gain
+      // Calculate profit based on investment purpose
       const appreciationGain = propertyValue - totalProjectCost;
-      const totalProfit = cumulativeProfit + appreciationGain;
+      let totalProfit = 0;
+      let annualizedROI = 0;
 
-      // Calculate annualized ROI on down payment (cash-on-cash return)
-      // Based on operational income only, not property appreciation (unrealized gain)
-      const averageAnnualOperationalProfit = years > 0 ? (cumulativeProfit / years) : 0;
-      const annualizedROI = years > 0 ? ((averageAnnualOperationalProfit / downPayment) * 100) : 0;
+      if (currentProjectPurpose === 'sale') {
+        // SALE MODE: Profit = Sale Price - Initial Investment
+        totalProfit = appreciationGain;
+        // ROI = appreciation gain / initial investment, annualized
+        const annualAppreciation = years > 0 ? (appreciationGain / years) : 0;
+        annualizedROI = years > 0 ? ((annualAppreciation / downPayment) * 100) : 0;
+      } else if (currentProjectPurpose === 'rent') {
+        // RENT MODE: Profit = cumulative operational income only (no appreciation)
+        totalProfit = cumulativeProfit;
+        // ROI = annual operational profit / initial investment
+        const averageAnnualOperationalProfit = years > 0 ? (cumulativeProfit / years) : 0;
+        annualizedROI = years > 0 ? ((averageAnnualOperationalProfit / downPayment) * 100) : 0;
+      } else {
+        // BOTH MODE: Profit = operational income + appreciation gain
+        totalProfit = cumulativeProfit + appreciationGain;
+        // ROI = blended return from both sources
+        const totalReturn = totalProfit;
+        annualizedROI = years > 0 ? ((totalReturn / years / downPayment) * 100) : 0;
+      }
+
       const roi = annualizedROI.toFixed(2);
 
       // Format currency with proper locale
@@ -1704,9 +1721,9 @@
       badge.style.color = '#000000';
       hasCalculated = true;
 
-      // Draw charts
+      // Draw charts (pass purpose to determine what to display)
       drawCashFlowChart(yearLabels, cashFlows, propertyValues, plotValues, currency);
-      drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency);
+      drawProfitBreakdownChart(annualRental, annualOperatingCost, totalProfit, currency, currentProjectPurpose);
     }
 
     function drawCashFlowChart(labels, data, propertyValues, plotValues, currency) {
@@ -1840,7 +1857,7 @@
       });
     }
 
-    function drawProfitBreakdownChart(rental, operating, total, currency) {
+    function drawProfitBreakdownChart(rental, operating, total, currency, purpose) {
       const ctx = document.getElementById('profitBreakdownChart').getContext('2d');
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
 
@@ -1848,27 +1865,52 @@
       const labelRentalIncome = currentLang === 'en' ? 'Annual Rental Income' : 'Ingreso Anual de Alquiler';
       const labelOperatingCosts = currentLang === 'en' ? 'Operating Costs' : 'Costos Operativos';
       const labelNetProfit = currentLang === 'en' ? 'Net Profit' : 'Ganancia Neta';
+      const labelAppreciation = currentLang === 'en' ? 'Property Appreciation' : 'Apreciación de Propiedad';
 
       if (profitBreakdownChart) {
         profitBreakdownChart.destroy();
       }
 
+      // Determine what to show based on purpose
+      let chartLabels = [];
+      let chartData = [];
+      let chartColors = [];
+
+      if (purpose === 'sale') {
+        // SALE: Only show appreciation gain
+        chartLabels = [labelAppreciation];
+        chartData = [Math.max(0, total)];
+        chartColors = ['rgba(144, 238, 144, 0.7)'];
+      } else if (purpose === 'rent') {
+        // RENT: Show rental income, operating costs, net profit
+        chartLabels = [labelRentalIncome, labelOperatingCosts, labelNetProfit];
+        chartData = [rental, operating, Math.max(0, rental - operating)];
+        chartColors = [accentColor, 'rgba(255, 107, 107, 0.7)', 'rgba(144, 238, 144, 0.7)'];
+      } else {
+        // BOTH: Show rental income, operating costs, net profit (but this is blended)
+        chartLabels = [labelRentalIncome, labelOperatingCosts, labelAppreciation];
+        chartData = [rental, operating, Math.max(0, total - rental + operating)];
+        chartColors = [accentColor, 'rgba(255, 107, 107, 0.7)', 'rgba(144, 238, 144, 0.7)'];
+      }
+
+      // Determine border colors based on purpose
+      let borderColors = [];
+      if (purpose === 'sale') {
+        borderColors = ['#90EE90'];
+      } else if (purpose === 'rent') {
+        borderColors = [accentColor, '#FF6B6B', '#90EE90'];
+      } else {
+        borderColors = [accentColor, '#FF6B6B', '#90EE90'];
+      }
+
       profitBreakdownChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: [labelRentalIncome, labelOperatingCosts, labelNetProfit],
+          labels: chartLabels,
           datasets: [{
-            data: [rental, operating, rental - operating],
-            backgroundColor: [
-              accentColor,
-              'rgba(255, 107, 107, 0.7)',
-              'rgba(144, 238, 144, 0.7)'
-            ],
-            borderColor: [
-              accentColor,
-              '#FF6B6B',
-              '#90EE90'
-            ],
+            data: chartData,
+            backgroundColor: chartColors,
+            borderColor: borderColors,
             borderWidth: 2
           }]
         },
