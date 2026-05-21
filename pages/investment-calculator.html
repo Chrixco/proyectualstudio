@@ -1006,11 +1006,12 @@
 
             <div class="slider-field">
               <div class="slider-header">
-                <label data-en="Years to Analyze" data-es="Años a Analizar">Years to Analyze</label>
+                <label id="yearsAnalyzeLabel" data-en="Years to Analyze" data-es="Años a Analizar">Years to Analyze</label>
                 <span class="slider-value" id="yearsValue">10</span>
               </div>
               <input type="range" id="years" min="1" max="30" step="1" value="10" oninput="syncSlider(this); debouncedCalculate();">
               <div class="slider-range-labels"><span>1 yr</span><span>30 yrs</span></div>
+              <small id="yearsAnalyzeHint" class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Projection period for cash flow and profit calculations" data-es="Período de proyección para cálculos de flujo y ganancia">Projection period for cash flow and profit calculations</small>
             </div>
           </div>
         </div>
@@ -1094,8 +1095,9 @@
               <span class="result-value" id="resultTotalToBank">-</span>
             </div>
             <div class="result-item" style="border-top: 2px solid rgba(255, 213, 0, 0.3); padding-top: 0.75rem; margin-top: 0.75rem;">
-              <span class="result-label" data-en="Monthly Rental Income" data-es="Ingreso Mensual por Alquiler">Monthly Rental Income</span>
+              <span class="result-label" id="monthlyRentalLabel" data-en="Monthly Rental Income" data-es="Ingreso Mensual por Alquiler">Monthly Rental Income</span>
               <span class="result-value" id="resultMonthlyRental">-</span>
+              <small class="result-context" id="monthlyRentalContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Monthly income from rental" data-es="Ingreso mensual del alquiler">Monthly income from rental</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Monthly Net Cash Flow" data-es="Flujo de Caja Neto Mensual">Monthly Net Cash Flow</span>
@@ -1119,15 +1121,16 @@
               <span class="result-value" id="resultROI">-</span>
               <small class="result-context" id="roiContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
             </div>
-            <div class="result-item">
-              <span class="result-label" data-en="Cash Flow Breakeven" data-es="Punto de Equilibrio de Flujo">Cash Flow Breakeven</span>
+            <div class="result-item" id="breakEvenItem">
+              <span class="result-label" id="breakEvenLabel" data-en="Cash Flow Breakeven" data-es="Punto de Equilibrio de Flujo">Cash Flow Breakeven</span>
               <span class="result-value" id="resultPayback">-</span>
-              <span class="hint-text" data-en="Year operational cash flow turns positive (before loan payoff)" data-es="Año cuando el flujo de efectivo operativo se vuelve positivo">Year operational cash flow turns positive</span>
-              <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
+              <span class="hint-text" id="breakEvenHint" data-en="Year operational cash flow turns positive (before loan payoff)" data-es="Año cuando el flujo de efectivo operativo se vuelve positivo">Year operational cash flow turns positive</span>
+              <small class="result-context" id="breakEvenContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
             </div>
             <div class="result-item">
-              <span class="result-label" data-en="Property Value (end)" data-es="Valor de Propiedad (final)">Property Value (end)</span>
+              <span class="result-label" id="propertyValueLabel" data-en="Property Value (end)" data-es="Valor de Propiedad (final)">Property Value (end)</span>
               <span class="result-value" id="resultPropertyValue">-</span>
+              <small class="result-context" id="propertyValueContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;"></small>
             </div>
           </div>
 
@@ -1393,6 +1396,26 @@
         titleLabel.textContent = currentLang === 'en' ? '4. Income, Returns & Appreciation' : '4. Ingresos, Retornos y Apreciación';
         titleLabel.setAttribute('data-en', '4. Income, Returns & Appreciation');
         titleLabel.setAttribute('data-es', '4. Ingresos, Retornos y Apreciación');
+      }
+
+      // Update Years to Analyze label and hint based on purpose
+      const yearsLabel = document.getElementById('yearsAnalyzeLabel');
+      const yearsHint = document.getElementById('yearsAnalyzeHint');
+      if (purpose === 'sale') {
+        yearsLabel.textContent = currentLang === 'en' ? 'Years Until Sale' : 'Años Hasta la Venta';
+        yearsHint.textContent = currentLang === 'en' ? 'Time period until you sell the property' : 'Período de tiempo hasta que vendes la propiedad';
+        yearsLabel.setAttribute('data-en', 'Years Until Sale');
+        yearsLabel.setAttribute('data-es', 'Años Hasta la Venta');
+      } else if (purpose === 'rent') {
+        yearsLabel.textContent = currentLang === 'en' ? 'Analysis Period' : 'Período de Análisis';
+        yearsHint.textContent = currentLang === 'en' ? 'Years of rental income to analyze and project' : 'Años de ingresos de alquiler a analizar y proyectar';
+        yearsLabel.setAttribute('data-en', 'Analysis Period');
+        yearsLabel.setAttribute('data-es', 'Período de Análisis');
+      } else {
+        yearsLabel.textContent = currentLang === 'en' ? 'Holding Period' : 'Período de Tenencia';
+        yearsHint.textContent = currentLang === 'en' ? 'Years of rental income + time until sale' : 'Años de ingresos de alquiler + tiempo hasta la venta';
+        yearsLabel.setAttribute('data-en', 'Holding Period');
+        yearsLabel.setAttribute('data-es', 'Período de Tenencia');
       }
 
       // Show/hide rental income section based on purpose
@@ -1870,7 +1893,38 @@
       document.getElementById('roiLabel').textContent = roiMetricLabel;
       document.getElementById('roiContext').textContent = roiContextText;
 
-      document.getElementById('resultPayback').textContent = paybackYear ? `${paybackYear} years` : 'Not in analysis period';
+      // Update breakeven display based on mode
+      const breakEvenItem = document.getElementById('breakEvenItem');
+      const breakEvenLabel = document.getElementById('breakEvenLabel');
+      const breakEvenHint = document.getElementById('breakEvenHint');
+      const breakEvenContext = document.getElementById('breakEvenContext');
+
+      if (currentProjectPurpose === 'sale') {
+        // SALE mode: Breakeven is meaningless - show N/A
+        breakEvenLabel.textContent = currentLang === 'en' ? 'Investment Return' : 'Retorno de Inversión';
+        document.getElementById('resultPayback').textContent = currentLang === 'en' ? 'One-time sale' : 'Venta única';
+        breakEvenHint.textContent = currentLang === 'en' ? 'No annual cash flow' : 'Sin flujo de caja anual';
+        breakEvenContext.textContent = currentLang === 'en' ? 'Profit realized at sale' : 'Ganancia realizada en la venta';
+      } else {
+        // RENT/BOTH modes: Show actual breakeven
+        breakEvenLabel.textContent = currentLang === 'en' ? 'Cash Flow Breakeven' : 'Punto de Equilibrio de Flujo';
+        document.getElementById('resultPayback').textContent = paybackYear ? `${paybackYear} years` : 'Not in analysis period';
+        breakEvenHint.textContent = currentLang === 'en' ? 'Year operational cash flow turns positive (before loan payoff)' : 'Año cuando el flujo de efectivo operativo se vuelve positivo';
+        breakEvenContext.textContent = currentLang === 'en' ? 'Breakeven on initial investment' : 'Equilibrio en inversión inicial';
+      }
+
+      // Update Property Value label based on mode
+      const propertyValueLabel = document.getElementById('propertyValueLabel');
+      const propertyValueContext = document.getElementById('propertyValueContext');
+
+      if (currentProjectPurpose === 'sale') {
+        propertyValueLabel.textContent = currentLang === 'en' ? 'Selling Price' : 'Precio de Venta';
+        propertyValueContext.textContent = currentLang === 'en' ? 'Gross sale price (explicit input)' : 'Precio bruto de venta (entrada explícita)';
+      } else {
+        propertyValueLabel.textContent = currentLang === 'en' ? 'Property Value (with appreciation)' : 'Valor de Propiedad (con apreciación)';
+        propertyValueContext.textContent = currentLang === 'en' ? 'Calculated based on appreciation rate' : 'Calculado basado en tasa de apreciación';
+      }
+
       document.getElementById('resultPropertyValue').textContent = formatter.format(propertyValue);
 
       // Update property breakdown
@@ -1919,6 +1973,17 @@
         document.getElementById('resultTotalToBank').textContent = formatter.format(totalAmountToPay);
         document.getElementById('resultMonthlyRental').textContent = monthlyRental > 0 ? formatter.format(monthlyRental) : '$ 0';
         document.getElementById('resultMonthlyNetCash').textContent = formatter.format(monthlyNetCash);
+
+        // Update Monthly Rental label based on mode
+        const monthlyRentalLabel = document.getElementById('monthlyRentalLabel');
+        const monthlyRentalContext = document.getElementById('monthlyRentalContext');
+        if (currentProjectPurpose === 'sale') {
+          monthlyRentalLabel.textContent = currentLang === 'en' ? 'Monthly Rental Income' : 'Ingreso Mensual por Alquiler';
+          monthlyRentalContext.textContent = currentLang === 'en' ? 'N/A - Not applicable in sale mode' : 'N/A - No aplicable en modo venta';
+        } else {
+          monthlyRentalLabel.textContent = currentLang === 'en' ? 'Monthly Rental Income' : 'Ingreso Mensual por Alquiler';
+          monthlyRentalContext.textContent = currentLang === 'en' ? 'Monthly income from rental' : 'Ingreso mensual del alquiler';
+        }
 
         // Display loan term - this is when the loan is contractually paid off
         // Also note: if monthlyNetCash > 0, rental income covers loan payment
@@ -1997,52 +2062,62 @@
         mainLineTension = 0.4;
       }
 
+      // Build datasets array - only include appreciation lines for rent and both modes
+      const datasets = [
+        {
+          label: labelCumulativeProfit,
+          data: data,
+          borderColor: mainLineColor,
+          backgroundColor: mainLineBackColor,
+          borderWidth: 3,
+          fill: true,
+          tension: mainLineTension,
+          pointRadius: 5,
+          pointBackgroundColor: mainLineColor,
+          pointBorderColor: '#FFFFFF',
+          pointBorderWidth: 2,
+          yAxisID: 'y'
+        }
+      ];
+
+      // In SALE mode, appreciation is NOT calculated (explicit selling price used instead)
+      // So don't show misleading appreciation lines
+      if (investmentPurpose !== 'sale') {
+        datasets.push(
+          {
+            label: labelPropertyValue,
+            data: propertyValues,
+            borderColor: '#90EE90',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4,
+            pointRadius: 3,
+            pointBackgroundColor: '#90EE90',
+            pointBorderColor: '#90EE90',
+            borderDash: [5, 5],
+            yAxisID: 'y1'
+          },
+          {
+            label: labelPlotValue,
+            data: plotValues,
+            borderColor: '#FFB347',
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4,
+            pointRadius: 2,
+            pointBackgroundColor: '#FFB347',
+            pointBorderColor: '#FFB347',
+            borderDash: [10, 5],
+            yAxisID: 'y1'
+          }
+        );
+      }
+
       cashFlowChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: labels,
-          datasets: [
-            {
-              label: labelCumulativeProfit,
-              data: data,
-              borderColor: mainLineColor,
-              backgroundColor: mainLineBackColor,
-              borderWidth: 3,
-              fill: true,
-              tension: mainLineTension,
-              pointRadius: 5,
-              pointBackgroundColor: mainLineColor,
-              pointBorderColor: '#FFFFFF',
-              pointBorderWidth: 2,
-              yAxisID: 'y'
-            },
-            {
-              label: labelPropertyValue,
-              data: propertyValues,
-              borderColor: '#90EE90',
-              borderWidth: 2,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 3,
-              pointBackgroundColor: '#90EE90',
-              pointBorderColor: '#90EE90',
-              borderDash: [5, 5],
-              yAxisID: 'y1'
-            },
-            {
-              label: labelPlotValue,
-              data: plotValues,
-              borderColor: '#FFB347',
-              borderWidth: 2,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 2,
-              pointBackgroundColor: '#FFB347',
-              pointBorderColor: '#FFB347',
-              borderDash: [10, 5],
-              yAxisID: 'y1'
-            }
-          ]
+          datasets: datasets
         },
         options: {
           responsive: true,
@@ -2218,6 +2293,7 @@
 
       // Initialize purpose selection
       document.getElementById('purpose-rent').classList.add('active');
+      selectPurpose(currentProjectPurpose);  // Update mode-specific labels
       updatePurposePercentages();
 
       // Auto-calculate on page load
