@@ -230,9 +230,14 @@
                  data-es="Mensaje">Message</label>
           <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
         </div>
-        <button type="submit" class="brutal-btn-yellow brutal-btn-lg w-100 rounded-4" id="submitBtn"
-                data-en="Send Message"
-                data-es="Enviar Mensaje">Send Message</button>
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <button type="submit" class="brutal-btn-yellow brutal-btn-lg flex-grow-1 rounded-4" id="submitBtn"
+                  data-en="Send Message"
+                  data-es="Enviar Mensaje">Send Message</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm rounded-4" id="debugBtn" title="Fill form with test data" style="padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: bold;">
+            🐛 Debug
+          </button>
+        </div>
       </form>
     </div>
   </main>
@@ -325,36 +330,38 @@
         return;
       }
 
-      // Disable submit button
-      submitBtn.disabled = true;
-      showFormStatus(currentLang === 'en' ? 'Sending...' : 'Enviando...', 'info');
+      // Build email subject and body with form information
+      const emailSubject = encodeURIComponent(
+        currentLang === 'en'
+          ? `New Contact Request from ${name}`
+          : `Nueva Solicitud de Contacto de ${name}`
+      );
 
-        }
-      })
-      .then(response => {
-        showFormStatus(
-          currentLang === 'en'
-            ? '✅ Message sent successfully! Thank you for contacting us.'
-            : '✅ ¡Mensaje enviado exitosamente! Gracias por contactarnos.',
-          'success'
-        );
+      // Format email body with all form information
+      const emailBody = encodeURIComponent(
+        `${currentLang === 'en' ? 'Name:' : 'Nombre:'} ${name}\n` +
+        `${currentLang === 'en' ? 'Email:' : 'Correo:'} ${email}\n` +
+        `${currentLang === 'en' ? 'Phone:' : 'Teléfono:'} ${phone || (currentLang === 'en' ? 'Not provided' : 'No proporcionado')}\n` +
+        `${currentLang === 'en' ? 'Preferred Contact:' : 'Contacto Preferido:'} ${preferredContact}\n\n` +
+        `${currentLang === 'en' ? 'Message:' : 'Mensaje:'}\n${message}`
+      );
 
-        // Clear form
+      // Open default email client with pre-filled information
+      const mailtoLink = `mailto:proyectualstudio@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+      window.location.href = mailtoLink;
+
+      // Show success message
+      showFormStatus(
+        currentLang === 'en'
+          ? '✅ Opening your email client... Please send the email to confirm.'
+          : '✅ Abriendo tu cliente de correo... Por favor envía el correo para confirmar.',
+        'success'
+      );
+
+      // Clear form after a short delay
+      setTimeout(() => {
         document.getElementById('contactForm').reset();
-
-        // Re-enable button
-        submitBtn.disabled = false;
-      })
-      .catch(error => {
-        console.error('❌ Error submitting form:', error);
-        showFormStatus(
-          currentLang === 'en'
-            ? '❌ Error sending message. Please try again.'
-            : '❌ Error al enviar el mensaje. Por favor intenta de nuevo.',
-          'error'
-        );
-        submitBtn.disabled = false;
-      });
+      }, 1500);
     }
 
     document.addEventListener('DOMContentLoaded', () => {

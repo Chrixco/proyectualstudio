@@ -1673,8 +1673,7 @@
       calculateProduction();
     }
 
-    // EmailJS Configuration (add your credentials here)
-    // emailjs.init('YOUR_PUBLIC_KEY');
+    // EmailJS credentials are now handled securely by the backend
 
     function openSolarModal() {
       const annualSavings = parseInt(document.getElementById('annualSavingsDisplay').textContent.replace(/,/g, ''));
@@ -1753,30 +1752,31 @@
         submission_date: new Date().toLocaleDateString()
       };
 
-      // Send email via EmailJS
-      if (typeof emailjs === 'undefined' || !emailjs) {
-        showModalStatus(currentLang === 'en' ? 'Email service not configured. Please contact us at proyectualstudio@gmail.com' : 'Servicio de email no configurado. Contáctanos en proyectualstudio@gmail.com', 'error');
-        button.disabled = false;
-        button.textContent = originalText;
-        return;
-      }
-
-      // TODO: Replace service_id and template_id with your EmailJS credentials
-      emailjs.send(
-        'service_solar_design', // Your EmailJS Service ID
-        'template_solar_lead', // Your EmailJS Template ID
-        emailParams
-      ).then(() => {
-        showModalStatus(currentLang === 'en' ? 'Email sent successfully! We will contact you soon.' : '¡Email enviado con éxito! Nos contactaremos pronto.', 'success');
-        setTimeout(() => {
-          closeSolarModal();
-        }, 2000);
-      }).catch((error) => {
-        console.error('EmailJS Error:', error);
-        showModalStatus(currentLang === 'en' ? 'Failed to send email. Please try again or contact us directly.' : 'Error al enviar. Por favor intenta de nuevo.', 'error');
-        button.disabled = false;
-        button.textContent = originalText;
-      });
+      // Send email via secure backend endpoint
+      fetch('http://localhost:3001/send-solar-design-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ emailParams })
+      }).then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showModalStatus(currentLang === 'en' ? 'Email sent successfully! We will contact you soon.' : '¡Email enviado con éxito! Nos contactaremos pronto.', 'success');
+            setTimeout(() => {
+              closeSolarModal();
+            }, 2000);
+          } else {
+            showModalStatus(currentLang === 'en' ? 'Failed to send email. Please try again or contact us directly.' : 'Error al enviar. Por favor intenta de nuevo.', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+        }).catch((error) => {
+          console.error('Email send error:', error);
+          showModalStatus(currentLang === 'en' ? 'Failed to send email. Please try again or contact us directly.' : 'Error al enviar. Por favor intenta de nuevo.', 'error');
+          button.disabled = false;
+          button.textContent = originalText;
+        });
     }
 
     function showModalStatus(message, type) {

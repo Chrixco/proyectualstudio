@@ -20,7 +20,31 @@ cd backend
 npm install
 ```
 
-### 2. Start the Service
+### 2. Configure Environment Variables
+
+Copy `.env.example` to `.env` and fill in your EmailJS credentials:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and add:
+```
+EMAILJS_PUBLIC_KEY=your_public_key_from_emailjs
+EMAILJS_PRIVATE_KEY=your_private_key_from_emailjs
+EMAILJS_SERVICE_ID=service_solar_design
+EMAILJS_TEMPLATE_ID=template_solar_lead
+```
+
+**How to get EmailJS credentials:**
+1. Go to https://www.emailjs.com/ and create an account
+2. Go to Account → API Keys to get your Public and Private keys
+3. Create a Service (Gmail, Outlook, etc.) and copy the Service ID
+4. Create an Email Template and copy the Template ID
+
+⚠️ **SECURITY:** Never commit `.env` to git. Keep it locally only.
+
+### 3. Start the Service
 
 **Development:**
 ```bash
@@ -36,7 +60,45 @@ The service will run on `http://localhost:3001`
 
 ## API Endpoints
 
-### 1. Solar Calculator PDF
+### 1. Send Solar Design Email (Secure)
+**POST** `/send-solar-design-email`
+
+Securely sends solar design inquiry emails via EmailJS with credentials stored server-side.
+
+```json
+{
+  "emailParams": {
+    "to_email": "proyectualstudio@gmail.com",
+    "from_name": "John Doe",
+    "from_email": "john@example.com",
+    "phone": "+1234567890",
+    "company": "Acme Corp",
+    "location": "Cuenca, Ecuador",
+    "roof_area": "50 m²",
+    "panel_type": "Standard (18%)",
+    "system_cost": "$150,000",
+    "annual_savings": "$1,800",
+    "annual_production": "7,250 kWh/year",
+    "payback_period": "8.3 years",
+    "thirty_year_savings": "$32,400",
+    "message": "Interested in solar installation",
+    "submission_date": "5/25/2026"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Email sent successfully",
+  "messageId": 200
+}
+```
+
+⚠️ **Security Note:** EmailJS credentials are stored in environment variables on the server, NOT in client-side code.
+
+### 2. Solar Calculator PDF
 **POST** `/generate-solar-pdf`
 
 ```json
@@ -211,6 +273,23 @@ window.generateCalculatorPDF = async function(email) {
   }
 };
 ```
+
+## Security
+
+### Email Credential Protection
+
+**Before:** EmailJS Service ID and Template ID were hardcoded in client-side JavaScript, exposing them to anyone viewing the page source.
+
+**After:** 
+- Credentials are stored in `.env` file on the backend (never committed to git)
+- Client calls `/send-solar-design-email` endpoint which handles email sending securely
+- EmailJS credentials are initialized server-side only
+
+**Best Practices:**
+- Never commit `.env` to version control
+- Store sensitive credentials in environment variables
+- Use backend endpoints for API calls that require credentials
+- Rotate EmailJS keys periodically
 
 ## Troubleshooting
 

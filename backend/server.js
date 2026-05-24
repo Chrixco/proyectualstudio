@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const emailjs = require('@emailjs/nodejs');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -11,6 +12,14 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
+
+// Initialize EmailJS with credentials from environment variables
+if (process.env.EMAILJS_PUBLIC_KEY && process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID) {
+  emailjs.init({
+    publicKey: process.env.EMAILJS_PUBLIC_KEY,
+    privateKey: process.env.EMAILJS_PRIVATE_KEY,
+  });
+}
 
 // Color palette matching the website
 const COLORS = {
@@ -268,6 +277,47 @@ app.post('/generate-budget-pdf', (req, res) => {
   } catch (error) {
     console.error('Budget PDF generation error:', error);
     res.status(500).json({ error: 'Failed to generate PDF', details: error.message });
+  }
+});
+
+// Solar Design Email (secure - credentials in environment variables)
+app.post('/send-solar-design-email', async (req, res) => {
+  try {
+    if (!process.env.EMAILJS_PUBLIC_KEY || !process.env.EMAILJS_SERVICE_ID || !process.env.EMAILJS_TEMPLATE_ID) {
+      return res.status(500).json({
+        success: false,
+        error: 'Email service not configured on server'
+      });
+    }
+
+    const { emailParams } = req.body;
+
+    if (!emailParams || !emailParams.from_email || !emailParams.from_name) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required email parameters'
+      });
+    }
+
+    const response = await emailjs.send(
+      process.env.EMAILJS_SERVICE_ID,
+      process.env.EMAILJS_TEMPLATE_ID,
+      emailParams
+    );
+
+    res.json({
+      success: true,
+      message: 'Email sent successfully',
+      messageId: response.status
+    });
+
+  } catch (error) {
+    console.error('Email sending error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to send email',
+      details: error.message
+    });
   }
 });
 
