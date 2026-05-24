@@ -429,13 +429,15 @@
     <div class="text-center">
       <div id="loader-text" class="loader-text landing-page-title">Proyectual Studio</div>
     </div>
-    <h1 class="loader-subtitle landing-page-subtitle">architecture and urban design</h1>
+    <h1 class="loader-subtitle landing-page-subtitle" data-en="Architecture and urbanism that thinks of you and the planet." data-es="Arquitectura y urbanismo que piensa en ti y en el planeta.">Architecture and urbanism that thinks of you and the planet.</h1>
     <div class="text-center">
-      <div class="loader-sub landing-page-description">
-        Everyone deserves spaces that respect people and the planet.
-      </div>
       <div id="enter-text" class="enter-text brutal-btn-yellow brutal-btn-lg">[ Enter Site ]</div>
     </div>
+  </div>
+
+  <!-- Language Toggle Button -->
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <button id="lang-toggle" style="padding: 0.6rem 1.2rem; background: var(--index-blue); color: #fff; border: 2px solid var(--index-blue); border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Space Mono', monospace; font-size: 0.9rem; transition: all 0.3s ease;">EN / ES</button>
   </div>
 
   <footer class="footer text-center py-3">
@@ -524,6 +526,27 @@
         enterText.click();
       }
     });
+
+    // Language switching
+    let currentLang = localStorage.getItem('lang') || 'en';
+    const langToggle = document.getElementById('lang-toggle');
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+
+      document.querySelectorAll('[data-en][data-es]').forEach(el => {
+        el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-es');
+      });
+    }
+
+    langToggle.addEventListener('click', () => {
+      const newLang = currentLang === 'en' ? 'es' : 'en';
+      updateLanguage(newLang);
+    });
+
+    // Initialize language on page load
+    updateLanguage(currentLang);
 
   </script>
 </body>

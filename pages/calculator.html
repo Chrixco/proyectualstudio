@@ -1074,7 +1074,7 @@
       <p style="margin-bottom: 1.5rem; color: #cccccc;" data-en="Enter your email to receive the PDF of your calculation" data-es="Ingresa tu email para recibir el PDF de tu cálculo">Enter your email to receive the PDF of your calculation</p>
       <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
       <div class="email-modal-buttons">
-        <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
+        <!-- <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button> -->
         <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
       </div>
     </div>
@@ -1703,51 +1703,14 @@
         return;
       }
 
-      // Send email to Discord
-      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
-
-      const discordMessage = {
-        content: `📊 New Budget Calculator PDF Download Request`,
-        embeds: [{
-          title: '💰 Budget Calculator PDF Request',
-          color: 16760576, // Yellow color
-          fields: [
-            { name: 'Email', value: email, inline: false },
-            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
-            { name: 'Project Type', value: document.getElementById('summaryDiscipline')?.textContent || 'Not specified', inline: true },
-            { name: 'Location', value: document.getElementById('summaryLocation')?.textContent || 'Not specified', inline: true },
-            { name: 'Estimated Cost', value: document.getElementById('totalCost')?.textContent || 'Not calculated', inline: true }
-          ]
-        }]
-      };
-
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
-      }).catch(err => console.error('Discord webhook error:', err));
 
       // Send simple email log messages
-      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
-      const downloadsWebhook = 'https://discord.com/api/webhooks/1505912685554827345/FMaUeG8eGXdrB3MuHbCa-7UIpZ9h2d0kQItdRvBzNnBqQNpltlYz2yZNDTonngDbbZ8X';
-
-      const emailLogMessage = {
-        content: `\`${email}\` - Budget Calculator (${new Date().toLocaleString()})`
-      };
-
-      // Send to emails_databases
-      fetch(emailDatabaseWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailLogMessage)
-      }).catch(err => console.error('Discord email log error:', err));
 
       // Send to downloads channel
       fetch(downloadsWebhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(emailLogMessage)
-      }).catch(err => console.error('Discord downloads error:', err));
 
       // Close modal and open print dialog
       window.closeEmailModal();

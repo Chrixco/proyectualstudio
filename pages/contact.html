@@ -329,45 +329,6 @@
       submitBtn.disabled = true;
       showFormStatus(currentLang === 'en' ? 'Sending...' : 'Enviando...', 'info');
 
-      // Send to Discord webhooks
-      const webhookUrl = 'https://discord.com/api/webhooks/1505911786598305852/MNhb9RAN-1tVkMBYXrrAsRAqrw2FtdLnjhhTjlqinrk2C5g6_zCDIJ3KiuapCXUDgwQ8';
-      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
-
-      const discordMessage = {
-        content: `📬 New Contact Form Submission from ${name}`,
-        embeds: [{
-          title: '💬 Contact Form Message',
-          color: 16760576, // Yellow color
-          fields: [
-            { name: '👤 Name', value: name, inline: true },
-            { name: '📧 Email', value: email, inline: true },
-            ...(phone ? [{ name: '📱 Phone', value: phone, inline: true }] : []),
-            { name: '🎯 Preferred Contact', value: preferredContact, inline: true },
-            { name: '💬 Message', value: message, inline: false },
-            { name: '📅 Submitted', value: new Date().toLocaleString(), inline: false }
-          ]
-        }]
-      };
-
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
-      })
-      .then(response => {
-        if (response.ok) {
-          // Also send email to emails_databases channel
-          const emailLogMessage = {
-            content: `\`${email}\` - Contact Form (${new Date().toLocaleString()})`
-          };
-
-          return fetch(emailDatabaseWebhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(emailLogMessage)
-          });
-        } else {
-          throw new Error('Discord webhook error');
         }
       })
       .then(response => {

@@ -695,61 +695,6 @@
       submitBtn.disabled = true;
       showStatus(currentLang === 'en' ? 'Sending...' : 'Enviando...', 'info');
 
-      // Send to Discord webhook
-      const webhookUrl = 'https://discord.com/api/webhooks/1505911523003076678/16NKDREJeWs8hLBBpUoOJLJkP6P1w--Or-hjJ5223OAxqP5fhnNrLcymkMax2UVWPy-b';
-
-      const discordMessage = {
-        content: `📝 New Proposal Request - ${fieldOfInterest}`,
-        embeds: [{
-          title: '🚀 Lead Form Submission',
-          color: 16760576,
-          fields: [
-            { name: '📋 Calculator Type', value: currentCalculatorType, inline: false },
-            { name: '👤 Name', value: name, inline: true },
-            { name: '📧 Email', value: email, inline: true },
-            { name: '🏢 Field of Interest', value: fieldOfInterest, inline: true },
-            ...(phone ? [{ name: '📱 Phone', value: phone, inline: true }] : []),
-            ...(company ? [{ name: '🏛️ Company', value: company, inline: true }] : []),
-            { name: '🎯 Preferred Contact', value: preferredContact, inline: true },
-            { name: '⏰ Project Timeline', value: projectTimeline, inline: true },
-            ...(message ? [{ name: '💬 Message', value: message, inline: false }] : []),
-          ],
-          footer: { text: `Submitted: ${new Date().toLocaleString()}` }
-        }]
-      };
-
-      if (currentCalculatorData && currentCalculatorData.summary && Object.keys(currentCalculatorData.summary).length > 0) {
-        const summaryFields = Object.entries(currentCalculatorData.summary).map(([key, value]) => ({
-          name: formatLabel(key),
-          value: String(value),
-          inline: true
-        }));
-
-        discordMessage.embeds[0].fields.push(
-          { name: '📊 Project Details', value: '​', inline: false },
-          ...summaryFields
-        );
-      }
-
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
-      })
-      .then(response => {
-        if (response.ok) {
-          const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
-          const emailLogMessage = {
-            content: `\`${email}\` - Lead Form (${new Date().toLocaleString()})`
-          };
-
-          return fetch(emailDatabaseWebhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(emailLogMessage)
-          });
-        } else {
-          throw new Error('Discord webhook error');
         }
       })
       .then(() => {

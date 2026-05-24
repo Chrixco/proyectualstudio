@@ -1208,9 +1208,9 @@
               <button onclick="navigateToLeadForm()" class="cta-final" data-en="Get Solar Design" data-es="Obtener Diseño Solar">
                 Get Solar Design
               </button>
-              <button onclick="openEmailModal()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
+              <!-- <button onclick="openEmailModal()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -1903,55 +1903,14 @@
         return;
       }
 
-      // Send email to Discord
-      const webhookUrl = 'https://discord.com/api/webhooks/1505909401234575400/pgeD0thJkVFEDTY1pj5I6Pb_EPxeHpt41M4thN6KnC9qYnjDFaaZR1DfHhvs30dNFd3f';
-
-      const totalCost = parseInt(document.getElementById('totalCostDisplay').textContent.replace(/,/g, '')) || 0;
-      const annualSavings = parseInt(document.getElementById('annualSavingsDisplay').textContent.replace(/,/g, '')) || 0;
-      const location = solarState.location || 'Not specified';
-
-      const discordMessage = {
-        content: `📊 New Solar Calculator PDF Download Request`,
-        embeds: [{
-          title: '☀️ Solar Calculator PDF Request',
-          color: 16760576, // Yellow color
-          fields: [
-            { name: 'Email', value: email, inline: false },
-            { name: 'Timestamp', value: new Date().toISOString(), inline: false },
-            { name: 'Location', value: location, inline: true },
-            { name: 'System Cost', value: '$' + totalCost.toLocaleString(), inline: true },
-            { name: 'Annual Savings', value: '$' + annualSavings.toLocaleString(), inline: true }
-          ]
-        }]
-      };
-
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage)
-      }).catch(err => console.error('Discord webhook error:', err));
 
       // Send simple email log messages
-      const emailDatabaseWebhook = 'https://discord.com/api/webhooks/1505911011444654221/nmXNClq4ztpYiHmGORymiRZQdQRzpYxrUAm00CCVmsRvbXeR0TY2em8Gx7SgzJ17ROaY';
-      const downloadsWebhook = 'https://discord.com/api/webhooks/1505912685554827345/FMaUeG8eGXdrB3MuHbCa-7UIpZ9h2d0kQItdRvBzNnBqQNpltlYz2yZNDTonngDbbZ8X';
-
-      const emailLogMessage = {
-        content: `\`${email}\` - Solar Calculator (${new Date().toLocaleString()})`
-      };
-
-      // Send to emails_databases
-      fetch(emailDatabaseWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailLogMessage)
-      }).catch(err => console.error('Discord email log error:', err));
 
       // Send to downloads channel
       fetch(downloadsWebhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(emailLogMessage)
-      }).catch(err => console.error('Discord downloads error:', err));
 
       // Close modal
       window.closeEmailModal();
