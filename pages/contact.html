@@ -232,27 +232,27 @@
         </div>
 
         <!-- Security Section -->
-        <div class="mb-3" style="background: rgba(255, 213, 0, 0.05); padding: 1rem; border: 2px solid rgba(255, 213, 0, 0.3); border-radius: 4px;">
-          <label class="form-label fw-bold"
+        <div class="mb-3" style="background: #FFD500; padding: 1rem; border: 3px solid #000000; border-radius: 4px; box-shadow: 6px 6px 0px #000000;">
+          <label class="form-label fw-bold" style="color: #000000;"
                  data-en="Security Verification"
                  data-es="Verificación de Seguridad">Security Verification</label>
 
           <!-- I am human checkbox -->
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" id="humanCheck" name="humanCheck" required />
-            <label class="form-check-label" for="humanCheck"
+            <label class="form-check-label" for="humanCheck" style="color: #000000;"
                    data-en="I confirm I am human"
                    data-es="Confirmo que soy humano">I confirm I am human</label>
           </div>
 
           <!-- Math CAPTCHA -->
           <div id="captchaSection" style="display: none;">
-            <p id="captchaQuestion" style="font-weight: bold; color: #FFD500; margin-bottom: 1rem;">What is 5 + 3?</p>
+            <p id="captchaQuestion" style="font-weight: bold; color: #000000; margin-bottom: 1rem;">What is 5 + 3?</p>
 
             <!-- Answer display -->
             <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center;">
-              <div id="captchaDisplay" style="background: rgba(255, 213, 0, 0.2); border: 2px solid #FFD500; border-radius: 4px; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #FFFFFF; min-width: 100px; text-align: center;">-</div>
-              <button type="button" id="captchaBackspace" class="btn btn-sm btn-outline-warning" style="font-weight: bold;">⌫ Clear</button>
+              <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 4px; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
+              <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000;">⌫ Clear</button>
             </div>
 
             <!-- Number buttons (randomized) -->
@@ -350,16 +350,31 @@
       shuffled.forEach((num) => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'btn btn-outline-warning';
         button.textContent = num;
         button.style.fontWeight = 'bold';
         button.style.fontSize = '1.1rem';
         button.style.padding = '0.5rem';
+        button.style.background = '#000000';
+        button.style.color = '#FFD500';
+        button.style.border = '2px solid #000000';
+        button.style.borderRadius = '4px';
+        button.style.cursor = 'pointer';
+        button.style.transition = 'all 0.2s ease';
         button.dataset.number = num;
 
         button.addEventListener('click', (e) => {
           e.preventDefault();
           appendToAnswer(num);
+        });
+
+        button.addEventListener('mouseover', () => {
+          button.style.background = '#FFD500';
+          button.style.color = '#000000';
+        });
+
+        button.addEventListener('mouseout', () => {
+          button.style.background = '#000000';
+          button.style.color = '#FFD500';
         });
 
         buttonsContainer.appendChild(button);

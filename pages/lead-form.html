@@ -565,28 +565,28 @@
         </div>
 
         <!-- Simple Math CAPTCHA -->
-        <div class="form-section" style="background: rgba(255, 213, 0, 0.1); padding: 1.5rem; border-radius: 0.5rem; border: 2px solid #FFD500;">
+        <div class="form-section" style="background: #FFD500; padding: 1.5rem; border-radius: 0.5rem; border: 3px solid #000000; box-shadow: 6px 6px 0px #000000;">
           <div class="form-group">
-            <label style="font-weight: bold; color: #FFD500; display: block; margin-bottom: 1rem;" data-en="Security Verification" data-es="Verificación de Seguridad">Security Verification</label>
+            <label style="font-weight: bold; color: #000000; display: block; margin-bottom: 1rem;" data-en="Security Verification" data-es="Verificación de Seguridad">Security Verification</label>
 
             <!-- I am human checkbox -->
             <div style="margin-bottom: 1.5rem;">
-              <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-weight: bold;">
-                <input type="checkbox" id="humanCheck" name="humanCheck" required style="width: 20px; height: 20px; cursor: pointer; accent-color: #FFD500;" />
+              <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-weight: bold; color: #000000;">
+                <input type="checkbox" id="humanCheck" name="humanCheck" required style="width: 20px; height: 20px; cursor: pointer; accent-color: #000000;" />
                 <span data-en="I confirm I am human" data-es="Confirmo que soy humano">I confirm I am human</span>
               </label>
             </div>
 
             <!-- Math CAPTCHA -->
             <div id="captchaSection" style="display: none;">
-              <p id="captchaQuestion" style="margin: 0.5rem 0 1rem 0; color: #FFFFFF; font-size: 1.1rem; font-weight: bold;">
+              <p id="captchaQuestion" style="margin: 0.5rem 0 1rem 0; color: #000000; font-size: 1.1rem; font-weight: bold;">
                 <!-- Question will be inserted here by JavaScript -->
               </p>
 
               <!-- Answer display -->
               <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center;">
-                <div id="captchaDisplay" style="background: rgba(255, 213, 0, 0.2); border: 2px solid #FFD500; border-radius: 4px; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #FFFFFF; min-width: 100px; text-align: center;">-</div>
-                <button type="button" id="captchaBackspace" class="btn btn-sm btn-outline-warning" style="font-weight: bold;">⌫ Clear</button>
+                <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 4px; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
+                <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000;">⌫ Clear</button>
               </div>
 
               <!-- Number buttons (randomized) -->
@@ -595,7 +595,7 @@
               <!-- Hidden input for form submission -->
               <input type="hidden" id="captchaAnswer" name="captchaAnswer" />
 
-              <small style="color: #FFD500; display: block;" data-en="Click buttons to enter your answer" data-es="Haz clic en los botones para ingresar tu respuesta">Click buttons to enter your answer</small>
+              <small style="color: #000000; display: block;" data-en="Click buttons to enter your answer" data-es="Haz clic en los botones para ingresar tu respuesta">Click buttons to enter your answer</small>
             </div>
           </div>
         </div>
@@ -732,16 +732,31 @@
       shuffled.forEach((num) => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'btn btn-outline-warning';
         button.textContent = num;
         button.style.fontWeight = 'bold';
         button.style.fontSize = '1.1rem';
         button.style.padding = '0.5rem';
+        button.style.background = '#000000';
+        button.style.color = '#FFD500';
+        button.style.border = '2px solid #000000';
+        button.style.borderRadius = '4px';
+        button.style.cursor = 'pointer';
+        button.style.transition = 'all 0.2s ease';
         button.dataset.number = num;
 
         button.addEventListener('click', (e) => {
           e.preventDefault();
           appendToAnswer(num);
+        });
+
+        button.addEventListener('mouseover', () => {
+          button.style.background = '#FFD500';
+          button.style.color = '#000000';
+        });
+
+        button.addEventListener('mouseout', () => {
+          button.style.background = '#000000';
+          button.style.color = '#FFD500';
         });
 
         buttonsContainer.appendChild(button);
