@@ -100,54 +100,6 @@
 
     <!-- Call to Action Panels -->
     <section class="py-5 my-5 scroll-fade-in">
-      <style>
-        .cta-row {
-          display: grid;
-          gap: 1rem;
-        }
-        .cta-row.first-row {
-          grid-template-columns: repeat(4, 1fr);
-        }
-        .cta-row.second-row {
-          grid-template-columns: 1fr;
-        }
-        .cta-container {
-          box-shadow: 0 0 30px rgba(0, 153, 255, 0.3), 0 0 60px rgba(0, 153, 255, 0.15);
-          border-radius: 8px;
-          padding: 2rem;
-          background: linear-gradient(135deg, rgba(0, 153, 255, 0.05) 0%, transparent 100%);
-        }
-        .cta-container .btn {
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 15px rgba(0, 153, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-        .cta-container .btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(0, 153, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-        .cta-container .cta-container {
-          box-shadow: 0 4px 20px rgba(0, 153, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-          transition: all 0.3s ease;
-        }
-        .cta-container .cta-container:hover {
-          box-shadow: 0 8px 35px rgba(0, 153, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        }
-        @media (max-width: 1200px) {
-          .cta-row.first-row {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-        }
-        @media (max-width: 768px) {
-          .cta-row.first-row {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (max-width: 480px) {
-          .cta-row.first-row {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      </style>
       <div class="cta-container" style="display: flex; flex-direction: column; gap: 2rem;">
         <!-- First Row: 4 buttons -->
         <div class="cta-row first-row row g-4">
