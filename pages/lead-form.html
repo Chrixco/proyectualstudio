@@ -30,10 +30,9 @@
     .form-wrapper {
       width: 100%;
       max-width: 700px;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(20px);
-      border: 4px solid #FFD500;
-      box-shadow: 20px 20px 0px #FFD500;
+      background: #FFFFFF;
+      border: 4px solid #0099FF;
+      box-shadow: 20px 20px 0px #0099FF;
       border-radius: 0.75rem;
       padding: 3rem;
     }
@@ -794,7 +793,12 @@
       const humanCheck = document.getElementById('humanCheck');
       const captchaSection = document.getElementById('captchaSection');
       if (captchaSection) {
-        captchaSection.style.display = humanCheck.checked ? 'block' : 'none';
+        if (humanCheck.checked) {
+          captchaSection.style.display = 'block';
+          generateCaptcha(); // Ensure question displays when section becomes visible
+        } else {
+          captchaSection.style.display = 'none';
+        }
       }
     }
 

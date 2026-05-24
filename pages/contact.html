@@ -410,7 +410,12 @@
       const humanCheck = document.getElementById('humanCheck');
       const captchaSection = document.getElementById('captchaSection');
       if (captchaSection) {
-        captchaSection.style.display = humanCheck.checked ? 'block' : 'none';
+        if (humanCheck.checked) {
+          captchaSection.style.display = 'block';
+          generateCaptcha(); // Ensure question displays when section becomes visible
+        } else {
+          captchaSection.style.display = 'none';
+        }
       }
     }
 
