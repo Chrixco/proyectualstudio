@@ -2295,16 +2295,16 @@ button[style*="background: rgb(0"] {
    CALL TO ACTION PANELS
    =========================== */
 .cta-row {
-  display: grid;
+  display: grid !important;
   gap: 1rem;
 }
 
 .cta-row.first-row {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr) !important;
 }
 
 .cta-row.second-row {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr !important;
 }
 
 .cta-container {
@@ -2333,21 +2333,24 @@ button[style*="background: rgb(0"] {
   box-shadow: 0 8px 35px rgba(0, 153, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Responsive breakpoints for CTA grid */
+/* Responsive breakpoints for CTA grid - override Bootstrap .row display: flex */
 @media (max-width: 1200px) {
   .cta-row.first-row {
+    display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
 @media (max-width: 768px) {
   .cta-row.first-row {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
 @media (max-width: 480px) {
   .cta-row.first-row {
+    display: grid !important;
     grid-template-columns: 1fr !important;
   }
 }
