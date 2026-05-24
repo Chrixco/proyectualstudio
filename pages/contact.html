@@ -247,12 +247,29 @@
 
           <!-- Math CAPTCHA -->
           <div id="captchaSection" style="display: none;">
-            <p id="captchaQuestion" style="font-weight: bold; color: #000000; margin-bottom: 1rem;">What is 5 + 3?</p>
+            <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
+              <!-- Timer Circle -->
+              <div style="position: relative; flex-shrink: 0;">
+                <svg width="80" height="80" viewBox="0 0 80 80" style="transform: rotate(-90deg);">
+                  <!-- Background circle -->
+                  <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(0, 153, 255, 0.1)" stroke-width="4"/>
+                  <!-- Progress circle -->
+                  <circle id="timerCircle" cx="40" cy="40" r="35" fill="none" stroke="#0099FF" stroke-width="4" stroke-dasharray="219.8" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.3s linear;"/>
+                </svg>
+                <!-- Timer text in center -->
+                <div id="timerText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; color: #0099FF; font-size: 1.1rem;">30s</div>
+              </div>
 
-            <!-- Answer display -->
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center;">
-              <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
-              <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000; border-radius: 0.75rem;">⌫ Clear</button>
+              <!-- Question and Input -->
+              <div style="flex: 1;">
+                <p id="captchaQuestion" style="font-weight: bold; color: #000000; margin-bottom: 1rem;">What is 5 + 3?</p>
+
+                <!-- Answer display -->
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
+                  <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000; border-radius: 0.75rem;">⌫ Clear</button>
+                </div>
+              </div>
             </div>
 
             <!-- Number buttons (randomized) -->
@@ -322,6 +339,46 @@
     let failedAttempts = 0;
     let lastFailureTime = 0;
     let isRateLimited = false;
+    let timerInterval = null;
+
+    function updateTimerDisplay() {
+      const currentTime = Date.now();
+      const timeRemaining = Math.max(0, captchaQuestion.expiryTime - currentTime);
+      const secondsRemaining = Math.ceil(timeRemaining / 1000);
+      const percentageRemaining = Math.max(0, timeRemaining / ANSWER_EXPIRY_TIME);
+
+      // Update text
+      const timerText = document.getElementById('timerText');
+      if (timerText) {
+        timerText.textContent = secondsRemaining + 's';
+      }
+
+      // Update circle progress (circumference = 2 * π * r = 2 * 3.14159 * 35 ≈ 219.8)
+      const timerCircle = document.getElementById('timerCircle');
+      if (timerCircle) {
+        const circumference = 219.8;
+        const offset = circumference * (1 - percentageRemaining);
+        timerCircle.style.strokeDashoffset = offset;
+      }
+
+      // Stop timer when expired
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+      }
+    }
+
+    function startTimer() {
+      // Clear any existing timer
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+
+      // Initial update
+      updateTimerDisplay();
+
+      // Update every 100ms for smooth animation
+      timerInterval = setInterval(updateTimerDisplay, 100);
+    }
 
     function generateCaptcha() {
       const num1 = Math.floor(Math.random() * 10) + 1;
@@ -344,6 +401,9 @@
       document.getElementById('captchaQuestion').textContent = questionText;
       document.getElementById('captchaAnswer').value = '';
       document.getElementById('captchaDisplay').textContent = '-';
+
+      // Start the countdown timer
+      startTimer();
 
       // Regenerate randomized buttons
       generateRandomButtons();
