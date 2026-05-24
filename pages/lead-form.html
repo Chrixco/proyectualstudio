@@ -452,6 +452,20 @@
         <div class="calculator-data" id="calculatorDataDisplay"></div>
       </div>
 
+      <!-- Debug Button -->
+      <div id="debugButtonContainer" style="margin-bottom: 1.5rem;">
+        <button type="button" onclick="debugFillForm()" style="
+          background: #FF6B6B;
+          color: #FFFFFF;
+          border: 2px solid #FF6B6B;
+          padding: 0.75rem 1.5rem;
+          font-weight: bold;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          font-size: 0.9rem;
+        ">🐛 DEBUG: Fill Sample Data</button>
+      </div>
+
       <!-- Main Form -->
       <form id="leadForm">
         <!-- Contact Information -->
@@ -550,6 +564,18 @@
           </div>
         </div>
 
+        <!-- Simple Math CAPTCHA -->
+        <div class="form-section" style="background: rgba(255, 213, 0, 0.1); padding: 1.5rem; border-radius: 0.5rem; border: 2px solid #FFD500;">
+          <div class="form-group">
+            <label for="captchaAnswer" style="font-weight: bold; color: #FFD500;" data-en="Verification" data-es="Verificación">Verification</label>
+            <p id="captchaQuestion" style="margin: 0.5rem 0; color: #FFFFFF; font-size: 1.1rem; font-weight: bold;">
+              <!-- Question will be inserted here by JavaScript -->
+            </p>
+            <input type="number" id="captchaAnswer" class="form-control" placeholder="Your answer" style="margin-top: 0.5rem;" />
+            <small style="color: #FFD500; display: block; margin-top: 0.5rem;" data-en="Simple math to verify you're human" data-es="Matemática simple para verificar que eres humano">Simple math to verify you're human</small>
+          </div>
+        </div>
+
         <!-- Form Actions -->
         <div class="form-actions">
           <button type="button" class="btn-cancel" onclick="goBackToCalculator()" data-en="Back" data-es="Volver">Back</button>
@@ -629,7 +655,44 @@
       }
 
       updateLanguageDisplay();
+      generateCaptcha();
     });
+
+    // Simple Math CAPTCHA
+    let captchaQuestion = {};
+
+    function generateCaptcha() {
+      const num1 = Math.floor(Math.random() * 10) + 1;
+      const num2 = Math.floor(Math.random() * 10) + 1;
+      const correctAnswer = num1 + num2;
+
+      captchaQuestion = {
+        num1: num1,
+        num2: num2,
+        answer: correctAnswer
+      };
+
+      const questionText = currentLang === 'en'
+        ? `What is ${num1} + ${num2}?`
+        : `¿Cuánto es ${num1} + ${num2}?`;
+
+      document.getElementById('captchaQuestion').textContent = questionText;
+      document.getElementById('captchaAnswer').value = '';
+    }
+
+    // Regenerate CAPTCHA when language changes
+    function updateLanguageDisplay() {
+      const lang = document.documentElement.lang || 'en';
+      currentLang = lang === 'es' ? 'es' : 'en';
+      localStorage.setItem('lang', currentLang);
+
+      // Update all data-en/data-es elements
+      document.querySelectorAll('[data-en][data-es]').forEach(el => {
+        el.textContent = currentLang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-es');
+      });
+
+      generateCaptcha();
+    }
 
     function populateCalculatorData(data) {
       const display = document.getElementById('calculatorDataDisplay');
@@ -659,7 +722,39 @@
       statusEl.className = `status-message show status-${type}`;
     }
 
+    // Debug function to fill form with sample data (localhost only)
+    function debugFillForm() {
+      // Fill text inputs
+      document.getElementById('name').value = 'John Smith';
+      document.getElementById('email').value = 'john.smith@example.com';
+      document.getElementById('phone').value = '+1 (555) 123-4567';
+      document.getElementById('company').value = 'Acme Corporation';
+      document.getElementById('fieldOfInterest').value = 'Residential';
+      document.getElementById('message').value = 'This is a test project for a sustainable residential development in Ecuador. We are interested in your timber architecture expertise.';
+
+      // Select radio buttons
+      document.getElementById('contactEmail').checked = true;
+      document.getElementById('timelineASAP').checked = true;
+
+      // Auto-solve CAPTCHA
+      document.getElementById('captchaAnswer').value = captchaQuestion.answer;
+
+      // Show success message
+      showStatus('✓ Debug: Form filled with sample data', 'success');
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function submitLeadForm() {
+      // Verify CAPTCHA first
+      const captchaAnswer = document.getElementById('captchaAnswer').value.trim();
+      if (!captchaAnswer || parseInt(captchaAnswer) !== captchaQuestion.answer) {
+        showStatus(currentLang === 'en' ? 'Incorrect answer. Please try again.' : 'Respuesta incorrecta. Por favor intenta de nuevo.', 'error');
+        generateCaptcha();
+        return;
+      }
+
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -690,12 +785,65 @@
         return;
       }
 
-      // Disable submit button
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      showStatus(currentLang === 'en' ? 'Sending...' : 'Enviando...', 'info');
+      // Prepare email content
+      const emailSubject = currentLang === 'en'
+        ? `New Lead: ${name} - ${fieldOfInterest}`
+        : `Nuevo Contacto: ${name} - ${fieldOfInterest}`;
 
-        }
+      const emailBody = `
+PROJECT INQUIRY / CONSULTA DE PROYECTO
+${'='.repeat(50)}
+
+Name / Nombre: ${name}
+Email: ${email}
+Phone / Teléfono: ${phone || 'N/A'}
+Company / Empresa: ${company || 'N/A'}
+Field of Interest / Área de Interés: ${fieldOfInterest}
+Preferred Contact / Contacto Preferido: ${preferredContact}
+Project Timeline / Cronograma: ${projectTimeline}
+
+Calculator Type / Tipo de Calculadora: ${currentCalculatorType}
+
+Message / Mensaje:
+${message}
+
+${'='.repeat(50)}
+${new Date().toLocaleString()}
+      `.trim();
+
+      // Open email client with pre-filled information
+      const mailtoLink = `mailto:proyectualstudio@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      window.location.href = mailtoLink;
+
+      // Show feedback
+      showStatus(
+        currentLang === 'en'
+          ? '✓ Opening your email app...'
+          : '✓ Abriendo tu aplicación de correo...',
+        'success'
+      );
+
+      // Reset form after delay
+      setTimeout(() => {
+        document.getElementById('leadForm').reset();
+        document.getElementById('calculatorTypeBadge').textContent = currentLang === 'en' ? 'General Inquiry' : 'Consulta General';
+        generateCaptcha();
+      }, 1500);
+
+      // This code is no longer used but kept for reference
+      /*
+      emailjs.send('service_cj4g56k', 'template_lead_form', {
+        to_email: email,
+        from_name: name,
+        from_email: email,
+        from_phone: phone,
+        company: company,
+        field_of_interest: fieldOfInterest,
+        preferred_contact: preferredContact,
+        project_timeline: projectTimeline,
+        message: message,
+        calculator_type: currentCalculatorType,
+        timestamp: new Date().toISOString()
       })
       .then(() => {
         showStatus(
@@ -722,6 +870,7 @@
         );
         submitBtn.disabled = false;
       });
+      */
     }
 
     function goBackToCalculator() {
@@ -730,16 +879,6 @@
       } else {
         window.location.href = '../main.html';
       }
-    }
-
-    function updateLanguageDisplay() {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        if (currentLang === 'es' && el.hasAttribute('data-es')) {
-          el.textContent = el.getAttribute('data-es');
-        } else if (currentLang === 'en') {
-          el.textContent = el.getAttribute('data-en');
-        }
-      });
     }
 
     const originalSetItem = Storage.prototype.setItem;

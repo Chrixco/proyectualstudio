@@ -1208,9 +1208,9 @@
               <button onclick="navigateToLeadForm()" class="cta-final" data-en="Get Solar Design" data-es="Obtener Diseño Solar">
                 Get Solar Design
               </button>
-              <!-- <button onclick="openEmailModal()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
+              <button onclick="submitPdfDownload()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
-              </button> -->
+              </button>
             </div>
           </div>
         </div>
@@ -1218,8 +1218,8 @@
     </div>
   </main>
 
-  <!-- Email Modal for PDF Download -->
-  <div id="emailModal" class="email-modal">
+  <!-- Email Modal for PDF Download - COMMENTED OUT FOR FUTURE USE -->
+  <!-- <div id="emailModal" class="email-modal">
     <div class="email-modal-content">
       <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
       <p style="margin-bottom: 1.5rem; color: #cccccc;" data-en="Enter your email to receive the PDF of your solar design" data-es="Ingresa tu email para recibir el PDF de tu diseño solar">Enter your email to receive the PDF of your solar design</p>
@@ -1229,7 +1229,7 @@
         <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <footer class="footer-enhanced">
     <div class="footer-content">
@@ -1891,31 +1891,7 @@
     });
 
     window.submitPdfDownload = function() {
-      const email = document.getElementById('emailInput').value.trim();
-
-      if (!email) {
-        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
-        return;
-      }
-
-      if (!email.includes('@')) {
-        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
-        return;
-      }
-
-
-      // Send simple email log messages
-
-      // Send to downloads channel
-      fetch(downloadsWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailLogMessage)
-
-      // Close modal
-      window.closeEmailModal();
-
-      // Trigger browser print dialog
+      // Trigger browser print dialog to save as PDF
       setTimeout(() => {
         window.print();
       }, 300);

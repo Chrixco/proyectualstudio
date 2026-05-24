@@ -1020,7 +1020,7 @@
                  data-es="Obtener Cotización Detallada">
                 Get Detailed Quote
               </button>
-              <button onclick="openEmailModal()" class="cta-final btn"
+              <button onclick="submitPdfDownload()" class="cta-final btn"
                  style="background: #000000; color: #FFFFFF; border-color: #FFD500;"
                  data-en="Download as PDF"
                  data-es="Descargar como PDF">
@@ -1067,18 +1067,18 @@
     </div>
   </main>
 
-  <!-- Email Modal for PDF Download -->
-  <div id="emailModal" class="email-modal">
+  <!-- Email Modal for PDF Download - COMMENTED OUT FOR FUTURE USE -->
+  <!-- <div id="emailModal" class="email-modal">
     <div class="email-modal-content">
       <h2 class="email-modal-title" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
       <p style="margin-bottom: 1.5rem; color: #cccccc;" data-en="Enter your email to receive the PDF of your calculation" data-es="Ingresa tu email para recibir el PDF de tu cálculo">Enter your email to receive the PDF of your calculation</p>
       <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" />
       <div class="email-modal-buttons">
-        <!-- <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button> -->
+        <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
         <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <footer class="footer-enhanced">
     <div class="footer-content">
@@ -1691,31 +1691,7 @@
     });
 
     window.submitPdfDownload = function() {
-      const email = document.getElementById('emailInput').value.trim();
-
-      if (!email) {
-        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
-        return;
-      }
-
-      if (!email.includes('@')) {
-        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
-        return;
-      }
-
-
-      // Send simple email log messages
-
-      // Send to downloads channel
-      fetch(downloadsWebhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(emailLogMessage)
-
-      // Close modal and open print dialog
-      window.closeEmailModal();
-
-      // Trigger browser print dialog
+      // Trigger browser print dialog to save as PDF
       setTimeout(() => {
         window.print();
       }, 300);

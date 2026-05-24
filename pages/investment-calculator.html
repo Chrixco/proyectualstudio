@@ -1150,17 +1150,17 @@
           </div>
 
           <div style="text-align: center; margin-top: 2rem;">
-            <!-- <button onclick="openEmailModal()" class="email-download-btn" style="padding: 0.8rem 2rem; background: #0099FF; color: #000000; border: 3px solid #0099FF; font-weight: bold; border-radius: 0.75rem; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 8px 20px rgba(255, 213, 0, 0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'" data-en="Download as PDF" data-es="Descargar como PDF">
+            <button onclick="submitPdfDownload()" class="email-download-btn" style="padding: 0.8rem 2rem; background: #0099FF; color: #000000; border: 3px solid #0099FF; font-weight: bold; border-radius: 0.75rem; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 8px 20px rgba(255, 213, 0, 0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'" data-en="Download as PDF" data-es="Descargar como PDF">
               Download as PDF
-            </button> -->
+            </button>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Email Modal for PDF Download -->
-  <div class="email-modal-overlay" id="emailModal" role="dialog" aria-labelledby="emailModalTitle" aria-modal="true">
+  <!-- Email Modal for PDF Download - COMMENTED OUT FOR FUTURE USE -->
+  <!-- <div class="email-modal-overlay" id="emailModal" role="dialog" aria-labelledby="emailModalTitle" aria-modal="true">
     <div class="email-modal-content">
       <h2 class="email-modal-title" id="emailModalTitle" data-en="Download as PDF" data-es="Descargar como PDF">Download as PDF</h2>
       <p style="margin-bottom: 1.5rem; color: #cccccc;" id="emailModalDesc" data-en="Enter your email to receive the PDF of your investment analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de inversión">Enter your email to receive the PDF of your investment analysis</p>
@@ -1172,7 +1172,7 @@
         <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <footer class="footer-enhanced">
     <div class="footer-content">
@@ -2346,24 +2346,10 @@
     }
 
     window.submitPdfDownload = function() {
-      const email = document.getElementById('emailInput').value.trim();
-      const currentLang = localStorage.getItem('lang') || 'en';
-
-      if (!email) {
-        alert(currentLang === 'en' ? 'Please enter an email address' : 'Por favor ingresa una dirección de email');
-        return;
-      }
-
-      // Email validation: check for valid format with proper domain
-      // Pattern: local-part@domain.tld (allows letters, numbers, dots, hyphens, underscores in local part)
-      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-        alert(currentLang === 'en' ? 'Please enter a valid email address' : 'Por favor ingresa un email válido');
-        return;
-      }
-
-      // Proceed with email download via EmailJS
-      proceedWithEmailDownload(email);
+      // Trigger browser print dialog to save as PDF
+      setTimeout(() => {
+        window.print();
+      }, 300);
     };
 
     function proceedWithEmailDownload(email) {
