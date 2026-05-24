@@ -315,15 +315,26 @@
     let currentLang = localStorage.getItem('lang') || 'en';
     let captchaQuestion = {};
 
+    // Rate limiting & security
+    const RATE_LIMIT_ATTEMPTS = 3;
+    const RATE_LIMIT_TIMEOUT = 60000; // 60 seconds in milliseconds
+    const ANSWER_EXPIRY_TIME = 30000; // 30 seconds in milliseconds
+    let failedAttempts = 0;
+    let lastFailureTime = 0;
+    let isRateLimited = false;
+
     function generateCaptcha() {
       const num1 = Math.floor(Math.random() * 10) + 1;
       const num2 = Math.floor(Math.random() * 10) + 1;
       const correctAnswer = num1 + num2;
+      const generatedTime = Date.now(); // Store generation time
 
       captchaQuestion = {
         num1: num1,
         num2: num2,
-        answer: correctAnswer
+        answer: correctAnswer,
+        generatedTime: generatedTime, // Time when CAPTCHA was created
+        expiryTime: generatedTime + ANSWER_EXPIRY_TIME // Answer expires in 30 seconds
       };
 
       const questionText = currentLang === 'en'
@@ -441,6 +452,19 @@
     function submitContactForm(e) {
       e.preventDefault();
 
+      // Check rate limiting
+      if (isRateLimited) {
+        const timeSinceLastFailure = Date.now() - lastFailureTime;
+        const timeRemaining = Math.ceil((RATE_LIMIT_TIMEOUT - timeSinceLastFailure) / 1000);
+        showFormStatus(
+          currentLang === 'en'
+            ? `Too many failed attempts. Please try again in ${timeRemaining} seconds.`
+            : `Demasiados intentos fallidos. Por favor intenta de nuevo en ${timeRemaining} segundos.`,
+          'error'
+        );
+        return;
+      }
+
       // Verify human confirmation first
       const humanCheck = document.getElementById('humanCheck').checked;
       if (!humanCheck) {
@@ -448,13 +472,52 @@
         return;
       }
 
+      // Check if answer has expired (30 seconds timeout)
+      const currentTime = Date.now();
+      if (currentTime > captchaQuestion.expiryTime) {
+        showFormStatus(
+          currentLang === 'en'
+            ? 'Time expired. New question generated. Please try again.'
+            : 'Tiempo expirado. Nueva pregunta generada. Por favor intenta de nuevo.',
+          'error'
+        );
+        generateCaptcha();
+        return;
+      }
+
       // Verify CAPTCHA
       const captchaAnswer = document.getElementById('captchaAnswer').value.trim();
       if (!captchaAnswer || parseInt(captchaAnswer) !== captchaQuestion.answer) {
+        // Increment failed attempts
+        failedAttempts++;
+        lastFailureTime = Date.now();
+
+        // Check if rate limit exceeded
+        if (failedAttempts >= RATE_LIMIT_ATTEMPTS) {
+          isRateLimited = true;
+          showFormStatus(
+            currentLang === 'en'
+              ? `Too many failed attempts (${failedAttempts}/${RATE_LIMIT_ATTEMPTS}). Account locked for ${RATE_LIMIT_TIMEOUT / 1000} seconds.`
+              : `Demasiados intentos fallidos (${failedAttempts}/${RATE_LIMIT_ATTEMPTS}). Cuenta bloqueada por ${RATE_LIMIT_TIMEOUT / 1000} segundos.`,
+            'error'
+          );
+
+          // Unlock after timeout
+          setTimeout(() => {
+            isRateLimited = false;
+            failedAttempts = 0;
+          }, RATE_LIMIT_TIMEOUT);
+
+          return;
+        }
+
         showFormStatus(currentLang === 'en' ? 'Incorrect answer. Please try again.' : 'Respuesta incorrecta. Por favor intenta de nuevo.', 'error');
         generateCaptcha();
         return;
       }
+
+      // Reset failed attempts on success
+      failedAttempts = 0;
 
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();

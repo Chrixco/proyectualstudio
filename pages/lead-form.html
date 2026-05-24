@@ -45,7 +45,7 @@
     .form-header h1 {
       font-size: 2rem;
       font-weight: 900;
-      color: #FFD500;
+      color: #0099FF;
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 0.5rem;
@@ -53,7 +53,7 @@
 
     .calculator-type-badge {
       display: inline-block;
-      background: #FFD500;
+      background: #0099FF;
       color: #000000;
       padding: 0.5rem 1rem;
       border-radius: 0.75rem;
@@ -69,17 +69,17 @@
     .form-section-title {
       font-size: 0.95rem;
       font-weight: 900;
-      color: #FFD500;
+      color: #0099FF;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 1rem;
-      border-bottom: 3px solid #FFD500;
+      border-bottom: 3px solid #0099FF;
       padding-bottom: 0.75rem;
     }
 
     .calculator-data {
-      background: rgba(255, 213, 0, 0.05);
-      border: 2px solid #FFD500;
+      background: rgba(0, 153, 255, 0.05);
+      border: 2px solid #0099FF;
       padding: 1.25rem;
       border-radius: 0.75rem;
       margin-bottom: 1.5rem;
@@ -99,12 +99,12 @@
 
     .data-label {
       font-weight: bold;
-      color: #FFD500;
+      color: #0099FF;
       text-transform: uppercase;
     }
 
     .data-value {
-      color: #FFFFFF;
+      color: #000000;
       font-weight: 600;
     }
 
@@ -115,7 +115,7 @@
     .form-group label {
       display: block;
       font-weight: bold;
-      color: #FFD500;
+      color: #0099FF;
       text-transform: uppercase;
       font-size: 0.85rem;
       letter-spacing: 0.5px;
@@ -125,9 +125,9 @@
     .form-control {
       width: 100%;
       padding: 0.85rem;
-      border: 2px solid #FFD500;
-      background: #000000;
-      color: #FFFFFF;
+      border: 2px solid #0099FF;
+      background: #F8FAFB;
+      color: #000000;
       border-radius: 0.75rem;
       font-family: 'Space Mono', monospace;
       font-size: 0.95rem;
@@ -136,13 +136,13 @@
     }
 
     .form-control::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(0, 0, 0, 0.4);
     }
 
     .form-control:focus {
       outline: none;
-      box-shadow: 0 0 12px #FFD500;
-      background: #000000;
+      box-shadow: 0 0 12px rgba(0, 153, 255, 0.3);
+      background: #FFFFFF;
     }
 
     textarea.form-control {
@@ -159,7 +159,7 @@
     .btn-submit {
       flex: 1;
       padding: 1rem;
-      background: #FFD500;
+      background: #0099FF;
       color: #000000;
       border: 3px solid #000000;
       box-shadow: 6px 6px 0px #000000;
@@ -174,10 +174,10 @@
     }
 
     .btn-submit:hover:not(:disabled) {
-      background: #000000;
-      color: #FFFFFF;
-      border-color: #FFD500;
-      box-shadow: 8px 8px 0px #FFD500;
+      background: #F8FAFB;
+      color: #000000;
+      border-color: #0099FF;
+      box-shadow: 8px 8px 0px #0099FF;
       transform: translate(-3px, -3px);
     }
 
@@ -190,8 +190,8 @@
       flex: 1;
       padding: 1rem;
       background: transparent;
-      color: #FFD500;
-      border: 3px solid #FFD500;
+      color: #0099FF;
+      border: 3px solid #0099FF;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -203,9 +203,9 @@
     }
 
     .btn-cancel:hover {
-      background: #FFD500;
-      color: #000000;
-      box-shadow: 6px 6px 0px #000000;
+      background: #0099FF;
+      color: #FFFFFF;
+      box-shadow: 6px 6px 0px #0099FF;
       transform: translate(-3px, -3px);
     }
 
@@ -279,48 +279,48 @@
 
     body[data-theme="light"] .form-wrapper {
       background: rgba(0, 0, 0, 0.7);
-      box-shadow: 12px 12px 0px #FFD500;
+      box-shadow: 12px 12px 0px #0099FF;
     }
 
     body[data-theme="light"] .calculator-section {
       background: rgba(255, 255, 255, 0.05);
-      border-color: #FFD500;
+      border-color: #0099FF;
     }
 
     body[data-theme="light"] .form-control {
-      background: #000000;
-      border-color: #FFD500;
-      color: #FFFFFF;
+      background: #F8FAFB;
+      border-color: #0099FF;
+      color: #000000;
     }
 
     body[data-theme="light"] .form-control:focus {
-      background: #000000;
-      box-shadow: 0 0 12px #FFD500;
+      background: #FFFFFF;
+      box-shadow: 0 0 12px rgba(0, 153, 255, 0.3);
     }
 
     body[data-theme="light"] select.form-control option {
-      background: #000000;
-      color: #FFFFFF;
+      background: #F8FAFB;
+      color: #000000;
     }
 
     body[data-theme="light"] .btn-submit {
-      background: #FFD500;
+      background: #0099FF;
       color: #000000;
       border-color: #000000;
     }
 
     body[data-theme="light"] .btn-submit:hover:not(:disabled) {
-      background: #000000;
-      color: #FFFFFF;
+      background: #F8FAFB;
+      color: #000000;
     }
 
     body[data-theme="light"] .btn-cancel {
-      color: #FFD500;
-      border-color: #FFD500;
+      color: #0099FF;
+      border-color: #0099FF;
     }
 
     body[data-theme="light"] .btn-cancel:hover {
-      background: #FFD500;
+      background: #0099FF;
       color: #000000;
     }
 
@@ -336,8 +336,8 @@
       height: 24px;
       margin: 0;
       cursor: pointer;
-      accent-color: #FFD500;
-      border: 3px solid #FFD500;
+      accent-color: #0099FF;
+      border: 3px solid #0099FF;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.7);
       transition: all 0.3s ease;
@@ -350,8 +350,8 @@
     }
 
     .form-check-input:checked {
-      background: #FFD500;
-      border-color: #FFD500;
+      background: #0099FF;
+      border-color: #0099FF;
       box-shadow: 0 0 0 4px rgba(255, 213, 0, 0.3);
     }
 
@@ -366,11 +366,11 @@
     }
 
     .form-check-input:hover + .form-check-label {
-      color: #FFD500;
+      color: #0099FF;
     }
 
     .form-check-input:checked + .form-check-label {
-      color: #FFD500;
+      color: #0099FF;
       font-weight: 700;
     }
 
@@ -380,7 +380,7 @@
       gap: 1.5rem;
       flex-wrap: wrap;
       padding: 1rem;
-      background: rgba(255, 213, 0, 0.05);
+      background: rgba(0, 153, 255, 0.05);
       border: 2px solid rgba(255, 213, 0, 0.3);
       border-radius: 0.75rem;
       backdrop-filter: blur(5px);
@@ -395,7 +395,7 @@
       .form-check-input {
         width: 20px;
         height: 20px;
-        border: 2px solid #FFD500;
+        border: 2px solid #0099FF;
       }
 
       .toggle-group {
@@ -564,7 +564,7 @@
         </div>
 
         <!-- Simple Math CAPTCHA -->
-        <div class="form-section" style="background: #FFD500; padding: 1.5rem; border-radius: 0.75rem; border: 3px solid #000000; box-shadow: 6px 6px 0px #000000;">
+        <div class="form-section" style="background: #0099FF; padding: 1.5rem; border-radius: 0.75rem; border: 3px solid #000000; box-shadow: 6px 6px 0px #000000;">
           <div class="form-group">
             <label style="font-weight: bold; color: #000000; display: block; margin-bottom: 1rem;" data-en="Security Verification" data-es="Verificación de Seguridad">Security Verification</label>
 
@@ -585,7 +585,7 @@
               <!-- Answer display -->
               <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center;">
                 <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
-                <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000; border-radius: 0.75rem;">⌫ Clear</button>
+                <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #0099FF; border: 2px solid #000000; border-radius: 0.75rem;">⌫ Clear</button>
               </div>
 
               <!-- Number buttons (randomized) -->
@@ -693,15 +693,26 @@
     // Simple Math CAPTCHA
     let captchaQuestion = {};
 
+    // Rate limiting & security
+    const RATE_LIMIT_ATTEMPTS = 3;
+    const RATE_LIMIT_TIMEOUT = 60000; // 60 seconds in milliseconds
+    const ANSWER_EXPIRY_TIME = 30000; // 30 seconds in milliseconds
+    let failedAttempts = 0;
+    let lastFailureTime = 0;
+    let isRateLimited = false;
+
     function generateCaptcha() {
       const num1 = Math.floor(Math.random() * 10) + 1;
       const num2 = Math.floor(Math.random() * 10) + 1;
       const correctAnswer = num1 + num2;
+      const generatedTime = Date.now(); // Store generation time
 
       captchaQuestion = {
         num1: num1,
         num2: num2,
-        answer: correctAnswer
+        answer: correctAnswer,
+        generatedTime: generatedTime, // Time when CAPTCHA was created
+        expiryTime: generatedTime + ANSWER_EXPIRY_TIME // Answer expires in 30 seconds
       };
 
       const questionText = currentLang === 'en'
@@ -736,7 +747,7 @@
         button.style.fontSize = '1.1rem';
         button.style.padding = '0.5rem';
         button.style.background = '#000000';
-        button.style.color = '#FFD500';
+        button.style.color = '#0099FF';
         button.style.border = '2px solid #000000';
         button.style.borderRadius = '0.75rem';
         button.style.cursor = 'pointer';
@@ -749,13 +760,13 @@
         });
 
         button.addEventListener('mouseover', () => {
-          button.style.background = '#FFD500';
+          button.style.background = '#0099FF';
           button.style.color = '#000000';
         });
 
         button.addEventListener('mouseout', () => {
           button.style.background = '#000000';
-          button.style.color = '#FFD500';
+          button.style.color = '#0099FF';
         });
 
         buttonsContainer.appendChild(button);
@@ -870,6 +881,19 @@
     }
 
     function submitLeadForm() {
+      // Check rate limiting
+      if (isRateLimited) {
+        const timeSinceLastFailure = Date.now() - lastFailureTime;
+        const timeRemaining = Math.ceil((RATE_LIMIT_TIMEOUT - timeSinceLastFailure) / 1000);
+        showStatus(
+          currentLang === 'en'
+            ? `Too many failed attempts. Please try again in ${timeRemaining} seconds.`
+            : `Demasiados intentos fallidos. Por favor intenta de nuevo en ${timeRemaining} segundos.`,
+          'error'
+        );
+        return;
+      }
+
       // Verify human confirmation first
       const humanCheck = document.getElementById('humanCheck').checked;
       if (!humanCheck) {
@@ -877,13 +901,52 @@
         return;
       }
 
+      // Check if answer has expired (30 seconds timeout)
+      const currentTime = Date.now();
+      if (currentTime > captchaQuestion.expiryTime) {
+        showStatus(
+          currentLang === 'en'
+            ? 'Time expired. New question generated. Please try again.'
+            : 'Tiempo expirado. Nueva pregunta generada. Por favor intenta de nuevo.',
+          'error'
+        );
+        generateCaptcha();
+        return;
+      }
+
       // Verify CAPTCHA
       const captchaAnswer = document.getElementById('captchaAnswer').value.trim();
       if (!captchaAnswer || parseInt(captchaAnswer) !== captchaQuestion.answer) {
+        // Increment failed attempts
+        failedAttempts++;
+        lastFailureTime = Date.now();
+
+        // Check if rate limit exceeded
+        if (failedAttempts >= RATE_LIMIT_ATTEMPTS) {
+          isRateLimited = true;
+          showStatus(
+            currentLang === 'en'
+              ? `Too many failed attempts (${failedAttempts}/${RATE_LIMIT_ATTEMPTS}). Account locked for ${RATE_LIMIT_TIMEOUT / 1000} seconds.`
+              : `Demasiados intentos fallidos (${failedAttempts}/${RATE_LIMIT_ATTEMPTS}). Cuenta bloqueada por ${RATE_LIMIT_TIMEOUT / 1000} segundos.`,
+            'error'
+          );
+
+          // Unlock after timeout
+          setTimeout(() => {
+            isRateLimited = false;
+            failedAttempts = 0;
+          }, RATE_LIMIT_TIMEOUT);
+
+          return;
+        }
+
         showStatus(currentLang === 'en' ? 'Incorrect answer. Please try again.' : 'Respuesta incorrecta. Por favor intenta de nuevo.', 'error');
         generateCaptcha();
         return;
       }
+
+      // Reset failed attempts on success
+      failedAttempts = 0;
 
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
