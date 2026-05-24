@@ -578,7 +578,7 @@
             </div>
 
             <!-- Math CAPTCHA -->
-            <div>
+            <div id="captchaSection" style="display: none;">
               <p id="captchaQuestion" style="margin: 0.5rem 0; color: #FFFFFF; font-size: 1.1rem; font-weight: bold;">
                 <!-- Question will be inserted here by JavaScript -->
               </p>
@@ -668,6 +668,15 @@
 
       updateLanguageDisplay();
       generateCaptcha();
+
+      // Add human checkbox handler to show/hide CAPTCHA
+      const humanCheck = document.getElementById('humanCheck');
+      const captchaSection = document.getElementById('captchaSection');
+      if (humanCheck && captchaSection) {
+        humanCheck.addEventListener('change', () => {
+          captchaSection.style.display = humanCheck.checked ? 'block' : 'none';
+        });
+      }
     });
 
     // Simple Math CAPTCHA
