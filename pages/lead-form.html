@@ -572,7 +572,7 @@
             <!-- I am human checkbox -->
             <div style="margin-bottom: 1.5rem;">
               <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-weight: bold; color: #000000;">
-                <input type="checkbox" id="humanCheck" name="humanCheck" required style="width: 20px; height: 20px; cursor: pointer; accent-color: #000000;" />
+                <input type="checkbox" id="humanCheck" name="humanCheck" required style="width: 20px; height: 20px; cursor: pointer; accent-color: #000000;" onchange="toggleCaptcha()" />
                 <span data-en="I confirm I am human" data-es="Confirmo que soy humano">I confirm I am human</span>
               </label>
             </div>
@@ -788,6 +788,14 @@
       document.getElementById('captchaAnswer').value = '';
       const displayEl = document.getElementById('captchaDisplay');
       if (displayEl) displayEl.textContent = '-';
+    }
+
+    function toggleCaptcha() {
+      const humanCheck = document.getElementById('humanCheck');
+      const captchaSection = document.getElementById('captchaSection');
+      if (captchaSection) {
+        captchaSection.style.display = humanCheck.checked ? 'block' : 'none';
+      }
     }
 
     // Regenerate CAPTCHA when language changes

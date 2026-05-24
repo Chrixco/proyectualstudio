@@ -239,7 +239,7 @@
 
           <!-- I am human checkbox -->
           <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="humanCheck" name="humanCheck" required />
+            <input class="form-check-input" type="checkbox" id="humanCheck" name="humanCheck" required onchange="toggleCaptcha()" />
             <label class="form-check-label" for="humanCheck" style="color: #000000;"
                    data-en="I confirm I am human"
                    data-es="Confirmo que soy humano">I confirm I am human</label>
@@ -404,6 +404,14 @@
     function clearAnswer() {
       document.getElementById('captchaAnswer').value = '';
       document.getElementById('captchaDisplay').textContent = '-';
+    }
+
+    function toggleCaptcha() {
+      const humanCheck = document.getElementById('humanCheck');
+      const captchaSection = document.getElementById('captchaSection');
+      if (captchaSection) {
+        captchaSection.style.display = humanCheck.checked ? 'block' : 'none';
+      }
     }
 
     function updateLanguage(lang) {
