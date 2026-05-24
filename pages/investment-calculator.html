@@ -12,6 +12,8 @@
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Google reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js"></script>
 
   <style>
     .calculator-wrapper {
@@ -1165,6 +1167,12 @@
       <p style="margin-bottom: 1.5rem; color: #cccccc;" id="emailModalDesc" data-en="Enter your email to receive the PDF of your investment analysis" data-es="Ingresa tu email para recibir el PDF de tu análisis de inversión">Enter your email to receive the PDF of your investment analysis</p>
       <label for="emailInput" style="display: block; margin-bottom: 0.5rem; color: #0099FF; font-weight: bold;" data-en="Email Address" data-es="Dirección de Correo">Email Address</label>
       <input type="email" id="emailInput" class="email-modal-input" placeholder="your@email.com" aria-describedby="emailModalDesc" />
+
+      <!-- reCAPTCHA -->
+      <div style="margin: 1rem 0; display: flex; justify-content: center;">
+        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY_HERE" data-theme="dark" style="transform: scale(0.9); transform-origin: 0 0;"></div>
+      </div>
+
       <div class="email-modal-buttons">
         <button class="email-modal-btn submit" onclick="submitPdfDownload()" data-en="Download" data-es="Descargar">Download</button>
         <button class="email-modal-btn cancel" onclick="closeEmailModal()" data-en="Cancel" data-es="Cancelar">Cancel</button>
@@ -2360,6 +2368,21 @@
         return;
       }
 
+      // Verify reCAPTCHA
+      grecaptcha.ready(function() {
+        grecaptcha.execute('YOUR_RECAPTCHA_SITE_KEY_HERE', {action: 'submit'}).then(function(token) {
+          // Verify reCAPTCHA token on backend (replace with your backend verification)
+          // For now, we'll proceed with the download
+          // In production, send token to backend to verify: /api/verify-captcha
+
+          proceedWithEmailDownload(email, token);
+        });
+      });
+    };
+
+    function proceedWithEmailDownload(email, captchaToken) {
+      const currentLang = localStorage.getItem('lang') || 'en';
+
       // Send data to backend API (webhooks should never be exposed in client code)
       // Backend at /api/investment-calculator/notify handles Discord notifications securely
       const totalInvestment = parseInt(document.getElementById('resultInvestment').textContent.replace(/[^0-9]/g, '')) || 0;
@@ -2370,6 +2393,7 @@
       const notificationData = {
         email: email,
         calculator: 'investment',
+        captchaToken: captchaToken,
         timestamp: new Date().toISOString(),
         data: {
           totalInvestment: totalInvestment,
@@ -2381,6 +2405,7 @@
       };
 
       // Send to backend API endpoint (replace with your actual backend URL)
+      // Backend should verify captchaToken with Google reCAPTCHA API
       // TODO: Implement backend endpoint at /api/investment-calculator/notify
       fetch('/api/investment-calculator/notify', {
         method: 'POST',
