@@ -247,8 +247,19 @@
 
           <!-- Math CAPTCHA -->
           <div id="captchaSection" style="display: none;">
-            <p id="captchaQuestion" style="font-weight: bold; color: #FFD500; margin-bottom: 0.75rem;">What is 5 + 3?</p>
-            <input type="text" class="form-control" id="captchaAnswer" name="captchaAnswer" placeholder="Your answer" inputmode="numeric" style="max-width: 200px;" />
+            <p id="captchaQuestion" style="font-weight: bold; color: #FFD500; margin-bottom: 1rem;">What is 5 + 3?</p>
+
+            <!-- Answer display -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center;">
+              <div id="captchaDisplay" style="background: rgba(255, 213, 0, 0.2); border: 2px solid #FFD500; border-radius: 4px; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #FFFFFF; min-width: 100px; text-align: center;">-</div>
+              <button type="button" id="captchaBackspace" class="btn btn-sm btn-outline-warning" style="font-weight: bold;">⌫ Clear</button>
+            </div>
+
+            <!-- Number buttons (randomized) -->
+            <div id="captchaButtons" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem;"></div>
+
+            <!-- Hidden input for form submission -->
+            <input type="hidden" id="captchaAnswer" name="captchaAnswer" />
           </div>
         </div>
 
@@ -321,6 +332,63 @@
 
       document.getElementById('captchaQuestion').textContent = questionText;
       document.getElementById('captchaAnswer').value = '';
+      document.getElementById('captchaDisplay').textContent = '-';
+
+      // Regenerate randomized buttons
+      generateRandomButtons();
+    }
+
+    function generateRandomButtons() {
+      const buttonsContainer = document.getElementById('captchaButtons');
+      buttonsContainer.innerHTML = '';
+
+      // Create array 0-9 and shuffle
+      const numbers = Array.from({length: 10}, (_, i) => i);
+      const shuffled = numbers.sort(() => Math.random() - 0.5);
+
+      // Create buttons in randomized order
+      shuffled.forEach((num) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-outline-warning';
+        button.textContent = num;
+        button.style.fontWeight = 'bold';
+        button.style.fontSize = '1.1rem';
+        button.style.padding = '0.5rem';
+        button.dataset.number = num;
+
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          appendToAnswer(num);
+        });
+
+        buttonsContainer.appendChild(button);
+      });
+
+      // Add backspace button
+      const backspaceBtn = document.getElementById('captchaBackspace');
+      if (backspaceBtn) {
+        backspaceBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          clearAnswer();
+        });
+      }
+    }
+
+    function appendToAnswer(digit) {
+      const currentAnswer = document.getElementById('captchaAnswer').value;
+      const newAnswer = currentAnswer + digit;
+
+      // Limit to reasonable length (max 3 digits for safety)
+      if (newAnswer.length <= 3) {
+        document.getElementById('captchaAnswer').value = newAnswer;
+        document.getElementById('captchaDisplay').textContent = newAnswer || '-';
+      }
+    }
+
+    function clearAnswer() {
+      document.getElementById('captchaAnswer').value = '';
+      document.getElementById('captchaDisplay').textContent = '-';
     }
 
     function updateLanguage(lang) {
