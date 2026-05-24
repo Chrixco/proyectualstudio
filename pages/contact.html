@@ -16,9 +16,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
 
-  <!-- Google reCAPTCHA v3 -->
-  <script src="https://www.google.com/recaptcha/api.js?render=YOUR_RECAPTCHA_SITE_KEY"></script>
-
   <!-- Theme Script (loads early to prevent flash) -->
   <script src="../js/theme.js"></script>
   <!-- Centralized Color System -->
@@ -333,42 +330,39 @@
         return;
       }
 
-      // Execute reCAPTCHA before submission
-      grecaptcha.execute('YOUR_RECAPTCHA_SITE_KEY', { action: 'submit' }).then(function(token) {
-        // Build email subject and body with form information
-        const emailSubject = encodeURIComponent(
-          currentLang === 'en'
-            ? `New Contact Request from ${name}`
-            : `Nueva Solicitud de Contacto de ${name}`
-        );
+      // Build email subject and body with form information
+      const emailSubject = encodeURIComponent(
+        currentLang === 'en'
+          ? `New Contact Request from ${name}`
+          : `Nueva Solicitud de Contacto de ${name}`
+      );
 
-        // Format email body with all form information
-        const emailBody = encodeURIComponent(
-          `${currentLang === 'en' ? 'Name:' : 'Nombre:'} ${name}\n` +
-          `${currentLang === 'en' ? 'Email:' : 'Correo:'} ${email}\n` +
-          `${currentLang === 'en' ? 'Phone:' : 'Teléfono:'} ${phone || (currentLang === 'en' ? 'Not provided' : 'No proporcionado')}\n` +
-          `${currentLang === 'en' ? 'Preferred Contact:' : 'Contacto Preferido:'} ${preferredContact}\n` +
-          `${currentLang === 'en' ? 'CAPTCHA Token:' : 'Token CAPTCHA:'} ${token}\n\n` +
-          `${currentLang === 'en' ? 'Message:' : 'Mensaje:'}\n${message}`
-        );
+      // Format email body with all form information
+      const emailBody = encodeURIComponent(
+        `${currentLang === 'en' ? 'Name:' : 'Nombre:'} ${name}\n` +
+        `${currentLang === 'en' ? 'Email:' : 'Correo:'} ${email}\n` +
+        `${currentLang === 'en' ? 'Phone:' : 'Teléfono:'} ${phone || (currentLang === 'en' ? 'Not provided' : 'No proporcionado')}\n` +
+        `${currentLang === 'en' ? 'Preferred Contact:' : 'Contacto Preferido:'} ${preferredContact}\n\n` +
+        `${currentLang === 'en' ? 'Message:' : 'Mensaje:'}\n${message}\n\n` +
+        `${new Date().toLocaleString()}`
+      );
 
-        // Open default email client with pre-filled information
-        const mailtoLink = `mailto:proyectualstudio@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-        window.location.href = mailtoLink;
+      // Open default email client with pre-filled information
+      const mailtoLink = `mailto:proyectualstudio@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+      window.location.href = mailtoLink;
 
-        // Show success message
-        showFormStatus(
-          currentLang === 'en'
-            ? '✅ Opening your email client... Please send the email to confirm.'
-            : '✅ Abriendo tu cliente de correo... Por favor envía el correo para confirmar.',
-          'success'
-        );
+      // Show success message
+      showFormStatus(
+        currentLang === 'en'
+          ? '✓ Opening your email app...'
+          : '✓ Abriendo tu aplicación de correo...',
+        'success'
+      );
 
-        // Clear form after a short delay
-        setTimeout(() => {
-          document.getElementById('contactForm').reset();
-        }, 1500);
-      });
+      // Clear form after a short delay
+      setTimeout(() => {
+        document.getElementById('contactForm').reset();
+      }, 1500);
     }
 
     function fillDebugForm() {
