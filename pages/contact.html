@@ -231,13 +231,25 @@
           <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
         </div>
 
-        <!-- Math CAPTCHA Section -->
+        <!-- Security Section -->
         <div class="mb-3" style="background: rgba(255, 213, 0, 0.05); padding: 1rem; border: 2px solid rgba(255, 213, 0, 0.3); border-radius: 4px;">
           <label class="form-label fw-bold"
-                 data-en="Security Check"
-                 data-es="Verificación de Seguridad">Security Check</label>
-          <p id="captchaQuestion" style="font-weight: bold; color: #FFD500; margin-bottom: 0.75rem;">What is 5 + 3?</p>
-          <input type="text" class="form-control" id="captchaAnswer" name="captchaAnswer" placeholder="Your answer" inputmode="numeric" required style="max-width: 200px;" />
+                 data-en="Security Verification"
+                 data-es="Verificación de Seguridad">Security Verification</label>
+
+          <!-- I am human checkbox -->
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="humanCheck" name="humanCheck" required />
+            <label class="form-check-label" for="humanCheck"
+                   data-en="I confirm I am human"
+                   data-es="Confirmo que soy humano">I confirm I am human</label>
+          </div>
+
+          <!-- Math CAPTCHA -->
+          <div>
+            <p id="captchaQuestion" style="font-weight: bold; color: #FFD500; margin-bottom: 0.75rem;">What is 5 + 3?</p>
+            <input type="text" class="form-control" id="captchaAnswer" name="captchaAnswer" placeholder="Your answer" inputmode="numeric" required style="max-width: 200px;" />
+          </div>
         </div>
 
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
@@ -333,7 +345,14 @@
     function submitContactForm(e) {
       e.preventDefault();
 
-      // Verify CAPTCHA first
+      // Verify human confirmation first
+      const humanCheck = document.getElementById('humanCheck').checked;
+      if (!humanCheck) {
+        showFormStatus(currentLang === 'en' ? 'Please confirm you are human' : 'Por favor confirma que eres humano', 'error');
+        return;
+      }
+
+      // Verify CAPTCHA
       const captchaAnswer = document.getElementById('captchaAnswer').value.trim();
       if (!captchaAnswer || parseInt(captchaAnswer) !== captchaQuestion.answer) {
         showFormStatus(currentLang === 'en' ? 'Incorrect answer. Please try again.' : 'Respuesta incorrecta. Por favor intenta de nuevo.', 'error');
@@ -412,7 +431,8 @@
       document.getElementById('contact-email').checked = true;
       document.getElementById('message').value = 'Hi Proyectual Studio,\n\nI\'m interested in learning more about your architecture and urban design services. I have a project in mind that I think could benefit from your sustainable design approach.\n\nPlease get back to me at your earliest convenience.\n\nThank you!';
 
-      // Auto-fill CAPTCHA answer
+      // Auto-fill security checks
+      document.getElementById('humanCheck').checked = true;
       document.getElementById('captchaAnswer').value = captchaQuestion.answer;
     }
 
