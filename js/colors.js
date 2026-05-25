@@ -23,7 +23,7 @@ const PROYECTUAL_COLORS = {
   cssVariables: {
     lightTheme: {
       // Core brutalist colors
-      '--brutalist-yellow': '#000000',
+      '--brutalist-yellow': '#FFD500',
       '--brutalist-black': '#000000',
       '--brutalist-white': '#FFFFFF',
 
