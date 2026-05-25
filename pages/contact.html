@@ -141,13 +141,32 @@
         gap: 1rem;
       }
     }
+
+    /* Video Background Styling */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-background video {
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body class="body-white-text">
-  <video autoplay loop muted playsinline class="position-fixed w-100 h-100 object-fit-cover z-n1">
-    <source src="media/output_colour.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
   <nav class="navbar navbar-expand-lg px-3">
     <a class="navbar-brand d-flex align-items-center gap-2" href="../main.html">
@@ -159,12 +178,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+                <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
         <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
         <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
         <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" aria-current="page" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         <li class="nav-item">
           <button id="lang-toggle" class="btn btn-sm btn-outline-light ms-2">ES</button>
         </li>
@@ -180,17 +198,35 @@
 
       <div id="formStatus" class="form-status"></div>
 
+      <!-- Required Fields Legend -->
+      <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(0, 153, 255, 0.1); border-left: 4px solid #0099FF; border-radius: 0.25rem;">
+        <p style="margin: 0; font-size: 0.95rem; color: #000000;">
+          <span style="color: #FF6B6B; font-weight: bold;">*</span>
+          <span data-en="indicates required fields" data-es="indica campos obligatorios">indicates required fields</span>
+        </p>
+      </div>
+
       <form id="contactForm">
+        <!-- MoscasAlaCaca Honeypot Strategy: Hidden field to catch bots
+             Bots automatically fill all form fields (visible and hidden).
+             Humans cannot see or fill this hidden field.
+             If this field is populated, the submission is rejected silently. -->
+        <div style="display: none; position: absolute; left: -9999px;">
+          <input type="text" id="MoscasAlaCaca" name="MoscasAlaCaca" tabindex="-1" autocomplete="off" />
+        </div>
+
         <div class="mb-3">
-          <label for="name" class="form-label fw-bold"
-                 data-en="Name"
-                 data-es="Nombre">Name</label>
+          <label for="name" class="form-label fw-bold">
+            <span data-en="Name" data-es="Nombre">Name</span>
+            <span style="color: #FF6B6B; font-weight: bold;">*</span>
+          </label>
           <input type="text" class="form-control" id="name" name="name" required />
         </div>
         <div class="mb-3">
-          <label for="email" class="form-label fw-bold"
-                 data-en="Email"
-                 data-es="Correo Electrónico">Email</label>
+          <label for="email" class="form-label fw-bold">
+            <span data-en="Email" data-es="Correo Electrónico">Email</span>
+            <span style="color: #FF6B6B; font-weight: bold;">*</span>
+          </label>
           <input type="email" class="form-control" id="email" name="email" required />
         </div>
         <div class="mb-3">
@@ -200,9 +236,10 @@
           <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 123-4567" />
         </div>
         <div class="mb-3">
-          <label class="form-label fw-bold"
-                 data-en="Preferred Contact Method"
-                 data-es="Método de Contacto Preferido">Preferred Contact Method</label>
+          <label class="form-label fw-bold">
+            <span data-en="Preferred Contact Method" data-es="Método de Contacto Preferido">Preferred Contact Method</span>
+            <span style="color: #FF6B6B; font-weight: bold;">*</span>
+          </label>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
             <div class="form-check">
               <input class="form-check-input" type="radio" name="preferredContact" id="contact-email" value="Email" checked />
@@ -225,9 +262,10 @@
           </div>
         </div>
         <div class="mb-3">
-          <label for="message" class="form-label fw-bold"
-                 data-en="Message"
-                 data-es="Mensaje">Message</label>
+          <label for="message" class="form-label fw-bold">
+            <span data-en="Message" data-es="Mensaje">Message</span>
+            <span style="color: #FF6B6B; font-weight: bold;">*</span>
+          </label>
           <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
         </div>
 
@@ -239,7 +277,7 @@
 
           <!-- I am human checkbox -->
           <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="humanCheck" name="humanCheck" required onchange="toggleCaptcha()" />
+            <input class="form-check-input" type="checkbox" id="humanCheck" name="humanCheck" required />
             <label class="form-check-label" for="humanCheck" style="color: #000000;"
                    data-en="I confirm I am human"
                    data-es="Confirmo que soy humano">I confirm I am human</label>
@@ -251,13 +289,24 @@
               <!-- Timer Circle -->
               <div style="position: relative; flex-shrink: 0;">
                 <svg width="80" height="80" viewBox="0 0 80 80" style="transform: rotate(-90deg);">
+                  <defs>
+                    <filter id="yellowGlow">
+                      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                      <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
+                  </defs>
                   <!-- Background circle -->
-                  <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(0, 153, 255, 0.1)" stroke-width="4"/>
+                  <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(0, 0, 0, 0.1)" stroke-width="4"/>
+                  <!-- Yellow glow circle -->
+                  <circle cx="40" cy="40" r="35" fill="none" stroke="#FFD500" stroke-width="4" opacity="0.4" filter="url(#yellowGlow)"/>
                   <!-- Progress circle -->
-                  <circle id="timerCircle" cx="40" cy="40" r="35" fill="none" stroke="#0099FF" stroke-width="4" stroke-dasharray="219.8" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.3s linear;"/>
+                  <circle id="timerCircle" cx="40" cy="40" r="35" fill="none" stroke="#000000" stroke-width="4" stroke-dasharray="219.8" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.3s linear;"/>
                 </svg>
                 <!-- Timer text in center -->
-                <div id="timerText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; color: #0099FF; font-size: 1.1rem;">30s</div>
+                <div id="timerText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; color: #000000; font-size: 1.1rem;">30s</div>
               </div>
 
               <!-- Question and Input -->
@@ -304,7 +353,6 @@
         <ul class="footer-links">
           <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
           <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
-          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
           <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
           <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
@@ -330,7 +378,41 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let currentLang = localStorage.getItem('lang') || 'en';
-    let captchaQuestion = {};
+
+    // Hidden Answer using Closure (answer not directly accessible)
+    const captchaValidator = (() => {
+      let answer = null;
+      let expiryTime = null;
+      let generatedTime = null;
+      let num1 = null;
+      let num2 = null;
+
+      return {
+        generate: function(n1, n2) {
+          num1 = n1;
+          num2 = n2;
+          answer = n1 + n2; // Private: only accessible within closure
+          generatedTime = Date.now();
+          expiryTime = generatedTime + 30000;
+        },
+        validate: function(userInput) {
+          return userInput === answer && Date.now() <= expiryTime;
+        },
+        isExpired: function() {
+          return Date.now() > expiryTime;
+        },
+        getQuestionData: function() {
+          return { num1, num2, expiryTime, generatedTime };
+        },
+        clear: function() {
+          answer = null;
+          expiryTime = null;
+          generatedTime = null;
+          num1 = null;
+          num2 = null;
+        }
+      };
+    })();
 
     // Rate limiting & security
     const RATE_LIMIT_ATTEMPTS = 3;
@@ -343,7 +425,8 @@
 
     function updateTimerDisplay() {
       const currentTime = Date.now();
-      const timeRemaining = Math.max(0, captchaQuestion.expiryTime - currentTime);
+      const questionData = captchaValidator.getQuestionData();
+      const timeRemaining = Math.max(0, questionData.expiryTime - currentTime);
       const secondsRemaining = Math.ceil(timeRemaining / 1000);
       const percentageRemaining = Math.max(0, timeRemaining / ANSWER_EXPIRY_TIME);
 
@@ -383,16 +466,9 @@
     function generateCaptcha() {
       const num1 = Math.floor(Math.random() * 10) + 1;
       const num2 = Math.floor(Math.random() * 10) + 1;
-      const correctAnswer = num1 + num2;
-      const generatedTime = Date.now(); // Store generation time
 
-      captchaQuestion = {
-        num1: num1,
-        num2: num2,
-        answer: correctAnswer,
-        generatedTime: generatedTime, // Time when CAPTCHA was created
-        expiryTime: generatedTime + ANSWER_EXPIRY_TIME // Answer expires in 30 seconds
-      };
+      // Generate in closure (answer hidden from direct access)
+      captchaValidator.generate(num1, num2);
 
       const questionText = currentLang === 'en'
         ? `What is ${num1} + ${num2}?`
@@ -490,6 +566,14 @@
       }
     }
 
+    // Set up event listener for human checkbox
+    document.addEventListener('DOMContentLoaded', () => {
+      const humanCheck = document.getElementById('humanCheck');
+      if (humanCheck) {
+        humanCheck.addEventListener('change', toggleCaptcha);
+      }
+    });
+
     function updateLanguage(lang) {
       document.querySelectorAll('[data-en]').forEach(el => {
         el.textContent = el.getAttribute(`data-${lang}`);
@@ -502,6 +586,143 @@
       generateCaptcha();
     }
 
+    // ============================================
+    // ADVANCED SECURITY MODULE
+    // ============================================
+
+    // 5. SESSION FINGERPRINTING
+    const sessionFingerprint = (() => {
+      const createFingerprint = () => ({
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        screenResolution: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: Date.now()
+      });
+
+      const fingerprintStr = JSON.stringify(createFingerprint());
+      const stored = sessionStorage.getItem('formFingerprint');
+
+      if (!stored) {
+        sessionStorage.setItem('formFingerprint', fingerprintStr);
+      }
+
+      return {
+        isValid: () => {
+          const current = JSON.stringify(createFingerprint());
+          const stored = sessionStorage.getItem('formFingerprint');
+          // Allow minor variations (screen resize), reject if user agent or timezone changes
+          return navigator.userAgent === JSON.parse(stored).userAgent;
+        }
+      };
+    })();
+
+    // 6. FORM SUBMISSION RATE LIMITING (localStorage-based)
+    const submissionTracker = (() => {
+      const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
+      const STORAGE_KEY = 'lastSuccessfulSubmission';
+
+      return {
+        canSubmit: () => {
+          const lastSubmit = localStorage.getItem(STORAGE_KEY);
+          if (!lastSubmit) return true;
+          const timeSinceLastSubmit = Date.now() - parseInt(lastSubmit);
+          return timeSinceLastSubmit >= COOLDOWN_MS;
+        },
+        getRemainingTime: () => {
+          const lastSubmit = localStorage.getItem(STORAGE_KEY);
+          if (!lastSubmit) return 0;
+          const timeSinceLastSubmit = Date.now() - parseInt(lastSubmit);
+          return Math.max(0, Math.ceil((COOLDOWN_MS - timeSinceLastSubmit) / 1000));
+        },
+        recordSubmission: () => {
+          localStorage.setItem(STORAGE_KEY, Date.now().toString());
+        }
+      };
+    })();
+
+    // 4. USER BEHAVIOR DETECTION
+    const behaviorDetector = (() => {
+      let formStartTime = Date.now();
+      let lastKeyTime = Date.now();
+      let hasMouseMovement = false;
+      let hasPastedInCaptcha = false;
+
+      document.addEventListener('mousemove', () => {
+        hasMouseMovement = true;
+      });
+
+      const captchaInput = document.getElementById('captchaAnswer');
+      if (captchaInput) {
+        captchaInput.addEventListener('paste', () => {
+          hasPastedInCaptcha = true;
+        });
+      }
+
+      return {
+        isFormFilledTooFast: () => {
+          return (Date.now() - formStartTime) < 2000; // Less than 2 seconds
+        },
+        hasSuspiciousBehavior: () => {
+          // Reject if: no mouse movement (bot), or pasted CAPTCHA answer
+          return !hasMouseMovement || hasPastedInCaptcha;
+        },
+        resetTracking: () => {
+          formStartTime = Date.now();
+          hasMouseMovement = false;
+          hasPastedInCaptcha = false;
+        }
+      };
+    })();
+
+    // 2. STRICTER INPUT VALIDATION
+    const inputValidator = (() => {
+      const suspicious = ['<script', 'onclick', 'onerror', 'alert(', 'eval(', 'document.', 'window.'];
+      const sqlKeywords = ['union', 'select', 'drop', 'insert', 'delete', 'update', 'exec'];
+
+      return {
+        sanitize: (input) => {
+          return input
+            .replace(/[<>]/g, '')
+            .trim();
+        },
+        isSuspicious: (input) => {
+          const lower = input.toLowerCase();
+          return suspicious.some(s => lower.includes(s)) || sqlKeywords.some(s => lower.includes(s));
+        },
+        validateEmail: (email) => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email) && !email.includes('..') && email.split('@')[0].length > 0;
+        },
+        validateLength: (input, max) => {
+          return input.length <= max;
+        }
+      };
+    })();
+
+    // 8. INPUT CONTENT VALIDATION (spam detection)
+    const spamDetector = (() => {
+      const spamKeywords = [
+        'viagra', 'casino', 'lottery', 'click here', 'buy now', 'free money',
+        'work from home', 'earn cash', 'bitcoin', 'crypto', 'forex', 'poker',
+        'adult', 'sex', 'dating', 'discount', 'limited time', 'act now'
+      ];
+      const suspiciousUrls = /https?:\/\/.{0,5}\.(ru|cn|tk|ml|ga)/i;
+
+      return {
+        checkSpamKeywords: (text) => {
+          const lower = text.toLowerCase();
+          return spamKeywords.some(keyword => lower.includes(keyword));
+        },
+        checkSuspiciousUrls: (text) => {
+          return suspiciousUrls.test(text);
+        },
+        checkMessageLength: (text) => {
+          return text.length >= 10; // Message too short is suspicious
+        }
+      };
+    })();
+
     // Contact form handler
     function showFormStatus(message, type) {
       const statusEl = document.getElementById('formStatus');
@@ -512,7 +733,96 @@
     function submitContactForm(e) {
       e.preventDefault();
 
-      // Check rate limiting
+      // MoscasAlaCaca Honeypot Strategy
+      const honeypot = document.getElementById('MoscasAlaCaca').value.trim();
+      if (honeypot) return;
+
+      // 7. PROGRESSIVE ENHANCEMENT: Check if form was genuinely filled
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // 4. USER BEHAVIOR DETECTION
+      if (behaviorDetector.isFormFilledTooFast()) {
+        showFormStatus(
+          currentLang === 'en' ? 'Form filled too quickly. Please try again.' : 'Formulario llenado muy rápido. Por favor intenta de nuevo.',
+          'error'
+        );
+        return;
+      }
+
+      if (behaviorDetector.hasSuspiciousBehavior()) {
+        showFormStatus(
+          currentLang === 'en' ? 'Unusual activity detected. Please try again.' : 'Actividad inusual detectada. Por favor intenta de nuevo.',
+          'error'
+        );
+        return;
+      }
+
+      // 2. STRICTER INPUT VALIDATION
+      if (!inputValidator.validateEmail(email)) {
+        showFormStatus(
+          currentLang === 'en' ? 'Invalid email address.' : 'Correo electrónico inválido.',
+          'error'
+        );
+        return;
+      }
+
+      if (inputValidator.isSuspicious(name) || inputValidator.isSuspicious(message)) {
+        showFormStatus(
+          currentLang === 'en' ? 'Input contains invalid characters.' : 'La entrada contiene caracteres inválidos.',
+          'error'
+        );
+        return;
+      }
+
+      if (!inputValidator.validateLength(name, 100) || !inputValidator.validateLength(message, 1000)) {
+        showFormStatus(
+          currentLang === 'en' ? 'Input exceeds maximum length.' : 'La entrada excede la longitud máxima.',
+          'error'
+        );
+        return;
+      }
+
+      // 8. INPUT CONTENT VALIDATION (spam detection)
+      if (spamDetector.checkSpamKeywords(message) || spamDetector.checkSuspiciousUrls(message)) {
+        showFormStatus(
+          currentLang === 'en' ? 'Message contains suspicious content.' : 'El mensaje contiene contenido sospechoso.',
+          'error'
+        );
+        return;
+      }
+
+      if (!spamDetector.checkMessageLength(message)) {
+        showFormStatus(
+          currentLang === 'en' ? 'Message is too short.' : 'El mensaje es demasiado corto.',
+          'error'
+        );
+        return;
+      }
+
+      // 5. SESSION FINGERPRINTING
+      if (!sessionFingerprint.isValid()) {
+        showFormStatus(
+          currentLang === 'en' ? 'Session validation failed. Please refresh and try again.' : 'Validación de sesión fallida. Por favor recarga e intenta de nuevo.',
+          'error'
+        );
+        return;
+      }
+
+      // 6. FORM SUBMISSION RATE LIMITING
+      if (!submissionTracker.canSubmit()) {
+        const remaining = submissionTracker.getRemainingTime();
+        showFormStatus(
+          currentLang === 'en'
+            ? `You can submit again in ${remaining} seconds.`
+            : `Puedes enviar de nuevo en ${remaining} segundos.`,
+          'error'
+        );
+        return;
+      }
+
+      // Check rate limiting (CAPTCHA)
       if (isRateLimited) {
         const timeSinceLastFailure = Date.now() - lastFailureTime;
         const timeRemaining = Math.ceil((RATE_LIMIT_TIMEOUT - timeSinceLastFailure) / 1000);
@@ -533,8 +843,7 @@
       }
 
       // Check if answer has expired (30 seconds timeout)
-      const currentTime = Date.now();
-      if (currentTime > captchaQuestion.expiryTime) {
+      if (captchaValidator.isExpired()) {
         showFormStatus(
           currentLang === 'en'
             ? 'Time expired. New question generated. Please try again.'
@@ -545,9 +854,9 @@
         return;
       }
 
-      // Verify CAPTCHA
+      // Verify CAPTCHA (using closure validation - answer is never exposed)
       const captchaAnswer = document.getElementById('captchaAnswer').value.trim();
-      if (!captchaAnswer || parseInt(captchaAnswer) !== captchaQuestion.answer) {
+      if (!captchaAnswer || !captchaValidator.validate(parseInt(captchaAnswer))) {
         // Increment failed attempts
         failedAttempts++;
         lastFailureTime = Date.now();
@@ -579,11 +888,9 @@
       // Reset failed attempts on success
       failedAttempts = 0;
 
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
+      // Note: name, email, message already declared at top for security checks
       const phone = document.getElementById('phone').value.trim();
       const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
-      const message = document.getElementById('message').value.trim();
       const submitBtn = document.getElementById('submitBtn');
 
       // Validation
@@ -624,6 +931,9 @@
         `${new Date().toLocaleString()}`
       );
 
+      // 6. RECORD SUCCESSFUL SUBMISSION
+      submissionTracker.recordSubmission();
+
       // Open default email client with pre-filled information
       const mailtoLink = `mailto:proyectualstudio@gmail.com?subject=${emailSubject}&body=${emailBody}`;
       window.location.href = mailtoLink;
@@ -635,6 +945,9 @@
           : '✓ Abriendo tu aplicación de correo...',
         'success'
       );
+
+      // Reset behavior tracking for next submission
+      behaviorDetector.resetTracking();
 
       // Clear form after a short delay
       setTimeout(() => {

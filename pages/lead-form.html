@@ -423,10 +423,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
+                <li class="nav-item"><a class="nav-link" href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
         <li class="nav-item"><a class="nav-link" href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
         <li class="nav-item"><a class="nav-link" href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-        <li class="nav-item"><a class="nav-link" href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
         <li class="nav-item"><a class="nav-link" href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
         <li class="nav-item"><a class="nav-link" href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         <li class="nav-item">
@@ -465,8 +464,24 @@
         ">🐛 DEBUG: Fill Sample Data</button>
       </div>
 
+      <!-- Required Fields Legend -->
+      <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(0, 153, 255, 0.1); border-left: 4px solid #0099FF; border-radius: 0.25rem;">
+        <p style="margin: 0; font-size: 0.95rem; color: #000000;">
+          <span style="color: #FF6B6B; font-weight: bold;">*</span>
+          <span data-en="indicates required fields" data-es="indica campos obligatorios">indicates required fields</span>
+        </p>
+      </div>
+
       <!-- Main Form -->
       <form id="leadForm">
+        <!-- MoscasAlaCaca Honeypot Strategy: Hidden field to catch bots
+             Bots automatically fill all form fields (visible and hidden).
+             Humans cannot see or fill this hidden field.
+             If this field is populated, the submission is rejected silently. -->
+        <div style="display: none; position: absolute; left: -9999px;">
+          <input type="text" id="MoscasAlaCaca" name="MoscasAlaCaca" tabindex="-1" autocomplete="off" />
+        </div>
+
         <!-- Contact Information -->
         <div class="form-section">
           <h3 class="form-section-title" data-en="Contact Information" data-es="Información de Contacto">Contact Information</h3>
@@ -571,7 +586,7 @@
             <!-- I am human checkbox -->
             <div style="margin-bottom: 1.5rem;">
               <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-weight: bold; color: #000000;">
-                <input type="checkbox" id="humanCheck" name="humanCheck" required style="width: 20px; height: 20px; cursor: pointer; accent-color: #000000;" onchange="toggleCaptcha()" />
+                <input type="checkbox" id="humanCheck" name="humanCheck" required style="width: 20px; height: 20px; cursor: pointer; accent-color: #000000;" />
                 <span data-en="I confirm I am human" data-es="Confirmo que soy humano">I confirm I am human</span>
               </label>
             </div>
@@ -582,13 +597,24 @@
                 <!-- Timer Circle -->
                 <div style="position: relative; flex-shrink: 0;">
                   <svg width="80" height="80" viewBox="0 0 80 80" style="transform: rotate(-90deg);">
+                    <defs>
+                      <filter id="yellowGlow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
                     <!-- Background circle -->
-                    <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(0, 153, 255, 0.1)" stroke-width="4"/>
+                    <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(0, 0, 0, 0.1)" stroke-width="4"/>
+                    <!-- Yellow glow circle -->
+                    <circle cx="40" cy="40" r="35" fill="none" stroke="#FFD500" stroke-width="4" opacity="0.4" filter="url(#yellowGlow)"/>
                     <!-- Progress circle -->
-                    <circle id="timerCircle" cx="40" cy="40" r="35" fill="none" stroke="#0099FF" stroke-width="4" stroke-dasharray="219.8" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.3s linear;"/>
+                    <circle id="timerCircle" cx="40" cy="40" r="35" fill="none" stroke="#000000" stroke-width="4" stroke-dasharray="219.8" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.3s linear;"/>
                   </svg>
                   <!-- Timer text in center -->
-                  <div id="timerText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; color: #0099FF; font-size: 1.1rem;">30s</div>
+                  <div id="timerText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; color: #000000; font-size: 1.1rem;">30s</div>
                 </div>
 
                 <!-- Question and Input -->
@@ -638,7 +664,6 @@
           <li><a href="architecture.html" data-en="Architecture" data-es="Arquitectura">Architecture</a></li>
           <li><a href="urban_design.html" data-en="Urban Design" data-es="Diseño Urbano">Urban Design</a></li>
           <li><a href="tools.html" data-en="Tools" data-es="Herramientas">Tools</a></li>
-          <li><a href="research.html" data-en="Research" data-es="Investigación">Research</a></li>
           <li><a href="about_us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
           <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
@@ -697,18 +722,43 @@
       updateLanguageDisplay();
       generateCaptcha();
 
-      // Add human checkbox handler to show/hide CAPTCHA
-      const humanCheck = document.getElementById('humanCheck');
-      const captchaSection = document.getElementById('captchaSection');
-      if (humanCheck && captchaSection) {
-        humanCheck.addEventListener('change', () => {
-          captchaSection.style.display = humanCheck.checked ? 'block' : 'none';
-        });
-      }
+      // Note: Human checkbox handler is managed by toggleCaptcha() function via onchange attribute
     });
 
-    // Simple Math CAPTCHA
-    let captchaQuestion = {};
+    // Hidden Answer using Closure (answer not directly accessible)
+    const captchaValidator = (() => {
+      let answer = null;
+      let expiryTime = null;
+      let generatedTime = null;
+      let num1 = null;
+      let num2 = null;
+
+      return {
+        generate: function(n1, n2) {
+          num1 = n1;
+          num2 = n2;
+          answer = n1 + n2; // Private: only accessible within closure
+          generatedTime = Date.now();
+          expiryTime = generatedTime + 30000;
+        },
+        validate: function(userInput) {
+          return userInput === answer && Date.now() <= expiryTime;
+        },
+        isExpired: function() {
+          return Date.now() > expiryTime;
+        },
+        getQuestionData: function() {
+          return { num1, num2, expiryTime, generatedTime };
+        },
+        clear: function() {
+          answer = null;
+          expiryTime = null;
+          generatedTime = null;
+          num1 = null;
+          num2 = null;
+        }
+      };
+    })();
 
     // Rate limiting & security
     const RATE_LIMIT_ATTEMPTS = 3;
@@ -721,7 +771,8 @@
 
     function updateTimerDisplay() {
       const currentTime = Date.now();
-      const timeRemaining = Math.max(0, captchaQuestion.expiryTime - currentTime);
+      const questionData = captchaValidator.getQuestionData();
+      const timeRemaining = Math.max(0, questionData.expiryTime - currentTime);
       const secondsRemaining = Math.ceil(timeRemaining / 1000);
       const percentageRemaining = Math.max(0, timeRemaining / ANSWER_EXPIRY_TIME);
 
@@ -761,16 +812,9 @@
     function generateCaptcha() {
       const num1 = Math.floor(Math.random() * 10) + 1;
       const num2 = Math.floor(Math.random() * 10) + 1;
-      const correctAnswer = num1 + num2;
-      const generatedTime = Date.now(); // Store generation time
 
-      captchaQuestion = {
-        num1: num1,
-        num2: num2,
-        answer: correctAnswer,
-        generatedTime: generatedTime, // Time when CAPTCHA was created
-        expiryTime: generatedTime + ANSWER_EXPIRY_TIME // Answer expires in 30 seconds
-      };
+      // Generate in closure (answer hidden from direct access)
+      captchaValidator.generate(num1, num2);
 
       const questionText = currentLang === 'en'
         ? `What is ${num1} + ${num2}?`
@@ -873,6 +917,14 @@
       }
     }
 
+    // Set up event listener for human checkbox
+    document.addEventListener('DOMContentLoaded', () => {
+      const humanCheck = document.getElementById('humanCheck');
+      if (humanCheck) {
+        humanCheck.addEventListener('change', toggleCaptcha);
+      }
+    });
+
     // Regenerate CAPTCHA when language changes
     function updateLanguageDisplay() {
       const lang = document.documentElement.lang || 'en';
@@ -909,6 +961,138 @@
         .trim();
     }
 
+    // ============================================
+    // ADVANCED SECURITY MODULE
+    // ============================================
+
+    // 5. SESSION FINGERPRINTING
+    const sessionFingerprint = (() => {
+      const createFingerprint = () => ({
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        screenResolution: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: Date.now()
+      });
+
+      const fingerprintStr = JSON.stringify(createFingerprint());
+      const stored = sessionStorage.getItem('formFingerprint');
+
+      if (!stored) {
+        sessionStorage.setItem('formFingerprint', fingerprintStr);
+      }
+
+      return {
+        isValid: () => {
+          const current = JSON.stringify(createFingerprint());
+          const stored = sessionStorage.getItem('formFingerprint');
+          return navigator.userAgent === JSON.parse(stored).userAgent;
+        }
+      };
+    })();
+
+    // 6. FORM SUBMISSION RATE LIMITING
+    const submissionTracker = (() => {
+      const COOLDOWN_MS = 5 * 60 * 1000;
+      const STORAGE_KEY = 'lastSuccessfulSubmission';
+
+      return {
+        canSubmit: () => {
+          const lastSubmit = localStorage.getItem(STORAGE_KEY);
+          if (!lastSubmit) return true;
+          const timeSinceLastSubmit = Date.now() - parseInt(lastSubmit);
+          return timeSinceLastSubmit >= COOLDOWN_MS;
+        },
+        getRemainingTime: () => {
+          const lastSubmit = localStorage.getItem(STORAGE_KEY);
+          if (!lastSubmit) return 0;
+          const timeSinceLastSubmit = Date.now() - parseInt(lastSubmit);
+          return Math.max(0, Math.ceil((COOLDOWN_MS - timeSinceLastSubmit) / 1000));
+        },
+        recordSubmission: () => {
+          localStorage.setItem(STORAGE_KEY, Date.now().toString());
+        }
+      };
+    })();
+
+    // 4. USER BEHAVIOR DETECTION
+    const behaviorDetector = (() => {
+      let formStartTime = Date.now();
+      let hasMouseMovement = false;
+      let hasPastedInCaptcha = false;
+
+      document.addEventListener('mousemove', () => {
+        hasMouseMovement = true;
+      });
+
+      const captchaInput = document.getElementById('captchaAnswer');
+      if (captchaInput) {
+        captchaInput.addEventListener('paste', () => {
+          hasPastedInCaptcha = true;
+        });
+      }
+
+      return {
+        isFormFilledTooFast: () => {
+          return (Date.now() - formStartTime) < 2000;
+        },
+        hasSuspiciousBehavior: () => {
+          return !hasMouseMovement || hasPastedInCaptcha;
+        },
+        resetTracking: () => {
+          formStartTime = Date.now();
+          hasMouseMovement = false;
+          hasPastedInCaptcha = false;
+        }
+      };
+    })();
+
+    // 2. STRICTER INPUT VALIDATION
+    const inputValidator = (() => {
+      const suspicious = ['<script', 'onclick', 'onerror', 'alert(', 'eval(', 'document.', 'window.'];
+      const sqlKeywords = ['union', 'select', 'drop', 'insert', 'delete', 'update', 'exec'];
+
+      return {
+        sanitize: (input) => {
+          return input.replace(/[<>]/g, '').trim();
+        },
+        isSuspicious: (input) => {
+          const lower = input.toLowerCase();
+          return suspicious.some(s => lower.includes(s)) || sqlKeywords.some(s => lower.includes(s));
+        },
+        validateEmail: (email) => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email) && !email.includes('..') && email.split('@')[0].length > 0;
+        },
+        validateLength: (input, max) => {
+          return input.length <= max;
+        }
+      };
+    })();
+
+    // 8. INPUT CONTENT VALIDATION
+    const spamDetector = (() => {
+      const spamKeywords = [
+        'viagra', 'casino', 'lottery', 'click here', 'buy now', 'free money',
+        'work from home', 'earn cash', 'bitcoin', 'crypto', 'forex', 'poker',
+        'adult', 'sex', 'dating', 'discount', 'limited time', 'act now'
+      ];
+      const suspiciousUrls = /https?:\/\/.{0,5}\.(ru|cn|tk|ml|ga)/i;
+
+      return {
+        checkSpamKeywords: (text) => {
+          const lower = text.toLowerCase();
+          return spamKeywords.some(keyword => lower.includes(keyword));
+        },
+        checkSuspiciousUrls: (text) => {
+          return suspiciousUrls.test(text);
+        },
+        checkMessageLength: (text) => {
+          return text.length >= 10;
+        }
+      };
+    })();
+
     function showStatus(message, type) {
       const statusEl = document.getElementById('statusMessage');
       statusEl.textContent = message;
@@ -941,7 +1125,88 @@
     }
 
     function submitLeadForm() {
-      // Check rate limiting
+      // MoscasAlaCaca Honeypot Strategy
+      const honeypot = document.getElementById('MoscasAlaCaca').value.trim();
+      if (honeypot) return;
+
+      // Collect form data (used by all security checks)
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // 4. USER BEHAVIOR DETECTION
+      if (behaviorDetector.isFormFilledTooFast()) {
+        showStatus(
+          currentLang === 'en' ? 'Form filled too quickly. Please try again.' : 'Formulario llenado muy rápido. Por favor intenta de nuevo.',
+          'error'
+        );
+        return;
+      }
+
+      if (behaviorDetector.hasSuspiciousBehavior()) {
+        showStatus(
+          currentLang === 'en' ? 'Unusual activity detected. Please try again.' : 'Actividad inusual detectada. Por favor intenta de nuevo.',
+          'error'
+        );
+        return;
+      }
+
+      // 2. STRICTER INPUT VALIDATION
+      if (!inputValidator.validateEmail(email)) {
+        showStatus(
+          currentLang === 'en' ? 'Invalid email address.' : 'Correo electrónico inválido.',
+          'error'
+        );
+        return;
+      }
+
+      if (inputValidator.isSuspicious(name) || (message && inputValidator.isSuspicious(message))) {
+        showStatus(
+          currentLang === 'en' ? 'Input contains invalid characters.' : 'La entrada contiene caracteres inválidos.',
+          'error'
+        );
+        return;
+      }
+
+      if (!inputValidator.validateLength(name, 100) || !inputValidator.validateLength(message, 1000)) {
+        showStatus(
+          currentLang === 'en' ? 'Input exceeds maximum length.' : 'La entrada excede la longitud máxima.',
+          'error'
+        );
+        return;
+      }
+
+      // 8. INPUT CONTENT VALIDATION
+      if (message && (spamDetector.checkSpamKeywords(message) || spamDetector.checkSuspiciousUrls(message))) {
+        showStatus(
+          currentLang === 'en' ? 'Message contains suspicious content.' : 'El mensaje contiene contenido sospechoso.',
+          'error'
+        );
+        return;
+      }
+
+      // 5. SESSION FINGERPRINTING
+      if (!sessionFingerprint.isValid()) {
+        showStatus(
+          currentLang === 'en' ? 'Session validation failed. Please refresh and try again.' : 'Validación de sesión fallida. Por favor recarga e intenta de nuevo.',
+          'error'
+        );
+        return;
+      }
+
+      // 6. FORM SUBMISSION RATE LIMITING
+      if (!submissionTracker.canSubmit()) {
+        const remaining = submissionTracker.getRemainingTime();
+        showStatus(
+          currentLang === 'en'
+            ? `You can submit again in ${remaining} seconds.`
+            : `Puedes enviar de nuevo en ${remaining} segundos.`,
+          'error'
+        );
+        return;
+      }
+
+      // Check rate limiting (CAPTCHA)
       if (isRateLimited) {
         const timeSinceLastFailure = Date.now() - lastFailureTime;
         const timeRemaining = Math.ceil((RATE_LIMIT_TIMEOUT - timeSinceLastFailure) / 1000);
@@ -962,8 +1227,7 @@
       }
 
       // Check if answer has expired (30 seconds timeout)
-      const currentTime = Date.now();
-      if (currentTime > captchaQuestion.expiryTime) {
+      if (captchaValidator.isExpired()) {
         showStatus(
           currentLang === 'en'
             ? 'Time expired. New question generated. Please try again.'
@@ -974,9 +1238,9 @@
         return;
       }
 
-      // Verify CAPTCHA
+      // Verify CAPTCHA (using closure validation - answer is never exposed)
       const captchaAnswer = document.getElementById('captchaAnswer').value.trim();
-      if (!captchaAnswer || parseInt(captchaAnswer) !== captchaQuestion.answer) {
+      if (!captchaAnswer || !captchaValidator.validate(parseInt(captchaAnswer))) {
         // Increment failed attempts
         failedAttempts++;
         lastFailureTime = Date.now();
@@ -1008,12 +1272,10 @@
       // Reset failed attempts on success
       failedAttempts = 0;
 
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
+      // Note: name, email, message already declared at top for security checks
       const phone = document.getElementById('phone').value.trim();
       const company = document.getElementById('company').value.trim();
       const fieldOfInterest = document.getElementById('fieldOfInterest').value.trim();
-      const message = document.getElementById('message').value.trim();
       const preferredContact = document.querySelector('input[name="preferredContact"]:checked').value;
       const projectTimeline = document.querySelector('input[name="projectTimeline"]:checked').value;
 
@@ -1064,6 +1326,9 @@ ${'='.repeat(50)}
 ${new Date().toLocaleString()}
       `.trim();
 
+      // 6. RECORD SUCCESSFUL SUBMISSION
+      submissionTracker.recordSubmission();
+
       // Open email client with pre-filled information
       const mailtoLink = `mailto:proyectualstudio@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
       window.location.href = mailtoLink;
@@ -1075,6 +1340,9 @@ ${new Date().toLocaleString()}
           : '✓ Abriendo tu aplicación de correo...',
         'success'
       );
+
+      // Reset behavior tracking for next submission
+      behaviorDetector.resetTracking();
 
       // Reset form after delay
       setTimeout(() => {
