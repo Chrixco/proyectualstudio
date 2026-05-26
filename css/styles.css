@@ -2350,24 +2350,25 @@ button[style*="background: rgb(0"] {
   /* Change CTA container colors to match tool pages on tablet */
   .cta-container {
     border-color: #FFD500 !important;
-    background: linear-gradient(135deg, rgba(255, 213, 0, 0.05) 0%, transparent 100%);
-    box-shadow: 0 0 30px rgba(255, 213, 0, 0.3), 0 0 60px rgba(255, 213, 0, 0.15);
+    background: linear-gradient(135deg, rgba(255, 213, 0, 0.05) 0%, transparent 100%) !important;
+    box-shadow: 0 0 30px rgba(255, 213, 0, 0.3), 0 0 60px rgba(255, 213, 0, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
   }
 
   .cta-container .btn {
-    box-shadow: 0 4px 15px rgba(255, 213, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 213, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   }
 
   .cta-container .btn:hover {
-    box-shadow: 0 8px 25px rgba(255, 213, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(255, 213, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
   }
 
   .cta-container .cta-container {
-    box-shadow: 0 4px 20px rgba(255, 213, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(255, 213, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
   }
 
   .cta-container .cta-container:hover {
-    box-shadow: 0 8px 35px rgba(255, 213, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 35px rgba(255, 213, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
   }
 }
 
@@ -2380,15 +2381,16 @@ button[style*="background: rgb(0"] {
   /* Keep yellow colors on mobile */
   .cta-container {
     border-color: #FFD500 !important;
-    background: linear-gradient(135deg, rgba(255, 213, 0, 0.05) 0%, transparent 100%);
-    box-shadow: 0 0 30px rgba(255, 213, 0, 0.3), 0 0 60px rgba(255, 213, 0, 0.15);
+    background: linear-gradient(135deg, rgba(255, 213, 0, 0.05) 0%, transparent 100%) !important;
+    box-shadow: 0 0 30px rgba(255, 213, 0, 0.3), 0 0 60px rgba(255, 213, 0, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
   }
 
   .cta-container .btn {
-    box-shadow: 0 4px 15px rgba(255, 213, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 213, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   }
 
   .cta-container .btn:hover {
-    box-shadow: 0 8px 25px rgba(255, 213, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(255, 213, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
   }
 }
