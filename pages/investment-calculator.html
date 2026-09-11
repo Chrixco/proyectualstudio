@@ -47,16 +47,18 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css" rel="stylesheet" />
+  <link href="../css/tools.css?v=2" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js"></script>
-  <script src="../js/tools/construction-rates.js"></script>
+  <script src="../js/tools/format.js?v=2"></script>
+  <script src="../js/tools/construction-rates.js?v=2"></script>
 
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Shared diagram theme: surface, type and palette for every chart. -->
+  <script src="../js/tools/chart-theme.js?v=2"></script>
   <!-- EmailJS now handled securely by backend API -->
 
   <style>
@@ -158,11 +160,10 @@
       font-family: 'Space Mono', monospace;
     }
 
-    .chart-container {
-      position: relative;
-      height: 300px;
-      margin: 1.5rem 0;
-    }
+    /* .chart-container is styled by css/tools.css, which gives it the
+       shared charcoal plot surface. The local rule here used to set only
+       a height, leaving the canvas on the white panel while the chart
+       drew its axis labels in white. */
 
     .result-section {
       margin-bottom: 1.5rem;
@@ -175,10 +176,13 @@
     .result-section-title {
       font-size: 0.85rem;
       font-weight: 900;
-      color: #0099FF;
+      /* Brand blue #0099FF is 3.0:1 on white — under AA for text this
+         size. The darker tone reads at 4.7:1; the rule underneath keeps
+         the brand colour. */
+      color: #0077CC;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 1rem;
+      margin-bottom: 0.6rem;
       border-bottom: 2px solid #0099FF;
       padding-bottom: 0.5rem;
     }
@@ -924,6 +928,7 @@
 
           <div class="result-section">
             <div class="result-section-title" data-en="Cash Flow" data-es="Flujo de Caja">Cash Flow Over Time</div>
+            <span class="chart-note" data-en="Cumulative position year by year. Above the dashed line the project has returned its cost." data-es="Posición acumulada año a año. Sobre la línea discontinua el proyecto ya recuperó su costo.">Cumulative position year by year. Above the dashed line the project has returned its cost.</span>
             <div class="chart-container">
               <canvas id="cashFlowChart"></canvas>
             </div>
@@ -931,6 +936,7 @@
 
           <div class="result-section">
             <div class="result-section-title" data-en="Profit Breakdown" data-es="Desglose de Ganancias">Profit Breakdown</div>
+            <span class="chart-note" data-en="Where the money goes, over the full holding period." data-es="A dónde va el dinero, durante todo el período de tenencia.">Where the money goes, over the full holding period.</span>
             <div class="chart-container">
               <canvas id="profitBreakdownChart"></canvas>
             </div>
@@ -1796,8 +1802,6 @@
 
     function drawCashFlowChart(labels, data, propertyValues, plotValues, currency, investmentPurpose) {
       const ctx = document.getElementById('cashFlowChart').getContext('2d');
-      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
-      const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
       const currencySymbol = currency === 'EUR' ? '€' : '$';
 
       // Get translated labels based on investment purpose
@@ -1821,25 +1825,31 @@
         cashFlowChart.destroy();
       }
 
-      // Customize line styling based on investment purpose
-      let mainLineColor, mainLineBackColor, mainLineTension;
+      const T = window.ProyectualCharts;
+
+      // Line colour per purpose. All three are taken from the shared
+      // palette, which is tuned for the charcoal plot surface; the old
+      // #FF6B6B / #90EE90 / #FFB347 set was mixed in origin and two of
+      // them sat under 4.5:1 wherever they landed.
+      let mainLineColor, mainLineTension;
 
       if (investmentPurpose === 'sale') {
-        // Sale mode: Emphasize the one-time profit realization
-        mainLineColor = '#FF6B6B';  // Red for dramatic one-time gain
-        mainLineBackColor = 'rgba(255, 107, 107, 0.15)';
-        mainLineTension = 0.2;  // Sharp line to show the jump
+        // Sale: a one-time realisation, drawn taut.
+        mainLineColor = T.SERIES[4];   // coral
+        mainLineTension = 0.2;
       } else if (investmentPurpose === 'rent') {
-        // Rent mode: Steady income growth
-        mainLineColor = accentColor;
-        mainLineBackColor = accentLight;
-        mainLineTension = 0.4;  // Smooth curve for steady growth
+        // Rent: steady income, drawn as a smooth climb.
+        mainLineColor = '#38B6FF';
+        mainLineTension = 0.4;
       } else {
-        // Both mode: Income growth with sale bonus
-        mainLineColor = '#FFD500';  // Yellow for blended scenario
-        mainLineBackColor = 'rgba(255, 213, 0, 0.15)';
+        // Both: income plus a sale at the end.
+        mainLineColor = T.SERIES[0];   // brand yellow
         mainLineTension = 0.4;
       }
+
+      const mainLineBackColor = T.alpha(mainLineColor, 0.16);
+      const valueColor = T.SERIES[3];  // green — property value
+      const plotColor = T.SERIES[1];   // orange — plot value
 
       // Build datasets array - only include appreciation lines for rent and both modes
       const datasets = [
@@ -1851,9 +1861,10 @@
           borderWidth: 3,
           fill: true,
           tension: mainLineTension,
-          pointRadius: 5,
+          pointRadius: 0,
+          pointHoverRadius: 6,
           pointBackgroundColor: mainLineColor,
-          pointBorderColor: '#FFFFFF',
+          pointBorderColor: T.tokens().surface,
           pointBorderWidth: 2,
           yAxisID: 'y'
         }
@@ -1866,31 +1877,40 @@
           {
             label: labelPropertyValue,
             data: propertyValues,
-            borderColor: '#90EE90',
+            borderColor: valueColor,
+            backgroundColor: 'transparent',
             borderWidth: 2,
             fill: false,
             tension: 0.4,
-            pointRadius: 3,
-            pointBackgroundColor: '#90EE90',
-            pointBorderColor: '#90EE90',
-            borderDash: [5, 5],
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: valueColor,
+            pointBorderColor: T.tokens().surface,
+            borderDash: [6, 4],
             yAxisID: 'y1'
           },
           {
             label: labelPlotValue,
             data: plotValues,
-            borderColor: '#FFB347',
+            borderColor: plotColor,
+            backgroundColor: 'transparent',
             borderWidth: 2,
             fill: false,
             tension: 0.4,
-            pointRadius: 2,
-            pointBackgroundColor: '#FFB347',
-            pointBorderColor: '#FFB347',
-            borderDash: [10, 5],
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: plotColor,
+            pointBorderColor: T.tokens().surface,
+            borderDash: [2, 4],
             yAxisID: 'y1'
           }
         );
       }
+
+      // "-$800k", never "$-800k".
+      const money = function (value) {
+        return T.money(currencySymbol, value, true);
+      };
 
       cashFlowChart = new Chart(ctx, {
         type: 'line',
@@ -1901,75 +1921,98 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: {
-              display: true,
-              labels: {
-                color: 'rgba(255, 255, 255, 0.8)',
-                font: { size: 12, weight: 'bold' }
+            legend: T.legend({ position: 'bottom', size: 11 }),
+            tooltip: T.tooltip({
+              callbacks: {
+                title: function (items) {
+                  return (currentLang === 'en' ? 'Year ' : 'Año ') + items[0].label;
+                },
+                label: function (ctx2) {
+                  return ' ' + ctx2.dataset.label + ': ' + T.money(currencySymbol, ctx2.parsed.y);
+                }
               }
-            }
+            }),
+            breakEvenLine: {}
           },
           scales: {
-            x: {
-              display: true,
-              grid: {
-                color: 'rgba(255, 213, 0, 0.1)',
-                drawBorder: false
-              },
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.6)',
-                font: { size: 10 }
+            x: T.axis({
+              grid: false,
+              tickSize: 10,
+              title: currentLang === 'en' ? 'Years' : 'Años'
+            }),
+            y: Object.assign(
+              T.axis({
+                title: labelCumulativeProfit,
+                tickCallback: money
+              }),
+              { type: 'linear', display: true, position: 'left' }
+            ),
+            // Asset value runs on its own scale, so it is tinted to match
+            // the two dashed series it belongs to rather than left in the
+            // same ink as the left hand axis.
+            y1: Object.assign(
+              T.axis({
+                grid: false,
+                tickColor: valueColor,
+                title: currentLang === 'en' ? 'Asset Value' : 'Valor del Activo',
+                titleColor: valueColor,
+                tickCallback: money
+              }),
+              {
+                type: 'linear',
+                display: investmentPurpose !== 'sale',
+                position: 'right'
               }
-            },
-            y: {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              grid: {
-                color: 'rgba(255, 213, 0, 0.1)',
-                drawBorder: false
-              },
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.6)',
-                font: { size: 10 },
-                callback: function(value) {
-                  return currencySymbol + (value / 1000).toFixed(0) + 'k';
-                }
-              },
-              title: {
-                display: true,
-                text: labelCumulativeProfit
-              }
-            },
-            y1: {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              grid: {
-                drawOnChartArea: false
-              },
-              ticks: {
-                color: '#90EE90',
-                font: { size: 10 },
-                callback: function(value) {
-                  return currencySymbol + (value / 1000).toFixed(0) + 'k';
-                }
-              },
-              title: {
-                display: true,
-                text: 'Property Value',
-                color: '#90EE90'
-              }
-            }
+            )
           }
-        }
+        },
+        plugins: [investmentBreakEvenPlugin]
       });
     }
 
+    /**
+     * Marks the zero line on the cash flow chart. Chart.js core carries
+     * no annotation support and the page loads no plugin from the CDN,
+     * so the line that separates "still under water" from "paid back" is
+     * drawn here rather than left for the reader to infer.
+     */
+    const investmentBreakEvenPlugin = {
+      id: 'breakEvenLine',
+      afterDatasetsDraw: function (chart) {
+        const T = window.ProyectualCharts;
+        const yScale = chart.scales.y;
+        const area = chart.chartArea;
+        if (!yScale || !area) return;
+
+        const zeroY = yScale.getPixelForValue(0);
+        if (zeroY < area.top || zeroY > area.bottom) return;
+
+        const c = chart.ctx;
+        c.save();
+        c.beginPath();
+        c.setLineDash([6, 4]);
+        c.lineWidth = 1.5;
+        c.strokeStyle = T.tokens().ink;
+        c.moveTo(area.left, zeroY);
+        c.lineTo(area.right, zeroY);
+        c.stroke();
+
+        c.setLineDash([]);
+        c.font = 'bold 10px ' + T.FONT_FAMILY;
+        c.fillStyle = T.tokens().ink;
+        c.textAlign = 'left';
+        c.textBaseline = 'bottom';
+        c.fillText(currentLang === 'en' ? 'BREAK-EVEN' : 'EQUILIBRIO', area.left + 4, zeroY - 4);
+        c.restore();
+      }
+    };
+
     function drawProfitBreakdownChart(rental, operating, total, currency, purpose, totalProjectCost) {
       const ctx = document.getElementById('profitBreakdownChart').getContext('2d');
-      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
+      const T = window.ProyectualCharts;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
 
       // Get translated labels
       const labelRentalIncome = currentLang === 'en' ? 'Annual Rental Income' : 'Ingreso Anual de Alquiler';
@@ -1981,75 +2024,65 @@
         profitBreakdownChart.destroy();
       }
 
-      // Determine what to show based on purpose
+      // Money in, money out and what is left keep the same three colours
+      // in every mode, so the reader learns the key once.
+      const colorIncome = '#38B6FF';
+      const colorCost = T.SERIES[4];    // coral — money out
+      const colorProfit = T.SERIES[3];  // green — money kept
+      const colorInvested = T.SERIES[7]; // slate — capital tied up
+
       let chartLabels = [];
       let chartData = [];
       let chartColors = [];
 
       if (purpose === 'sale') {
         // SALE: Show cost vs selling price breakdown
-        const salePrice = Math.max(0, total + totalProjectCost); // Back-calculate sale price
         const costLabel = currentLang === 'en' ? 'Total Investment' : 'Inversión Total';
         const profitLabel = currentLang === 'en' ? 'Profit/Loss' : 'Ganancia/Pérdida';
 
         chartLabels = [costLabel, profitLabel];
-        chartData = [totalProjectCost, Math.max(0, total)]; // Investment + Profit
-
-        if (total < 0) {
-          // Loss scenario - show red
-          chartColors = ['rgba(100, 100, 100, 0.7)', 'rgba(255, 107, 107, 0.7)'];
-        } else {
-          // Profit scenario - show green
-          chartColors = ['rgba(100, 100, 100, 0.7)', 'rgba(144, 238, 144, 0.7)'];
-        }
+        chartData = [totalProjectCost, Math.abs(total)];
+        chartColors = [colorInvested, total < 0 ? colorCost : colorProfit];
       } else if (purpose === 'rent') {
         // RENT: Show rental income, operating costs, net profit
         chartLabels = [labelRentalIncome, labelOperatingCosts, labelNetProfit];
         chartData = [rental, operating, Math.max(0, rental - operating)];
-        chartColors = [accentColor, 'rgba(255, 107, 107, 0.7)', 'rgba(144, 238, 144, 0.7)'];
+        chartColors = [colorIncome, colorCost, colorProfit];
       } else {
-        // BOTH: Show rental income, operating costs, net profit (but this is blended)
+        // BOTH: rental income, operating costs, appreciation
         chartLabels = [labelRentalIncome, labelOperatingCosts, labelAppreciation];
         chartData = [rental, operating, Math.max(0, total - rental + operating)];
-        chartColors = [accentColor, 'rgba(255, 107, 107, 0.7)', 'rgba(144, 238, 144, 0.7)'];
-      }
-
-      // Determine border colors based on purpose
-      let borderColors = [];
-      if (purpose === 'sale') {
-        borderColors = total < 0
-          ? ['rgba(100, 100, 100, 1)', '#FF6B6B']  // Loss: gray + red
-          : ['rgba(100, 100, 100, 1)', '#90EE90']; // Profit: gray + green
-      } else if (purpose === 'rent') {
-        borderColors = [accentColor, '#FF6B6B', '#90EE90'];
-      } else {
-        borderColors = [accentColor, '#FF6B6B', '#90EE90'];
+        chartColors = [colorIncome, colorCost, colorProfit];
       }
 
       profitBreakdownChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: chartLabels,
-          datasets: [{
+          datasets: [Object.assign({
             data: chartData,
             backgroundColor: chartColors,
-            borderColor: borderColors,
-            borderWidth: 2
-          }]
+            hoverOffset: 6
+          }, T.arcBorder())]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          cutout: '52%',
+          layout: { padding: { top: 4, bottom: 4 } },
           plugins: {
-            legend: {
-              display: true,
-              position: 'bottom',
-              labels: {
-                color: 'rgba(255, 255, 255, 0.8)',
-                font: { size: 11, weight: 'bold' },
-                padding: 15
+            legend: T.legend({ position: 'bottom', size: 11 }),
+            tooltip: T.tooltip({
+              callbacks: {
+                label: function (item) {
+                  const values = item.dataset.data;
+                  const sum = values.reduce((a, b) => a + b, 0) || 1;
+                  const share = (item.parsed / sum) * 100;
+                  return ' ' + item.label + ': ' + T.money(currencySymbol, item.parsed) +
+                    ' (' + share.toFixed(1) + '%)';
+                }
               }
-            }
+            })
           }
         }
       });
@@ -2129,8 +2162,8 @@
       }
     });
   </script>
-<script src="../js/tools/option-cards.js" defer></script>
-<script src="../js/tools/pdf-export.js" defer></script>
-<script src="../js/tools/background-video.js" defer></script>
+<script src="../js/tools/option-cards.js?v=2" defer></script>
+<script src="../js/tools/pdf-export.js?v=2" defer></script>
+<script src="../js/tools/background-video.js?v=2" defer></script>
 </body>
 </html>

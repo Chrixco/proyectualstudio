@@ -48,11 +48,11 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css" rel="stylesheet" />
+  <link href="../css/tools.css?v=2" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js"></script>
+  <script src="../js/tools/format.js?v=2"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Centralized Color System -->
@@ -62,6 +62,8 @@
 
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Shared diagram theme: surface, type and palette for every chart. -->
+  <script src="../js/tools/chart-theme.js?v=2"></script>
 
 
   <style>
@@ -70,25 +72,10 @@
     /* Mobile: single column */
 
     /* Tablet: 768px and below */
-    @media (max-width: 768px) {
-
-      .inputs-panel,
-      .results-panel {
-        box-shadow: 8px 8px 0px #FFD500;
-        border: 3px solid #FFD500;
-      }
-    }
+    
 
     /* Mobile: 480px and below */
-    @media (max-width: 480px) {
-
-      .inputs-panel,
-      .results-panel {
-        padding: 1rem;
-        box-shadow: 6px 6px 0px #FFD500;
-        border: 2px solid #FFD500;
-      }
-    }
+    
 
     /* Tab System */
     .input-tabs-container {
@@ -150,26 +137,39 @@
       margin-bottom: 0;
     }
 
+    /* The list is a chart in its own right, so it borrows the diagram
+       tokens: light ink on the charcoal panel, and a neutral track so
+       the series colour on the fill is the only colour in the row. */
     .breakdown-label {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
+      gap: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      color: var(--color-white);
+      line-height: 1.4;
+      color: var(--chart-ink, #F2F2F2);
+    }
+
+    .breakdown-label span:last-child {
+      white-space: nowrap;
+      color: var(--chart-ink-muted, #C4C4C4);
+      font-variant-numeric: tabular-nums;
     }
 
     .breakdown-bar {
       width: 100%;
       height: 12px;
-      background: rgba(0, 153, 255, 0.1);
-      border: 1px solid #0099FF;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid var(--chart-border, rgba(255, 255, 255, 0.28));
       border-radius: 4px;
       overflow: hidden;
     }
 
     .breakdown-fill {
       height: 100%;
-      background: linear-gradient(90deg, #0099FF, rgba(0, 153, 255, 0.6));
+      /* Flat fill; the colour is set per row from PROCESS_COLORS so the
+         bar matches its slice in the pie. */
+      background: var(--chart-accent, #FFD500);
       transition: width 0.3s ease;
     }
 
@@ -474,15 +474,15 @@
           </div>
 
           <!-- Construction Process Breakdown -->
-          <div id="materialBreakdown" style="background: rgba(0, 0, 0, 0.7); border: 3px solid #FFD500; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; display: none;">
-            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: #FFD500; display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Construction Process" data-es="Proceso de Construcción">
+          <div id="materialBreakdown" class="data-panel" style="display: none;">
+            <h3 class="data-panel-title" data-en="Construction Process" data-es="Proceso de Construcción">
               Construction Process
-            </div>
+            </h3>
             <div id="breakdownItems"></div>
           </div>
 
           <!-- Chart Filter -->
-          <div style="margin-bottom: 1rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</div>
+          <h3 class="chart-title" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</h3>
           <div class="chart-controls" style="margin-bottom: 1rem;">
             <button class="chart-btn active" data-scope-filter="all" data-en="All Phases" data-es="Todas las Fases">All Phases</button>
             <button class="chart-btn" data-scope-filter="construction" data-en="Construction Only" data-es="Solo Construcción">Construction Only</button>
@@ -492,7 +492,8 @@
           <div class="charts-container">
             <!-- Pie Chart Section -->
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</div>
+              <h3 class="chart-title" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</h3>
+              <span class="chart-note" data-en="Share of total kgCO₂e by lifecycle stage." data-es="Participación del total de kgCO₂e por etapa del ciclo de vida.">Share of total kgCO₂e by lifecycle stage.</span>
               <div class="chart-controls">
                 <button class="chart-btn active" data-pie-mode="lifecycle" data-en="Lifecycle" data-es="Ciclo de Vida">Lifecycle</button>
                 <button class="chart-btn" data-pie-mode="impact" data-en="Total Impact" data-es="Impacto Total">Total Impact</button>
@@ -505,7 +506,8 @@
 
             <!-- Density Histogram Section -->
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Data Representation" data-es="Representación de Datos">Data Representation</div>
+              <h3 class="chart-title" data-en="Data Representation" data-es="Representación de Datos">Data Representation</h3>
+              <span class="chart-note" data-en="Bars: kgCO₂e per stage. Line: smoothed distribution." data-es="Barras: kgCO₂e por etapa. Línea: distribución suavizada.">Bars: kgCO₂e per stage. Line: smoothed distribution.</span>
               <div class="chart-controls">
                 <button class="chart-btn active" data-histogram-mode="absolute" data-en="Absolute" data-es="Absoluto">Absolute</button>
                 <button class="chart-btn" data-histogram-mode="percentage" data-en="Percentage" data-es="Porcentaje">Percentage</button>
@@ -529,7 +531,7 @@
             <p class="disclaimer" data-en="This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources. Contact us for a detailed audit." data-es="Esta es una estimación aproximada. La huella de carbono final depende de materiales específicos, métodos de transporte y fuentes de energía. Contáctanos para una auditoría detallada.">
               This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources.
             </p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div class="cta-row">
               <button onclick="navigateToLeadForm()" class="cta-final" data-en="Request Custom Analysis" data-es="Solicitar Análisis Personalizado">
                 Request Custom Analysis
               </button>
@@ -703,53 +705,51 @@
       }
     };
 
-    // Consistent color mapping for all diagrams
+    /**
+     * One colour per series, shared by every diagram on the page so a
+     * slice and its bar always agree.
+     *
+     * The previous map ran five variations of yellow plus two
+     * translucent whites: adjacent categories were indistinguishable,
+     * and the alpha fills let the plot surface bleed through. These are
+     * the shared palette in js/tools/chart-theme.js — opaque, distinct
+     * in hue and in lightness, and all above 4.5:1 on the charcoal
+     * surface.
+     */
+    const CHART_THEME = window.ProyectualCharts;
+    const SERIES = CHART_THEME.SERIES;
+
     const PROCESS_COLORS = {
-      'Extraction': '#FFD500',           // Yellow
-      'Extracción': '#FFD500',
-      'Processing': '#FFC700',           // Orange
-      'Procesamiento': '#FFC700',
-      'Transportation': 'rgba(255,213,0,0.5)',  // Semi-yellow
-      'Transporte': 'rgba(255,213,0,0.5)',
-      'Installation': 'rgba(255,255,255,0.6)',  // White
-      'Instalación': 'rgba(255,255,255,0.6)',
-      'Operational': 'rgba(200,220,200,0.7)',   // Pale green
-      'Operacional': 'rgba(200,220,200,0.7)',
-      'Tree Offset': 'rgba(100,200,100,0.6)',   // Green
-      'Compensación': 'rgba(100,200,100,0.6)',
-      'Materials': '#FFD500',
-      'Materiales': '#FFD500',
-      'Transport': '#FFC700',
-      'Transporte (Categoría)': '#FFC700',
-      'Energy (50yr)': 'rgba(255,213,0,0.5)',
-      'Energía (50yr)': 'rgba(255,213,0,0.5)',
-      'Waste Reduction': 'rgba(255,255,255,0.6)',
-      'Reducción Residuos': 'rgba(255,255,255,0.6)',
-      'Embodied Carbon': '#FFD500',
-      'Carbono Encarnado': '#FFD500',
-      'Total Impact': '#FFC700',
-      'Impacto Total': '#FFC700',
-      'Breakdown': 'rgba(255,213,0,0.5)',
-      'Desglose': 'rgba(255,213,0,0.5)',
-      'Walls': '#FFD500',           // Yellow
-      'Muros': '#FFD500',
-      'Slabs': '#FFC700',           // Orange
-      'Losas': '#FFC700',
-      'Columns': 'rgba(255,213,0,0.5)',  // Semi-yellow
-      'Columnas': 'rgba(255,213,0,0.5)',
-      'Foundations': 'rgba(255,255,255,0.6)',  // White
-      'Cimentaciones': 'rgba(255,255,255,0.6)',
-      'Beams': 'rgba(200,200,200,0.8)',  // Light gray
-      'Vigas': 'rgba(200,200,200,0.8)',
-      'Steel Frame': 'rgba(150,150,150,0.8)',
-      'Timber Frame': 'rgba(139,69,19,0.8)',
-      'Steel': 'rgba(150,150,150,0.8)',
-      'Acero': 'rgba(150,150,150,0.8)',
-      'Timber': 'rgba(139,69,19,0.8)',
-      'Madera': 'rgba(139,69,19,0.8)',
-      'Concrete Beams': '#FFC700',
-      'Steel Beams': 'rgba(150,150,150,0.8)',
-      'Timber Beams': 'rgba(139,69,19,0.8)'
+      // Lifecycle stages, A1 through A5, in reading order.
+      'Extraction': SERIES[0],           'Extracción': SERIES[0],
+      'Processing': SERIES[1],           'Procesamiento': SERIES[1],
+      'Transportation': SERIES[2],       'Transporte': SERIES[2],
+      'Installation': SERIES[5],         'Instalación': SERIES[5],
+      'Operational': SERIES[4],          'Operacional': SERIES[4],
+      'Operational (50yr)': SERIES[4],   'Operacional (50yr)': SERIES[4],
+      'Tree Offset': SERIES[3],          'Compensación': SERIES[3],
+      'Compensación Árboles': SERIES[3], 'Compensação': SERIES[3],
+
+      // Impact view.
+      'Embodied Carbon': SERIES[0],      'Carbono Encarnado': SERIES[0],
+      'Total Impact': SERIES[1],         'Impacto Total': SERIES[1],
+      'Breakdown': SERIES[2],            'Desglose': SERIES[2],
+
+      // Structural elements.
+      'Walls': SERIES[0],                'Muros': SERIES[0],
+      'Slabs': SERIES[1],                'Losas': SERIES[1],
+      'Columns': SERIES[2],              'Columnas': SERIES[2],
+      'Foundations': SERIES[6],          'Cimentaciones': SERIES[6],
+      'Beams': SERIES[7],                'Vigas': SERIES[7],
+
+      // Materials, where they appear as their own series.
+      'Materials': SERIES[0],            'Materiales': SERIES[0],
+      'Transport': SERIES[2],            'Transporte (Categoría)': SERIES[2],
+      'Energy (50yr)': SERIES[4],        'Energía (50yr)': SERIES[4],
+      'Waste Reduction': SERIES[3],      'Reducción Residuos': SERIES[3],
+      'Steel Frame': SERIES[7],          'Steel': SERIES[7],          'Acero': SERIES[7],
+      'Timber Frame': SERIES[3],         'Timber': SERIES[3],         'Madera': SERIES[3],
+      'Concrete Beams': SERIES[1],       'Steel Beams': SERIES[7],    'Timber Beams': SERIES[3]
     };
 
     // Process-based carbon breakdown by construction lifecycle (A1-A5 framework)
@@ -1268,13 +1268,11 @@
         }
       }
 
-      const borderColor = 'rgba(255, 213, 0, 0.2)';
-
       // Ensure labels and data are not empty
       if (!labels || labels.length === 0) {
         labels = [currentLang === 'en' ? 'No Data' : 'Sin Datos'];
         data = [0];
-        colors = ['#FFD500'];
+        colors = [SERIES[0]];
       }
 
       // Update Pie Chart
@@ -1286,24 +1284,34 @@
       } else {
         const pieCtx = document.getElementById('pieChart').getContext('2d');
         pieChart = new Chart(pieCtx, {
-          type: 'pie',
+          type: 'doughnut',
           data: {
             labels: labels,
-            datasets: [{
+            datasets: [Object.assign({
               data: data,
               backgroundColor: colors,
-              borderColor: '#000000',
-              borderWidth: 2
-            }]
+              hoverOffset: 6
+            }, CHART_THEME.arcBorder())]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            // A ring rather than a full pie: the small A4/A5 slices are
+            // easier to compare along an arc than as thin wedges.
+            cutout: '46%',
+            layout: { padding: { top: 4, bottom: 4 } },
             plugins: {
-              legend: {
-                position: 'bottom',
-                labels: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } }
-              }
+              legend: CHART_THEME.legend({ position: 'bottom', size: 11 }),
+              tooltip: CHART_THEME.tooltip({
+                callbacks: {
+                  label: function (ctx) {
+                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0) || 1;
+                    const share = (ctx.parsed / total) * 100;
+                    return ' ' + ctx.label + ': ' + formatToolNumber(Math.round(ctx.parsed)) +
+                      ' kgCO₂e (' + share.toFixed(1) + '%)';
+                  }
+                }
+              })
             }
           }
         });
@@ -1384,20 +1392,33 @@
                            label === 'Compensación' ? 'Tree Offset' : label;
         return PROCESS_COLORS[processName] || '#FFD500';
       });
-      const borderColor = 'rgba(255, 213, 0, 0.2)';
-
       // Update Density Histogram Chart
+      const axisTitle = currentHistogramMode === 'percentage'
+        ? (currentLang === 'en' ? 'Share of total (%)' : 'Porcentaje del total (%)')
+        : currentHistogramMode === 'cumulative'
+          ? (currentLang === 'en' ? 'Cumulative kgCO₂e' : 'kgCO₂e acumulado')
+          : 'kgCO₂e';
+
       if (densityChart) {
         densityChart.data.labels = labels;
         densityChart.data.datasets[0].data = data;
         densityChart.data.datasets[0].backgroundColor = colors;
+        densityChart.data.datasets[0].borderColor = colors;
+        // The chart outlives a language switch, so its series names have
+        // to be re-read rather than left at whatever they were built in.
+        densityChart.data.datasets[0].label =
+          currentLang === 'en' ? 'CO₂e Distribution' : 'Distribución CO₂e';
+        densityChart.data.datasets[1].label =
+          currentLang === 'en' ? 'Density Curve' : 'Curva de Densidad';
         // Update density curve (smoothed distribution)
         const densityValues = calculateDensity(data);
         densityChart.data.datasets[1].data = densityValues;
+        densityChart.options.scales.y.title.text = axisTitle;
         densityChart.update();
       } else {
         const densityCtx = document.getElementById('densityHistogram').getContext('2d');
         const densityValues = calculateDensity(data);
+        const curveColor = CHART_THEME.tokens().ink;
 
         densityChart = new Chart(densityCtx, {
           type: 'bar',
@@ -1408,21 +1429,28 @@
                 label: currentLang === 'en' ? 'CO₂e Distribution' : 'Distribución CO₂e',
                 data: data,
                 backgroundColor: colors,
-                borderColor: '#FFD500',
-                borderWidth: 2,
+                // Border in the bar's own colour: a single yellow outline
+                // around every bar, as before, flattened them into one
+                // block at a glance.
+                borderColor: colors,
+                borderWidth: 1,
+                borderRadius: 3,
+                maxBarThickness: 64,
                 order: 2
               },
               {
                 label: currentLang === 'en' ? 'Density Curve' : 'Curva de Densidad',
                 data: densityValues,
                 type: 'line',
-                borderColor: '#FFFFFF',
-                borderWidth: 3,
+                borderColor: curveColor,
+                borderWidth: 2,
+                borderDash: [6, 4],
                 fill: false,
                 tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#FFD500',
-                pointBorderColor: '#FFFFFF',
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                pointBackgroundColor: curveColor,
+                pointBorderColor: CHART_THEME.tokens().surface,
                 pointBorderWidth: 2,
                 order: 1,
                 yAxisID: 'y1'
@@ -1434,36 +1462,49 @@
             maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
             scales: {
-              y: {
-                type: 'linear',
-                display: true,
-                position: 'left',
-                ticks: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } },
-                grid: { color: borderColor },
-                title: { display: true, text: 'kgCO₂e', color: 'var(--color-black)' }
-              },
-              y1: {
-                type: 'linear',
-                display: false,
-                position: 'right'
-              },
-              x: {
-                ticks: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 9 } },
-                grid: { color: borderColor }
-              }
+              y: Object.assign(
+                CHART_THEME.axis({
+                  beginAtZero: true,
+                  title: axisTitle,
+                  tickCallback: function (value) {
+                    return formatToolNumber(Math.round(value));
+                  }
+                }),
+                { type: 'linear', display: true, position: 'left' }
+              ),
+              // The density curve rides on its own hidden scale so it
+              // never rescales the bars it is drawn over.
+              y1: { type: 'linear', display: false, position: 'right' },
+              x: CHART_THEME.axis({
+                grid: false,
+                tickSize: 10,
+                autoSkip: false,   // every bar keeps its own name
+                // Chart.js rotates only as far as it must, so a high
+                // ceiling costs nothing on a wide screen and keeps the
+                // six stage names apart in a phone-width column.
+                maxRotation: 60
+              })
             },
             plugins: {
-              legend: {
+              legend: CHART_THEME.legend({
                 position: 'bottom',
-                labels: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } }
-              },
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleColor: '#FFD500',
-                bodyColor: '#FFFFFF',
-                borderColor: '#FFD500',
-                borderWidth: 1
-              }
+                size: 11,
+                // Dataset 0 is the bars: coloured per stage and named on
+                // the axis, so only the curve needs a key entry.
+                hide: [0]
+              }),
+              tooltip: CHART_THEME.tooltip({
+                callbacks: {
+                  label: function (ctx) {
+                    if (ctx.dataset.yAxisID === 'y1') return null; // density curve is unitless
+                    // Read the mode at draw time; the chart is built once
+                    // and then reused across mode switches.
+                    const suffix = currentHistogramMode === 'percentage' ? '%' : 'kgCO₂e';
+                    return ' ' + ctx.dataset.label + ': ' +
+                      formatToolNumber(Math.round(ctx.parsed.y)) + ' ' + suffix;
+                  }
+                }
+              })
             }
           }
         });
@@ -1652,8 +1693,8 @@
     };
   </script>
 
-<script src="../js/tools/option-cards.js" defer></script>
-<script src="../js/tools/pdf-export.js" defer></script>
-<script src="../js/tools/background-video.js" defer></script>
+<script src="../js/tools/option-cards.js?v=2" defer></script>
+<script src="../js/tools/pdf-export.js?v=2" defer></script>
+<script src="../js/tools/background-video.js?v=2" defer></script>
 </body>
 </html>

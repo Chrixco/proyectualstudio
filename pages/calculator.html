@@ -47,12 +47,12 @@
   <link rel="canonical" href="https://proyectualst.com/pages/calculator.html"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css" rel="stylesheet" />
+  <link href="../css/tools.css?v=2" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js"></script>
-  <script src="../js/tools/construction-rates.js"></script>
+  <script src="../js/tools/format.js?v=2"></script>
+  <script src="../js/tools/construction-rates.js?v=2"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Centralized Color System -->
@@ -67,25 +67,10 @@
     /* Two-panel calculator layout for desktop */
 
     /* Tablet: 768px and below */
-    @media (max-width: 768px) {
-
-      .inputs-panel,
-      .results-panel {
-        box-shadow: 8px 8px 0px #FFD500;
-        border: 3px solid #FFD500;
-      }
-    }
+    
 
     /* Mobile: 480px and below */
-    @media (max-width: 480px) {
-
-      .inputs-panel,
-      .results-panel {
-        padding: 1rem;
-        box-shadow: 6px 6px 0px #FFD500;
-        border: 2px solid #FFD500;
-      }
-    }
+    
 
     /* Blue range slider for both themes */
 
@@ -623,7 +608,7 @@
               * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
             </p>
 
-            <div style="display: flex; gap: 1rem; flex-direction: column;">
+            <div class="cta-row cta-row--stacked">
               <button onclick="navigateToLeadForm()" class="cta-final btn"
                  data-en="Get Detailed Quote"
                  data-es="Obtener Cotización Detallada">
@@ -1329,8 +1314,8 @@
     });
   </script>
 
-<script src="../js/tools/option-cards.js" defer></script>
-<script src="../js/tools/pdf-export.js" defer></script>
-<script src="../js/tools/background-video.js" defer></script>
+<script src="../js/tools/option-cards.js?v=2" defer></script>
+<script src="../js/tools/pdf-export.js?v=2" defer></script>
+<script src="../js/tools/background-video.js?v=2" defer></script>
 </body>
 </html>
