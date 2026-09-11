@@ -1,0 +1,908 @@
+/**
+ * Proyectual Studio — Tools design layer
+ * Shared styles for tools.html and the four calculators.
+ * Loaded AFTER css/styles.css so it can rely on the :root tokens defined there.
+ */
+
+/* ---------------------------------------------------------------
+   1. Tool page header
+   Replaces the per-page `.text-white` / `.title-main` drift. The
+   calculators sit on a light background, so the title must be an
+   accent colour, never white.
+   --------------------------------------------------------------- */
+.tool-title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  color: var(--accent-primary, #0099FF);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  margin: 0 auto 0.75rem;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  text-wrap: balance;
+}
+
+.tool-subtitle {
+  text-align: center;
+  color: var(--text-secondary, #333333);
+  margin: 0 auto 2.5rem;
+  max-width: 60ch;
+  padding: 0 1rem;
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------
+   1b. Background video scrim
+   The calculators play a full-bleed looping video behind the page, so
+   text contrast otherwise changes frame by frame. A fixed scrim between
+   the video and the content makes every foreground colour predictable
+   and keeps the light panels reading as intended.
+   --------------------------------------------------------------- */
+.video-background::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.86);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------
+   2. Visible keyboard focus
+   The site had focus styles on three inputs only; everything else
+   relied on the UA outline, which the brutalist borders hide.
+   --------------------------------------------------------------- */
+.tool-page :is(a, button, input, select, textarea, [tabindex]):focus-visible,
+.option-card:focus-visible,
+.tool-button:focus-visible {
+  outline: 3px solid var(--color-yellow, #FFD500);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+/* Never remove the outline for keyboard users, even where a page
+   sets `outline: none` on :focus. */
+.tool-page :is(a, button, input, select, textarea):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------------------------------------------------------------
+   3. Option cards as a keyboard-operable radio group
+   Behaviour is added by js/tools/option-cards.js; these rules make
+   the resulting state visible and expose the pointer affordance.
+   --------------------------------------------------------------- */
+.option-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------------------------------------------------------------
+   4. Skip link — lets keyboard and screen-reader users jump past the
+   navbar straight into the calculator.
+   --------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10000;
+  background: var(--color-yellow, #FFD500);
+  color: #000000;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 3px solid #000000;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+/* ---------------------------------------------------------------
+   5. Screen-reader-only helper (Bootstrap ships .visually-hidden,
+   but the tools must not depend on it being loaded).
+   --------------------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------
+   6. Reduced motion
+   The cursor glow, scroll reveals, parallax and hover translations
+   are all decorative. Honour the OS setting.
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cursor-glow {
+    display: none !important;
+  }
+
+  .option-card:hover,
+  .tool-button:hover {
+    transform: none !important;
+  }
+}
+
+/* ===============================================================
+   CALCULATOR SHELL
+   The four calculators each carried their own near-identical copy of
+   the layout below. It lives here once; per-tool differences are
+   expressed as custom properties rather than as forked rules.
+   =============================================================== */
+
+.tool-page {
+  --tool-accent: #0099FF;
+  --tool-surface: #FFFFFF;
+  --tool-radius: 0.75rem;
+  --tool-shadow: 12px 12px 0px var(--tool-accent);
+  --tool-panel-border: 4px solid var(--tool-accent);
+
+  --tool-section-bg: rgba(0, 153, 255, 0.06);
+  --tool-section-border: 2px solid var(--tool-accent);
+
+  --tool-label-color: var(--tool-accent);
+  --tool-label-rule: rgba(0, 153, 255, 0.15);
+}
+
+/* The carbon tool reads in yellow; only the tint tokens change. */
+.tool-page--carbon {
+  --tool-section-bg: rgba(255, 213, 0, 0.06);
+  --tool-label-rule: rgba(255, 213, 0, 0.25);
+}
+
+.tool-page main.container {
+  position: relative;
+  z-index: 1;
+}
+
+.calculator-wrapper {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.calculator-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inputs-panel,
+.results-panel {
+  background: var(--tool-surface);
+  border: var(--tool-panel-border);
+  box-shadow: var(--tool-shadow);
+  border-radius: var(--tool-radius);
+  padding: 1.5rem;
+  overflow: visible;
+  min-width: 0;
+}
+
+/* Carbon stacks a tab strip above its inputs and needs both panels to
+   distribute height; solar keeps its results in view while you scroll. */
+.tool-page--carbon .inputs-panel,
+.tool-page--carbon .results-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-page--solar .results-panel {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.calculator-section {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: var(--tool-section-border);
+  border-radius: var(--tool-radius);
+  background: var(--tool-section-bg);
+  backdrop-filter: blur(5px);
+}
+
+.calculator-section:last-child {
+  margin-bottom: 0;
+}
+
+.calculator-label {
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  color: var(--tool-label-color);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--tool-label-rule);
+}
+
+/* Full-bleed decorative video layer (see js/tools/background-video.js). */
+.video-background {
+  position: fixed;
+  inset: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-background video {
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .calculator-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-page--solar .results-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .calculator-wrapper {
+    padding: 0 1rem;
+  }
+
+  .inputs-panel,
+  .results-panel {
+    padding: 1.25rem;
+    box-shadow: 6px 6px 0px var(--tool-accent);
+  }
+}
+
+/* ===============================================================
+   CALCULATOR COMPONENTS
+   Extracted from the four pages, which each carried a slightly
+   drifted copy. Values follow the most refined variant; per-tool
+   colour differences come from the tokens above.
+   =============================================================== */
+
+/* --- Choice cards -------------------------------------------- */
+.option-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-cards.two-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.option-card {
+  padding: 0.8rem;
+  border: 2px solid rgba(0, 153, 255, 0.3);
+  border-radius: var(--tool-radius);
+  background: var(--tool-surface);
+  color: #000000;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-card:last-child {
+  margin-bottom: 0;
+}
+
+.option-card h5 {
+  margin-bottom: 0.2rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.option-card p {
+  margin-bottom: 0;
+  font-size: 0.75rem;
+  line-height: 1.1;
+  color: #000000;
+}
+
+.option-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--tool-accent);
+  border-color: var(--tool-accent);
+  background: rgba(0, 153, 255, 0.1);
+}
+
+/* `.selected` and `.active` are the two class names the pages use to
+   mark the chosen card. The ARIA layer mirrors these rather than
+   driving them, so the visual state stays owned by the page. */
+.option-card.selected,
+.option-card.active {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  border-color: var(--tool-accent);
+  box-shadow: 4px 4px 0px var(--tool-accent);
+}
+
+.option-card.selected h5,
+.option-card.selected p,
+.option-card.active h5,
+.option-card.active p {
+  color: #FFFFFF;
+}
+
+/* The investment tool centres a title/subtitle pair in each card. */
+.tool-page--investment .option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+}
+
+.option-card-title {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+}
+
+.option-card-subtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.option-card.active .option-card-subtitle {
+  opacity: 1;
+}
+
+/* --- Range sliders ------------------------------------------- */
+.range-slider {
+  width: 100%;
+  height: 6px;
+  margin: 0.5rem 0;
+  background: rgba(0, 153, 255, 0.1);
+  border: 1px solid var(--tool-accent);
+  border-radius: 4px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--tool-accent);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--tool-accent);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover,
+.range-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.range-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.8rem;
+  margin-top: 0.6rem;
+  padding: 0.4rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--tool-accent);
+  text-align: center;
+  background: rgba(0, 153, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* --- Results summary ----------------------------------------- */
+.selection-summary {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--tool-radius);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.95rem;
+  border-bottom: 2px solid rgba(0, 153, 255, 0.3);
+}
+
+.summary-item:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.summary-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: var(--tool-accent);
+}
+
+.summary-value {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000000;
+}
+
+/* --- Headline figure ----------------------------------------- */
+.total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  border: 4px solid var(--tool-accent);
+  box-shadow: 8px 8px 0px var(--tool-accent);
+  border-radius: var(--tool-radius);
+  text-align: center;
+}
+
+.total-amount {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-break: break-word;
+}
+
+.total-label {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.equivalence {
+  margin-top: 0.7rem;
+  padding: 0.8rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--tool-radius);
+}
+
+.disclaimer {
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  opacity: 0.8;
+}
+
+/* --- Primary call to action ---------------------------------- */
+.cta-final {
+  display: inline-block;
+  align-self: center;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  background: #FFFFFF;
+  color: var(--tool-accent);
+  border: 3px solid var(--tool-accent);
+  box-shadow: 4px 4px 0px var(--tool-accent);
+  border-radius: var(--tool-radius);
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-final:hover {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  border-color: var(--tool-accent);
+  box-shadow: 6px 6px 0px var(--tool-accent);
+  transform: translate(-3px, -3px);
+}
+
+/* --- Charts --------------------------------------------------- */
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.chart-controls {
+  display: inline-flex;
+  padding: 0.3rem;
+  margin-bottom: 1rem;
+  background: rgba(0, 153, 255, 0.1);
+  border: 2px solid var(--tool-accent);
+  border-radius: 50px;
+  backdrop-filter: blur(5px);
+}
+
+.chart-btn {
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  border: none;
+  border-radius: 40px;
+  color: var(--tool-accent);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chart-btn:hover {
+  background: rgba(0, 153, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.chart-btn.active {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 153, 255, 0.5);
+  font-weight: 900;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  padding: 0.75rem;
+  background: #000000;
+  border: 2px solid rgba(0, 153, 255, 0.2);
+  border-radius: var(--tool-radius);
+  box-sizing: border-box;
+}
+
+.chart-wrapper canvas {
+  max-width: 100%;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* ===============================================================
+   LEAD CAPTURE
+   The email-gate modal and its status messages were duplicated in all
+   four pages. `.email-modal` and `.email-modal-overlay` are the two
+   wrapper names in use; both behave identically.
+   =============================================================== */
+
+.lead-status {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--tool-radius);
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Darkened from the original #90EE90 / #FF6B6B, which failed contrast
+   against their own tinted backgrounds. */
+.lead-status-success {
+  background: rgba(22, 130, 62, 0.12);
+  color: #16823E;
+  border: 2px solid #16823E;
+}
+
+.lead-status-error {
+  background: rgba(197, 42, 42, 0.12);
+  color: #C52A2A;
+  border: 2px solid #C52A2A;
+}
+
+.lead-summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(0, 153, 255, 0.2);
+}
+
+.lead-summary-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--tool-accent);
+}
+
+.lead-summary-value {
+  color: #000000;
+}
+
+.email-modal,
+.email-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10001;
+}
+
+.email-modal.active,
+.email-modal-overlay.active {
+  display: flex;
+}
+
+.email-modal-content {
+  width: 90%;
+  max-width: 450px;
+  padding: 2.5rem;
+  background: var(--tool-surface);
+  border: 4px solid var(--tool-accent);
+  box-shadow: 12px 12px 0px var(--tool-accent);
+  border-radius: var(--tool-radius);
+  animation: toolModalIn 0.3s ease;
+}
+
+@keyframes toolModalIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.email-modal-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--tool-accent);
+}
+
+.email-modal-input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #000000;
+  background: var(--tool-surface);
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--tool-radius);
+  box-sizing: border-box;
+}
+
+.email-modal-input::placeholder {
+  color: rgba(0, 153, 255, 0.6);
+}
+
+.email-modal-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--tool-accent);
+}
+
+.email-modal-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.email-modal-btn {
+  flex: 1;
+  padding: 1rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--tool-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.email-modal-btn.submit {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+}
+
+.email-modal-btn.submit:hover {
+  background: var(--tool-surface);
+  color: var(--tool-accent);
+  box-shadow: 6px 6px 0px var(--tool-accent);
+  transform: translate(-3px, -3px);
+}
+
+.email-modal-btn.cancel {
+  background: transparent;
+  color: var(--tool-accent);
+}
+
+.email-modal-btn.cancel:hover {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  transform: translate(-3px, -3px);
+}
+
+/* The investment tool's modal buttons carry no submit/cancel class. */
+.tool-page--investment .email-modal-btn:not(.cancel) {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+}
+
+/* ===============================================================
+   PRINT
+   The "Download as PDF" buttons call window.print(), so the printed
+   page IS the deliverable. Strip the site chrome, drop the decorative
+   layers, and let the two panels flow down the sheet.
+   =============================================================== */
+@media print {
+  .navbar,
+  .footer-enhanced,
+  .video-background,
+  .cursor-glow,
+  .skip-link,
+  .cookie-banner,
+  .go-back-btn,
+  .cta-final,
+  .chart-controls,
+  .email-modal,
+  .email-modal-overlay,
+  #lang-toggle {
+    display: none !important;
+  }
+
+  @page {
+    margin: 15mm;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .tool-page main.container {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none;
+  }
+
+  .calculator-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  /* Side by side becomes top and bottom on paper. */
+  .calculator-layout {
+    display: block;
+  }
+
+  .inputs-panel,
+  .results-panel {
+    position: static !important;
+    box-shadow: none !important;
+    border: 1px solid #666666 !important;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    break-inside: avoid;
+  }
+
+  .calculator-section,
+  .selection-summary,
+  .total-container,
+  .chart-wrapper {
+    break-inside: avoid;
+  }
+
+  /* Ink-heavy fills print as outlines. */
+  .total-container {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+  }
+
+  /* The chosen card is often alone in a Bootstrap column once its
+     siblings are hidden; flatten the grid so it starts at the margin. */
+  .calculator-section .row,
+  .option-cards {
+    display: block !important;
+  }
+
+  .calculator-section [class*="col-"] {
+    width: 100% !important;
+    max-width: none !important;
+    flex: none !important;
+    padding: 0 !important;
+  }
+
+  .calculator-section {
+    background: #FFFFFF !important;
+    border: 1px solid #CCCCCC !important;
+    backdrop-filter: none !important;
+  }
+
+  .calculator-label {
+    color: #000000 !important;
+  }
+
+  .option-card {
+    box-shadow: none !important;
+    transform: none !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Only the chosen option is worth the paper. */
+  .option-card:not(.selected):not(.active) {
+    display: none;
+  }
+
+  .option-card.selected,
+  .option-card.active {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+
+  .option-card.selected h5,
+  .option-card.selected p,
+  .option-card.active h5,
+  .option-card.active p {
+    color: #000000 !important;
+  }
+
+  .chart-wrapper {
+    background: #FFFFFF !important;
+    border: 1px solid #666666 !important;
+    height: auto;
+  }
+
+  .tool-title {
+    color: #000000 !important;
+  }
+
+  /* Give the printed sheet a provenance line. */
+  .calculator-wrapper::after {
+    content: 'Estimate generated at proyectualst.com — indicative figures only.';
+    display: block;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #666666;
+    font-size: 9pt;
+    color: #333333;
+  }
+}
