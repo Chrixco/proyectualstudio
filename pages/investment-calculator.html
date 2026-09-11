@@ -3,11 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Cookie Consent & Analytics -->
+  <script src="../js/cookie-consent.js"></script>
   <link rel="icon" href="../images/logo03.ico" type="image/x-icon" />
   <title>Investment Profitability Calculator | Proyectual Studio</title>
   <meta name="description" content="Calculate construction project profitability and ROI for Ecuador or Germany markets."/>
+  <link rel="canonical" href="https://proyectualst.com/pages/investment-calculator.html"/>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Investment Profitability Calculator | Calculadora de Rentabilidad de Inversiones"/>
+  <meta property="og:description" content="Estimate construction project profitability, ROI and payback for the Ecuador and Germany markets. Free tool for developers and architects."/>
+  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
+  <meta property="og:url" content="https://proyectualst.com/pages/investment-calculator.html"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Proyectual Studio"/>
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Investment Profitability Calculator"/>
+  <meta name="twitter:description" content="Estimate construction project profitability, ROI and payback for the Ecuador and Germany markets. Free tool for developers and architects."/>
+  <meta name="twitter:image" content="https://proyectualst.com/images/logo03.png"/>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Investment Profitability Calculator",
+    "alternateName": "Calculadora de Rentabilidad de Inversiones",
+    "description": "Estimate construction project profitability, ROI and payback for the Ecuador and Germany markets. Free tool for developers and architects.",
+    "url": "https://proyectualst.com/pages/investment-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web Browser",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "ArchitectureFirm",
+      "name": "Proyectual Studio",
+      "url": "https://proyectualst.com"
+    }
+  }
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
+  <link href="../css/tools.css" rel="stylesheet" />
+
+  <!-- Language state, needed before the page scripts run -->
+  <script src="../js/tools/i18n.js"></script>
+  <script src="../js/tools/format.js"></script>
+  <script src="../js/tools/construction-rates.js"></script>
 
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
@@ -15,38 +60,8 @@
   <!-- EmailJS now handled securely by backend API -->
 
   <style>
-    .calculator-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
-      box-sizing: border-box;
-    }
-
-    main.container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-    }
-
-    .calculator-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
 
     @media (max-width: 768px) {
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
 
       .inputs-panel,
       .results-panel {
@@ -56,24 +71,6 @@
     }
 
     @media (max-width: 480px) {
-      main.container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-
-      .calculator-wrapper {
-        padding: 0 0.75rem;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
 
       .inputs-panel,
       .results-panel {
@@ -81,45 +78,6 @@
         box-shadow: 6px 6px 0px #0099FF;
         border: 2px solid #0099FF;
       }
-    }
-
-    .inputs-panel {
-      background: #FFFFFF;
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      overflow: visible;
-      min-width: 0;
-    }
-
-    .results-panel {
-      background: #FFFFFF;
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      min-width: 0;
-    }
-
-    .calculator-section {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border: 2px solid #0099FF;
-      background: #FFFFFF;
-      border-radius: 0.75rem;
-    }
-
-    .calculator-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.75rem;
-      font-size: 0.8rem;
-      color: #0099FF;
-      display: block;
-      border-bottom: 2px solid rgba(0, 153, 255, 0.1);
-      padding-bottom: 0.5rem;
     }
 
     .form-control {
@@ -297,27 +255,6 @@
     .currency {
       color: #0099FF;
       font-weight: 600;
-    }
-
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .video-background video {
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-    main.container {
-      position: relative;
-      z-index: 1;
     }
 
     /* Custom Radio Button Styling */
@@ -550,68 +487,8 @@
     }
 
     /* Option Card Styling */
-    .option-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .option-cards.two-col {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .option-card {
-      border: 3px solid #0099FF;
-      background: transparent;
-      padding: 1.25rem;
-      border-radius: 0.75rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.5rem;
-    }
-
-    .option-card:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 6px 6px 0px #0099FF;
-    }
-
-    .option-card.active {
-      background: #0099FF;
-      color: #FFFFFF;
-      box-shadow: 8px 8px 0px #0099FF;
-    }
-
-    .option-card-title {
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 1rem;
-    }
-
-    .option-card-subtitle {
-      font-size: 0.8rem;
-      font-weight: 600;
-      opacity: 0.85;
-    }
-
-    .option-card.active .option-card-subtitle {
-      opacity: 1;
-      color: #000000;
-    }
 
     @media (max-width: 480px) {
-      .option-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .option-cards.two-col {
-        grid-template-columns: 1fr;
-      }
 
       .slider-value {
         font-size: 0.8rem;
@@ -651,106 +528,17 @@
     }
 
     /* Email Modal for PDF Download */
-    .email-modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .email-modal-overlay.active {
-      display: flex;
-    }
-
-    .email-modal-content {
-      background: #FFFFFF;
-      border: 4px solid #0099FF;
-      padding: 2rem;
-      border-radius: 0.75rem;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 0 50px rgba(255, 213, 0, 0.3);
-    }
-
-    .email-modal-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-input {
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border: 3px solid #0099FF;
-      background: #FFFFFF;
-      color: #000000;
-      font-size: 1rem;
-      border-radius: 0.75rem;
-      box-sizing: border-box;
-    }
-
-    .email-modal-input::placeholder {
-      color: rgba(0, 0, 0, 0.5);
-    }
-
-    .email-modal-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px #0099FF;
-    }
-
-    .email-modal-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: space-between;
-    }
-
-    .email-modal-btn {
-      flex: 1;
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      border: 3px solid #0099FF;
-      background: #0099FF;
-      color: #000000;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .email-modal-btn:hover {
-      background: #ffeb3b;
-      box-shadow: 0 8px 20px rgba(255, 213, 0, 0.4);
-      transform: translateY(-2px);
-    }
-
-    .email-modal-btn.cancel {
-      background: transparent;
-      color: #0099FF;
-    }
-
-    .email-modal-btn.cancel:hover {
-      background: rgba(255, 213, 0, 0.1);
-    }
   </style>
 </head>
-<body class="body-white-text">
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+<body class="body-white-text tool-page tool-page--investment">
+<a class="skip-link" href="#main" data-en="Skip to content" data-es="Saltar al contenido">Skip to content</a>
+  <div class="video-background" aria-hidden="true">
+    <!-- Decorative. The poster ships with the page; js/tools/background-video.js
+         attaches the 6.6 MB source after load, and skips it on constrained
+         connections or when reduced motion is preferred. -->
+    <video muted loop playsinline preload="none"
+           poster="../media/calculator-bg-poster.jpg"
+           data-src="../media/Sequence yellow_colour_128x64.mp4"></video>
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -775,7 +563,7 @@
     </div>
   </nav>
 
-  <main class="container py-5">
+  <main id="main" class="container py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
       <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -783,7 +571,7 @@
         </svg>
       </a>
     </div>
-    <h1 class="title-main" style="text-align: center; width: 100%;" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
+    <h1 class="tool-title" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
 
     <div class="calculator-wrapper">
       <div class="calculator-layout">
@@ -927,7 +715,7 @@
                 </div>
                 <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" aria-label="Operating costs percentage" oninput="syncSlider(this); debouncedCalculate();">
                 <div class="slider-range-labels"><span>0%</span><span>70%</span></div>
-                <span class="hint-text" data-en="Includes maintenance, taxes, insurance, vacancy (30% is typical)" data-es="Incluye mantenimiento, impuestos, seguros, vacancia (30% es típico)">Includes maintenance, taxes, insurance, vacancy</span>
+                <span class="hint-text" data-en="Share of rental income for maintenance, insurance, management and vacancy (30% is typical). Property tax is counted separately." data-es="Porcentaje del ingreso de alquiler para mantenimiento, seguros, gestión y vacancia (30% es típico). El impuesto predial se cuenta aparte.">Share of rental income for maintenance, insurance, management and vacancy (30% is typical). Property tax is counted separately.</span>
               </div>
             </div>
 
@@ -935,7 +723,7 @@
             <div id="sellingPriceSection" style="display: none;">
               <div class="mb-3">
                 <label for="sellingPricePerM2" data-en="Selling Price per m²" data-es="Precio de Venta por m²">Selling Price per m² <span class="currency" id="currencyLabel3">USD</span></label>
-                <input type="number" class="form-control" id="sellingPricePerM2" value="1500" min="100" step="100" oninput="debouncedCalculate();">
+                <input type="number" class="form-control" id="sellingPricePerM2" value="2000" min="100" step="100" oninput="debouncedCalculate();">
                 <span class="hint-text" id="sellingPriceHint" data-en="Market price at time of sale (not appreciation based)" data-es="Precio de mercado al momento de venta (no basado en apreciación)">Market price at time of sale</span>
               </div>
             </div>
@@ -1024,7 +812,7 @@
           <div class="result-section">
             <div class="result-section-title" data-en="Investment Summary" data-es="Resumen de Inversión">Investment Summary</div>
             <div class="result-item">
-              <span class="result-label" data-en="Total Investment" data-es="Inversión Total">Total Investment</span>
+              <span class="result-label" data-en="Cash Invested" data-es="Efectivo Invertido">Cash Invested</span>
               <span class="result-value" id="resultInvestment">-</span>
             </div>
             <div id="rentalResultsSection">
@@ -1220,7 +1008,6 @@
     let hasCalculated = false;
     let currentProjectPurpose = 'rent';
     let rentalPurposePercent = 100;
-    let currentLang = localStorage.getItem('lang') || 'en';
 
     // Input constraints and validation limits
     const INPUT_LIMITS = {
@@ -1233,41 +1020,45 @@
       years: { min: 1, max: 100, step: 1 }
     };
 
+    // Construction rates come from js/tools/construction-rates.js, shared with
+    // the budget calculator so the two tools cannot quote different figures for
+    // the same market. Only the finance assumptions live here.
+    const RATE_TABLE = window.CONSTRUCTION_RATES || {
+      ecuador: { currency: 'USD', perM2: { essential: 600, standard: 900, premium: 1400 }, typical: 1200, typicalRange: '800-1500 USD/m²' },
+      germany: { currency: 'EUR', perM2: { essential: 1800, standard: 2500, premium: 4000 }, typical: 2000, typicalRange: '1500-2500 EUR/m²' }
+    };
+
     const countryData = {
       ecuador: {
-        currency: 'USD',
-        taxRate: 0.22,
-        propertyTax: 0.01,
+        currency: RATE_TABLE.ecuador.currency,
+        taxRate: 0.22,          // corporate/rental income rate
+        propertyTax: 0.01,      // predial, share of assessed value
         rentalYield: 0.05,
         appreciation: 0.03,
         info: 'Growing sustainable market, lower construction costs',
-        typicalCostPerM2: 1200,
-        typicalCostRange: '800-1500 USD/m²',
+        typicalCostPerM2: RATE_TABLE.ecuador.typical,
+        typicalCostRange: RATE_TABLE.ecuador.typicalRange,
         finishCosts: {
-          essential: 600,    // $600/m² - Based on Ecuador 2024 construction costs: basic/social housing range $450-$600/m²
-          standard: 900,     // $900/m² - Based on Ecuador 2024: standard residential $750-$1,100/m², using mid-range $900
-          premium: 1400      // $1,400/m² - Based on Ecuador 2024: luxury/premium $1,200-$1,600/m², using mid-range $1,400
+          essential: RATE_TABLE.ecuador.perM2.essential,
+          standard: RATE_TABLE.ecuador.perM2.standard,
+          premium: RATE_TABLE.ecuador.perM2.premium
         }
-        // Sources: https://grupoherreraec.com/blog/ - "Evita estafas: Conoce el precio real por metro cuadrado de Construcción en Quito, Ecuador. 2024"
-        // https://www.minimalstudioec.com/costo-de-construccion-por-mt2-en-ecuador/ - "¿Cuál es el costo de construcción por mt2 en Ecuador?"
       },
       germany: {
-        currency: 'EUR',
-        taxRate: 0.42,
-        propertyTax: 0.006,
+        currency: RATE_TABLE.germany.currency,
+        taxRate: 0.42,          // top marginal personal rate, applied flat
+        propertyTax: 0.002,     // Grundsteuer sits on an assessed value well
+                                // below market; 0.6% of market value was high
         rentalYield: 0.04,
         appreciation: 0.03,
         info: 'Stable market, high energy efficiency standards',
-        typicalCostPerM2: 2000,
-        typicalCostRange: '1500-2500 EUR/m²',
+        typicalCostPerM2: RATE_TABLE.germany.typical,
+        typicalCostRange: RATE_TABLE.germany.typicalRange,
         finishCosts: {
-          essential: 1800,   // €1,800/m² - Based on Germany 2024-2025: basic single-family homes €1,800-€2,500/m²
-          standard: 2500,    // €2,500/m² - Based on Germany 2024-2025: apartment buildings €2,000-€3,000/m², using €2,500 for standard
-          premium: 4000      // €4,000/m² - Based on Germany 2024-2025: luxury construction €4,000-€5,000+/m², using €4,000
+          essential: RATE_TABLE.germany.perM2.essential,
+          standard: RATE_TABLE.germany.perM2.standard,
+          premium: RATE_TABLE.germany.perM2.premium
         }
-        // Sources: https://www.smartest-home.com/en/construction-costs-square-meter-housebuilding/ - "What will a house cost in 2026? Construction costs/square metre"
-        // https://www.euroconstruct.org/ - EUROCONSTRUCT data on German residential construction costs 2024-2025
-        // Data: H1 2024 avg €2,510/m² for single-family homes; simple houses €1,800-€2,500, apartments €2,000-€3,000, luxury €4,000-€5,000+
       }
     };
 
@@ -1440,6 +1231,9 @@
       const percentageSection = document.getElementById('purposePercentageSection');
       if (purpose === 'both') {
         percentageSection.style.display = 'block';
+        // Restore the blend from the slider — selecting 'sale' pins it to 0,
+        // and without this it stayed there and 'both' behaved as pure sale.
+        updatePurposePercentages();
       } else {
         percentageSection.style.display = 'none';
         if (purpose === 'sale') {
@@ -1612,47 +1406,10 @@
       document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
     }
 
-    function showPreviewData() {
-      const countryInfo = countryData[currentCountry];
-      const currency = countryInfo.currency;
-      const locale = currency === 'EUR' ? 'de-DE' : 'en-US';
-      const formatter = new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: currency === 'EUR' ? 'EUR' : 'USD',
-        minimumFractionDigits: 0
-      });
-
-      // Update badge to show preview
-      const badge = document.getElementById('resultStatusBadge');
-      if (badge && !hasCalculated) {
-        badge.textContent = 'PREVIEW';
-      }
-
-      // Sample values
-      const sampleDownPayment = 350000;
-      const sampleRental = 180000;
-      const sampleNetIncome = 126000;
-      const sampleProfit = 450000;
-      const samplePropertyValue = 1200000;
-
-      // Update results with sample data
-      document.getElementById('resultInvestment').textContent = formatter.format(sampleDownPayment);
-      document.getElementById('resultAnnualRental').textContent = formatter.format(sampleRental);
-      document.getElementById('resultNetIncome').textContent = formatter.format(sampleNetIncome);
-      document.getElementById('resultTotalProfit').textContent = formatter.format(sampleProfit);
-      document.getElementById('resultROI').textContent = '28.6%';
-      // Reset labels to defaults for sample calculation
-      document.getElementById('roiLabel').textContent = currentLang === 'en' ? 'ROI (%)' : 'ROI (%)';
-      document.getElementById('roiContext').textContent = currentLang === 'en' ? 'vs ~4% savings account' : 'vs ~4% cuenta de ahorros';
-      document.getElementById('resultPayback').textContent = '3 years';
-      document.getElementById('resultPropertyValue').textContent = formatter.format(samplePropertyValue);
-
-      document.getElementById('resultLandCost').textContent = formatter.format(250000);
-      document.getElementById('resultConstructionCost').textContent = formatter.format(500000);
-      document.getElementById('resultTotalProjectCost').textContent = formatter.format(750000);
-      document.getElementById('resultPropertySize').textContent = '1,000 m²';
-      document.getElementById('resultCostPerM2').textContent = formatter.format(500) + '/m²';
-    }
+    // showPreviewData() used to sit here. It painted invented figures — a
+    // 28.6% ROI, a 3-year payback, $126,000 of net income on a $350,000 down
+    // payment — that came from no calculation and contradicted the model.
+    // Nothing called it; calculateProfitability() runs on load instead.
 
     function calculateLoanPayment(principal, annualRate, years) {
       const monthlyRate = annualRate / 100 / 12;
@@ -1742,8 +1499,13 @@
                           (currentProjectPurpose === 'rent' ? 1 : 0);
       const blendedAnnualRental = annualRental * rentalFocus;
 
-      // Calculate operating costs as percentage of total property cost (applies to entire property regardless of purpose)
-      const annualOperatingCost = Math.round(totalProjectCost * operatingCostPercent * 100) / 100;
+      // Operating costs are a share of gross rental income — that is what the
+      // "30% is typical" rule of thumb refers to. Charging the percentage
+      // against the capital value instead made them ~9x too large and turned
+      // an ordinary rental building into a reported loss.
+      // Scaled to the rent actually being collected: a sale-only project has
+      // no tenants, so it carries no letting costs either.
+      const annualOperatingCost = Math.round(blendedAnnualRental * operatingCostPercent * 100) / 100;
 
       // Calculate annual property tax (applies to entire property value)
       const annualPropertyTax = Math.round(totalProjectCost * propertyTaxRate * 100) / 100;
@@ -1787,10 +1549,12 @@
           // RENT MODE: Annual rental income
           yearProfit = annualNetIncome;
         } else {
-          // BOTH MODE: Annual rental income + sale profit in final year
+          // BOTH MODE: annual rental income, plus the disposal in the final
+          // year. The sale is recognised HERE and nowhere else — it used to be
+          // added again afterwards as an appreciation gain, counting the same
+          // disposal twice on two different price bases.
           yearProfit = annualNetIncome;
           if (year === years) {
-            // Add sale profit in final year
             const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
             const sellingPrice = sellingPricePerM2 * propertySize;
             yearProfit += (sellingPrice - totalProjectCost);
@@ -1856,17 +1620,33 @@
         roiMetricLabel = currentLang === 'en' ? 'Profit Margin (%)' : 'Margen de Ganancia (%)';
         roiContextText = currentLang === 'en' ? 'one-time sale return' : 'retorno de venta única';
       } else if (currentProjectPurpose === 'rent') {
-        // RENT MODE: You invest X, collect Y per year → Profit = annual × years (operational income only)
-        // DO NOT include appreciation gain (unrealized) in rent scenarios
-        totalProfit = cumulativeProfit;
-        const averageAnnualOperationalProfit = years > 0 ? (cumulativeProfit / years) : 0;
-        annualizedROI = years > 0 ? ((averageAnnualOperationalProfit / downPayment) * 100) : 0;
+        // RENT MODE: profit is the net rent collected over the period. The
+        // purchase price is not a loss — the building is still owned — so it
+        // is added back out of the cumulative cash flow, which carries it from
+        // year 0. Capital recovery is what the breakeven row is for.
+        totalProfit = cumulativeProfit + downPayment;
+
+        // The headline rate is cash-on-cash return: annual net income over the
+        // cash invested. The previous figure divided cumulative cash flow —
+        // which already subtracts the whole purchase price — by that same
+        // purchase price, so a building yielding a healthy 5.7% reported
+        // -4.35% right next to the words "vs ~4% savings account".
+        annualizedROI = downPayment > 0 ? ((annualNetIncome / downPayment) * 100) : 0;
+        roiMetricLabel = currentLang === 'en' ? 'Cash-on-Cash Return (%)' : 'Retorno sobre Efectivo (%)';
+        roiContextText = currentLang === 'en'
+          ? 'annual net rent ÷ cash invested'
+          : 'renta neta anual ÷ efectivo invertido';
       } else {
-        // BOTH MODE: You invest X, collect Y per year, sell for Z → Profit = (annual × years) + appreciation
-        // This is a blended scenario combining both operational and appreciation returns
-        totalProfit = cumulativeProfit + appreciationGain;
-        const totalReturn = totalProfit;
-        annualizedROI = years > 0 ? ((totalReturn / years / downPayment) * 100) : 0;
+        // BOTH MODE: rental income and the disposal are both already inside
+        // cumulativeProfit. Adding appreciationGain here recognised the sale a
+        // second time, on a different price basis. The purchase price is added
+        // back for the same reason as in rent mode.
+        totalProfit = cumulativeProfit + downPayment;
+        annualizedROI = downPayment > 0 ? ((annualNetIncome / downPayment) * 100) : 0;
+        roiMetricLabel = currentLang === 'en' ? 'Cash-on-Cash Return (%)' : 'Retorno sobre Efectivo (%)';
+        roiContextText = currentLang === 'en'
+          ? 'annual net rent ÷ cash invested'
+          : 'renta neta anual ÷ efectivo invertido';
       }
 
       const roi = annualizedROI.toFixed(2);
@@ -1931,7 +1711,7 @@
       document.getElementById('resultLandCost').textContent = formatter.format(landCost);
       document.getElementById('resultConstructionCost').textContent = formatter.format(constructionCost);
       document.getElementById('resultTotalProjectCost').textContent = formatter.format(totalProjectCost);
-      document.getElementById('resultPropertySize').textContent = propertySize.toLocaleString() + ' m²';
+      document.getElementById('resultPropertySize').textContent = formatToolNumber(propertySize) + ' m²';
       document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
 
       // Update loan breakdown panel if bank financing is selected
@@ -1944,7 +1724,6 @@
         const loanTerm = parseInt(document.getElementById('loanTerm').value);
 
         const loanAmount = totalProjectCost * loanPercent;
-        const monthlyPayment = loanAmount / (loanTerm * 12) * (1 + (interestRate / 100 / 12 * loanTerm * 12)); // Approximation for display
         const monthlyRate = interestRate / 100 / 12;
         const numberOfPayments = loanTerm * 12;
 
@@ -2299,17 +2078,9 @@
       // Auto-calculate on page load
       calculateProfitability();
 
-      const currentLang = localStorage.getItem('lang') || 'en';
-      updateLanguageDisplay(currentLang);
-
-      const langToggle = document.getElementById('lang-toggle');
-      if (langToggle) {
-        langToggle.addEventListener('click', function() {
-          const newLang = currentLang === 'en' ? 'es' : 'en';
-          localStorage.setItem('lang', newLang);
-          updateLanguageDisplay(newLang);
-        });
-      }
+      // Language switching is handled by js/tools/i18n.js; the figures
+      // are grouped per language, so they are re-rendered on each switch.
+      document.addEventListener('proyectual:languagechange', () => calculateProfitability());
 
     });
 
@@ -2322,33 +2093,8 @@
       }
     });
 
-    function updateLanguageDisplay(lang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        if (lang === 'es' && el.hasAttribute('data-es')) {
-          el.textContent = el.getAttribute('data-es');
-        } else if (lang === 'en') {
-          el.textContent = el.getAttribute('data-en');
-        }
-      });
-    }
 
-    // Email Modal and PDF Download Functions
-    function openEmailModal() {
-      document.getElementById('emailModal').classList.add('active');
-      document.getElementById('emailInput').focus();
-    }
-
-    function closeEmailModal() {
-      document.getElementById('emailModal').classList.remove('active');
-      document.getElementById('emailInput').value = '';
-    }
-
-    window.submitPdfDownload = function() {
-      // Trigger browser print dialog to save as PDF
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    };
+    // Modal open/close and PDF export live in js/tools/pdf-export.js.
 
     function proceedWithEmailDownload(email) {
       const currentLang = localStorage.getItem('lang') || 'en';
@@ -2383,5 +2129,8 @@
       }
     });
   </script>
+<script src="../js/tools/option-cards.js" defer></script>
+<script src="../js/tools/pdf-export.js" defer></script>
+<script src="../js/tools/background-video.js" defer></script>
 </body>
 </html>

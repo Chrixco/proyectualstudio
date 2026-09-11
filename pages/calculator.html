@@ -9,15 +9,18 @@
   <title>House Cost Calculator | Calculadora de Costos de Casa | Proyectual Studio</title>
   <meta name="description" content="Calculate your house construction cost. Free online calculator for building projects in Ecuador. Calculadora gratuita de costos de construcción de casa en Ecuador."/>
   <meta name="keywords" content="house cost calculator, calculate your house, construction cost calculator, building cost estimator, calculadora de costos de casa, calcular costo de construcción, cuánto cuesta construir una casa, presupuesto de construcción, Ecuador, Cuenca, arquitectura, architecture"/>
-  <!-- Language alternates -->
-  <link rel="alternate" hreflang="en" href="https://proyectualst.com/pages/calculator.html"/>
-  <link rel="alternate" hreflang="es" href="https://proyectualst.com/pages/calculator.html"/>
   <!-- Open Graph -->
   <meta property="og:title" content="House Cost Calculator | Calculadora de Costos de Casa"/>
   <meta property="og:description" content="Calculate your house construction cost. Free online calculator. Calculadora gratuita de costos de construcción."/>
   <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
   <meta property="og:url" content="https://proyectualst.com/pages/calculator.html"/>
   <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Proyectual Studio"/>
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="House Cost Calculator"/>
+  <meta name="twitter:description" content="Calculate your house construction cost. Free online calculator."/>
+  <meta name="twitter:image" content="https://proyectualst.com/images/logo03.png"/>
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
@@ -41,12 +44,19 @@
     }
   }
   </script>
+  <link rel="canonical" href="https://proyectualst.com/pages/calculator.html"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
+  <link href="../css/tools.css" rel="stylesheet" />
+
+  <!-- Language state, needed before the page scripts run -->
+  <script src="../js/tools/i18n.js"></script>
+  <script src="../js/tools/format.js"></script>
+  <script src="../js/tools/construction-rates.js"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Centralized Color System -->
-  <script src="../js/colors.js"><\/script>
+  <script src="../js/colors.js"></script>
 
   <!-- Neo-Brutalist Effects -->
   <script src="../js/neobrutalist.js"></script>
@@ -55,50 +65,9 @@
 
   <style>
     /* Two-panel calculator layout for desktop */
-    main.container {
-      max-width: 100% !important;
-      width: 100%;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-    }
-
-    .calculator-wrapper {
-      width: 100%;
-      max-width: 1600px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-
-    .calculator-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
 
     /* Tablet: 768px and below */
     @media (max-width: 768px) {
-      main.container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        margin: 0 auto;
-      }
-
-      .calculator-wrapper {
-        margin: 0 auto;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
 
       .inputs-panel,
       .results-panel {
@@ -109,28 +78,6 @@
 
     /* Mobile: 480px and below */
     @media (max-width: 480px) {
-      main.container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-        margin: 0 auto;
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .calculator-wrapper {
-        margin: 0 auto;
-        width: 100%;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
 
       .inputs-panel,
       .results-panel {
@@ -140,104 +87,7 @@
       }
     }
 
-    .inputs-panel {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      min-width: 0;
-    }
-
-    .results-panel {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      min-width: 0;
-    }
-
-    .calculator-section {
-      margin-bottom: 2rem;
-      padding: 1.5rem;
-      border: 3px solid #0099FF;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 0.75rem;
-    }
-
-    .calculator-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      color: #000000;
-    }
-
-    .option-card {
-      padding: 1rem;
-      border: 3px solid #0099FF;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: #FFFFFF;
-      margin-bottom: 1rem;
-      border-radius: 0.75rem;
-      color: #000000;
-    }
-
-    .option-card:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 6px 6px 0px #0099FF;
-      border-color: #0099FF;
-    }
-
-    .option-card.selected {
-      background: #0099FF;
-      color: #FFFFFF;
-      border-color: #0099FF;
-      box-shadow: 6px 6px 0px #0099FF;
-    }
-
     /* Blue range slider for both themes */
-    .range-slider {
-      width: 100%;
-      height: 10px;
-      background: #0099FF;
-      outline: none;
-      border: 2px solid #000000;
-      border-radius: 5px;
-      -webkit-appearance: none;
-    }
-
-    .range-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 25px;
-      height: 25px;
-      background: #FFFFFF;
-      border: 3px solid #0099FF;
-      cursor: pointer;
-      border-radius: 50%;
-    }
-
-    .range-slider::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      background: #FFFFFF;
-      border: 3px solid #0099FF;
-      cursor: pointer;
-      border-radius: 50%;
-    }
-
-    .range-value {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-top: 0.5rem;
-    }
 
     .unit-toggle {
       display: flex;
@@ -261,53 +111,6 @@
       background: #0099FF;
       color: #FFFFFF;
       border-color: #0099FF;
-    }
-
-    .total-container {
-      background: #0099FF;
-      color: #FFFFFF;
-      padding: 2rem;
-      border: 4px solid #0099FF;
-      box-shadow: 8px 8px 0px #0099FF;
-      text-align: center;
-      border-radius: 0.75rem;
-    }
-
-    .total-amount {
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      word-break: break-word;
-    }
-
-    .disclaimer {
-      font-size: 0.9rem;
-      margin-top: 1rem;
-      opacity: 0.8;
-    }
-
-    .cta-final {
-      margin-top: 2rem;
-      padding: 1.5rem 3rem;
-      background: #FFD500;
-      color: #000000;
-      border: 4px solid #000000;
-      box-shadow: 6px 6px 0px #000000;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-      border-radius: 0.75rem;
-    }
-
-    .cta-final:hover {
-      background: #000000 !important;
-      color: #FFFFFF !important;
-      border-color: #FFD500 !important;
-      box-shadow: 6px 6px 0px #FFD500 !important;
-      transform: translate(-3px, -3px);
     }
 
     /* Info buttons - square with yellow titles */
@@ -470,216 +273,23 @@
     }
 
     /* Summary section in results panel */
-    .selection-summary {
-      margin-bottom: 2rem;
-      padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 3px solid #0099FF;
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(0, 153, 255, 0.3);
-    }
-
-    .summary-item:last-child {
-      border-bottom: none;
-    }
-
-    .summary-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      color: #0099FF;
-    }
-
-    .summary-value {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #000000;
-    }
-
-    @media (max-width: 768px) {
-      .results-panel {
-        margin-top: 2rem;
-      }
-    }
 
     /* Lead Capture Status Messages */
-    .lead-status {
-      padding: 1rem;
-      border-radius: 0.75rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .lead-status-success {
-      background: rgba(144, 238, 144, 0.2);
-      color: #90EE90;
-      border: 2px solid #90EE90;
-    }
-
-    .lead-status-error {
-      background: rgba(255, 107, 107, 0.2);
-      color: #FF6B6B;
-      border: 2px solid #FF6B6B;
-    }
 
     /* Lead Capture Summary */
-    .lead-summary-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
-      font-size: 0.9rem;
-    }
-
-    .lead-summary-label {
-      font-weight: bold;
-      color: #FFD500;
-      text-transform: uppercase;
-    }
-
-    .lead-summary-value {
-      color: #FFFFFF;
-    }
 
     /* Email Modal for PDF Download */
-    .email-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 10001;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .email-modal.active {
-      display: flex;
-    }
-
-    .email-modal-content {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 2.5rem;
-      border-radius: 0.75rem;
-      max-width: 450px;
-      width: 90%;
-      animation: slideIn 0.3s ease;
-    }
-
-    .email-modal-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-input {
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border: 3px solid #0099FF;
-      background: #FFFFFF;
-      color: #000000;
-      font-size: 1rem;
-      border-radius: 0.75rem;
-      box-sizing: border-box;
-    }
-
-    .email-modal-input::placeholder {
-      color: rgba(0, 153, 255, 0.5);
-    }
-
-    .email-modal-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px #0099FF;
-    }
-
-    .email-modal-buttons {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .email-modal-btn {
-      flex: 1;
-      padding: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      border: 3px solid #0099FF;
-      cursor: pointer;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-btn.submit {
-      background: #0099FF;
-      color: #FFFFFF;
-    }
-
-    .email-modal-btn.submit:hover {
-      background: #FFFFFF;
-      color: #0099FF;
-      box-shadow: 6px 6px 0px #0099FF;
-      transform: translate(-3px, -3px);
-    }
-
-    .email-modal-btn.cancel {
-      background: transparent;
-      color: #0099FF;
-    }
-
-    .email-modal-btn.cancel:hover {
-      background: #0099FF;
-      color: #FFFFFF;
-      transform: translate(-3px, -3px);
-    }
-
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .video-background video {
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-    main.container {
-      position: relative;
-      z-index: 1;
-    }
   </style>
 </head>
-<body class="body-white-text">
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+<body class="body-white-text tool-page tool-page--budget">
+<a class="skip-link" href="#main" data-en="Skip to content" data-es="Saltar al contenido">Skip to content</a>
+  <div class="video-background" aria-hidden="true">
+    <!-- Decorative. The poster ships with the page; js/tools/background-video.js
+         attaches the 6.6 MB source after load, and skips it on constrained
+         connections or when reduced motion is preferred. -->
+    <video muted loop playsinline preload="none"
+           poster="../media/calculator-bg-poster.jpg"
+           data-src="../media/Sequence yellow_colour_128x64.mp4"></video>
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -704,7 +314,7 @@
     </div>
   </nav>
 
-  <main class="container py-5">
+  <main id="main" class="container py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
       <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -712,12 +322,12 @@
         </svg>
       </a>
     </div>
-    <h1 class="text-center mb-4 fw-bold scroll-fade-in" style="text-align: center;"
+    <h1 class="tool-title scroll-fade-in"
         data-en="Project Cost Calculator"
         data-es="Calculadora de Costos del Proyecto">
       Project Cost Calculator
     </h1>
-    <p class="text-center mb-5 scroll-fade-in" style="text-align: center;"
+    <p class="tool-subtitle scroll-fade-in"
        data-en="Get a rough estimate for your project"
        data-es="Obtén una estimación aproximada para tu proyecto">
       Get a rough estimate for your project
@@ -780,7 +390,7 @@
         </div>
 
         <!-- Unit toggle for Architecture -->
-        <div class="unit-toggle" id="unitToggle" style="display: none;">
+        <div class="unit-toggle" id="unitToggle" style="display: flex;">
           <button class="active" onclick="switchUnit('sqm')" id="sqmBtn" data-en="m²" data-es="m²">m²</button>
           <button onclick="switchUnit('apartments')" id="apartmentsBtn" data-en="Apartments" data-es="Departamentos">Apartments</button>
           <button onclick="switchUnit('people')" id="peopleBtn" data-en="People" data-es="Personas">People</button>
@@ -832,7 +442,7 @@
           </div>
           <div class="row">
             <div class="col-md-4">
-              <div class="option-card" data-multiplier="0.8" onclick="selectOption(this, 'quality')">
+              <div class="option-card" data-multiplier="0.7" onclick="selectOption(this, 'quality')">
                 <h5 data-en="Essential" data-es="Esencial">Essential</h5>
                 <p class="small mb-0" data-en="Basic finishes" data-es="Acabados básicos">Basic finishes</p>
               </div>
@@ -844,7 +454,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="option-card" data-multiplier="1.5" onclick="selectOption(this, 'quality')">
+              <div class="option-card" data-multiplier="1.6" onclick="selectOption(this, 'quality')">
                 <h5 data-en="Premium" data-es="Premium">Premium</h5>
                 <p class="small mb-0" data-en="High-end finishes" data-es="Acabados de lujo">High-end finishes</p>
               </div>
@@ -1131,14 +741,24 @@
     };
 
     // Pricing rates
+    // Construction rates live in js/tools/construction-rates.js so this tool and
+    // the investment calculator cannot drift apart again. The architecture base
+    // is the STANDARD finish; the quality cards scale from there. It used to be
+    // Ecuador's *essential* rate, which is why this tool read ~$690/m² against
+    // the investment calculator's $1,200 typical.
+    const RATE_TABLE = window.CONSTRUCTION_RATES || {
+      ecuador: { perM2: { standard: 900 }, urbanBaseProject: 50000 },
+      germany: { perM2: { standard: 2500 }, urbanBaseProject: 120000 }
+    };
+
     const RATES = {
       architecture: {
-        ecuador: 600,  // per m²
-        germany: 2500  // per m²
+        ecuador: RATE_TABLE.ecuador.perM2.standard,
+        germany: RATE_TABLE.germany.perM2.standard
       },
       urban: {
-        ecuador: 50000,  // base project cost
-        germany: 120000  // base project cost
+        ecuador: RATE_TABLE.ecuador.urbanBaseProject,
+        germany: RATE_TABLE.germany.urbanBaseProject
       }
     };
 
@@ -1311,36 +931,25 @@
                 calculatorState.complexity * calculatorState.participation;
       }
 
-      const formatted = '$' + Math.round(total).toLocaleString();
+      // Germany prices in euros; the estimate used to be labelled in dollars
+      // whichever market was selected.
+      const symbol = (RATE_TABLE[calculatorState.location] || {}).symbol || '$';
+      const formatted = symbol + formatToolNumber(Math.round(total));
       document.getElementById('totalCost').textContent = formatted;
     }
 
     // Language toggle
-    let currentLang = localStorage.getItem('lang') || 'en';
 
-    function updateLanguage(lang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        const key = `data-${lang}`;
-        if (el.hasAttribute(key)) {
-          el.textContent = el.getAttribute(key);
-        }
-      });
-
-      const toggleBtn = document.getElementById('lang-toggle');
-      if (toggleBtn) {
-        toggleBtn.textContent = lang === 'en' ? 'ES' : 'EN';
-      }
-
-      localStorage.setItem('lang', lang);
-      currentLang = lang;
-
-      // Update size unit text if in people mode
+    // Translation itself lives in js/tools/i18n.js; this only refreshes
+    // the strings this page builds in script.
+    document.addEventListener('proyectual:languagechange', () => {
       if (calculatorState.unit === 'people') {
         updateSize(document.getElementById('sizeSlider').value);
       }
-
       updateDisclaimer();
-    }
+      // Figures are grouped per language, so they need re-rendering too.
+      calculateTotal();
+    });
 
     // Info panel content
     const infoContent = {
@@ -1663,37 +1272,7 @@
       window.location.href = 'lead-form.html';
     };
 
-    // Email Modal Functions
-    window.openEmailModal = function() {
-      const modal = document.getElementById('emailModal');
-      if (modal) {
-        modal.classList.add('active');
-        document.getElementById('emailInput').focus();
-      }
-    };
-
-    window.closeEmailModal = function() {
-      const modal = document.getElementById('emailModal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.getElementById('emailInput').value = '';
-      }
-    };
-
-    // Close modal when clicking outside
-    document.addEventListener('click', (e) => {
-      const modal = document.getElementById('emailModal');
-      if (modal && e.target === modal) {
-        window.closeEmailModal();
-      }
-    });
-
-    window.submitPdfDownload = function() {
-      // Trigger browser print dialog to save as PDF
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    };
+    // Modal open/close and PDF export live in js/tools/pdf-export.js.
 
     window.generateCalculatorPDF = async function(email) {
       try {
@@ -1747,15 +1326,11 @@
       updateLanguage(currentLang);
       calculateTotal();
 
-      const toggleBtn = document.getElementById('lang-toggle');
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-          currentLang = currentLang === 'en' ? 'es' : 'en';
-          updateLanguage(currentLang);
-        });
-      }
     });
   </script>
 
+<script src="../js/tools/option-cards.js" defer></script>
+<script src="../js/tools/pdf-export.js" defer></script>
+<script src="../js/tools/background-video.js" defer></script>
 </body>
 </html>
