@@ -1458,6 +1458,30 @@
   }
 }
 
+/* Two tiles across a phone leaves each about 150px. Ease the type down so
+   the longer labels still fit whole words on a line. */
+@container panel (max-width: 26rem) {
+  .overview-item {
+    padding: var(--space-xs) 0.5rem;
+  }
+
+  .overview-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
+
+  .overview-value {
+    font-size: var(--step-1);
+  }
+
+  /* Tiles whose value is prose rather than a measurement. */
+  #overviewLocation,
+  #overviewClimate {
+    font-size: var(--step-0);
+    font-weight: 700;
+  }
+}
+
 .overview-item {
   min-width: 0;
   overflow-wrap: break-word;
@@ -1491,6 +1515,12 @@
   letter-spacing: 0.04em;
   line-height: 1.25;
   text-wrap: balance;
+  /* Spanish labels are longer than their English counterparts
+     ("Orientación", "Precio de Electricidad"). Break them at syllables
+     rather than mid-word — the document carries a lang attribute, so the
+     browser knows where a word may divide. */
+  hyphens: auto;
+  overflow-wrap: normal;
 }
 
 .overview-value {
@@ -1499,8 +1529,11 @@
   font-weight: 900;
   line-height: 1.1;
   color: #000000;
-  overflow-wrap: break-word;
-  hyphens: none;
+  /* Most of these are numbers, but a few are words — a place name, a
+     climate zone. Break those at a space or a syllable, never mid-word:
+     "Equatorial" was coming out as "Equato / rial". */
+  overflow-wrap: normal;
+  hyphens: auto;
 }
 
 .overview-subvalue {
@@ -1537,4 +1570,145 @@
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: break-word;
+}
+
+/* --- Slider readouts ---------------------------------------------
+   A readout is a figure and, sometimes, a caption explaining it. They
+   used to be one run of inline text, so "15% (Inverter, wiring,
+   soiling)" broke wherever the line happened to end and left the
+   number stranded on its own line. */
+.range-value {
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.range-figure {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.range-caption {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #3A5A72;
+  text-wrap: balance;
+}
+
+/* ===============================================================
+   LIVE READOUT
+   The docked figure on small screens. Behaviour is in
+   js/tools/live-readout.js; this is only how it looks and when it
+   appears. Above 900px the results panel is already beside the inputs,
+   so the bar never shows.
+   =============================================================== */
+.live-readout {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .live-readout {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0.6rem var(--space-md);
+    /* Clear of the home indicator on a phone. */
+    padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+
+    background: #0E1A24;
+    border-top: 3px solid var(--tool-accent);
+    color: #FFFFFF;
+    cursor: pointer;
+
+    transform: translateY(0);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  /* Once the real results are on screen the bar has nothing to add. */
+  .live-readout.is-hidden {
+    transform: translateY(105%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .live-readout__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .live-readout__label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8FC7EA;
+    white-space: nowrap;
+  }
+
+  .live-readout__figure {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+    font-family: var(--font-display);
+    line-height: 1;
+  }
+
+  .live-readout__value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .live-readout__unit {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: #B9CBD8;
+  }
+
+  .live-readout__chevron {
+    margin-left: auto;
+    display: flex;
+    color: var(--tool-accent);
+  }
+
+  /* A figure that just moved gets a brief highlight, so a change you
+     caused is visible without watching for it. */
+  .live-readout__value.is-changed {
+    animation: readoutChange 0.5s ease;
+  }
+
+  @keyframes readoutChange {
+    0%   { color: var(--color-yellow, #FFD500); }
+    100% { color: #FFFFFF; }
+  }
+
+  /* Keep the bar from covering the end of the page. */
+  .tool-page--solar main.container {
+    padding-bottom: 5.5rem;
+  }
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .live-readout {
+    transition: none;
+  }
+
+  .live-readout__value.is-changed {
+    animation: none;
+  }
 }

@@ -48,11 +48,11 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css?v=2" rel="stylesheet" />
+  <link href="../css/tools.css?v=7" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js?v=2"></script>
+  <script src="../js/tools/format.js?v=7"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Neo-Brutalist Effects -->
@@ -61,7 +61,7 @@
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Shared diagram theme: surface, type and palette for every chart. -->
-  <script src="../js/tools/chart-theme.js?v=2"></script>
+  <script src="../js/tools/chart-theme.js?v=7"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"></script>
 
@@ -356,8 +356,8 @@
               2. Roof Area
             </div>
             <input type="range" min="10" max="500" value="50" class="range-slider" id="roofAreaSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="roofAreaValue">50</span> m²
+            <div class="range-value">
+              <span class="range-figure"><span id="roofAreaValue">50</span> m²</span>
             </div>
           </div>
 
@@ -388,8 +388,9 @@
               4. Roof Orientation
             </div>
             <input type="range" min="0" max="180" value="0" class="range-slider" id="orientationSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="orientationValue">0</span>° (Optimal: South)
+            <div class="range-value">
+              <span class="range-figure"><span id="orientationValue">0</span>°</span>
+              <span class="range-caption" id="orientationCaption"></span>
             </div>
           </div>
 
@@ -399,8 +400,10 @@
               5. System Losses
             </div>
             <input type="range" min="5" max="30" value="15" class="range-slider" id="lossFactorSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="lossFactorValue">15</span>% (Inverter, wiring, soiling)
+            <div class="range-value">
+              <span class="range-figure"><span id="lossFactorValue">15</span>%</span>
+              <span class="range-caption" data-en="Inverter, wiring, soiling"
+                    data-es="Inversor, cableado, suciedad">Inverter, wiring, soiling</span>
             </div>
           </div>
 
@@ -410,8 +413,8 @@
               6. Local Electricity Price
             </div>
             <input type="range" min="0.05" max="0.50" value="0.12" step="0.01" class="range-slider" id="priceSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span data-currency-symbol>$</span><span id="priceValue">0.12</span> / kWh
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="priceValue">0.12</span> / kWh</span>
             </div>
             <p style="font-size: 0.75rem; color: rgba(0, 153, 255, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
               <span data-en="Adjust price based on location selection (2026 rates)" data-es="Ajusta el precio según la selección de ubicación (tarifas 2026)">Adjust price based on location selection (2026 rates)</span>
@@ -424,8 +427,8 @@
               7. System Cost per kW
             </div>
             <input type="range" min="1500" max="4000" value="3000" step="100" class="range-slider" id="costPerKwSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span data-currency-symbol>$</span><span id="costPerKwValue">3000</span> / kW
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="costPerKwValue">3000</span> / kW</span>
             </div>
             <p style="font-size: 0.75rem; color: rgba(0, 153, 255, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
               <span data-en="Includes panels, inverter, installation" data-es="Incluye paneles, inversor, instalación">Includes panels, inverter, installation</span>
@@ -434,7 +437,7 @@
         </div>
 
         <!-- RIGHT PANEL: RESULTS -->
-        <div class="results-panel">
+        <div class="results-panel" id="resultsPanel">
           <!-- System Overview Dashboard -->
           <div class="system-overview">
             <div class="overview-title" data-en="System Overview" data-es="Descripción General del Sistema">System Overview</div>
@@ -517,7 +520,7 @@
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="Payback Period" data-es="Período de Recuperación">Payback Period</div>
                 <div class="overview-value" id="overviewPayback">17.1</div>
-                <div class="overview-subvalue">years</div>
+                <div class="overview-subvalue" data-en="years" data-es="años">years</div>
               </div>
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="CO₂ Offset/Year" data-es="Compensación CO₂/Año">CO₂ Offset/Year</div>
@@ -607,7 +610,29 @@
         </div>
       </div>
     </div>
-  </main>
+  
+  <!-- Docked readout: the headline figures stay visible while you are still
+       in the inputs on a small screen. Mirrors the overview panel. -->
+  <div class="live-readout" data-live-readout data-target="resultsPanel" role="button" tabindex="0"
+       aria-label="Jump to full results">
+    <span class="live-readout__item">
+      <span class="live-readout__label" data-en="Annual production" data-es="Producción anual">Annual production</span>
+      <span class="live-readout__figure">
+        <span class="live-readout__value" data-mirror="overviewProduction">—</span>
+        <span class="live-readout__unit">kWh/yr</span>
+      </span>
+    </span>
+    <span class="live-readout__item">
+      <span class="live-readout__label" data-en="Annual savings" data-es="Ahorro anual">Annual savings</span>
+      <span class="live-readout__figure">
+        <span class="live-readout__unit" data-currency-symbol>$</span><span class="live-readout__value" data-mirror="overviewSavings">—</span>
+      </span>
+    </span>
+    <span class="live-readout__chevron" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </span>
+  </div>
+</main>
 
   <!-- Email Modal for PDF Download - COMMENTED OUT FOR FUTURE USE -->
   <!-- <div id="emailModal" class="email-modal">
@@ -806,6 +831,43 @@
     }
 
     /**
+     * The direction an array should face to catch the most sun: towards the
+     * equator. North of it that means south; south of it — which is every
+     * Ecuadorian location in this tool — it means north.
+     *
+     * The slider measures deviation from this direction, and the label used to
+     * read "(Optimal: South)" as fixed text, so the default Cuenca setup told
+     * people in the studio's own city to point their panels the wrong way.
+     */
+    function optimalFacing() {
+      return solarState.latitude < 0 ? 'north' : 'south';
+    }
+
+    function updateOrientationCaption() {
+      const caption = document.getElementById('orientationCaption');
+      if (!caption) return;
+
+      const es = currentLang === 'es';
+      const facing = optimalFacing();
+      const compass = es
+        ? (facing === 'north' ? 'norte' : 'sur')
+        : facing;
+      const deviation = solarState.orientation;
+
+      const text = deviation === 0
+        ? (es ? `Orientado al ${compass} — óptimo` : `Facing ${compass} — optimal`)
+        : (es ? `${deviation}° desde el ${compass}` : `${deviation}° from ${compass}`);
+
+      caption.textContent = text;
+      // Keep the shared translator from overwriting a value it did not set.
+      caption.setAttribute('data-en', deviation === 0
+        ? `Facing ${facing} — optimal` : `${deviation}° from ${facing}`);
+      caption.setAttribute('data-es', deviation === 0
+        ? `Orientado al ${facing === 'north' ? 'norte' : 'sur'} — óptimo`
+        : `${deviation}° desde el ${facing === 'north' ? 'norte' : 'sur'}`);
+    }
+
+    /**
      * Annual yield relative to an equator-facing array, by azimuth deviation.
      *
      * The previous model (cos θ × 0.9 + 0.1) returned negative values beyond
@@ -901,6 +963,7 @@
       }
       document.getElementById('roofAreaValue').textContent = roofArea;
       document.getElementById('orientationValue').textContent = orientation;
+      updateOrientationCaption();
       document.getElementById('lossFactorValue').textContent = lossFactor;
       document.getElementById('priceValue').textContent = price.toFixed(2);
       document.getElementById('costPerKwValue').textContent = formatToolNumber(costPerKw);
@@ -1246,7 +1309,10 @@
 
     // Translation itself lives in js/tools/i18n.js; the charts carry
     // translated labels, so they are redrawn on every switch.
-    document.addEventListener('proyectual:languagechange', () => calculateProduction());
+    document.addEventListener('proyectual:languagechange', () => {
+      updateOrientationCaption();
+      calculateProduction();
+    });
 
     // EmailJS credentials are now handled securely by the backend
 
@@ -1495,8 +1561,9 @@
     };
   </script>
 
-<script src="../js/tools/option-cards.js?v=2" defer></script>
-<script src="../js/tools/pdf-export.js?v=2" defer></script>
-<script src="../js/tools/background-video.js?v=2" defer></script>
+<script src="../js/tools/option-cards.js?v=7" defer></script>
+<script src="../js/tools/live-readout.js?v=7" defer></script>
+<script src="../js/tools/pdf-export.js?v=7" defer></script>
+<script src="../js/tools/background-video.js?v=7" defer></script>
 </body>
 </html>
