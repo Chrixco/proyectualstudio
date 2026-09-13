@@ -33,7 +33,7 @@
       background: #FFFFFF;
       border: 4px solid #0099FF;
       box-shadow: 20px 20px 0px #0099FF;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       padding: 3rem;
     }
 
@@ -56,7 +56,7 @@
       background: #0099FF;
       color: #000000;
       padding: 0.5rem 1rem;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       font-weight: bold;
       font-size: 0.9rem;
       margin-top: 0.5rem;
@@ -81,7 +81,7 @@
       background: rgba(0, 153, 255, 0.05);
       border: 2px solid #0099FF;
       padding: 1.25rem;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       margin-bottom: 1.5rem;
     }
 
@@ -128,7 +128,7 @@
       border: 2px solid #0099FF;
       background: #F8FAFB;
       color: #000000;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       font-family: 'Space Mono', monospace;
       font-size: 0.95rem;
       box-sizing: border-box;
@@ -167,7 +167,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-button);
       transition: all 0.3s ease;
       font-size: 1rem;
       font-family: 'Space Mono', monospace;
@@ -196,7 +196,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-button);
       transition: all 0.3s ease;
       font-size: 1rem;
       font-family: 'Space Mono', monospace;
@@ -211,7 +211,7 @@
 
     .status-message {
       padding: 1rem;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       margin-bottom: 1.5rem;
       text-align: center;
       font-weight: bold;
@@ -338,7 +338,7 @@
       cursor: pointer;
       accent-color: #0099FF;
       border: 3px solid #0099FF;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: rgba(0, 0, 0, 0.7);
       transition: all 0.3s ease;
       flex-shrink: 0;
@@ -382,7 +382,7 @@
       padding: 1rem;
       background: rgba(0, 153, 255, 0.05);
       border: 2px solid rgba(255, 213, 0, 0.3);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       backdrop-filter: blur(5px);
     }
 
@@ -458,14 +458,14 @@
           border: 2px solid #FF6B6B;
           padding: 0.75rem 1.5rem;
           font-weight: bold;
-          border-radius: 0.5rem;
+          border-radius: var(--radius-panel);
           cursor: pointer;
           font-size: 0.9rem;
         ">🐛 DEBUG: Fill Sample Data</button>
       </div>
 
       <!-- Required Fields Legend -->
-      <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(0, 153, 255, 0.1); border-left: 4px solid #0099FF; border-radius: 0.25rem;">
+      <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(0, 153, 255, 0.1); border-left: 4px solid #0099FF; border-radius: var(--radius-xs);">
         <p style="margin: 0; font-size: 0.95rem; color: #000000;">
           <span style="color: #FF6B6B; font-weight: bold;">*</span>
           <span data-en="indicates required fields" data-es="indica campos obligatorios">indicates required fields</span>
@@ -579,7 +579,7 @@
         </div>
 
         <!-- Simple Math CAPTCHA -->
-        <div class="form-section" style="background: #0099FF; padding: 1.5rem; border-radius: 0.75rem; border: 3px solid #000000; box-shadow: 6px 6px 0px #000000;">
+        <div class="form-section" style="background: #0099FF; padding: 1.5rem; border-radius: var(--radius-panel); border: 3px solid #000000; box-shadow: 6px 6px 0px #000000;">
           <div class="form-group">
             <label style="font-weight: bold; color: #000000; display: block; margin-bottom: 1rem;" data-en="Security Verification" data-es="Verificación de Seguridad">Security Verification</label>
 
@@ -625,8 +625,8 @@
 
                   <!-- Answer display -->
                   <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
-                    <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #0099FF; border: 2px solid #000000; border-radius: 0.75rem;">⌫ Clear</button>
+                    <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: var(--radius-panel); padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
+                    <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #0099FF; border: 2px solid #000000; border-radius: var(--radius-button);">⌫ Clear</button>
                   </div>
                 </div>
               </div>

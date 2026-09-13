@@ -48,11 +48,11 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css?v=7" rel="stylesheet" />
+  <link href="../css/tools.css?v=8" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js?v=7"></script>
+  <script src="../js/tools/format.js?v=8"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Neo-Brutalist Effects -->
@@ -61,7 +61,7 @@
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Shared diagram theme: surface, type and palette for every chart. -->
-  <script src="../js/tools/chart-theme.js?v=7"></script>
+  <script src="../js/tools/chart-theme.js?v=8"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"></script>
 
@@ -77,7 +77,7 @@
     .system-overview {
       background: rgba(0, 153, 255, 0.1);
       border: 3px solid #0099FF;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       padding: 1.2rem;
       margin-bottom: 1.5rem;
       backdrop-filter: blur(5px);
@@ -106,7 +106,7 @@
       backdrop-filter: blur(20px);
       border: 4px solid #0099FF;
       box-shadow: 20px 20px 0px #0099FF;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       padding: 2rem;
       max-width: 600px;
       width: 90%;
@@ -124,7 +124,7 @@
       border: none;
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       font-size: 1.5rem;
       cursor: pointer;
       font-weight: bold;
@@ -186,7 +186,7 @@
       background: #FFFFFF;
       border: 2px solid #0099FF;
       color: #000000;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-input);
       font-family: 'Space Mono', monospace;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
@@ -213,7 +213,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-button);
       transition: all 0.3s ease;
       font-size: 1rem;
       margin-top: 1rem;
@@ -238,7 +238,7 @@
       font-weight: bold;
       padding: 1rem;
       background: rgba(144, 238, 144, 0.1);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       margin-top: 1rem;
     }
 
@@ -248,7 +248,7 @@
       font-weight: bold;
       padding: 1rem;
       background: rgba(255, 107, 107, 0.1);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       margin-top: 1rem;
     }
 
@@ -294,7 +294,7 @@
 
   <main id="main" class="container mt-5 px-3 px-md-4 py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
-      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%; background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: var(--radius-circle); background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
@@ -421,10 +421,26 @@
             </p>
           </div>
 
-          <!-- 7. System Cost -->
+          <!-- 7. Monthly electricity bill -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="7. System Cost per kW" data-es="7. Costo del Sistema por kW">
-              7. System Cost per kW
+            <div class="calculator-label" data-en="7. Monthly Electricity Bill" data-es="7. Factura Mensual de Electricidad">
+              7. Monthly Electricity Bill
+            </div>
+            <input type="range" min="10" max="500" value="85" step="5" class="range-slider" id="monthlyBillSlider" oninput="updateDisplay()">
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="monthlyBillValue">85</span> / <span data-en="month" data-es="mes">month</span></span>
+              <span class="range-caption" id="consumptionCaption"></span>
+            </div>
+            <p class="input-note">
+              <span data-en="Your bill sets how much generation can actually save you money."
+                    data-es="Tu factura determina cuánta generación puede realmente ahorrarte dinero.">Your bill sets how much generation can actually save you money.</span>
+            </p>
+          </div>
+
+          <!-- 8. System Cost -->
+          <div class="calculator-section">
+            <div class="calculator-label" data-en="8. System Cost per kW" data-es="8. Costo del Sistema por kW">
+              8. System Cost per kW
             </div>
             <input type="range" min="1500" max="4000" value="3000" step="100" class="range-slider" id="costPerKwSlider" oninput="updateDisplay()">
             <div class="range-value">
@@ -491,6 +507,8 @@
             </div>
 
             <!-- Calculated Outputs -->
+            <p class="sizing-note" id="sizingNote" hidden></p>
+
             <div class="overview-divider"></div>
 
             <div class="overview-grid">
@@ -508,6 +526,11 @@
                 <div class="overview-label" data-en="Annual Production" data-es="Producción Anual">Annual Production</div>
                 <div class="overview-value" id="overviewProduction">13,140</div>
                 <div class="overview-subvalue">kWh/yr</div>
+              </div>
+              <div class="overview-item highlight">
+                <div class="overview-label" data-en="Bill Covered" data-es="Factura Cubierta">Bill Covered</div>
+                <div class="overview-value" id="overviewBillCovered">100</div>
+                <div class="overview-subvalue">%</div>
               </div>
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="Annual Savings" data-es="Ahorros Anuales">Annual Savings</div>
@@ -754,7 +777,8 @@
       orientation: 0,
       lossFactors: 15,
       electricityPrice: 0.12,
-      costPerKw: 3000
+      costPerKw: 3000,
+      monthlyBill: 85        // what the building spends today
     };
 
     // Solar irradiance data (kWh/m²/day) by month for different latitudes
@@ -948,6 +972,7 @@
       const lossFactor = parseInt(document.getElementById('lossFactorSlider').value);
       const price = parseFloat(document.getElementById('priceSlider').value);
       const costPerKw = parseInt(document.getElementById('costPerKwSlider').value);
+      const monthlyBill = parseInt(document.getElementById('monthlyBillSlider').value);
 
       solarState.latitude = latitude;
       solarState.roofArea = roofArea;
@@ -955,6 +980,7 @@
       solarState.lossFactors = lossFactor;
       solarState.electricityPrice = price;
       solarState.costPerKw = costPerKw;
+      solarState.monthlyBill = monthlyBill;
 
       if (document.getElementById('locationSelect').value !== 'custom') {
         // Don't update latitude display if using preset location
@@ -967,6 +993,7 @@
       document.getElementById('lossFactorValue').textContent = lossFactor;
       document.getElementById('priceValue').textContent = price.toFixed(2);
       document.getElementById('costPerKwValue').textContent = formatToolNumber(costPerKw);
+      document.getElementById('monthlyBillValue').textContent = formatToolNumber(monthlyBill);
 
       calculateProduction();
     }
@@ -981,6 +1008,53 @@
       document.querySelectorAll('[data-currency-symbol]').forEach(el => {
         el.textContent = currencySymbol();
       });
+    }
+
+    /** Restate the bill as the consumption it implies at the local tariff. */
+    function updateConsumptionCaption(annualConsumption) {
+      const caption = document.getElementById('consumptionCaption');
+      if (!caption) return;
+
+      const kwh = formatToolNumber(Math.round(annualConsumption));
+      const en = `About ${kwh} kWh a year at this tariff`;
+      const es = `Unos ${kwh} kWh al año con esta tarifa`;
+      caption.textContent = currentLang === 'es' ? es : en;
+      caption.setAttribute('data-en', en);
+      caption.setAttribute('data-es', es);
+    }
+
+    /**
+     * Say plainly when the array outgrows the building.
+     *
+     * Surplus beyond your own consumption earns nothing here, so a bigger
+     * roof stops paying at that point. Rather than quietly capping the
+     * savings figure, name the surplus and suggest the area that would
+     * actually match the bill.
+     */
+    function updateSizingNote(surplusKwh, totalAnnual, annualConsumption) {
+      const note = document.getElementById('sizingNote');
+      if (!note) return;
+
+      // Ignore a rounding-sized overshoot.
+      if (surplusKwh <= totalAnnual * 0.05 || totalAnnual <= 0) {
+        note.hidden = true;
+        return;
+      }
+
+      const es = currentLang === 'es';
+      const ratio = annualConsumption > 0 ? totalAnnual / annualConsumption : 0;
+      // Roof area that would just cover the bill, at the current settings.
+      const matchedRoof = Math.max(10, Math.round(solarState.roofArea / ratio));
+      const surplus = formatToolNumber(Math.round(surplusKwh));
+
+      note.textContent = es
+        ? `Este tejado genera ${ratio.toFixed(1)}× lo que consume el edificio. `
+          + `Sobran ${surplus} kWh al año que no se pagan, así que el ahorro está `
+          + `limitado por la factura. Unos ${matchedRoof} m² bastarían.`
+        : `This roof generates ${ratio.toFixed(1)}× what the building uses. `
+          + `The surplus of ${surplus} kWh a year earns nothing, so savings are `
+          + `capped by the bill. About ${matchedRoof} m² would match it.`;
+      note.hidden = false;
     }
 
     /**
@@ -1040,7 +1114,19 @@
 
       document.getElementById('annualProduction').textContent = Math.round(totalAnnual) + ' kWh/yr';
 
-      const annualSavings = totalAnnual * solarState.electricityPrice;
+      // Generation is only worth money to the extent it displaces electricity
+      // you would otherwise have bought. This used to be
+      // `totalAnnual * price` — every kWh valued at the retail tariff — which
+      // credited a household with more savings than its entire bill. Under
+      // Ecuador's net-metering scheme surplus rolls over as credit but is not
+      // paid out beyond your own consumption, so the annual bill is the cap.
+      const annualConsumption = (solarState.monthlyBill * 12) / solarState.electricityPrice;
+      const selfUsedKwh = Math.min(totalAnnual, annualConsumption);
+      const surplusKwh = Math.max(0, totalAnnual - annualConsumption);
+      const annualSavings = selfUsedKwh * solarState.electricityPrice;
+      const billCoveredPct = annualConsumption > 0
+        ? Math.min(100, (totalAnnual / annualConsumption) * 100)
+        : 0;
       const co2Offset = totalAnnual * solarState.gridCO2;
       const carDays = totalAnnual / 20; // an EV at roughly 20 kWh/day
 
@@ -1065,6 +1151,10 @@
       updateSystemOverview(peakCapacity, Math.round(totalSystemCost), Math.round(totalAnnual),
                            Math.round(annualSavings), paybackLabel, Math.round(co2Offset),
                            Math.round(lifetimeSavings), getClimateZone(solarState.latitude));
+
+      document.getElementById('overviewBillCovered').textContent = Math.round(billCoveredPct);
+      updateConsumptionCaption(annualConsumption);
+      updateSizingNote(surplusKwh, totalAnnual, annualConsumption);
 
       createProductionChart(monthlyProduction);
       createPaybackChart(annualSavings, totalSystemCost);
@@ -1561,9 +1651,9 @@
     };
   </script>
 
-<script src="../js/tools/option-cards.js?v=7" defer></script>
-<script src="../js/tools/live-readout.js?v=7" defer></script>
-<script src="../js/tools/pdf-export.js?v=7" defer></script>
-<script src="../js/tools/background-video.js?v=7" defer></script>
+<script src="../js/tools/option-cards.js?v=8" defer></script>
+<script src="../js/tools/live-readout.js?v=8" defer></script>
+<script src="../js/tools/pdf-export.js?v=8" defer></script>
+<script src="../js/tools/background-video.js?v=8" defer></script>
 </body>
 </html>

@@ -28,7 +28,7 @@
   <style>
     .form-status {
       padding: 1rem;
-      border-radius: 4px;
+      border-radius: var(--radius-control);
       margin-bottom: 1rem;
       display: none;
       animation: slideIn 0.3s ease;
@@ -81,7 +81,7 @@
       cursor: pointer;
       accent-color: #0099FF;
       border: 3px solid #0099FF;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: rgba(255, 255, 255, 0.7);
       transition: all 0.3s ease;
       flex-shrink: 0;
@@ -125,7 +125,7 @@
       padding: 1rem;
       background: rgba(0, 153, 255, 0.05);
       border: 2px solid rgba(0, 153, 255, 0.3);
-      border-radius: 4px;
+      border-radius: var(--radius-control);
       backdrop-filter: blur(5px);
     }
 
@@ -199,7 +199,7 @@
       <div id="formStatus" class="form-status"></div>
 
       <!-- Required Fields Legend -->
-      <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(0, 153, 255, 0.1); border-left: 4px solid #0099FF; border-radius: 0.25rem;">
+      <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(0, 153, 255, 0.1); border-left: 4px solid #0099FF; border-radius: var(--radius-xs);">
         <p style="margin: 0; font-size: 0.95rem; color: #000000;">
           <span style="color: #FF6B6B; font-weight: bold;">*</span>
           <span data-en="indicates required fields" data-es="indica campos obligatorios">indicates required fields</span>
@@ -270,7 +270,7 @@
         </div>
 
         <!-- Security Section -->
-        <div class="mb-3" style="background: #FFD500; padding: 1rem; border: 3px solid #000000; border-radius: 0.75rem; box-shadow: 6px 6px 0px #000000;">
+        <div class="mb-3" style="background: #FFD500; padding: 1rem; border: 3px solid #000000; border-radius: var(--radius-panel); box-shadow: 6px 6px 0px #000000;">
           <label class="form-label fw-bold" style="color: #000000;"
                  data-en="Security Verification"
                  data-es="Verificación de Seguridad">Security Verification</label>
@@ -315,8 +315,8 @@
 
                 <!-- Answer display -->
                 <div style="display: flex; gap: 0.5rem; align-items: center;">
-                  <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
-                  <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000; border-radius: 0.75rem;">⌫ Clear</button>
+                  <div id="captchaDisplay" style="background: #FFFFFF; border: 2px solid #000000; border-radius: var(--radius-panel); padding: 0.75rem 1rem; font-size: 1.2rem; font-weight: bold; color: #000000; min-width: 100px; text-align: center;">-</div>
+                  <button type="button" id="captchaBackspace" class="btn btn-sm" style="font-weight: bold; background: #000000; color: #FFD500; border: 2px solid #000000; border-radius: var(--radius-button);">⌫ Clear</button>
                 </div>
               </div>
             </div>

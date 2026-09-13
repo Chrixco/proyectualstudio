@@ -20,6 +20,45 @@
   --accent-secondary: #00BFFF;
   --border-color: #0099FF;
   --shadow-color: rgba(0, 0, 0, 0.1);
+
+  /* ===========================
+     CORNER RADIUS
+     One scale for the whole site. Before this block the same kinds of
+     element were rounded five different ways — panels at 0.75rem, cards
+     at 0.5rem, images at 0 / 8px / 10px / 12px, and 254 Bootstrap
+     `rounded-4` elements at Bootstrap's own 1rem.
+
+     Write the semantic aliases in rules (--radius-panel, --radius-button,
+     --radius-image), not the raw scale, so a later change of heart is a
+     one-line edit here.
+     =========================== */
+  --radius-xs: 0.25rem;    /* 4px  — slider tracks, hover bars, chips */
+  --radius-sm: 0.5rem;     /* 8px  — reserved for genuinely tight boxes */
+  --radius-md: 0.75rem;    /* 12px — the site default */
+  --radius-pill: 999px;    /* fully rounded ends, e.g. chart toggles */
+  --radius-circle: 50%;    /* deliberate circles: toggles, tool cards */
+
+  --radius-button: var(--radius-md);
+  --radius-panel: var(--radius-md);
+  --radius-image: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-control: var(--radius-xs);
+
+  /* js/colors.js also writes this at runtime; defining it here means the
+     panels are correctly rounded before that script runs. */
+  --panel-border-radius: var(--radius-panel);
+
+  /* Bootstrap's rounded-* utilities read these. styles.css loads after
+     the Bootstrap bundle, so redefining them here pulls every
+     `rounded-3` / `rounded-4` / `rounded-pill` onto the scale above
+     without touching a single page. */
+  --bs-border-radius: var(--radius-md);
+  --bs-border-radius-sm: var(--radius-xs);
+  --bs-border-radius-lg: var(--radius-md);
+  --bs-border-radius-xl: var(--radius-md);
+  --bs-border-radius-2xl: var(--radius-md);
+  --bs-border-radius-xxl: var(--radius-md);
+  --bs-border-radius-pill: var(--radius-pill);
 }
 
 /* Theme transitions removed - light mode only */
@@ -112,7 +151,7 @@ video.bg-video {
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
+  border-radius: var(--radius-control);
 }
 
 .navbar a::before {
@@ -120,7 +159,7 @@ video.bg-video {
   position: absolute;
   inset: 0;
   background-color: #0099FF;
-  border-radius: 4px;
+  border-radius: var(--radius-control);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -181,7 +220,7 @@ video.bg-video {
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-panel);
   border: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow: 0 26px 55px rgba(0, 0, 0, 0.15);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
@@ -262,7 +301,7 @@ video.bg-video {
   cursor: zoom-in;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 4px solid #0099FF;
-  border-radius: 0;
+  border-radius: var(--radius-image);
   box-shadow: 6px 6px 0px rgba(0, 153, 255, 0.8);
 }
 
@@ -275,7 +314,7 @@ video.bg-video {
   cursor: zoom-in;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 4px solid #0099FF;
-  border-radius: 0;
+  border-radius: var(--radius-image);
   box-shadow: 6px 6px 0px rgba(0, 153, 255, 0.8);
 }
 
@@ -499,7 +538,7 @@ h4 {
 .btn, #lang-toggle {
   font-family: 'Space Mono', monospace;
   border: 3px solid #0099FF;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   background: #000000;
   color: #FFFFFF;
   text-transform: uppercase;
@@ -630,7 +669,7 @@ h4 {
   height: 100%;
   object-fit: contain;
   object-position: center;
-  border-radius: 10px;
+  border-radius: var(--radius-image);
   display: block;
   margin: auto;
 }
@@ -885,7 +924,7 @@ html {
   flex-shrink: 1 !important;
   flex-grow: 1 !important;
   flex-basis: auto !important;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-panel);
 }
 
 .form-container .row {
@@ -1011,7 +1050,7 @@ html {
   width: 32px;
   height: 32px;
   border: 3px solid #0099FF;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   background: linear-gradient(90deg, #0099FF 50%, transparent 50%);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1061,7 +1100,7 @@ html {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   border: 3px solid #0099FF;
   opacity: 0;
   transition: all 0.3s ease;
@@ -1211,7 +1250,7 @@ html {
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-panel);
 }
 
 .brutal-card::before {
@@ -1238,7 +1277,7 @@ html {
 .brutal-btn {
   font-family: 'Space Mono', monospace;
   border: 3px solid #0099FF;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   background: #000000;
   color: #FFFFFF;
   text-transform: uppercase;
@@ -1332,7 +1371,7 @@ html {
   box-shadow: 12px 12px 0px rgba(0, 153, 255, 1);
   margin: 2rem 0;
   text-align: center;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-panel);
 }
 
 .brutal-hero h2 {
@@ -1548,7 +1587,7 @@ html {
   height: 40px;
   border: 4px solid #0099FF;
   border-top-color: transparent;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   animation: brutal-spin 1s linear infinite;
 }
 
@@ -1710,7 +1749,7 @@ html {
   max-height: 85vh;
   object-fit: contain;
   border: 2px solid #FFFFFF;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-image);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
   transform: scale(0.9);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1729,7 +1768,7 @@ html {
   background: #0099FF;
   color: #000000;
   border: 4px solid #000000;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   box-shadow: 4px 4px 0px #000000;
   font-size: 2rem;
   font-weight: bold;
@@ -1765,7 +1804,7 @@ html {
   background: #0099FF;
   color: #000000;
   border: 4px solid #000000;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   box-shadow: 4px 4px 0px #000000;
   font-size: 1.75rem;
   font-weight: bold;
@@ -1810,7 +1849,7 @@ html {
 .ps-lightbox-dot {
   width: 14px;
   height: 14px;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   background: rgba(255, 255, 255, 0.4);
   border: 2px solid #FFFFFF;
   cursor: pointer;
@@ -1840,7 +1879,7 @@ html {
   font-weight: bold;
   background: rgba(0, 0, 0, 0.5);
   padding: 6px 16px;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-panel);
   z-index: 100000;
 }
 
@@ -1886,7 +1925,6 @@ html {
   .ps-lightbox-img {
     max-width: 95vw;
     max-height: 80vh;
-    border-radius: 10px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   }
 
@@ -1904,7 +1942,6 @@ html {
   .ps-lightbox-img {
     max-width: 98vw;
     max-height: 70vh;
-    border-radius: 8px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
   }
 
@@ -2017,7 +2054,7 @@ html {
   background: transparent;
   color: #FFFFFF;
   border: 3px solid #FFFFFF;
-  border-radius: 8px;
+  border-radius: var(--radius-button);
   font-weight: bold;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -2309,7 +2346,7 @@ button[style*="background: rgb(0"] {
 
 .cta-container {
   box-shadow: 0 0 30px rgba(0, 153, 255, 0.3), 0 0 60px rgba(0, 153, 255, 0.15);
-  border-radius: 8px;
+  border-radius: var(--radius-panel);
   padding: 2rem;
   background: linear-gradient(135deg, rgba(0, 153, 255, 0.05) 0%, transparent 100%);
 }

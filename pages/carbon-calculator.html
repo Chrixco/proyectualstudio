@@ -48,11 +48,11 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css?v=7" rel="stylesheet" />
+  <link href="../css/tools.css?v=8" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js?v=7"></script>
+  <script src="../js/tools/format.js?v=8"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Centralized Color System -->
@@ -63,7 +63,7 @@
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Shared diagram theme: surface, type and palette for every chart. -->
-  <script src="../js/tools/chart-theme.js?v=7"></script>
+  <script src="../js/tools/chart-theme.js?v=8"></script>
 
 
   <style>
@@ -84,7 +84,7 @@
       margin-bottom: 1.5rem;
       background: rgba(0, 153, 255, 0.05);
       border: 2px solid #0099FF;
-      border-radius: 50px;
+      border-radius: var(--radius-pill);
       padding: 0.3rem;
       backdrop-filter: blur(5px);
     }
@@ -100,7 +100,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
-      border-radius: 40px;
+      border-radius: var(--radius-pill);
       transition: all 0.3s ease;
       white-space: nowrap;
     }
@@ -161,7 +161,7 @@
       height: 12px;
       background: rgba(255, 255, 255, 0.10);
       border: 1px solid var(--chart-border, rgba(255, 255, 255, 0.28));
-      border-radius: 4px;
+      border-radius: var(--radius-control);
       overflow: hidden;
     }
 
@@ -184,12 +184,12 @@
     .toggle-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
     .toggle-switch { position: relative; width: 44px; height: 24px; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider { position: absolute; inset: 0; background: rgba(0,153,255,0.2); border: 2px solid #0099FF; border-radius: 12px; cursor: pointer; transition: 0.3s; }
-    .toggle-slider:before { content:''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: #0099FF; border-radius: 50%; transition: 0.3s; }
+    .toggle-slider { position: absolute; inset: 0; background: rgba(0,153,255,0.2); border: 2px solid #0099FF; border-radius: var(--radius-panel); cursor: pointer; transition: 0.3s; }
+    .toggle-slider:before { content:''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: #0099FF; border-radius: var(--radius-circle); transition: 0.3s; }
     input:checked + .toggle-slider { background: #0099FF; }
     input:checked + .toggle-slider:before { transform: translateX(20px); background: #FFF; }
     .option-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
-    .option-chip { padding: 0.4rem 0.85rem; border: 2px solid rgba(0,153,255,0.4); border-radius: 50px; font-size: 0.75rem; font-weight: bold; cursor: pointer; background: #FFF; color: #000; transition: all 0.2s; }
+    .option-chip { padding: 0.4rem 0.85rem; border: 2px solid rgba(0,153,255,0.4); border-radius: var(--radius-pill); font-size: 0.75rem; font-weight: bold; cursor: pointer; background: #FFF; color: #000; transition: all 0.2s; }
     .option-chip.selected { background: #0099FF; color: #FFF; border-color: #0099FF; }
     .vol-badge { font-size: 0.7rem; color: #0099FF; font-weight: bold; margin-top: 0.25rem; }
   </style>
@@ -229,7 +229,7 @@
 
   <main id="main" class="container mt-5 px-3 px-md-4 py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
-      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%; background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: var(--radius-circle); background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
@@ -1693,8 +1693,8 @@
     };
   </script>
 
-<script src="../js/tools/option-cards.js?v=7" defer></script>
-<script src="../js/tools/pdf-export.js?v=7" defer></script>
-<script src="../js/tools/background-video.js?v=7" defer></script>
+<script src="../js/tools/option-cards.js?v=8" defer></script>
+<script src="../js/tools/pdf-export.js?v=8" defer></script>
+<script src="../js/tools/background-video.js?v=8" defer></script>
 </body>
 </html>
