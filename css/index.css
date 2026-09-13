@@ -14,7 +14,7 @@
 body {
   background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0051cc 100%);
   color: var(--brutalist-white);
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,7 +84,7 @@ body::after {
   max-width: 90vw;
   opacity: 1;
   animation: none;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
 }
 
 .loader-text {
@@ -119,7 +119,7 @@ body::after {
   word-wrap: break-word;
   opacity: 0;
   animation: fadeInUp 1s ease forwards 1.5s;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
 }
 
 .loader-subtitle {
@@ -155,7 +155,7 @@ body::after {
   color: var(--brutalist-white);
   opacity: 0;
   animation: fadeInUp 1s ease forwards 2s;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
 }
 
 .loader-sub {
