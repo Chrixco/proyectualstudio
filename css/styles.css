@@ -1274,7 +1274,8 @@ html {
 }
 
 /* --- BUTTONS --- */
-.brutal-btn {
+.brutal-btn,
+.brutal-btn-yellow {
   font-family: 'Space Mono', monospace;
   border: 3px solid #0099FF;
   border-radius: var(--radius-button);
@@ -1293,7 +1294,8 @@ html {
   letter-spacing: 1px;
 }
 
-.brutal-btn::before {
+.brutal-btn::before,
+.brutal-btn-yellow::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1311,11 +1313,13 @@ html {
   color: #FFFFFF;
 }
 
-.brutal-btn:hover::before {
+.brutal-btn:hover::before,
+.brutal-btn-yellow:hover::before {
   left: 0;
 }
 
-.brutal-btn:active {
+.brutal-btn:active,
+.brutal-btn-yellow:active {
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0px #0099FF;
 }
@@ -1685,7 +1689,8 @@ html {
     border-width: 4px;
   }
 
-  .brutal-btn {
+  .brutal-btn,
+  .brutal-btn-yellow {
     padding: 0.6rem 1.5rem;
     font-size: 0.9rem;
   }

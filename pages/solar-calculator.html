@@ -48,11 +48,11 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css?v=9" rel="stylesheet" />
+  <link href="../css/tools.css?v=10" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js?v=9"></script>
+  <script src="../js/tools/format.js?v=10"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Neo-Brutalist Effects -->
@@ -61,7 +61,7 @@
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Shared diagram theme: surface, type and palette for every chart. -->
-  <script src="../js/tools/chart-theme.js?v=9"></script>
+  <script src="../js/tools/chart-theme.js?v=10"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"></script>
 
@@ -815,6 +815,8 @@
 
     // A roof cannot be paved edge to edge with modules: row spacing, setbacks,
     // plant and access typically leave 70-80% usable on a simple roof.
+    const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
     const ROOF_UTILISATION = 0.75;
 
     const PANEL_DEGRADATION_PER_YEAR = 0.005;  // 0.5%/yr, typical warranty terms
@@ -843,14 +845,21 @@
      */
     function monthlyIrradiance() {
       const profile = SEASONAL_PROFILE[getClimateZone(solarState.latitude)];
-      const mean = profile.reduce((sum, v) => sum + v, 0) / profile.length;
       const ghi = solarState.ghi || estimateGhiFromLatitude(solarState.latitude);
 
       const shifted = solarState.latitude < 0
         ? profile.slice(6).concat(profile.slice(0, 6))  // southern hemisphere
         : profile;
 
-      return shifted.map(v => v / mean * ghi);
+      // Normalise on the DAY-WEIGHTED mean, because production is summed as
+      // daily output times the length of each month. Using the plain mean of
+      // twelve numbers left the integrated year off the location's stated GHI
+      // by up to 0.2%, with the sign depending on the hemisphere.
+      const totalDays = DAYS_IN_MONTH.reduce((sum, d) => sum + d, 0);
+      const weightedMean = shifted.reduce(
+        (sum, v, i) => sum + v * DAYS_IN_MONTH[i], 0) / totalDays;
+
+      return shifted.map(v => v / weightedMean * ghi);
     }
 
     function getClimateZone(latitude) {
@@ -988,7 +997,13 @@
       solarState.electricityPrice = price;
       solarState.costPerKw = costPerKw;
       solarState.monthlyBill = monthlyBill;
-      solarState.fixedCharge = Math.min(fixedCharge, monthlyBill);
+      // Clamping only the state left the slider showing a fixed charge larger
+      // than the bill it is part of; move the control too.
+      const clampedFixed = Math.min(fixedCharge, monthlyBill);
+      if (clampedFixed !== fixedCharge) {
+        document.getElementById('fixedChargeSlider').value = clampedFixed;
+      }
+      solarState.fixedCharge = clampedFixed;
 
       if (document.getElementById('locationSelect').value !== 'custom') {
         // Don't update latitude display if using preset location
@@ -1002,7 +1017,7 @@
       document.getElementById('priceValue').textContent = price.toFixed(2);
       document.getElementById('costPerKwValue').textContent = formatToolNumber(costPerKw);
       document.getElementById('monthlyBillValue').textContent = formatToolNumber(monthlyBill);
-      document.getElementById('fixedChargeValue').textContent = formatToolNumber(fixedCharge);
+      document.getElementById('fixedChargeValue').textContent = formatToolNumber(solarState.fixedCharge);
 
       calculateProduction();
     }
@@ -1071,33 +1086,55 @@
      * taken into account and a zero-saving year cannot divide by zero.
      * Returns null when the system never pays for itself within its lifetime.
      */
-    function paybackYears(systemCost, firstYearSavings) {
-      if (firstYearSavings <= 0) return null;
+    const INVERTER_REPLACEMENT_YEAR = 15;
 
-      let cumulative = 0;
+    /**
+     * The system's cash flow, year by year — the single model the payback
+     * figure, the lifetime total and the payback chart all read from.
+     *
+     * Degradation applies to PRODUCTION, and the saving is re-capped against
+     * consumption each year. Degrading the already-capped saving instead, as
+     * this used to, quietly understated an oversized array: it keeps covering
+     * the same bill for years precisely because it has spare output to lose.
+     *
+     * @returns {{year:number, savings:number, cumulative:number}[]} year 0
+     *   carries the purchase, so `cumulative` starts at minus the system cost.
+     */
+    function cashFlow(systemCost, firstYearProduction, annualConsumption, price) {
+      const rows = [{ year: 0, savings: 0, cumulative: -systemCost }];
+      let cumulative = -systemCost;
+
       for (let year = 1; year <= SYSTEM_LIFETIME_YEARS; year++) {
-        const yearSavings = firstYearSavings * Math.pow(1 - PANEL_DEGRADATION_PER_YEAR, year - 1);
-        const previous = cumulative;
-        cumulative += yearSavings;
-        if (cumulative >= systemCost) {
-          // Interpolate within the year the system crosses break-even.
-          return year - 1 + (systemCost - previous) / yearSavings;
+        const produced = firstYearProduction * Math.pow(1 - PANEL_DEGRADATION_PER_YEAR, year - 1);
+        let savings = Math.min(produced, annualConsumption) * price;
+
+        // The inverter will not last the life of the panels.
+        if (year === INVERTER_REPLACEMENT_YEAR) {
+          savings -= systemCost * INVERTER_REPLACEMENT_SHARE;
+        }
+
+        cumulative += savings;
+        rows.push({ year: year, savings: savings, cumulative: cumulative });
+      }
+      return rows;
+    }
+
+    /** Year the cumulative cash flow first turns positive, or null within the life. */
+    function paybackYears(rows) {
+      for (let i = 1; i < rows.length; i++) {
+        if (rows[i].cumulative >= 0) {
+          const previous = rows[i - 1].cumulative;
+          const gained = rows[i].cumulative - previous;
+          // Interpolate within the year it crosses.
+          return gained > 0 ? rows[i].year - 1 + (-previous) / gained : rows[i].year;
         }
       }
       return null;
     }
 
-    /**
-     * Net saving over the system lifetime: degraded output each year, less the
-     * up-front cost and one inverter replacement. Electricity prices are held
-     * flat, which is the conservative assumption.
-     */
-    function lifetimeNetSavings(systemCost, firstYearSavings) {
-      let gross = 0;
-      for (let year = 1; year <= SYSTEM_LIFETIME_YEARS; year++) {
-        gross += firstYearSavings * Math.pow(1 - PANEL_DEGRADATION_PER_YEAR, year - 1);
-      }
-      return gross - systemCost - systemCost * INVERTER_REPLACEMENT_SHARE;
+    /** Net position at the end of the system's life. */
+    function lifetimeNetSavings(rows) {
+      return rows[rows.length - 1].cumulative;
     }
 
     function calculateProduction() {
@@ -1109,14 +1146,13 @@
       const panelArea = solarState.roofArea * ROOF_UTILISATION;
       const peakCapacity = panelArea * solarState.panelEfficiency; // kWp
 
-      const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
       const monthlyProduction = [];
       let totalAnnual = 0;
 
       for (let i = 0; i < 12; i++) {
         const dailyProduction = irradiance[i] * panelArea * solarState.panelEfficiency *
                                 orientationFactor * efficiencyFactor;
-        const monthlyProd = dailyProduction * daysInMonth[i];
+        const monthlyProd = dailyProduction * DAYS_IN_MONTH[i];
         monthlyProduction.push(monthlyProd);
         totalAnnual += monthlyProd;
       }
@@ -1152,8 +1188,9 @@
       const carDays = totalAnnual / 20; // an EV at roughly 20 kWh/day
 
       const totalSystemCost = peakCapacity * solarState.costPerKw;
-      const payback = paybackYears(totalSystemCost, annualSavings);
-      const lifetimeSavings = lifetimeNetSavings(totalSystemCost, annualSavings);
+      const flow = cashFlow(totalSystemCost, totalAnnual, annualConsumption, solarState.electricityPrice);
+      const payback = paybackYears(flow);
+      const lifetimeSavings = lifetimeNetSavings(flow);
 
       const paybackLabel = payback === null
         ? (currentLang === 'es' ? 'nunca' : 'never')
@@ -1178,7 +1215,7 @@
       updateSizingNote(surplusKwh, totalAnnual, annualConsumption);
 
       createProductionChart(monthlyProduction);
-      createPaybackChart(annualSavings, totalSystemCost);
+      createPaybackChart(flow);
     }
 
     function updateSystemOverview(peakCapacity, totalCost, annualProduction, annualSavings, paybackPeriod, co2Offset, thirtyYearSavings, climateZone) {
@@ -1300,21 +1337,18 @@
       });
     }
 
-    function createPaybackChart(annualSavings, investmentCost) {
+    function createPaybackChart(flow) {
       const ctx = document.getElementById('paybackChart');
       if (!ctx) return;
 
       const T = window.ProyectualCharts;
-      annualSavings = parseFloat(annualSavings);
-      investmentCost = parseFloat(investmentCost);
 
-      const years = [];
-      const cumulativeSavings = [];
-
-      for (let year = 0; year <= 30; year++) {
-        years.push(year);
-        cumulativeSavings.push(Math.round(year * annualSavings - investmentCost));
-      }
+      // Plot the same cash flow the tiles are read from. This used to draw a
+      // straight `year x savings - cost`, modelling neither degradation nor
+      // the inverter, so its year-30 endpoint disagreed with the 30-Year
+      // Savings tile beside it by a factor of about 2.6.
+      const years = flow.map(row => row.year);
+      const cumulativeSavings = flow.map(row => Math.round(row.cumulative));
 
       if (paybackChart) {
         paybackChart.destroy();
@@ -1672,9 +1706,9 @@
     };
   </script>
 
-<script src="../js/tools/option-cards.js?v=9" defer></script>
-<script src="../js/tools/live-readout.js?v=9" defer></script>
-<script src="../js/tools/pdf-export.js?v=9" defer></script>
-<script src="../js/tools/background-video.js?v=9" defer></script>
+<script src="../js/tools/option-cards.js?v=10" defer></script>
+<script src="../js/tools/live-readout.js?v=10" defer></script>
+<script src="../js/tools/pdf-export.js?v=10" defer></script>
+<script src="../js/tools/background-video.js?v=10" defer></script>
 </body>
 </html>
