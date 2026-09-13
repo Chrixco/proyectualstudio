@@ -568,6 +568,32 @@
             </div>
           </div>
 
+          <!-- Call to action: sits directly under the overview, which is
+               where the payback figure lands. The old ask was at the very
+               bottom, past both charts and the cost panel. -->
+          <aside class="tool-cta">
+            <h3 class="tool-cta-title"
+                data-en="Want this checked against your actual roof?"
+                data-es="¿Quieres verificarlo en tu techo real?">
+              Want this checked against your actual roof?
+            </h3>
+            <p class="tool-cta-copy"
+               data-en="This estimate assumes an unshaded roof and standard irradiance. We survey shading, orientation and your local tariff, then size the array around what the building really uses."
+               data-es="Esta estimación asume un techo sin sombras e irradiancia estándar. Nosotros evaluamos sombreado, orientación y tu tarifa local, y dimensionamos el sistema según el consumo real del edificio.">
+              This estimate assumes an unshaded roof and standard irradiance. We survey shading, orientation and your local tariff, then size the array around what the building really uses.
+            </p>
+            <div class="tool-cta-actions">
+              <button type="button" class="tool-cta-btn" onclick="navigateToLeadForm()"
+                      data-en="Request a solar study" data-es="Solicitar estudio solar">
+                Request a solar study
+              </button>
+              <a class="tool-cta-link" href="contact.html"
+                 data-en="Or send us a question" data-es="O envíanos una pregunta">
+                Or send us a question
+              </a>
+            </div>
+          </aside>
+
           <!-- Charts -->
           <div class="charts-container">
             <div>
@@ -627,9 +653,6 @@
               This is an estimation based on standard solar irradiance data.
             </p>
             <div class="cta-row cta-row--stacked">
-              <button onclick="navigateToLeadForm()" class="cta-final" data-en="Get Solar Design" data-es="Obtener Diseño Solar">
-                Get Solar Design
-              </button>
               <button onclick="submitPdfDownload()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
               </button>

@@ -926,6 +926,32 @@
             </div>
           </div>
 
+          <!-- Call to action: straight after the profit / ROI / breakeven
+               figures, which is the point the reader is deciding. This
+               tool previously had no ask at all — only a PDF export. -->
+          <aside class="tool-cta">
+            <h3 class="tool-cta-title"
+                data-en="Pressure-test these assumptions"
+                data-es="Pon a prueba estos supuestos">
+              Pressure-test these assumptions
+            </h3>
+            <p class="tool-cta-copy"
+               data-en="Every number above rests on inputs you chose: build cost, achievable rent, appreciation. We check them against what comparable projects in your market actually cost and actually let for, and tell you plainly if the case does not hold."
+               data-es="Cada cifra de arriba depende de los datos que elegiste: costo de obra, renta alcanzable, apreciación. Los contrastamos con lo que proyectos comparables en tu mercado realmente cuestan y realmente rentan, y te decimos con franqueza si el caso no se sostiene.">
+              Every number above rests on inputs you chose: build cost, achievable rent, appreciation. We check them against what comparable projects in your market actually cost and actually let for, and tell you plainly if the case does not hold.
+            </p>
+            <div class="tool-cta-actions">
+              <button type="button" class="tool-cta-btn" onclick="navigateToLeadForm()"
+                      data-en="Request a feasibility review" data-es="Solicitar revisión de factibilidad">
+                Request a feasibility review
+              </button>
+              <a class="tool-cta-link" href="contact.html"
+                 data-en="Or send us a question" data-es="O envíanos una pregunta">
+                Or send us a question
+              </a>
+            </div>
+          </aside>
+
           <div class="result-section">
             <div class="result-section-title" data-en="Cash Flow" data-es="Flujo de Caja">Cash Flow Over Time</div>
             <span class="chart-note" data-en="Cumulative position year by year. Above the dashed line the project has returned its cost." data-es="Posición acumulada año a año. Sobre la línea discontinua el proyecto ya recuperó su costo.">Cumulative position year by year. Above the dashed line the project has returned its cost.</span>
@@ -2087,6 +2113,54 @@
         }
       });
     }
+
+    /**
+     * Hands the current scenario to the lead form, the same way the other
+     * three calculators do: the form reads `leadCaptureData` out of
+     * sessionStorage and shows it back to the reader before they send it.
+     */
+    window.navigateToLeadForm = function () {
+      const text = id => document.getElementById(id)?.textContent?.trim() || '—';
+      const field = id => document.getElementById(id)?.value?.trim() || '';
+      const symbol = currentCountry === 'germany' ? '€' : '$';
+
+      const purposeLabel = currentProjectPurpose === 'sale' ? 'Build to sell'
+        : currentProjectPurpose === 'rent' ? 'Build to rent'
+        : 'Rent then sell';
+
+      const leadData = {
+        calculatorType: 'Investment Feasibility',
+        data: {
+          summary: {
+            project: field('projectName') || 'Investment project',
+            market: currentCountry === 'germany' ? 'Germany' : 'Ecuador',
+            purpose: purposeLabel,
+            totalProjectCost: text('resultTotalProjectCost'),
+            totalProfit: text('resultTotalProfit'),
+            roi: text('resultROI')
+          },
+          full: {
+            project: field('projectName') || 'Investment project',
+            market: currentCountry === 'germany' ? 'Germany' : 'Ecuador',
+            purpose: purposeLabel,
+            constructionCost: symbol + field('constructionCost'),
+            propertySize: field('propertySize') + ' m²',
+            landCost: symbol + field('landCost'),
+            monthlyRentPerM2: symbol + field('rentalPerM2'),
+            operatingCosts: field('operatingCosts') + '%',
+            appreciation: field('appreciation') + '%/yr',
+            analysisPeriod: field('years') + ' years',
+            totalProfit: text('resultTotalProfit'),
+            roi: text('resultROI'),
+            breakeven: text('resultPayback'),
+            propertyValueAtEnd: text('resultPropertyValue')
+          }
+        }
+      };
+
+      sessionStorage.setItem('leadCaptureData', JSON.stringify(leadData));
+      window.location.href = './lead-form.html';
+    };
 
     // Function to re-sync all sliders (called on theme change)
     function resyncAllSliders() {

@@ -610,11 +610,6 @@
             </p>
 
             <div class="cta-row cta-row--stacked">
-              <button onclick="navigateToLeadForm()" class="cta-final btn"
-                 data-en="Get Detailed Quote"
-                 data-es="Obtener Cotización Detallada">
-                Get Detailed Quote
-              </button>
               <button onclick="submitPdfDownload()" class="cta-final btn"
                  style="background: #000000; color: #FFFFFF; border-color: #FFD500;"
                  data-en="Download as PDF"
@@ -623,6 +618,32 @@
               </button>
             </div>
           </div>
+
+          <!-- Call to action: the estimate above is the whole reason the
+               page exists, so the ask sits against it rather than at the
+               bottom of the page. -->
+          <aside class="tool-cta">
+            <h3 class="tool-cta-title"
+                data-en="Turn this range into a fixed scope"
+                data-es="Convierte este rango en un alcance definido">
+              Turn this range into a fixed scope
+            </h3>
+            <p class="tool-cta-copy"
+               data-en="The figure above is a rate card applied to a size and a location. Send us the brief — site, programme, timeline — and we come back with a proposal that names what is included and what it costs."
+               data-es="La cifra de arriba es una tarifa aplicada a un tamaño y una ubicación. Envíanos el encargo — sitio, programa, plazos — y te devolvemos una propuesta que detalla qué incluye y cuánto cuesta.">
+              The figure above is a rate card applied to a size and a location. Send us the brief — site, programme, timeline — and we come back with a proposal that names what is included and what it costs.
+            </p>
+            <div class="tool-cta-actions">
+              <button type="button" class="tool-cta-btn" onclick="navigateToLeadForm()"
+                      data-en="Request a proposal" data-es="Solicitar una propuesta">
+                Request a proposal
+              </button>
+              <a class="tool-cta-link" href="contact.html"
+                 data-en="Or send us a question" data-es="O envíanos una pregunta">
+                Or send us a question
+              </a>
+            </div>
+          </aside>
         </div>
       </div>
     </div>

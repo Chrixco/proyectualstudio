@@ -703,8 +703,17 @@
           currentCalculatorType = leadData.calculatorType || 'Unknown';
           currentCalculatorData = leadData.data || {};
 
-          // Update UI
-          document.getElementById('calculatorTypeBadge').textContent = currentCalculatorType;
+          // Update UI. The badge element ships with data-en/data-es
+          // ("General Inquiry"), and the language pass rewrites every
+          // element carrying those attributes — which overwrote this
+          // line, so a lead arriving from a calculator still read
+          // "General Inquiry" on screen. Dropping the attributes hands
+          // the badge over to the calculator type for good. (The email
+          // body always used the right type; only the badge was wrong.)
+          const badge = document.getElementById('calculatorTypeBadge');
+          badge.removeAttribute('data-en');
+          badge.removeAttribute('data-es');
+          badge.textContent = currentCalculatorType;
 
           if (currentCalculatorData.summary && Object.keys(currentCalculatorData.summary).length > 0) {
             document.getElementById('calculatorDataSection').style.display = 'block';
