@@ -48,11 +48,11 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/tools.css?v=8" rel="stylesheet" />
+  <link href="../css/tools.css?v=9" rel="stylesheet" />
 
   <!-- Language state, needed before the page scripts run -->
   <script src="../js/tools/i18n.js"></script>
-  <script src="../js/tools/format.js?v=8"></script>
+  <script src="../js/tools/format.js?v=9"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Neo-Brutalist Effects -->
@@ -61,7 +61,7 @@
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Shared diagram theme: surface, type and palette for every chart. -->
-  <script src="../js/tools/chart-theme.js?v=8"></script>
+  <script src="../js/tools/chart-theme.js?v=9"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"></script>
 
@@ -431,10 +431,15 @@
               <span class="range-figure"><span data-currency-symbol>$</span><span id="monthlyBillValue">85</span> / <span data-en="month" data-es="mes">month</span></span>
               <span class="range-caption" id="consumptionCaption"></span>
             </div>
-            <p class="input-note">
-              <span data-en="Your bill sets how much generation can actually save you money."
-                    data-es="Tu factura determina cuánta generación puede realmente ahorrarte dinero.">Your bill sets how much generation can actually save you money.</span>
-            </p>
+            <label class="sub-label" for="fixedChargeSlider"
+                   data-en="Fixed monthly charges" data-es="Cargos fijos mensuales">Fixed monthly charges</label>
+            <input type="range" min="0" max="30" value="6" step="1" class="range-slider" id="fixedChargeSlider" oninput="updateDisplay()">
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="fixedChargeValue">6</span> / <span data-en="month" data-es="mes">month</span></span>
+              <span class="range-caption"
+                    data-en="Connection, public lighting, waste collection — solar does not remove these."
+                    data-es="Conexión, alumbrado público, recolección de basura — la solar no elimina estos.">Connection, public lighting, waste collection — solar does not remove these.</span>
+            </div>
           </div>
 
           <!-- 8. System Cost -->
@@ -778,7 +783,8 @@
       lossFactors: 15,
       electricityPrice: 0.12,
       costPerKw: 3000,
-      monthlyBill: 85        // what the building spends today
+      monthlyBill: 85,       // what the building spends today
+      fixedCharge: 6         // the part of that bill solar cannot remove
     };
 
     // Solar irradiance data (kWh/m²/day) by month for different latitudes
@@ -973,6 +979,7 @@
       const price = parseFloat(document.getElementById('priceSlider').value);
       const costPerKw = parseInt(document.getElementById('costPerKwSlider').value);
       const monthlyBill = parseInt(document.getElementById('monthlyBillSlider').value);
+      const fixedCharge = parseInt(document.getElementById('fixedChargeSlider').value);
 
       solarState.latitude = latitude;
       solarState.roofArea = roofArea;
@@ -981,6 +988,7 @@
       solarState.electricityPrice = price;
       solarState.costPerKw = costPerKw;
       solarState.monthlyBill = monthlyBill;
+      solarState.fixedCharge = Math.min(fixedCharge, monthlyBill);
 
       if (document.getElementById('locationSelect').value !== 'custom') {
         // Don't update latitude display if using preset location
@@ -994,6 +1002,7 @@
       document.getElementById('priceValue').textContent = price.toFixed(2);
       document.getElementById('costPerKwValue').textContent = formatToolNumber(costPerKw);
       document.getElementById('monthlyBillValue').textContent = formatToolNumber(monthlyBill);
+      document.getElementById('fixedChargeValue').textContent = formatToolNumber(fixedCharge);
 
       calculateProduction();
     }
@@ -1120,12 +1129,24 @@
       // credited a household with more savings than its entire bill. Under
       // Ecuador's net-metering scheme surplus rolls over as credit but is not
       // paid out beyond your own consumption, so the annual bill is the cap.
-      const annualConsumption = (solarState.monthlyBill * 12) / solarState.electricityPrice;
+      // Only the energy part of a bill is bought by the kWh. Dividing the
+      // whole bill by the tariff overstated consumption, and let savings run
+      // up towards the full bill — a figure no grid-connected building can
+      // reach, because the standing charges survive whatever you generate.
+      const annualBill = solarState.monthlyBill * 12;
+      const annualFixed = solarState.fixedCharge * 12;
+      const annualEnergyBill = Math.max(0, annualBill - annualFixed);
+      const annualConsumption = annualEnergyBill / solarState.electricityPrice;
+
       const selfUsedKwh = Math.min(totalAnnual, annualConsumption);
       const surplusKwh = Math.max(0, totalAnnual - annualConsumption);
       const annualSavings = selfUsedKwh * solarState.electricityPrice;
-      const billCoveredPct = annualConsumption > 0
-        ? Math.min(100, (totalAnnual / annualConsumption) * 100)
+
+      // Share of the whole bill removed — so it is honest about the floor the
+      // fixed charges put under it, rather than reporting 100% of the part
+      // that happens to be reducible.
+      const billCoveredPct = annualBill > 0
+        ? Math.min(100, (annualSavings / annualBill) * 100)
         : 0;
       const co2Offset = totalAnnual * solarState.gridCO2;
       const carDays = totalAnnual / 20; // an EV at roughly 20 kWh/day
@@ -1651,9 +1672,9 @@
     };
   </script>
 
-<script src="../js/tools/option-cards.js?v=8" defer></script>
-<script src="../js/tools/live-readout.js?v=8" defer></script>
-<script src="../js/tools/pdf-export.js?v=8" defer></script>
-<script src="../js/tools/background-video.js?v=8" defer></script>
+<script src="../js/tools/option-cards.js?v=9" defer></script>
+<script src="../js/tools/live-readout.js?v=9" defer></script>
+<script src="../js/tools/pdf-export.js?v=9" defer></script>
+<script src="../js/tools/background-video.js?v=9" defer></script>
 </body>
 </html>

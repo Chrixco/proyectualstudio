@@ -1743,3 +1743,14 @@
 .sizing-note[hidden] {
   display: none;
 }
+
+/* A second control inside one section needs its own quiet heading. */
+.sub-label {
+  display: block;
+  margin: var(--space-md) 0 0.35rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #3A5A72;
+}
