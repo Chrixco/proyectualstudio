@@ -323,7 +323,9 @@
 
 .tool-page--solar .results-panel {
   position: sticky;
-  top: 100px;
+  /* Clear the floating navbar, then a little air. The old flat 100px
+     was measured against a navbar that sat in the page flow. */
+  top: calc(var(--navbar-height) + var(--navbar-inset) * 2 + 1rem);
   height: fit-content;
 }
 
@@ -1753,4 +1755,115 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   color: #3A5A72;
+}
+
+/* ===============================================================
+   DEBUG GATE
+   Testing controls are hidden until someone types the passphrase into
+   the footer field. See js/tools/debug-mode.js — this is concealment
+   from ordinary visitors, not a security boundary.
+   =============================================================== */
+
+/* Hidden by default, including before the script runs, so the buttons
+   never flash on screen during load. */
+.debug-only {
+  display: none !important;
+}
+
+/* `revert` restores the browser's own default for the element — block for a
+   div, inline-block for a button — which covers both current uses. A debug
+   control that needs an author display value (flex, grid) should set it on a
+   `[data-debug="on"]` rule of its own rather than relying on this. */
+[data-debug="on"] .debug-only {
+  display: revert !important;
+}
+
+/* Make revealed controls obviously not part of the product. */
+[data-debug="on"] .debug-only {
+  outline: 2px dashed #FF6B6B;
+  outline-offset: 3px;
+}
+
+.debug-gate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem auto 0;
+  padding: 0.5rem 1rem 0;
+  justify-content: center;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.7rem;
+}
+
+.debug-gate__form {
+  display: flex;
+}
+
+.debug-gate__input {
+  width: 7rem;
+  padding: 0.25rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0.25rem;
+}
+
+.debug-gate__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.debug-gate__input:focus {
+  outline: 2px solid var(--color-yellow, #FFD500);
+  outline-offset: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* A wrong word shakes rather than explaining itself. */
+.debug-gate__form.is-rejected .debug-gate__input {
+  animation: debugReject 0.3s ease;
+  border-color: #FF6B6B;
+}
+
+@keyframes debugReject {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+
+.debug-gate__status {
+  color: #FFD500;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.debug-gate__off {
+  padding: 0.25rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.debug-gate__off:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debug-gate__form.is-rejected .debug-gate__input {
+    animation: none;
+  }
+}
+
+@media print {
+  .debug-gate,
+  .debug-only {
+    display: none !important;
+  }
 }

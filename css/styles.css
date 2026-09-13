@@ -128,19 +128,92 @@ video.bg-video {
 /* ===========================
    NAVBAR + FOOTER - FROSTED GLASS
    =========================== */
+/* ===========================
+   FLOATING GLASS NAVBAR
+   The bar is lifted off the page edges and fixed, so the content
+   scrolls underneath it and the backdrop filter has something to blur.
+   The tint is a deep blue rather than a light one: the nav text is
+   white on every page, and a pale glass over a white page would drop it
+   to around 1.5:1. This mix holds ~6.8:1 over white and improves over
+   imagery.
+   =========================== */
+:root {
+  --navbar-inset: 0.75rem;   /* gap between the bar and the viewport */
+  --navbar-height: 4.25rem;  /* used to keep page content clear of it */
+  --navbar-tint: rgba(6, 34, 61, 0.76);
+  --navbar-tint-strong: rgba(6, 34, 61, 0.85);
+}
+
 .navbar {
-  background: rgba(0, 0, 0, 0.95) !important;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 4px solid #0099FF;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: var(--navbar-inset);
+  left: var(--navbar-inset);
+  right: var(--navbar-inset);
+  /* Capped and centred on wide screens so the pane tracks the content
+     column instead of stretching the full width of a 27" display. */
+  max-width: 1400px;
+  margin-inline: auto;
+  z-index: 1030;   /* over the page, under the modals (9999+) */
+
+  /* Every stop stays dark enough to carry white text: the first stop
+     was a 0.22-alpha blue, which over a white page composited to a pale
+     #C7E8FF and dropped the brand mark to ~1.3:1. These three hold
+     5.5:1 or better on white, and only improve over imagery. */
+  background: linear-gradient(
+    135deg,
+    rgba(8, 60, 110, 0.74) 0%,
+    var(--navbar-tint) 50%,
+    rgba(4, 24, 46, 0.80) 100%
+  ) !important;
+
+  /* The blur is the effect: whatever scrolls beneath is frosted. */
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+  border: 1px solid rgba(0, 153, 255, 0.45);
+  border-radius: var(--radius-panel);
+  /* Depth below, plus a light catch along the top edge so the pane
+     reads as glass rather than as a flat translucent rectangle. */
+  box-shadow:
+    0 10px 30px rgba(0, 20, 45, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   color: #FFFFFF !important;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar:hover {
-  border-bottom-color: #00BFFF;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 191, 255, 0.65);
+  box-shadow:
+    0 14px 38px rgba(0, 20, 45, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+/* The bar no longer occupies space in the flow, so the page has to make
+   room for it. Only pages that actually carry one are padded. */
+body:has(.navbar) {
+  padding-top: calc(var(--navbar-height) + var(--navbar-inset) * 2);
+}
+
+/* Browsers without :has() fall back to the same spacing via the class
+   that every calculator and content page already sets on <body>. */
+@supports not selector(:has(*)) {
+  body {
+    padding-top: calc(var(--navbar-height) + var(--navbar-inset) * 2);
+  }
+}
+
+/* Opened on a phone, the collapse grows the pane downwards; keep the
+   menu inside the glass instead of letting it spill past the corners. */
+.navbar .navbar-collapse {
+  border-radius: var(--radius-panel);
+}
+
+/* A blurred pane needs a solid-ish fallback where the filter is
+   unsupported, or the text sits on near-transparent colour. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navbar {
+    background: var(--navbar-tint-strong) !important;
+  }
 }
 
 .navbar a {
@@ -151,7 +224,7 @@ video.bg-video {
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-button);
 }
 
 .navbar a::before {
@@ -159,7 +232,7 @@ video.bg-video {
   position: absolute;
   inset: 0;
   background-color: #0099FF;
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-button);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -847,6 +920,9 @@ main.page-exit {
    =========================== */
 html {
   scroll-behavior: smooth;
+  /* The navbar floats over the page, so an in-page anchor would
+     otherwise scroll its target underneath it. */
+  scroll-padding-top: calc(var(--navbar-height) + var(--navbar-inset) * 2);
 }
 
 /* ===========================
@@ -1166,8 +1242,14 @@ html {
   body::after,
   .cursor-glow,
   .theme-toggle,
+  .navbar,
   video {
     display: none !important;
+  }
+
+  /* With the bar gone there is nothing to clear. */
+  body:has(.navbar) {
+    padding-top: 0 !important;
   }
 
   .form-container {
