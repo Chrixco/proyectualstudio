@@ -9,11 +9,50 @@
   <title>Solar Panel Calculator | Calculadora de Paneles Solares | Proyectual Studio</title>
   <meta name="description" content="Calculate your solar energy potential and savings. Free tool for rooftop solar design. Calculadora gratuita de energía solar para proyectos de arquitectura."/>
   <meta name="keywords" content="solar calculator, photovoltaic, renewable energy, solar panels, architecture, sustainable design, calculadora solar, energía renovable, Ecuador"/>
-  <!-- Language alternates -->
-  <link rel="alternate" hreflang="en" href="https://proyectualst.com/pages/solar-calculator.html"/>
-  <link rel="alternate" hreflang="es" href="https://proyectualst.com/pages/solar-calculator.html"/>
+  <link rel="canonical" href="https://proyectualst.com/pages/solar-calculator.html"/>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Solar Panel Calculator | Calculadora de Paneles Solares"/>
+  <meta property="og:description" content="Estimate rooftop solar potential, annual energy production, payback period and CO2 offset. Free tool for architects and self-builders."/>
+  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
+  <meta property="og:url" content="https://proyectualst.com/pages/solar-calculator.html"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Proyectual Studio"/>
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Solar Panel Calculator"/>
+  <meta name="twitter:description" content="Estimate rooftop solar potential, annual energy production, payback period and CO2 offset. Free tool for architects and self-builders."/>
+  <meta name="twitter:image" content="https://proyectualst.com/images/logo03.png"/>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Solar Panel Calculator",
+    "alternateName": "Calculadora de Paneles Solares",
+    "description": "Estimate rooftop solar potential, annual energy production, payback period and CO2 offset. Free tool for architects and self-builders.",
+    "url": "https://proyectualst.com/pages/solar-calculator.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "ArchitectureFirm",
+      "name": "Proyectual Studio",
+      "url": "https://proyectualst.com"
+    }
+  }
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
+  <link href="../css/tools.css?v=11" rel="stylesheet" />
+
+  <!-- Language state, needed before the page scripts run -->
+  <script src="../js/tools/i18n.js"></script>
+  <script src="../js/tools/format.js?v=11"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Neo-Brutalist Effects -->
@@ -21,528 +60,27 @@
 
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Shared diagram theme: surface, type and palette for every chart. -->
+  <script src="../js/tools/chart-theme.js?v=11"></script>
   <!-- Centralized Color System -->
   <script src="../js/colors.js"></script>
 
   <style>
     /* Two-panel calculator layout for desktop */
-    .calculator-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
-      box-sizing: border-box;
-    }
-
-    main.container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-    }
-
-    .calculator-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
 
     /* Tablet: 768px and below */
-    @media (max-width: 768px) {
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
-
-      .inputs-panel,
-      .results-panel {
-        box-shadow: 8px 8px 0px #FFD500;
-        border: 3px solid #FFD500;
-      }
-    }
+    
 
     /* Mobile: 480px and below */
-    @media (max-width: 480px) {
-      main.container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-
-      .calculator-wrapper {
-        padding: 0 0.75rem;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
-
-      .inputs-panel,
-      .results-panel {
-        padding: 1rem;
-        box-shadow: 6px 6px 0px #FFD500;
-        border: 2px solid #FFD500;
-      }
-    }
-
-    .inputs-panel {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      overflow: visible;
-      min-width: 0;
-    }
-
-    .results-panel {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      position: sticky;
-      top: 100px;
-      height: fit-content;
-      overflow: visible;
-      border-radius: 0.75rem;
-      min-width: 0;
-    }
-
-    .calculator-section {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border: 2px solid #0099FF;
-      background: rgba(0, 153, 255, 0.1);
-      border-radius: 0.75rem;
-      backdrop-filter: blur(5px);
-    }
-
-    .calculator-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .calculator-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.75rem;
-      font-size: 0.8rem;
-      color: #0099FF;
-      display: block;
-      border-bottom: 2px solid rgba(0, 153, 255, 0.1);
-      padding-bottom: 0.5rem;
-    }
-
-    .option-card {
-      padding: 0.8rem;
-      border: 2px solid rgba(0, 153, 255, 0.2);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: #FFFFFF;
-      margin-bottom: 0.5rem;
-      border-radius: 0.75rem;
-      color: #000000;
-    }
-
-    .option-card:last-child {
-      margin-bottom: 0;
-    }
-
-    .option-card h5 {
-      margin-bottom: 0.2rem;
-      font-size: 0.85rem;
-      line-height: 1.2;
-      color: #000000;
-    }
-
-    .option-card p {
-      margin-bottom: 0;
-      font-size: 0.75rem;
-      line-height: 1.1;
-      color: #000000;
-    }
-
-    .option-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px #0099FF;
-      border-color: #0099FF;
-      background: rgba(0, 153, 255, 0.1);
-    }
-
-    .option-card.selected {
-      background: #0099FF;
-      color: #FFFFFF;
-      border-color: #0099FF;
-      box-shadow: 4px 4px 0px rgba(0, 153, 255, 0.5);
-    }
-
-    .range-slider {
-      width: 100%;
-      height: 6px;
-      background: rgba(0, 153, 255, 0.1);
-      outline: none;
-      border: 1px solid #0099FF;
-      border-radius: 4px;
-      -webkit-appearance: none;
-      margin: 0.5rem 0;
-    }
-
-    .range-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      background: #0099FF;
-      border: 2px solid #FFFFFF;
-      cursor: pointer;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-    }
-
-    .range-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 8px #0099FF;
-    }
-
-    .range-slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      background: #0099FF;
-      border: 2px solid #FFFFFF;
-      cursor: pointer;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-    }
-
-    .range-slider::-moz-range-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 8px #0099FF;
-    }
-
-    .range-value {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-top: 0.6rem;
-      text-align: center;
-      padding: 0.4rem;
-      background: rgba(0, 153, 255, 0.1);
-      border-radius: 4px;
-      min-height: 1.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .selection-summary {
-      background: rgba(0, 0, 0, 0.05);
-      border: 3px solid #0099FF;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.75rem;
-    }
+    
 
     .system-overview {
       background: rgba(0, 153, 255, 0.1);
       border: 3px solid #0099FF;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       padding: 1.2rem;
       margin-bottom: 1.5rem;
       backdrop-filter: blur(5px);
-    }
-
-    .overview-title {
-      font-size: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: #0099FF;
-      letter-spacing: 1px;
-      margin-bottom: 1rem;
-      display: block;
-      text-align: center;
-    }
-
-    .overview-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.8rem;
-      margin-bottom: 0.8rem;
-    }
-
-    @media (max-width: 1200px) {
-      .overview-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .overview-item {
-      background: rgba(0, 0, 0, 0.2);
-      border: 2px solid rgba(0, 153, 255, 0.3);
-      border-radius: 0.75rem;
-      padding: 0.8rem;
-      text-align: center;
-      transition: all 0.3s ease;
-      color: #FFFFFF;
-    }
-
-    .overview-item:hover {
-      border-color: #0099FF;
-      background: rgba(0, 153, 255, 0.05);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 153, 255, 0.2);
-    }
-
-    .overview-item.highlight {
-      border-color: #0099FF;
-      background: rgba(0, 153, 255, 0.2);
-      font-weight: 600;
-    }
-
-    .overview-label {
-      font-size: 0.65rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: rgba(0, 153, 255, 0.8);
-      letter-spacing: 0.3px;
-      margin-bottom: 0.4rem;
-      display: block;
-      line-height: 1.2;
-    }
-
-    .overview-value {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: #000000;
-      display: block;
-    }
-
-    .overview-subvalue {
-      font-size: 0.7rem;
-      color: #000000;
-      margin-top: 0.2rem;
-      display: block;
-    }
-
-    .overview-divider {
-      height: 2px;
-      background: linear-gradient(to right, transparent, #0099FF, transparent);
-      margin: 0.8rem 0;
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      padding-bottom: 0.7rem;
-      margin-bottom: 0.7rem;
-      border-bottom: 2px solid rgba(0, 153, 255, 0.3);
-      font-size: 0.95rem;
-    }
-
-    .summary-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-      margin-bottom: 0;
-    }
-
-    .summary-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      color: #0099FF;
-    }
-
-    .summary-value {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #000000;
-    }
-
-    .charts-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .chart-controls {
-      display: inline-flex;
-      gap: 0;
-      margin-bottom: 1rem;
-      background: rgba(0, 153, 255, 0.1);
-      border: 2px solid #0099FF;
-      border-radius: 50px;
-      padding: 0.3rem;
-      backdrop-filter: blur(5px);
-    }
-
-    .chart-btn {
-      padding: 0.5rem 1.2rem;
-      background: transparent;
-      border: none;
-      color: #0099FF;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      border-radius: 40px;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .chart-btn:hover {
-      background: rgba(0, 153, 255, 0.2);
-      transform: translateY(-1px);
-    }
-
-    .chart-btn.active {
-      background: #0099FF;
-      color: #FFFFFF;
-      border-color: #0099FF;
-      box-shadow: 0 2px 8px rgba(0, 153, 255, 0.5);
-      font-weight: 900;
-    }
-
-    .chart-wrapper {
-      position: relative;
-      height: 250px;
-      width: 100%;
-      border: 2px solid rgba(0, 153, 255, 0.2);
-      border-radius: 0.75rem;
-      padding: 0.75rem;
-      background: #000000;
-      box-sizing: border-box;
-    }
-
-    .chart-wrapper canvas {
-      max-width: 100%;
-      height: auto !important;
-      width: 100% !important;
-    }
-
-    .total-container {
-      background: #0099FF;
-      color: #FFFFFF;
-      padding: 1.5rem;
-      border: 4px solid #0099FF;
-      box-shadow: 8px 8px 0px #0099FF;
-      text-align: center;
-      border-radius: 0.75rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .total-amount {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      word-break: break-word;
-    }
-
-    .total-label {
-      font-size: 0.85rem;
-      font-weight: bold;
-      margin-top: 0.3rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .equivalence {
-      font-size: 0.8rem;
-      margin-top: 0.7rem;
-      padding: 0.8rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 0.75rem;
-      font-style: italic;
-    }
-
-    .disclaimer {
-      font-size: 0.75rem;
-      margin-top: 0.7rem;
-      opacity: 0.8;
-      line-height: 1.3;
-    }
-
-    .cta-final {
-      margin-top: 1rem;
-      padding: 1rem 2rem;
-      background: #FFFFFF;
-      color: #0099FF;
-      border: 3px solid #0099FF;
-      box-shadow: 4px 4px 0px #0099FF;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      border-radius: 0.75rem;
-      display: inline-block;
-      text-decoration: none;
-      cursor: pointer;
-      align-self: center;
-    }
-
-    .cta-final:hover {
-      background: #0099FF !important;
-      color: #FFFFFF !important;
-      border-color: #0099FF !important;
-      box-shadow: 6px 6px 0px #0099FF !important;
-      transform: translate(-3px, -3px);
-    }
-
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .video-background video {
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-    main.container {
-      position: relative;
-      z-index: 1;
-    }
-
-    @media (max-width: 768px) {
-      .calculator-wrapper {
-        padding: 0 1rem;
-      }
-
-      .inputs-panel, .results-panel {
-        padding: 1.5rem;
-      }
-
-      .charts-container {
-        grid-template-columns: 1fr;
-      }
-
-      .chart-wrapper {
-        height: 250px;
-      }
     }
 
     /* Modal styles */
@@ -568,7 +106,7 @@
       backdrop-filter: blur(20px);
       border: 4px solid #0099FF;
       box-shadow: 20px 20px 0px #0099FF;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       padding: 2rem;
       max-width: 600px;
       width: 90%;
@@ -586,7 +124,7 @@
       border: none;
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       font-size: 1.5rem;
       cursor: pointer;
       font-weight: bold;
@@ -648,7 +186,7 @@
       background: #FFFFFF;
       border: 2px solid #0099FF;
       color: #000000;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-input);
       font-family: 'Space Mono', monospace;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
@@ -675,7 +213,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-button);
       transition: all 0.3s ease;
       font-size: 1rem;
       margin-top: 1rem;
@@ -700,7 +238,7 @@
       font-weight: bold;
       padding: 1rem;
       background: rgba(144, 238, 144, 0.1);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       margin-top: 1rem;
     }
 
@@ -710,161 +248,26 @@
       font-weight: bold;
       padding: 1rem;
       background: rgba(255, 107, 107, 0.1);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       margin-top: 1rem;
     }
 
     /* Lead Capture Status Messages */
-    .lead-status {
-      padding: 1rem;
-      border-radius: 0.75rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .lead-status-success {
-      background: rgba(144, 238, 144, 0.2);
-      color: #90EE90;
-      border: 2px solid #90EE90;
-    }
-
-    .lead-status-error {
-      background: rgba(255, 107, 107, 0.2);
-      color: #FF6B6B;
-      border: 2px solid #FF6B6B;
-    }
 
     /* Lead Capture Summary */
-    .lead-summary-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
-      font-size: 0.9rem;
-    }
-
-    .lead-summary-label {
-      font-weight: bold;
-      color: #0099FF;
-      text-transform: uppercase;
-    }
-
-    .lead-summary-value {
-      color: #000000;
-    }
 
     /* Email Modal for PDF Download */
-    .email-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 10001;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .email-modal.active {
-      display: flex;
-    }
-
-    .email-modal-content {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 2.5rem;
-      border-radius: 0.75rem;
-      max-width: 450px;
-      width: 90%;
-      animation: slideIn 0.3s ease;
-    }
-
-    .email-modal-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-input {
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border: 3px solid #0099FF;
-      background: #FFFFFF;
-      color: #000000;
-      font-size: 1rem;
-      border-radius: 0.75rem;
-      box-sizing: border-box;
-    }
-
-    .email-modal-input::placeholder {
-      color: rgba(0, 153, 255, 0.5);
-    }
-
-    .email-modal-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px #0099FF;
-    }
-
-    .email-modal-buttons {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .email-modal-btn {
-      flex: 1;
-      padding: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      border: 3px solid #0099FF;
-      cursor: pointer;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-btn.submit {
-      background: #0099FF;
-      color: #FFFFFF;
-    }
-
-    .email-modal-btn.submit:hover {
-      background: #FFFFFF;
-      color: #0099FF;
-      box-shadow: 6px 6px 0px #0099FF;
-      transform: translate(-3px, -3px);
-    }
-
-    .email-modal-btn.cancel {
-      background: transparent;
-      color: #0099FF;
-    }
-
-    .email-modal-btn.cancel:hover {
-      background: #0099FF;
-      color: #FFFFFF;
-      transform: translate(-3px, -3px);
-    }
   </style>
 </head>
-<body>
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+<body class="tool-page tool-page--solar">
+<a class="skip-link" href="#main" data-en="Skip to content" data-es="Saltar al contenido">Skip to content</a>
+  <div class="video-background" aria-hidden="true">
+    <!-- Decorative. The poster ships with the page; js/tools/background-video.js
+         attaches the 6.6 MB source after load, and skips it on constrained
+         connections or when reduced motion is preferred. -->
+    <video muted loop playsinline preload="none"
+           poster="../media/calculator-bg-poster.jpg"
+           data-src="../media/Sequence yellow_colour_128x64.mp4"></video>
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -889,18 +292,18 @@
     </div>
   </nav>
 
-  <main class="container mt-5 px-3 px-md-4 py-5">
+  <main id="main" class="container mt-5 px-3 px-md-4 py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
-      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%; background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: var(--radius-circle); background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
     </div>
-    <h1 class="fw-bold text-center mb-2 text-white" style="text-align: center;" data-en="Solar Panel Calculator" data-es="Calculadora de Paneles Solares">
+    <h1 class="tool-title" data-en="Solar Panel Calculator" data-es="Calculadora de Paneles Solares">
       Solar Panel Calculator
     </h1>
-    <p class="text-center text-secondary mb-5" style="text-align: center;" data-en="Estimate your solar potential, energy production, and savings" data-es="Estima tu potencial solar, producción de energía y ahorros">
+    <p class="tool-subtitle" data-en="Estimate your solar potential, energy production, and savings" data-es="Estima tu potencial solar, producción de energía y ahorros">
       Estimate your solar potential, energy production, and savings
     </p>
 
@@ -916,23 +319,23 @@
             <div style="margin-bottom: 0.5rem;">
               <select id="locationSelect" class="form-select" style="background: rgba(0, 0, 0, 0.3); border: 2px solid #FFD500; color: #FFFFFF;" onchange="updateLocation()">
                 <optgroup label="Ecuador">
-                  <option value="2.9" data-location="Cuenca, Ecuador" data-price="0.10">Cuenca (2.9°) - $0.10/kWh</option>
-                  <option value="-0.2" data-location="Quito, Ecuador" data-price="0.10">Quito (-0.2°) - $0.10/kWh</option>
-                  <option value="-2.2" data-location="Guayaquil, Ecuador" data-price="0.12">Guayaquil (-2.2°) - $0.12/kWh</option>
-                  <option value="-4.0" data-location="Loja, Ecuador" data-price="0.10">Loja (-4.0°) - $0.10/kWh</option>
+                  <option value="-2.9" data-location="Cuenca, Ecuador" data-price="0.10" data-ghi="4.8" data-co2="0.27" data-currency="$">Cuenca (2.9°S) - $0.10/kWh</option>
+                  <option value="-0.2" data-location="Quito, Ecuador" data-price="0.10" data-ghi="4.7" data-co2="0.27" data-currency="$">Quito (0.2°S) - $0.10/kWh</option>
+                  <option value="-2.2" data-location="Guayaquil, Ecuador" data-price="0.12" data-ghi="4.4" data-co2="0.27" data-currency="$">Guayaquil (2.2°S) - $0.12/kWh</option>
+                  <option value="-4.0" data-location="Loja, Ecuador" data-price="0.10" data-ghi="4.8" data-co2="0.27" data-currency="$">Loja (4.0°S) - $0.10/kWh</option>
                 </optgroup>
                 <optgroup label="Europe">
-                  <option value="40.4" data-location="Madrid, Spain" data-price="0.30">Madrid, Spain (40.4°) - €0.30/kWh</option>
-                  <option value="48.9" data-location="Paris, France" data-price="0.28">Paris, France (48.9°) - €0.28/kWh</option>
-                  <option value="52.5" data-location="Berlin, Germany" data-price="0.38">Berlin, Germany (52.5°) - €0.38/kWh</option>
-                  <option value="41.9" data-location="Milan, Italy" data-price="0.35">Milan, Italy (41.9°) - €0.35/kWh</option>
-                  <option value="51.5" data-location="London, UK" data-price="0.36">London, UK (51.5°) - £0.36/kWh</option>
-                  <option value="37.8" data-location="Athens, Greece" data-price="0.25">Athens, Greece (37.8°) - €0.25/kWh</option>
-                  <option value="43.7" data-location="Barcelona, Spain" data-price="0.30">Barcelona, Spain (43.7°) - €0.30/kWh</option>
-                  <option value="59.3" data-location="Stockholm, Sweden" data-price="0.20">Stockholm, Sweden (59.3°) - kr0.20/kWh</option>
+                  <option value="40.4" data-location="Madrid, Spain" data-price="0.30" data-ghi="4.9" data-co2="0.17" data-currency="€">Madrid, Spain (40.4°N) - €0.30/kWh</option>
+                  <option value="41.4" data-location="Barcelona, Spain" data-price="0.30" data-ghi="4.3" data-co2="0.17" data-currency="€">Barcelona, Spain (41.4°N) - €0.30/kWh</option>
+                  <option value="37.98" data-location="Athens, Greece" data-price="0.25" data-ghi="4.6" data-co2="0.34" data-currency="€">Athens, Greece (38.0°N) - €0.25/kWh</option>
+                  <option value="45.5" data-location="Milan, Italy" data-price="0.35" data-ghi="3.6" data-co2="0.30" data-currency="€">Milan, Italy (45.5°N) - €0.35/kWh</option>
+                  <option value="48.9" data-location="Paris, France" data-price="0.28" data-ghi="3.2" data-co2="0.06" data-currency="€">Paris, France (48.9°N) - €0.28/kWh</option>
+                  <option value="51.5" data-location="London, UK" data-price="0.36" data-ghi="2.7" data-co2="0.21" data-currency="£">London, UK (51.5°N) - £0.36/kWh</option>
+                  <option value="52.5" data-location="Berlin, Germany" data-price="0.38" data-ghi="2.9" data-co2="0.38" data-currency="€">Berlin, Germany (52.5°N) - €0.38/kWh</option>
+                  <option value="59.3" data-location="Stockholm, Sweden" data-price="0.20" data-ghi="2.8" data-co2="0.03" data-currency="kr">Stockholm, Sweden (59.3°N) - kr0.20/kWh</option>
                 </optgroup>
                 <optgroup label="Custom">
-                  <option value="custom" data-location="Custom Location" data-price="0.12">Custom Location...</option>
+                  <option value="custom" data-location="Custom Location" data-price="0.12" data-ghi="" data-co2="0.40" data-currency="$">Custom Location...</option>
                 </optgroup>
               </select>
             </div>
@@ -953,8 +356,8 @@
               2. Roof Area
             </div>
             <input type="range" min="10" max="500" value="50" class="range-slider" id="roofAreaSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="roofAreaValue">50</span> m²
+            <div class="range-value">
+              <span class="range-figure"><span id="roofAreaValue">50</span> m²</span>
             </div>
           </div>
 
@@ -985,8 +388,9 @@
               4. Roof Orientation
             </div>
             <input type="range" min="0" max="180" value="0" class="range-slider" id="orientationSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="orientationValue">0</span>° (Optimal: South)
+            <div class="range-value">
+              <span class="range-figure"><span id="orientationValue">0</span>°</span>
+              <span class="range-caption" id="orientationCaption"></span>
             </div>
           </div>
 
@@ -996,8 +400,10 @@
               5. System Losses
             </div>
             <input type="range" min="5" max="30" value="15" class="range-slider" id="lossFactorSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              <span id="lossFactorValue">15</span>% (Inverter, wiring, soiling)
+            <div class="range-value">
+              <span class="range-figure"><span id="lossFactorValue">15</span>%</span>
+              <span class="range-caption" data-en="Inverter, wiring, soiling"
+                    data-es="Inversor, cableado, suciedad">Inverter, wiring, soiling</span>
             </div>
           </div>
 
@@ -1007,22 +413,43 @@
               6. Local Electricity Price
             </div>
             <input type="range" min="0.05" max="0.50" value="0.12" step="0.01" class="range-slider" id="priceSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              $<span id="priceValue">0.12</span> / kWh
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="priceValue">0.12</span> / kWh</span>
             </div>
             <p style="font-size: 0.75rem; color: rgba(0, 153, 255, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
               <span data-en="Adjust price based on location selection (2026 rates)" data-es="Ajusta el precio según la selección de ubicación (tarifas 2026)">Adjust price based on location selection (2026 rates)</span>
             </p>
           </div>
 
-          <!-- 7. System Cost -->
+          <!-- 7. Monthly electricity bill -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="7. System Cost per kW" data-es="7. Costo del Sistema por kW">
-              7. System Cost per kW
+            <div class="calculator-label" data-en="7. Monthly Electricity Bill" data-es="7. Factura Mensual de Electricidad">
+              7. Monthly Electricity Bill
+            </div>
+            <input type="range" min="10" max="500" value="85" step="5" class="range-slider" id="monthlyBillSlider" oninput="updateDisplay()">
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="monthlyBillValue">85</span> / <span data-en="month" data-es="mes">month</span></span>
+              <span class="range-caption" id="consumptionCaption"></span>
+            </div>
+            <label class="sub-label" for="fixedChargeSlider"
+                   data-en="Fixed monthly charges" data-es="Cargos fijos mensuales">Fixed monthly charges</label>
+            <input type="range" min="0" max="30" value="6" step="1" class="range-slider" id="fixedChargeSlider" oninput="updateDisplay()">
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="fixedChargeValue">6</span> / <span data-en="month" data-es="mes">month</span></span>
+              <span class="range-caption"
+                    data-en="Connection, public lighting, waste collection — solar does not remove these."
+                    data-es="Conexión, alumbrado público, recolección de basura — la solar no elimina estos.">Connection, public lighting, waste collection — solar does not remove these.</span>
+            </div>
+          </div>
+
+          <!-- 8. System Cost -->
+          <div class="calculator-section">
+            <div class="calculator-label" data-en="8. System Cost per kW" data-es="8. Costo del Sistema por kW">
+              8. System Cost per kW
             </div>
             <input type="range" min="1500" max="4000" value="3000" step="100" class="range-slider" id="costPerKwSlider" oninput="updateDisplay()">
-            <div class="range-value text-center">
-              $<span id="costPerKwValue">3000</span> / kW
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="costPerKwValue">3000</span> / kW</span>
             </div>
             <p style="font-size: 0.75rem; color: rgba(0, 153, 255, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
               <span data-en="Includes panels, inverter, installation" data-es="Incluye paneles, inversor, instalación">Includes panels, inverter, installation</span>
@@ -1031,7 +458,7 @@
         </div>
 
         <!-- RIGHT PANEL: RESULTS -->
-        <div class="results-panel">
+        <div class="results-panel" id="resultsPanel">
           <!-- System Overview Dashboard -->
           <div class="system-overview">
             <div class="overview-title" data-en="System Overview" data-es="Descripción General del Sistema">System Overview</div>
@@ -1080,11 +507,13 @@
               <div class="overview-item">
                 <div class="overview-label" data-en="Climate Zone" data-es="Zona Climática">Climate Zone</div>
                 <div class="overview-value" id="overviewClimate">Equatorial</div>
-                <div class="overview-subvalue">&nbsp;</div>
+                <div class="overview-subvalue"><span id="overviewGhi">4.8</span> kWh/m²/day</div>
               </div>
             </div>
 
             <!-- Calculated Outputs -->
+            <p class="sizing-note" id="sizingNote" hidden></p>
+
             <div class="overview-divider"></div>
 
             <div class="overview-grid">
@@ -1096,7 +525,7 @@
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="Total System Cost" data-es="Costo Total del Sistema">Total System Cost</div>
                 <div class="overview-value" id="overviewTotalCost">27,000</div>
-                <div class="overview-subvalue">$</div>
+                <div class="overview-subvalue"><span data-currency-symbol>$</span></div>
               </div>
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="Annual Production" data-es="Producción Anual">Annual Production</div>
@@ -1104,9 +533,14 @@
                 <div class="overview-subvalue">kWh/yr</div>
               </div>
               <div class="overview-item highlight">
+                <div class="overview-label" data-en="Bill Covered" data-es="Factura Cubierta">Bill Covered</div>
+                <div class="overview-value" id="overviewBillCovered">100</div>
+                <div class="overview-subvalue">%</div>
+              </div>
+              <div class="overview-item highlight">
                 <div class="overview-label" data-en="Annual Savings" data-es="Ahorros Anuales">Annual Savings</div>
                 <div class="overview-value" id="overviewSavings">1,577</div>
-                <div class="overview-subvalue">$/yr</div>
+                <div class="overview-subvalue"><span data-currency-symbol>$</span>/yr</div>
               </div>
             </div>
 
@@ -1114,7 +548,7 @@
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="Payback Period" data-es="Período de Recuperación">Payback Period</div>
                 <div class="overview-value" id="overviewPayback">17.1</div>
-                <div class="overview-subvalue">years</div>
+                <div class="overview-subvalue" data-en="years" data-es="años">years</div>
               </div>
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="CO₂ Offset/Year" data-es="Compensación CO₂/Año">CO₂ Offset/Year</div>
@@ -1124,20 +558,47 @@
               <div class="overview-item highlight">
                 <div class="overview-label" data-en="30-Year Savings" data-es="Ahorros en 30 Años">30-Year Savings</div>
                 <div class="overview-value" id="overviewThirtyYear">47,310</div>
-                <div class="overview-subvalue">$</div>
+                <div class="overview-subvalue"><span data-currency-symbol>$</span></div>
               </div>
               <div class="overview-item highlight">
-                <div class="overview-label" data-en="Break-Even Year" data-es="Año de Equilibrio">Break-Even Year</div>
-                <div class="overview-value" id="overviewBreakEven">17.1</div>
-                <div class="overview-subvalue">year</div>
+                <div class="overview-label" data-en="Specific Yield" data-es="Rendimiento Específico">Specific Yield</div>
+                <div class="overview-value" id="overviewBreakEven">--</div>
+                <div class="overview-subvalue">kWh/kWp/yr</div>
               </div>
             </div>
           </div>
 
+          <!-- Call to action: sits directly under the overview, which is
+               where the payback figure lands. The old ask was at the very
+               bottom, past both charts and the cost panel. -->
+          <aside class="tool-cta">
+            <h3 class="tool-cta-title"
+                data-en="Want this checked against your actual roof?"
+                data-es="¿Quieres verificarlo en tu techo real?">
+              Want this checked against your actual roof?
+            </h3>
+            <p class="tool-cta-copy"
+               data-en="This estimate assumes an unshaded roof and standard irradiance. We survey shading, orientation and your local tariff, then size the array around what the building really uses."
+               data-es="Esta estimación asume un techo sin sombras e irradiancia estándar. Nosotros evaluamos sombreado, orientación y tu tarifa local, y dimensionamos el sistema según el consumo real del edificio.">
+              This estimate assumes an unshaded roof and standard irradiance. We survey shading, orientation and your local tariff, then size the array around what the building really uses.
+            </p>
+            <div class="tool-cta-actions">
+              <button type="button" class="tool-cta-btn" onclick="navigateToLeadForm()"
+                      data-en="Request a solar study" data-es="Solicitar estudio solar">
+                Request a solar study
+              </button>
+              <a class="tool-cta-link" href="contact.html"
+                 data-en="Or send us a question" data-es="O envíanos una pregunta">
+                Or send us a question
+              </a>
+            </div>
+          </aside>
+
           <!-- Charts -->
           <div class="charts-container">
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Annual Production" data-es="Producción Anual">Annual Production</div>
+              <h3 class="chart-title" data-en="Annual Production" data-es="Producción Anual">Annual Production</h3>
+              <span class="chart-note" data-en="Energy generated by the array, month by month." data-es="Energía generada por el sistema, mes a mes.">Energy generated by the array, month by month.</span>
               <div class="chart-controls">
                 <button class="chart-btn active" data-chart-mode="monthly" data-en="Monthly" data-es="Mensual">Monthly</button>
                 <button class="chart-btn" data-chart-mode="daily" data-en="Daily Avg" data-es="Promedio Diario">Daily Avg</button>
@@ -1148,7 +609,8 @@
             </div>
 
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Investment Payback" data-es="Recuperación de Inversión">Investment Payback</div>
+              <h3 class="chart-title" data-en="Investment Payback" data-es="Recuperación de Inversión">Investment Payback</h3>
+              <span class="chart-note" data-en="Cumulative savings against the installed cost. The zero line is break-even." data-es="Ahorro acumulado frente al costo instalado. La línea cero es el punto de equilibrio.">Cumulative savings against the installed cost. The zero line is break-even.</span>
               <div class="chart-wrapper">
                 <canvas id="paybackChart"></canvas>
               </div>
@@ -1156,37 +618,24 @@
           </div>
 
           <!-- Cost & Payback Analysis -->
-          <div style="background: rgba(0, 0, 0, 0.7); border: 3px solid #FFD500; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
-            <div>
-              <div style="font-size: 0.75rem; color: #FFD500; font-weight: bold; text-transform: uppercase;">
-                <span data-en="Initial Investment" data-es="Inversión Inicial">Initial Investment</span>
+          <div class="data-panel">
+            <h3 class="data-panel-title" data-en="Cost &amp; Payback" data-es="Costo y Recuperación">Cost &amp; Payback</h3>
+            <div class="data-panel-grid">
+              <div>
+                <span class="data-figure-label" data-en="Initial Investment" data-es="Inversión Inicial">Initial Investment</span>
+                <span class="data-figure-value"><span data-currency-symbol>$</span><span id="totalCostDisplay">150,000</span></span>
               </div>
-              <div style="font-size: 1.4rem; font-weight: bold; color: #000000;">
-                $<span id="totalCostDisplay">150,000</span>
+              <div>
+                <span class="data-figure-label" data-en="Annual Savings" data-es="Ahorros Anuales">Annual Savings</span>
+                <span class="data-figure-value"><span data-currency-symbol>$</span><span id="annualSavingsDisplay">1,800</span></span>
               </div>
-            </div>
-            <div>
-              <div style="font-size: 0.75rem; color: #FFD500; font-weight: bold; text-transform: uppercase;">
-                <span data-en="Annual Savings" data-es="Ahorros Anuales">Annual Savings</span>
+              <div>
+                <span class="data-figure-label" data-en="Payback Period" data-es="Período de Recuperación">Payback Period</span>
+                <span class="data-figure-value data-figure-value--accent"><span id="paybackYears">8.3</span> <span data-en="years" data-es="años" style="font-size: 0.8rem;">years</span></span>
               </div>
-              <div style="font-size: 1.4rem; font-weight: bold; color: #000000;">
-                $<span id="annualSavingsDisplay">1,800</span>
-              </div>
-            </div>
-            <div>
-              <div style="font-size: 0.75rem; color: #FFD500; font-weight: bold; text-transform: uppercase;">
-                <span data-en="Payback Period" data-es="Período de Recuperación">Payback Period</span>
-              </div>
-              <div style="font-size: 1.4rem; font-weight: bold; color: #0099FF;">
-                <span id="paybackYears">8.3</span> <span data-en="years" data-es="años" style="font-size: 0.8rem;">years</span>
-              </div>
-            </div>
-            <div>
-              <div style="font-size: 0.75rem; color: #FFD500; font-weight: bold; text-transform: uppercase;">
-                <span data-en="30-Year Savings" data-es="Ahorros en 30 Años">30-Year Savings</span>
-              </div>
-              <div style="font-size: 1.4rem; font-weight: bold; color: #000000;">
-                $<span id="thirtyYearSavings">54,000</span>
+              <div>
+                <span class="data-figure-label" data-en="30-Year Savings" data-es="Ahorros en 30 Años">30-Year Savings</span>
+                <span class="data-figure-value"><span data-currency-symbol>$</span><span id="thirtyYearSavings">54,000</span></span>
               </div>
             </div>
           </div>
@@ -1203,10 +652,7 @@
             <p class="disclaimer" data-en="This is an estimation based on standard solar irradiance data. Actual production depends on weather, shading, panel degradation, and installation quality." data-es="Esta es una estimación basada en datos estándar de irradiancia solar. La producción real depende del clima, sombreado, degradación de paneles y calidad de instalación.">
               This is an estimation based on standard solar irradiance data.
             </p>
-            <div style="display: flex; gap: 1rem; flex-direction: column;">
-              <button onclick="navigateToLeadForm()" class="cta-final" data-en="Get Solar Design" data-es="Obtener Diseño Solar">
-                Get Solar Design
-              </button>
+            <div class="cta-row cta-row--stacked">
               <button onclick="submitPdfDownload()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
               </button>
@@ -1215,7 +661,29 @@
         </div>
       </div>
     </div>
-  </main>
+  
+  <!-- Docked readout: the headline figures stay visible while you are still
+       in the inputs on a small screen. Mirrors the overview panel. -->
+  <div class="live-readout" data-live-readout data-target="resultsPanel" role="button" tabindex="0"
+       aria-label="Jump to full results">
+    <span class="live-readout__item">
+      <span class="live-readout__label" data-en="Annual production" data-es="Producción anual">Annual production</span>
+      <span class="live-readout__figure">
+        <span class="live-readout__value" data-mirror="overviewProduction">—</span>
+        <span class="live-readout__unit">kWh/yr</span>
+      </span>
+    </span>
+    <span class="live-readout__item">
+      <span class="live-readout__label" data-en="Annual savings" data-es="Ahorro anual">Annual savings</span>
+      <span class="live-readout__figure">
+        <span class="live-readout__unit" data-currency-symbol>$</span><span class="live-readout__value" data-mirror="overviewSavings">—</span>
+      </span>
+    </span>
+    <span class="live-readout__chevron" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </span>
+  </div>
+</main>
 
   <!-- Email Modal for PDF Download - COMMENTED OUT FOR FUTURE USE -->
   <!-- <div id="emailModal" class="email-modal">
@@ -1322,28 +790,100 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    let currentLang = localStorage.getItem('lang') || 'en';
     let productionChart, paybackChart;
     let currentChartMode = 'monthly';
 
     const solarState = {
       location: 'Cuenca, Ecuador',
-      latitude: 2.9,
+      latitude: -2.9,
+      ghi: 4.8,               // annual avg daily kWh/m²/day for the location
+      gridCO2: 0.27,          // kg CO₂ per kWh displaced from the local grid
+      currency: '$',
       roofArea: 50,
       panelType: 'Standard (18%)',
       panelEfficiency: 0.18,
       orientation: 0,
       lossFactors: 15,
       electricityPrice: 0.12,
-      costPerKw: 3000
+      costPerKw: 3000,
+      monthlyBill: 85,       // what the building spends today
+      fixedCharge: 6         // the part of that bill solar cannot remove
     };
 
     // Solar irradiance data (kWh/m²/day) by month for different latitudes
-    const SOLAR_IRRADIANCE = {
+    // Monthly SHAPE of the solar year, January to December, for the northern
+    // hemisphere. These describe seasonality only — the annual level comes from
+    // each location's own GHI figure, so two cities at the same latitude but in
+    // different climates no longer get identical output.
+    const SEASONAL_PROFILE = {
       'equatorial': [5.0, 5.1, 4.9, 4.8, 4.6, 4.2, 4.3, 4.5, 4.8, 5.0, 5.1, 5.0],
       'subtropical': [3.5, 3.8, 4.5, 5.2, 5.6, 5.8, 5.7, 5.3, 4.6, 3.8, 3.2, 3.0],
       'temperate': [1.8, 2.3, 3.5, 4.8, 5.5, 5.8, 5.5, 4.8, 3.5, 2.3, 1.5, 1.3]
     };
+
+    // Annual average daily global horizontal irradiance against latitude, used
+    // only when no location-specific figure is available (Custom Location).
+    // Irradiance is not monotonic in latitude — it peaks over the subtropical
+    // desert belt near 25° — so this is interpolated from a table rather than
+    // derived from a formula.
+    const GHI_BY_LATITUDE = [
+      { lat: 0,  ghi: 4.8 },
+      { lat: 15, ghi: 5.4 },
+      { lat: 25, ghi: 5.8 },
+      { lat: 35, ghi: 5.0 },
+      { lat: 45, ghi: 3.6 },
+      { lat: 55, ghi: 2.7 },
+      { lat: 65, ghi: 2.1 }
+    ];
+
+    // A roof cannot be paved edge to edge with modules: row spacing, setbacks,
+    // plant and access typically leave 70-80% usable on a simple roof.
+    const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    const ROOF_UTILISATION = 0.75;
+
+    const PANEL_DEGRADATION_PER_YEAR = 0.005;  // 0.5%/yr, typical warranty terms
+    const INVERTER_REPLACEMENT_SHARE = 0.15;   // share of system cost, once at ~year 15
+    const SYSTEM_LIFETIME_YEARS = 30;
+
+    function estimateGhiFromLatitude(latitude) {
+      const absLat = Math.min(Math.abs(latitude), 65);
+      for (let i = 0; i < GHI_BY_LATITUDE.length - 1; i++) {
+        const a = GHI_BY_LATITUDE[i];
+        const b = GHI_BY_LATITUDE[i + 1];
+        if (absLat <= b.lat) {
+          const t = (absLat - a.lat) / (b.lat - a.lat);
+          return a.ghi + t * (b.ghi - a.ghi);
+        }
+      }
+      return GHI_BY_LATITUDE[GHI_BY_LATITUDE.length - 1].ghi;
+    }
+
+    /**
+     * Monthly irradiance (kWh/m²/day) for the current location.
+     *
+     * The seasonal profile is normalised to an average of 1 and then scaled to
+     * the location's annual GHI, so the shape of the year and its level are
+     * independent. South of the equator the profile is shifted six months.
+     */
+    function monthlyIrradiance() {
+      const profile = SEASONAL_PROFILE[getClimateZone(solarState.latitude)];
+      const ghi = solarState.ghi || estimateGhiFromLatitude(solarState.latitude);
+
+      const shifted = solarState.latitude < 0
+        ? profile.slice(6).concat(profile.slice(0, 6))  // southern hemisphere
+        : profile;
+
+      // Normalise on the DAY-WEIGHTED mean, because production is summed as
+      // daily output times the length of each month. Using the plain mean of
+      // twelve numbers left the integrated year off the location's stated GHI
+      // by up to 0.2%, with the sign depending on the hemisphere.
+      const totalDays = DAYS_IN_MONTH.reduce((sum, d) => sum + d, 0);
+      const weightedMean = shifted.reduce(
+        (sum, v, i) => sum + v * DAYS_IN_MONTH[i], 0) / totalDays;
+
+      return shifted.map(v => v / weightedMean * ghi);
+    }
 
     function getClimateZone(latitude) {
       const absLat = Math.abs(latitude);
@@ -1352,28 +892,92 @@
       return 'temperate';
     }
 
+    /**
+     * The direction an array should face to catch the most sun: towards the
+     * equator. North of it that means south; south of it — which is every
+     * Ecuadorian location in this tool — it means north.
+     *
+     * The slider measures deviation from this direction, and the label used to
+     * read "(Optimal: South)" as fixed text, so the default Cuenca setup told
+     * people in the studio's own city to point their panels the wrong way.
+     */
+    function optimalFacing() {
+      return solarState.latitude < 0 ? 'north' : 'south';
+    }
+
+    function updateOrientationCaption() {
+      const caption = document.getElementById('orientationCaption');
+      if (!caption) return;
+
+      const es = currentLang === 'es';
+      const facing = optimalFacing();
+      const compass = es
+        ? (facing === 'north' ? 'norte' : 'sur')
+        : facing;
+      const deviation = solarState.orientation;
+
+      const text = deviation === 0
+        ? (es ? `Orientado al ${compass} — óptimo` : `Facing ${compass} — optimal`)
+        : (es ? `${deviation}° desde el ${compass}` : `${deviation}° from ${compass}`);
+
+      caption.textContent = text;
+      // Keep the shared translator from overwriting a value it did not set.
+      caption.setAttribute('data-en', deviation === 0
+        ? `Facing ${facing} — optimal` : `${deviation}° from ${facing}`);
+      caption.setAttribute('data-es', deviation === 0
+        ? `Orientado al ${facing === 'north' ? 'norte' : 'sur'} — óptimo`
+        : `${deviation}° desde el ${facing === 'north' ? 'norte' : 'sur'}`);
+    }
+
+    /**
+     * Annual yield relative to an equator-facing array, by azimuth deviation.
+     *
+     * The previous model (cos θ × 0.9 + 0.1) returned negative values beyond
+     * 96°, so a north-facing roof produced negative energy, negative savings
+     * and a negative payback. It also put an east/west roof at 10% of optimal,
+     * where the real figure is around 80%.
+     *
+     * This is the standard shape — loss grows with (1 − cos θ) — scaled by a
+     * latitude-dependent factor, because orientation barely matters at the
+     * equator and matters a great deal near the poles. It cannot go negative.
+     */
     function getOrientationFactor(orientation) {
-      // Maximum at 0° (facing south), decreases with angle deviation
-      return Math.cos((orientation * Math.PI) / 180) * 0.9 + 0.1;
+      const deviation = Math.abs(orientation) * Math.PI / 180;
+      const severity = Math.min(0.70, Math.max(0.25, 0.25 + 0.007 * Math.abs(solarState.latitude)));
+      return 1 - severity * (1 - Math.cos(deviation)) / 2;
     }
 
     function updateLocation() {
       const select = document.getElementById('locationSelect');
-      const selectedOption = select.options[select.selectedIndex];
+      const selectedOption = select.options[select.selectedIndex] || select.options[0];
+      if (!selectedOption) return;
       const latitude = parseFloat(selectedOption.value);
       const price = parseFloat(selectedOption.dataset.price) || 0.12;
       const customSection = document.getElementById('customLatitudeSection');
       const displaySection = document.getElementById('selectedLocationDisplay');
 
+      solarState.gridCO2 = parseFloat(selectedOption.dataset.co2) || 0.4;
+      solarState.currency = selectedOption.dataset.currency || '$';
+
       if (selectedOption.value === 'custom') {
         customSection.style.display = 'block';
         displaySection.style.display = 'none';
         solarState.location = 'Custom Location';
+        // No location-specific irradiance: fall back to the latitude estimate.
+        solarState.ghi = 0;
       } else {
         customSection.style.display = 'none';
         displaySection.style.display = 'block';
         solarState.location = selectedOption.dataset.location || 'Custom Location';
+        solarState.ghi = parseFloat(selectedOption.dataset.ghi) || 0;
+
+        // updateDisplay() reads latitude back out of the slider, so the slider
+        // is the value that has to change — assigning solarState.latitude here
+        // alone was silently overwritten, and every location was computed at
+        // whatever latitude the slider happened to hold.
+        document.getElementById('latitudeSlider').value = latitude;
         solarState.latitude = latitude;
+
         solarState.electricityPrice = price;
         document.getElementById('latitudeValue').textContent = Math.abs(latitude).toFixed(1);
         document.getElementById('priceSlider').value = price;
@@ -1381,8 +985,8 @@
         displaySection.textContent = solarState.location;
       }
 
+      updateCurrencyLabels();
       updateDisplay();
-      calculateProduction();
     }
 
     function selectOption(element, category) {
@@ -1406,6 +1010,8 @@
       const lossFactor = parseInt(document.getElementById('lossFactorSlider').value);
       const price = parseFloat(document.getElementById('priceSlider').value);
       const costPerKw = parseInt(document.getElementById('costPerKwSlider').value);
+      const monthlyBill = parseInt(document.getElementById('monthlyBillSlider').value);
+      const fixedCharge = parseInt(document.getElementById('fixedChargeSlider').value);
 
       solarState.latitude = latitude;
       solarState.roofArea = roofArea;
@@ -1413,6 +1019,14 @@
       solarState.lossFactors = lossFactor;
       solarState.electricityPrice = price;
       solarState.costPerKw = costPerKw;
+      solarState.monthlyBill = monthlyBill;
+      // Clamping only the state left the slider showing a fixed charge larger
+      // than the bill it is part of; move the control too.
+      const clampedFixed = Math.min(fixedCharge, monthlyBill);
+      if (clampedFixed !== fixedCharge) {
+        document.getElementById('fixedChargeSlider').value = clampedFixed;
+      }
+      solarState.fixedCharge = clampedFixed;
 
       if (document.getElementById('locationSelect').value !== 'custom') {
         // Don't update latitude display if using preset location
@@ -1421,61 +1035,210 @@
       }
       document.getElementById('roofAreaValue').textContent = roofArea;
       document.getElementById('orientationValue').textContent = orientation;
+      updateOrientationCaption();
       document.getElementById('lossFactorValue').textContent = lossFactor;
       document.getElementById('priceValue').textContent = price.toFixed(2);
-      document.getElementById('costPerKwValue').textContent = costPerKw.toLocaleString();
+      document.getElementById('costPerKwValue').textContent = formatToolNumber(costPerKw);
+      document.getElementById('monthlyBillValue').textContent = formatToolNumber(monthlyBill);
+      document.getElementById('fixedChargeValue').textContent = formatToolNumber(solarState.fixedCharge);
 
       calculateProduction();
     }
 
+    /** Currency symbol for the selected location. */
+    function currencySymbol() {
+      return solarState.currency || '$';
+    }
+
+    /** Repaint the currency symbol wherever it is shown. */
+    function updateCurrencyLabels() {
+      document.querySelectorAll('[data-currency-symbol]').forEach(el => {
+        el.textContent = currencySymbol();
+      });
+    }
+
+    /** Restate the bill as the consumption it implies at the local tariff. */
+    function updateConsumptionCaption(annualConsumption) {
+      const caption = document.getElementById('consumptionCaption');
+      if (!caption) return;
+
+      const kwh = formatToolNumber(Math.round(annualConsumption));
+      const en = `About ${kwh} kWh a year at this tariff`;
+      const es = `Unos ${kwh} kWh al año con esta tarifa`;
+      caption.textContent = currentLang === 'es' ? es : en;
+      caption.setAttribute('data-en', en);
+      caption.setAttribute('data-es', es);
+    }
+
+    /**
+     * Say plainly when the array outgrows the building.
+     *
+     * Surplus beyond your own consumption earns nothing here, so a bigger
+     * roof stops paying at that point. Rather than quietly capping the
+     * savings figure, name the surplus and suggest the area that would
+     * actually match the bill.
+     */
+    function updateSizingNote(surplusKwh, totalAnnual, annualConsumption) {
+      const note = document.getElementById('sizingNote');
+      if (!note) return;
+
+      // Ignore a rounding-sized overshoot.
+      if (surplusKwh <= totalAnnual * 0.05 || totalAnnual <= 0) {
+        note.hidden = true;
+        return;
+      }
+
+      const es = currentLang === 'es';
+      const ratio = annualConsumption > 0 ? totalAnnual / annualConsumption : 0;
+      // Roof area that would just cover the bill, at the current settings.
+      const matchedRoof = Math.max(10, Math.round(solarState.roofArea / ratio));
+      const surplus = formatToolNumber(Math.round(surplusKwh));
+
+      note.textContent = es
+        ? `Este tejado genera ${ratio.toFixed(1)}× lo que consume el edificio. `
+          + `Sobran ${surplus} kWh al año que no se pagan, así que el ahorro está `
+          + `limitado por la factura. Unos ${matchedRoof} m² bastarían.`
+        : `This roof generates ${ratio.toFixed(1)}× what the building uses. `
+          + `The surplus of ${surplus} kWh a year earns nothing, so savings are `
+          + `capped by the bill. About ${matchedRoof} m² would match it.`;
+      note.hidden = false;
+    }
+
+    /**
+     * Simple payback, accumulating year by year so that panel degradation is
+     * taken into account and a zero-saving year cannot divide by zero.
+     * Returns null when the system never pays for itself within its lifetime.
+     */
+    const INVERTER_REPLACEMENT_YEAR = 15;
+
+    /**
+     * The system's cash flow, year by year — the single model the payback
+     * figure, the lifetime total and the payback chart all read from.
+     *
+     * Degradation applies to PRODUCTION, and the saving is re-capped against
+     * consumption each year. Degrading the already-capped saving instead, as
+     * this used to, quietly understated an oversized array: it keeps covering
+     * the same bill for years precisely because it has spare output to lose.
+     *
+     * @returns {{year:number, savings:number, cumulative:number}[]} year 0
+     *   carries the purchase, so `cumulative` starts at minus the system cost.
+     */
+    function cashFlow(systemCost, firstYearProduction, annualConsumption, price) {
+      const rows = [{ year: 0, savings: 0, cumulative: -systemCost }];
+      let cumulative = -systemCost;
+
+      for (let year = 1; year <= SYSTEM_LIFETIME_YEARS; year++) {
+        const produced = firstYearProduction * Math.pow(1 - PANEL_DEGRADATION_PER_YEAR, year - 1);
+        let savings = Math.min(produced, annualConsumption) * price;
+
+        // The inverter will not last the life of the panels.
+        if (year === INVERTER_REPLACEMENT_YEAR) {
+          savings -= systemCost * INVERTER_REPLACEMENT_SHARE;
+        }
+
+        cumulative += savings;
+        rows.push({ year: year, savings: savings, cumulative: cumulative });
+      }
+      return rows;
+    }
+
+    /** Year the cumulative cash flow first turns positive, or null within the life. */
+    function paybackYears(rows) {
+      for (let i = 1; i < rows.length; i++) {
+        if (rows[i].cumulative >= 0) {
+          const previous = rows[i - 1].cumulative;
+          const gained = rows[i].cumulative - previous;
+          // Interpolate within the year it crosses.
+          return gained > 0 ? rows[i].year - 1 + (-previous) / gained : rows[i].year;
+        }
+      }
+      return null;
+    }
+
+    /** Net position at the end of the system's life. */
+    function lifetimeNetSavings(rows) {
+      return rows[rows.length - 1].cumulative;
+    }
+
     function calculateProduction() {
-      const climateZone = getClimateZone(solarState.latitude);
-      const baseIrradiance = SOLAR_IRRADIANCE[climateZone];
+      const irradiance = monthlyIrradiance();
       const orientationFactor = getOrientationFactor(solarState.orientation);
       const efficiencyFactor = (100 - solarState.lossFactors) / 100;
 
-      // Peak capacity: 1000 W/m² * area * panel efficiency
-      const peakCapacity = solarState.roofArea * solarState.panelEfficiency; // kW
+      // Peak capacity at STC (1 kW/m²): usable panel area × module efficiency.
+      const panelArea = solarState.roofArea * ROOF_UTILISATION;
+      const peakCapacity = panelArea * solarState.panelEfficiency; // kWp
 
-      // Annual production (kWh)
-      let monthlyProduction = [];
+      const monthlyProduction = [];
       let totalAnnual = 0;
 
       for (let i = 0; i < 12; i++) {
-        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][i];
-        const dailyProduction = baseIrradiance[i] * solarState.roofArea * solarState.panelEfficiency * orientationFactor * efficiencyFactor;
-        const monthlyProd = dailyProduction * daysInMonth;
+        const dailyProduction = irradiance[i] * panelArea * solarState.panelEfficiency *
+                                orientationFactor * efficiencyFactor;
+        const monthlyProd = dailyProduction * DAYS_IN_MONTH[i];
         monthlyProduction.push(monthlyProd);
         totalAnnual += monthlyProd;
       }
 
-      // Update display
       document.getElementById('annualProduction').textContent = Math.round(totalAnnual) + ' kWh/yr';
 
-      const annualSavings = (totalAnnual * solarState.electricityPrice).toFixed(0);
-      const co2Offset = (totalAnnual * 0.4).toFixed(0); // ~0.4 kg CO2 per kWh in grid
-      const carDays = (totalAnnual / 20).toFixed(0); // Average car uses ~20 kWh/day
+      // Generation is only worth money to the extent it displaces electricity
+      // you would otherwise have bought. This used to be
+      // `totalAnnual * price` — every kWh valued at the retail tariff — which
+      // credited a household with more savings than its entire bill. Under
+      // Ecuador's net-metering scheme surplus rolls over as credit but is not
+      // paid out beyond your own consumption, so the annual bill is the cap.
+      // Only the energy part of a bill is bought by the kWh. Dividing the
+      // whole bill by the tariff overstated consumption, and let savings run
+      // up towards the full bill — a figure no grid-connected building can
+      // reach, because the standing charges survive whatever you generate.
+      const annualBill = solarState.monthlyBill * 12;
+      const annualFixed = solarState.fixedCharge * 12;
+      const annualEnergyBill = Math.max(0, annualBill - annualFixed);
+      const annualConsumption = annualEnergyBill / solarState.electricityPrice;
 
-      // Cost Analysis
-      const totalSystemCost = (peakCapacity * solarState.costPerKw).toFixed(0);
-      const paybackPeriod = (totalSystemCost / annualSavings).toFixed(1);
-      const thirtyYearSavings = (annualSavings * 30 - totalSystemCost).toFixed(0);
+      const selfUsedKwh = Math.min(totalAnnual, annualConsumption);
+      const surplusKwh = Math.max(0, totalAnnual - annualConsumption);
+      const annualSavings = selfUsedKwh * solarState.electricityPrice;
 
-      document.getElementById('totalCostDisplay').textContent = parseInt(totalSystemCost).toLocaleString();
-      document.getElementById('annualSavingsDisplay').textContent = parseInt(annualSavings).toLocaleString();
-      document.getElementById('paybackYears').textContent = paybackPeriod;
-      document.getElementById('thirtyYearSavings').textContent = parseInt(thirtyYearSavings).toLocaleString();
+      // Share of the whole bill removed — so it is honest about the floor the
+      // fixed charges put under it, rather than reporting 100% of the part
+      // that happens to be reducible.
+      const billCoveredPct = annualBill > 0
+        ? Math.min(100, (annualSavings / annualBill) * 100)
+        : 0;
+      const co2Offset = totalAnnual * solarState.gridCO2;
+      const carDays = totalAnnual / 20; // an EV at roughly 20 kWh/day
+
+      const totalSystemCost = peakCapacity * solarState.costPerKw;
+      const flow = cashFlow(totalSystemCost, totalAnnual, annualConsumption, solarState.electricityPrice);
+      const payback = paybackYears(flow);
+      const lifetimeSavings = lifetimeNetSavings(flow);
+
+      const paybackLabel = payback === null
+        ? (currentLang === 'es' ? 'nunca' : 'never')
+        : payback.toFixed(1);
+
+      document.getElementById('totalCostDisplay').textContent = formatToolNumber(Math.round(totalSystemCost));
+      document.getElementById('annualSavingsDisplay').textContent = formatToolNumber(Math.round(annualSavings));
+      document.getElementById('paybackYears').textContent = paybackLabel;
+      document.getElementById('thirtyYearSavings').textContent = formatToolNumber(Math.round(lifetimeSavings));
 
       document.getElementById('equivalence').innerHTML = `
-        Annual savings: <strong>$${annualSavings}</strong><br>
-        <small>≈ ${co2Offset} kg CO₂ offset | ${carDays} days of car travel</small>
+        ${currentLang === 'es' ? 'Ahorro anual' : 'Annual savings'}: <strong>${currencySymbol()}${formatToolNumber(Math.round(annualSavings))}</strong><br>
+        <small>≈ ${formatToolNumber(Math.round(co2Offset))} kg CO₂ ${currentLang === 'es' ? 'compensado' : 'offset'} | ${formatToolNumber(Math.round(carDays))} ${currentLang === 'es' ? 'días de viaje en coche' : 'days of car travel'}</small>
       `;
 
-      // Update system overview dashboard
-      updateSystemOverview(peakCapacity, parseInt(totalSystemCost), Math.round(totalAnnual), parseInt(annualSavings), paybackPeriod, co2Offset, thirtyYearSavings, climateZone);
+      updateSystemOverview(peakCapacity, Math.round(totalSystemCost), Math.round(totalAnnual),
+                           Math.round(annualSavings), paybackLabel, Math.round(co2Offset),
+                           Math.round(lifetimeSavings), getClimateZone(solarState.latitude));
+
+      document.getElementById('overviewBillCovered').textContent = Math.round(billCoveredPct);
+      updateConsumptionCaption(annualConsumption);
+      updateSizingNote(surplusKwh, totalAnnual, annualConsumption);
 
       createProductionChart(monthlyProduction);
-      createPaybackChart(annualSavings, totalSystemCost);
+      createPaybackChart(flow);
     }
 
     function updateSystemOverview(peakCapacity, totalCost, annualProduction, annualSavings, paybackPeriod, co2Offset, thirtyYearSavings, climateZone) {
@@ -1487,7 +1250,9 @@
       document.getElementById('overviewOrientation').textContent = solarState.orientation;
       document.getElementById('overviewLosses').textContent = solarState.lossFactors;
       document.getElementById('overviewPrice').textContent = solarState.electricityPrice.toFixed(2);
-      document.getElementById('overviewCostPerKw').textContent = solarState.costPerKw.toLocaleString();
+      document.getElementById('overviewCostPerKw').textContent = formatToolNumber(solarState.costPerKw);
+      document.getElementById('overviewGhi').textContent =
+        (solarState.ghi || estimateGhiFromLatitude(solarState.latitude)).toFixed(1);
 
       // Climate zone label
       const climateLabels = {
@@ -1499,13 +1264,16 @@
 
       // Update calculated values
       document.getElementById('overviewCapacity').textContent = peakCapacity.toFixed(2);
-      document.getElementById('overviewTotalCost').textContent = totalCost.toLocaleString();
-      document.getElementById('overviewProduction').textContent = annualProduction.toLocaleString();
-      document.getElementById('overviewSavings').textContent = annualSavings.toLocaleString();
+      document.getElementById('overviewTotalCost').textContent = formatToolNumber(totalCost);
+      document.getElementById('overviewProduction').textContent = formatToolNumber(annualProduction);
+      document.getElementById('overviewSavings').textContent = formatToolNumber(annualSavings);
       document.getElementById('overviewPayback').textContent = paybackPeriod;
-      document.getElementById('overviewCO2').textContent = parseInt(co2Offset).toLocaleString();
-      document.getElementById('overviewThirtyYear').textContent = parseInt(thirtyYearSavings).toLocaleString();
-      document.getElementById('overviewBreakEven').textContent = paybackPeriod;
+      document.getElementById('overviewCO2').textContent = formatToolNumber(parseInt(co2Offset));
+      document.getElementById('overviewThirtyYear').textContent = formatToolNumber(parseInt(thirtyYearSavings));
+      // Specific yield — the figure the industry actually compares sites on —
+      // rather than a second copy of the payback period.
+      document.getElementById('overviewBreakEven').textContent =
+        peakCapacity > 0 ? formatToolNumber(Math.round(annualProduction / peakCapacity)) : '--';
     }
 
     function destroyCharts() {
@@ -1523,16 +1291,30 @@
       const ctx = document.getElementById('productionChart');
       if (!ctx) return;
 
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const T = window.ProyectualCharts;
+      const monthsEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthsEs = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+      const months = currentLang === 'es' ? monthsEs : monthsEn;
       const daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
       let chartData = monthlyData.map(m => Math.round(m));
-      let label = 'kWh/month';
+      let label = currentLang === 'es' ? 'kWh/mes' : 'kWh/month';
+      let axisTitle = currentLang === 'es' ? 'kWh por mes' : 'kWh per month';
 
       if (currentChartMode === 'daily') {
         chartData = monthlyData.map((m, i) => Math.round(m / daysPerMonth[i]));
-        label = 'kWh/day avg';
+        label = currentLang === 'es' ? 'kWh/día (prom.)' : 'kWh/day avg';
+        axisTitle = currentLang === 'es' ? 'kWh por día' : 'kWh per day';
       }
+
+      // The best and worst months carry the reading, so they are called
+      // out in a lighter and a deeper tone of the same blue rather than
+      // left in a flat twelve-bar block.
+      const peak = Math.max.apply(null, chartData);
+      const low = Math.min.apply(null, chartData);
+      const barColors = chartData.map(v =>
+        v === peak ? '#8CD9FF' : v === low ? '#2A82C4' : '#38B6FF'
+      );
 
       if (productionChart) {
         productionChart.destroy();
@@ -1545,144 +1327,173 @@
           datasets: [{
             label: label,
             data: chartData,
-            backgroundColor: '#0099FF',
-            borderColor: '#0099FF',
-            borderWidth: 2,
-            borderRadius: 4
+            backgroundColor: barColors,
+            borderColor: barColors,
+            borderWidth: 1,
+            borderRadius: 3,
+            maxBarThickness: 42
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
-            y: {
+            y: T.axis({
               beginAtZero: true,
-              ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { size: 11 } },
-              grid: { color: 'rgba(0, 153, 255, 0.2)' }
-            },
-            x: {
-              ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { size: 10 } },
-              grid: { color: 'rgba(0, 153, 255, 0.2)' }
-            }
+              title: axisTitle,
+              tickCallback: function (value) { return formatToolNumber(value); }
+            }),
+            x: T.axis({ grid: false, tickSize: 10 })
           },
           plugins: {
-            legend: {
-              display: true,
-              labels: { color: '#FFFFFF', font: { size: 11 } }
-            },
-            tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              titleColor: '#0099FF',
-              bodyColor: '#FFFFFF',
-              borderColor: '#0099FF',
-              borderWidth: 1
-            }
+            legend: T.legend({ display: false }),
+            tooltip: T.tooltip({
+              callbacks: {
+                label: function (context) {
+                  return ' ' + formatToolNumber(context.parsed.y) + ' ' +
+                    (currentChartMode === 'daily' ? 'kWh/day' : 'kWh');
+                }
+              }
+            })
           }
         }
       });
     }
 
-    function createPaybackChart(annualSavings, investmentCost) {
+    function createPaybackChart(flow) {
       const ctx = document.getElementById('paybackChart');
       if (!ctx) return;
 
-      annualSavings = parseFloat(annualSavings);
-      investmentCost = parseFloat(investmentCost);
+      const T = window.ProyectualCharts;
 
-      const years = [];
-      const cumulativeSavings = [];
-
-      for (let year = 0; year <= 30; year++) {
-        years.push(year);
-        cumulativeSavings.push(Math.round(year * annualSavings - investmentCost));
-      }
+      // Plot the same cash flow the tiles are read from. This used to draw a
+      // straight `year x savings - cost`, modelling neither degradation nor
+      // the inverter, so its year-30 endpoint disagreed with the 30-Year
+      // Savings tile beside it by a factor of about 2.6.
+      const years = flow.map(row => row.year);
+      const cumulativeSavings = flow.map(row => Math.round(row.cumulative));
 
       if (paybackChart) {
         paybackChart.destroy();
       }
+
+      const lineColor = '#38B6FF';
 
       paybackChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: years,
           datasets: [{
-            label: 'Cumulative Savings',
+            label: currentLang === 'es' ? 'Ahorro acumulado' : 'Cumulative Savings',
             data: cumulativeSavings,
-            borderColor: '#0099FF',
-            backgroundColor: 'rgba(0, 153, 255, 0.2)',
+            borderColor: lineColor,
+            backgroundColor: T.alpha(lineColor, 0.18),
             borderWidth: 3,
             fill: true,
-            pointBackgroundColor: '#0099FF',
-            pointBorderColor: '#FFFFFF',
+            pointBackgroundColor: lineColor,
+            pointBorderColor: T.tokens().surface,
             pointBorderWidth: 2,
-            pointRadius: 4,
-            tension: 0.3
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            tension: 0.25
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
           scales: {
-            y: {
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.8)',
-                font: { size: 11 },
-                callback: function(value) {
-                  return '$' + (value >= 0 ? value.toLocaleString() : value.toLocaleString());
-                }
-              },
-              grid: { color: 'rgba(0, 153, 255, 0.2)' }
-            },
-            x: {
-              ticks: { color: 'rgba(255, 255, 255, 0.8)', font: { size: 10 } },
-              grid: { color: 'rgba(0, 153, 255, 0.2)' }
-            }
+            y: T.axis({
+              title: currentLang === 'es' ? 'Posición acumulada' : 'Cumulative position',
+              // "-$20k" reads as a loss; "$-20,000" reads as a typo.
+              tickCallback: function (value) {
+                return T.money(currencySymbol(), value, true);
+              }
+            }),
+            x: T.axis({
+              grid: false,
+              tickSize: 10,
+              title: currentLang === 'es' ? 'Años' : 'Years'
+            })
           },
           plugins: {
-            legend: {
-              display: true,
-              labels: { color: '#FFFFFF', font: { size: 11 } }
-            },
-            tooltip: {
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              titleColor: '#0099FF',
-              bodyColor: '#FFFFFF',
-              borderColor: '#0099FF',
-              borderWidth: 1,
+            legend: T.legend({ display: false }),
+            tooltip: T.tooltip({
               callbacks: {
-                label: function(context) {
-                  return '$' + context.parsed.y.toLocaleString();
+                title: function (items) {
+                  return (currentLang === 'es' ? 'Año ' : 'Year ') + items[0].label;
+                },
+                label: function (context) {
+                  const v = context.parsed.y;
+                  return ' ' + (v > 0 ? '+' : '') + T.money(currencySymbol(), v);
                 }
               }
-            }
+            }),
+            // The break-even crossing is the answer the tool exists to
+            // give, so it is drawn on the plot instead of being left for
+            // the reader to find where the line meets zero.
+            breakEvenLine: {}
           }
-        }
+        },
+        plugins: [breakEvenPlugin]
       });
     }
 
-    function updateLanguage(lang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        if (!el.querySelector('[data-en]')) {
-          el.textContent = el.getAttribute(`data-${lang}`);
-        }
-      });
-      currentLang = lang;
-      localStorage.setItem('lang', lang);
+    /**
+     * Draws the zero line and labels it. Chart.js has no annotation
+     * support in the core bundle and the page loads no plugin from the
+     * CDN, so this is a small inline one.
+     */
+    const breakEvenPlugin = {
+      id: 'breakEvenLine',
+      afterDatasetsDraw: function (chart) {
+        const T = window.ProyectualCharts;
+        const yScale = chart.scales.y;
+        const area = chart.chartArea;
+        if (!yScale || !area) return;
+
+        const zeroY = yScale.getPixelForValue(0);
+        if (zeroY < area.top || zeroY > area.bottom) return;
+
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([6, 4]);
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = T.tokens().ink;
+        ctx.moveTo(area.left, zeroY);
+        ctx.lineTo(area.right, zeroY);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+        ctx.font = 'bold 10px ' + T.FONT_FAMILY;
+        ctx.fillStyle = T.tokens().ink;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(currentLang === 'es' ? 'EQUILIBRIO' : 'BREAK-EVEN', area.right - 4, zeroY - 4);
+        ctx.restore();
+      }
+    };
+
+    // Translation itself lives in js/tools/i18n.js; the charts carry
+    // translated labels, so they are redrawn on every switch.
+    document.addEventListener('proyectual:languagechange', () => {
+      updateOrientationCaption();
       calculateProduction();
-    }
+    });
 
     // EmailJS credentials are now handled securely by the backend
 
     function openSolarModal() {
-      const annualSavings = parseInt(document.getElementById('annualSavingsDisplay').textContent.replace(/,/g, ''));
-      const totalCost = parseInt(document.getElementById('totalCostDisplay').textContent.replace(/,/g, ''));
+      const annualSavings = parseToolNumber(document.getElementById('annualSavingsDisplay').textContent);
+      const totalCost = parseToolNumber(document.getElementById('totalCostDisplay').textContent);
       const paybackPeriod = document.getElementById('paybackYears').textContent;
 
       // Populate modal with current values
       document.getElementById('modalLocation').textContent = solarState.location;
       document.getElementById('modalArea').textContent = solarState.roofArea + ' m²';
-      document.getElementById('modalCost').textContent = '$' + totalCost.toLocaleString();
-      document.getElementById('modalSavings').textContent = '$' + annualSavings.toLocaleString() + '/yr';
+      document.getElementById('modalCost').textContent = currencySymbol() + formatToolNumber(totalCost);
+      document.getElementById('modalSavings').textContent = currencySymbol() + formatToolNumber(annualSavings) + '/yr';
       document.getElementById('modalPayback').textContent = paybackPeriod + ' years';
 
       // Clear previous messages
@@ -1726,9 +1537,9 @@
       button.textContent = currentLang === 'en' ? 'Sending...' : 'Enviando...';
 
       // Get calculator values
-      const annualSavings = parseInt(document.getElementById('annualSavingsDisplay').textContent.replace(/,/g, ''));
-      const totalCost = parseInt(document.getElementById('totalCostDisplay').textContent.replace(/,/g, ''));
-      const thirtyYearSavings = parseInt(document.getElementById('thirtyYearSavings').textContent.replace(/,/g, ''));
+      const annualSavings = parseToolNumber(document.getElementById('annualSavingsDisplay').textContent);
+      const totalCost = parseToolNumber(document.getElementById('totalCostDisplay').textContent);
+      const thirtyYearSavings = parseToolNumber(document.getElementById('thirtyYearSavings').textContent);
       const annualProduction = document.getElementById('annualProduction').textContent;
       const paybackPeriod = document.getElementById('paybackYears').textContent;
 
@@ -1741,11 +1552,11 @@
         location: solarState.location,
         roof_area: solarState.roofArea + ' m²',
         panel_type: solarState.panelType,
-        system_cost: '$' + totalCost.toLocaleString(),
-        annual_savings: '$' + annualSavings.toLocaleString(),
+        system_cost: currencySymbol() + formatToolNumber(totalCost),
+        annual_savings: currencySymbol() + formatToolNumber(annualSavings),
         annual_production: annualProduction,
         payback_period: paybackPeriod + ' years',
-        thirty_year_savings: '$' + thirtyYearSavings.toLocaleString(),
+        thirty_year_savings: currencySymbol() + formatToolNumber(thirtyYearSavings),
         message: message || 'No additional message',
         submission_date: new Date().toLocaleDateString()
       };
@@ -1784,7 +1595,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      updateDisplay();
+      // Seed state from the selected option so latitude, irradiance, grid
+      // factor and currency all agree before the first calculation.
+      updateLocation();
+      updateCurrencyLabels();
       updateLanguage(currentLang);
 
       const chartButtons = document.querySelectorAll('[data-chart-mode]');
@@ -1802,21 +1616,12 @@
         });
       });
 
-      const langToggle = document.getElementById('lang-toggle');
-      if (langToggle) {
-        langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
-        langToggle.addEventListener('click', () => {
-          currentLang = currentLang === 'en' ? 'es' : 'en';
-          updateLanguage(currentLang);
-          langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
-        });
-      }
 
       // Function to navigate to lead form page
       window.navigateToLeadForm = function() {
-        const annualSavings = parseInt(document.getElementById('annualSavingsDisplay').textContent.replace(/,/g, ''));
-        const totalCost = parseInt(document.getElementById('totalCostDisplay').textContent.replace(/,/g, ''));
-        const thirtyYearSavings = parseInt(document.getElementById('thirtyYearSavings').textContent.replace(/,/g, ''));
+        const annualSavings = parseToolNumber(document.getElementById('annualSavingsDisplay').textContent);
+        const totalCost = parseToolNumber(document.getElementById('totalCostDisplay').textContent);
+        const thirtyYearSavings = parseToolNumber(document.getElementById('thirtyYearSavings').textContent);
         const annualProduction = document.getElementById('annualProduction').textContent;
         const paybackPeriod = document.getElementById('paybackYears').textContent;
 
@@ -1826,8 +1631,8 @@
             summary: {
               location: solarState.location,
               roofArea: solarState.roofArea + ' m²',
-              systemCost: '$' + totalCost.toLocaleString(),
-              annualSavings: '$' + annualSavings.toLocaleString(),
+              systemCost: currencySymbol() + formatToolNumber(totalCost),
+              annualSavings: currencySymbol() + formatToolNumber(annualSavings),
               paybackPeriod: paybackPeriod + ' years'
             },
             full: {
@@ -1837,13 +1642,13 @@
               panelType: solarState.panelType,
               orientation: solarState.orientation + '°',
               lossFactors: solarState.lossFactors + '%',
-              electricityPrice: '$' + solarState.electricityPrice + '/kWh',
-              costPerKw: '$' + solarState.costPerKw + '/kW',
-              systemCost: '$' + totalCost.toLocaleString(),
+              electricityPrice: currencySymbol() + solarState.electricityPrice + '/kWh',
+              costPerKw: currencySymbol() + solarState.costPerKw + '/kW',
+              systemCost: currencySymbol() + formatToolNumber(totalCost),
               annualProduction: annualProduction,
-              annualSavings: '$' + annualSavings.toLocaleString(),
+              annualSavings: currencySymbol() + formatToolNumber(annualSavings),
               paybackPeriod: paybackPeriod + ' years',
-              thirtyYearSavings: '$' + thirtyYearSavings.toLocaleString()
+              thirtyYearSavings: currencySymbol() + formatToolNumber(thirtyYearSavings)
             }
           }
         };
@@ -1863,37 +1668,7 @@
       }
     });
 
-    // Email Modal Functions
-    window.openEmailModal = function() {
-      const modal = document.getElementById('emailModal');
-      if (modal) {
-        modal.classList.add('active');
-        document.getElementById('emailInput').focus();
-      }
-    };
-
-    window.closeEmailModal = function() {
-      const modal = document.getElementById('emailModal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.getElementById('emailInput').value = '';
-      }
-    };
-
-    // Close modal when clicking outside
-    document.addEventListener('click', (e) => {
-      const modal = document.getElementById('emailModal');
-      if (modal && e.target === modal) {
-        window.closeEmailModal();
-      }
-    });
-
-    window.submitPdfDownload = function() {
-      // Trigger browser print dialog to save as PDF
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    };
+    // Modal open/close and PDF export live in js/tools/pdf-export.js.
 
     window.generateCalculatorPDF = async function(email) {
       try {
@@ -1907,8 +1682,8 @@
           summary: {
             location: solarState.location,
             roofArea: solarState.roofArea + ' m²',
-            systemCost: '$' + parseInt(totalCost.replace(/,/g, '')).toLocaleString(),
-            annualSavings: '$' + parseInt(annualSavings.replace(/,/g, '')).toLocaleString(),
+            systemCost: currencySymbol() + formatToolNumber(parseToolNumber(totalCost)),
+            annualSavings: currencySymbol() + formatToolNumber(parseToolNumber(annualSavings)),
             paybackPeriod: paybackPeriod + ' years'
           },
           full: {
@@ -1918,13 +1693,13 @@
             panelType: solarState.panelType,
             orientation: solarState.orientation + '°',
             lossFactors: solarState.lossFactors + '%',
-            electricityPrice: '$' + solarState.electricityPrice + '/kWh',
-            costPerKw: '$' + solarState.costPerKw + '/kW',
-            systemCost: '$' + parseInt(totalCost.replace(/,/g, '')).toLocaleString(),
+            electricityPrice: currencySymbol() + solarState.electricityPrice + '/kWh',
+            costPerKw: currencySymbol() + solarState.costPerKw + '/kW',
+            systemCost: currencySymbol() + formatToolNumber(parseToolNumber(totalCost)),
             annualProduction: annualProduction,
-            annualSavings: '$' + parseInt(annualSavings.replace(/,/g, '')).toLocaleString(),
+            annualSavings: currencySymbol() + formatToolNumber(parseToolNumber(annualSavings)),
             paybackPeriod: paybackPeriod + ' years',
-            thirtyYearSavings: '$' + parseInt(thirtyYearSavings.replace(/,/g, '')).toLocaleString()
+            thirtyYearSavings: currencySymbol() + formatToolNumber(parseToolNumber(thirtyYearSavings))
           }
         };
 
@@ -1954,5 +1729,10 @@
     };
   </script>
 
+<script src="../js/tools/option-cards.js?v=11" defer></script>
+<script src="../js/tools/live-readout.js?v=11" defer></script>
+<script src="../js/tools/pdf-export.js?v=11" defer></script>
+<script src="../js/tools/background-video.js?v=11" defer></script>
+<script src="../js/tools/debug-mode.js?v=11" defer></script>
 </body>
 </html>

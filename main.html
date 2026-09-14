@@ -57,8 +57,11 @@
     ]
   }
   </script>
-  <link href="css/styles.css" rel="stylesheet" />
+  <!-- Bootstrap first, then the site sheet: this page had the two the
+       other way round, which is why its buttons kept Bootstrap's 8px
+       corners while every other page used the site's 12px. -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
   <!-- Neo-Brutalist Effects -->
   <script src="js/neobrutalist.js"></script>
   <!-- Image Lightbox -->
@@ -72,7 +75,7 @@
       right: 2rem;
       width: 120px;
       height: 120px;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #FFFFFF;
       border: 4px solid #000000;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 6px 6px 0px #000000;
@@ -182,7 +185,7 @@
   <main class="container mt-5 px-3 px-md-4">
     <h1 class="text-center mb-4"></h1>
     <div class="brutal-hero scroll-fade-in">
-      <h2 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: bold;"
+      <h2 class="fw-bold"
           data-en="Architecture and urbanism that thinks of you and the planet."
           data-es="Arquitectura y urbanismo que piensa en ti y en el planeta.">
         Arquitectura y urbanismo que piensa en ti y en el planeta.
@@ -192,7 +195,7 @@
     <div id="projectContainer" class="row g-4 mosaic-view">
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-left">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/ccbbuilding.html" class="text-decoration-none text-reset">
@@ -202,7 +205,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/ccbbuilding.html">
-              <img src="images/edicio ccb/Corral_Portfolio_Page_04_Image_0001.jpg" alt="CCB Building" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/edicio ccb/Corral_Portfolio_Page_04_Image_0001.jpg" alt="CCB Building" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -211,7 +214,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-right">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/farmacia.html" class="text-decoration-none text-reset">
@@ -221,7 +224,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/farmacia.html">
-              <img src="images/farmacia/DSC07884_compressed.jpg" alt="Farmacia" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/farmacia/DSC07884_compressed.jpg" alt="Farmacia" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -230,7 +233,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-left">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/casatresgeneraciones.html" class="text-decoration-none text-reset">
@@ -240,7 +243,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/casatresgeneraciones.html">
-              <img src="images/casa_ny/IMG_0705 Large.jpeg" alt="Casa Tres Generaciones" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/casa_ny/IMG_0705 Large.jpeg" alt="Casa Tres Generaciones" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -370,7 +373,7 @@
 
       <!-- Call to Action - Explore Architecture -->
       <div class="col-12 mb-5">
-        <div class="form-container border border-4 border-white rounded-4 p-4 text-center">
+        <div class="form-container rounded-4 p-4 text-center">
           <h3 class="mb-3 fw-bold"
               data-en="Discover All Our Architecture Projects"
               data-es="Descubre Todos Nuestros Proyectos de Arquitectura">
@@ -392,7 +395,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-right">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/superblock.html" class="text-decoration-none text-reset">
@@ -402,7 +405,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/superblock.html">
-              <img src="images/superblock cuenca/20180624_superblock_cuenca_3x3 Large.jpeg" alt="Superblock Cuenca" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/superblock cuenca/20180624_superblock_cuenca_3x3 Large.jpeg" alt="Superblock Cuenca" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -411,7 +414,7 @@
 
       <!-- Call to Action - Explore Urban Design -->
       <div class="col-12 mb-5">
-        <div class="form-container border border-4 border-white rounded-4 p-4 text-center">
+        <div class="form-container rounded-4 p-4 text-center">
           <h3 class="mb-3 fw-bold"
               data-en="Discover All Our Urban Design Projects"
               data-es="Descubre Todos Nuestros Proyectos de Diseño Urbano">
@@ -433,7 +436,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-left">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/plantme.html" class="text-decoration-none text-reset">
@@ -443,7 +446,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/plantme.html">
-              <img src="images/plantme/Plantme2.jpeg" alt="PlantMe" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/plantme/Plantme2.jpeg" alt="PlantMe" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -452,7 +455,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-right">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/un_mundo_mejor.html" class="text-decoration-none text-reset">
@@ -462,7 +465,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/un_mundo_mejor.html">
-              <img src="images/agua_protesta/IMG_6966 Large.jpeg" alt="Un Mundo Mejor" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/agua_protesta/IMG_6966 Large.jpeg" alt="Un Mundo Mejor" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -471,7 +474,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-left">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/c3.html" class="text-decoration-none text-reset">
@@ -481,7 +484,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/c3.html">
-              <img src="images/c3/IMG_2361.jpg" alt="C3 Climbing Center" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/c3/IMG_2361.jpg" alt="C3 Climbing Center" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -490,7 +493,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-right">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/floodedfutures.html" class="text-decoration-none text-reset">
@@ -500,7 +503,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/floodedfutures.html">
-              <img src="images/flooded futures/Corral_2025.png" alt="Flooded Futures: Guayaquil" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/flooded futures/Corral_2025.png" alt="Flooded Futures: Guayaquil" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>
@@ -509,7 +512,7 @@
 
       <hr class="brutal-divider" />
       <div class="col-12 mb-5 scroll-slide-left">
-        <div class="form-container border border-4 border-white rounded-4 p-4">
+        <div class="form-container rounded-4 p-4">
           <div class="row align-items-start">
             <div class="col-12 col-lg-8 mb-3 mb-lg-0">
               <a href="pages/jardimColombo.html" class="text-decoration-none text-reset">
@@ -519,7 +522,7 @@
           </div>
           <div class="col-12 col-lg-4 text-center">
             <a href="pages/jardimColombo.html">
-              <img src="images/JardimColombo/1720428941173.jpeg" alt="Lessons from Jardim Colombo" class="img-fluid border border-4 border-white rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
+              <img src="images/JardimColombo/1720428941173.jpeg" alt="Lessons from Jardim Colombo" class="img-fluid rounded-4 panel-image" style="aspect-ratio: 1 / 1; object-fit: cover;" />
             </a>
           </div>
         </div>

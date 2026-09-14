@@ -3,6 +3,44 @@
    Centralized Color Palette
    =========================== */
 
+/* ---------------------------------------------------------------
+   TYPEFACES
+   These used to live in css/tools.css, which only the five tool
+   pages load. The other twenty-nine pages asked for 'Space Mono'
+   and silently fell back to whatever monospace the visitor's system
+   supplies — the brand face showed up only for people who happened
+   to have it installed. Declaring the faces here, in the sheet every
+   page loads, is what makes the type actually consistent.
+
+   The pairing: Space Mono carries the brand and sets the figures,
+   where fixed advance widths make columns of numbers line up;
+   IBM Plex Sans, drawn for technical documentation, takes long-form
+   prose so it stays comfortable at small sizes.
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/space-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/space-mono-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-sans-var.woff2') format('woff2');
+}
+
 :root {
   /* Core Colors */
   --color-black: #000000;
@@ -20,6 +58,91 @@
   --accent-secondary: #00BFFF;
   --border-color: #0099FF;
   --shadow-color: rgba(0, 0, 0, 0.1);
+
+  /* ===========================
+     TYPE ROLES
+     Every sheet used to spell out `'Space Mono', monospace` by hand —
+     twelve times in this file alone, plus index.css and style2.css.
+     Write the role, not the family, so a change of typeface is one
+     line here instead of a search-and-replace across four files.
+     =========================== */
+  --font-display: 'Space Mono', ui-monospace, monospace;  /* headings, brand, controls */
+  --font-data:    'Space Mono', ui-monospace, monospace;  /* figures — fixed advance widths */
+  --font-body:    'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ===========================
+     PANEL LANGUAGE
+     One frame for the whole site. Before this block panels were drawn
+     five different ways: border widths of 1, 3, 4 and 6px, hard shadow
+     offsets of 4, 6, 8 and 12px, and a soft 0/26/55 blur on the 149
+     `.form-container` panels that read as a different design entirely.
+
+     The frosted-glass treatment is the navbar's and footer's alone.
+     It had leaked into eleven panel classes; a panel is an opaque
+     card, not a pane of glass.
+     =========================== */
+  --panel-bg: #FFFFFF;
+  --panel-border-width: 4px;
+  --panel-border-color: #0099FF;
+  --panel-shadow-offset: 8px;
+  --panel-shadow: var(--panel-shadow-offset) var(--panel-shadow-offset) 0 rgba(0, 153, 255, 1);
+  --panel-padding: 1.5rem;
+
+  /* Hero and CTA sit one step louder than an ordinary panel. */
+  --panel-shadow-offset-lg: 12px;
+  --panel-border-width-lg: 6px;
+
+  /* A panel inside a panel drops to a hairline and no shadow — the
+     frame is a structural signal, not something to repeat at depth. */
+  --panel-border-width-nested: 1px;
+  --panel-border-color-nested: rgba(0, 153, 255, 0.35);
+
+  /* ===========================
+     RULES / DIVIDERS
+     One weight for every horizontal rule and heading underline.
+     =========================== */
+  --rule-weight: 4px;
+  --rule-color: #0099FF;
+  --rule-space: 2.5rem;
+
+  /* ===========================
+     CORNER RADIUS
+     One scale for the whole site. Before this block the same kinds of
+     element were rounded five different ways — panels at 0.75rem, cards
+     at 0.5rem, images at 0 / 8px / 10px / 12px, and 254 Bootstrap
+     `rounded-4` elements at Bootstrap's own 1rem.
+
+     Write the semantic aliases in rules (--radius-panel, --radius-button,
+     --radius-image), not the raw scale, so a later change of heart is a
+     one-line edit here.
+     =========================== */
+  --radius-xs: 0.25rem;    /* 4px  — slider tracks, hover bars, chips */
+  --radius-sm: 0.5rem;     /* 8px  — reserved for genuinely tight boxes */
+  --radius-md: 0.75rem;    /* 12px — the site default */
+  --radius-pill: 999px;    /* fully rounded ends, e.g. chart toggles */
+  --radius-circle: 50%;    /* deliberate circles: toggles, tool cards */
+
+  --radius-button: var(--radius-md);
+  --radius-panel: var(--radius-md);
+  --radius-image: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-control: var(--radius-xs);
+
+  /* js/colors.js also writes this at runtime; defining it here means the
+     panels are correctly rounded before that script runs. */
+  --panel-border-radius: var(--radius-panel);
+
+  /* Bootstrap's rounded-* utilities read these. styles.css loads after
+     the Bootstrap bundle, so redefining them here pulls every
+     `rounded-3` / `rounded-4` / `rounded-pill` onto the scale above
+     without touching a single page. */
+  --bs-border-radius: var(--radius-md);
+  --bs-border-radius-sm: var(--radius-xs);
+  --bs-border-radius-lg: var(--radius-md);
+  --bs-border-radius-xl: var(--radius-md);
+  --bs-border-radius-2xl: var(--radius-md);
+  --bs-border-radius-xxl: var(--radius-md);
+  --bs-border-radius-pill: var(--radius-pill);
 }
 
 /* Theme transitions removed - light mode only */
@@ -29,7 +152,7 @@
    =========================== */
 body {
   background-color: #FFFFFF;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   color: #000000;
   overflow-x: hidden;
   position: relative;
@@ -70,38 +193,111 @@ video.bg-video {
 
 .body-white-text {
   background-color: #FFFFFF;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   color: #000000;
 }
 
 .body-black-text {
   background-color: #FFFFFF;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   color: #000000;
 }
 
 .body-green-text {
   background-color: #FFFFFF;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   color: #0099FF;
 }
 
 /* ===========================
    NAVBAR + FOOTER - FROSTED GLASS
    =========================== */
+/* ===========================
+   FLOATING GLASS NAVBAR
+   The bar is lifted off the page edges and fixed, so the content
+   scrolls underneath it and the backdrop filter has something to blur.
+   The tint is a deep blue rather than a light one: the nav text is
+   white on every page, and a pale glass over a white page would drop it
+   to around 1.5:1. This mix holds ~6.8:1 over white and improves over
+   imagery.
+   =========================== */
+:root {
+  --navbar-inset: 0.75rem;   /* gap between the bar and the viewport */
+  --navbar-height: 4.25rem;  /* used to keep page content clear of it */
+  --navbar-tint: rgba(6, 34, 61, 0.76);
+  --navbar-tint-strong: rgba(6, 34, 61, 0.85);
+}
+
 .navbar {
-  background: rgba(0, 0, 0, 0.95) !important;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 4px solid #0099FF;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: var(--navbar-inset);
+  left: var(--navbar-inset);
+  right: var(--navbar-inset);
+  /* Capped and centred on wide screens so the pane tracks the content
+     column instead of stretching the full width of a 27" display. */
+  max-width: 1400px;
+  margin-inline: auto;
+  z-index: 1030;   /* over the page, under the modals (9999+) */
+
+  /* Every stop stays dark enough to carry white text: the first stop
+     was a 0.22-alpha blue, which over a white page composited to a pale
+     #C7E8FF and dropped the brand mark to ~1.3:1. These three hold
+     5.5:1 or better on white, and only improve over imagery. */
+  background: linear-gradient(
+    135deg,
+    rgba(8, 60, 110, 0.74) 0%,
+    var(--navbar-tint) 50%,
+    rgba(4, 24, 46, 0.80) 100%
+  ) !important;
+
+  /* The blur is the effect: whatever scrolls beneath is frosted. */
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+  border: 1px solid rgba(0, 153, 255, 0.45);
+  border-radius: var(--radius-panel);
+  /* Depth below, plus a light catch along the top edge so the pane
+     reads as glass rather than as a flat translucent rectangle. */
+  box-shadow:
+    0 10px 30px rgba(0, 20, 45, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   color: #FFFFFF !important;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar:hover {
-  border-bottom-color: #00BFFF;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 191, 255, 0.65);
+  box-shadow:
+    0 14px 38px rgba(0, 20, 45, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+/* The bar no longer occupies space in the flow, so the page has to make
+   room for it. Only pages that actually carry one are padded. */
+body:has(.navbar) {
+  padding-top: calc(var(--navbar-height) + var(--navbar-inset) * 2);
+}
+
+/* Browsers without :has() fall back to the same spacing via the class
+   that every calculator and content page already sets on <body>. */
+@supports not selector(:has(*)) {
+  body {
+    padding-top: calc(var(--navbar-height) + var(--navbar-inset) * 2);
+  }
+}
+
+/* Opened on a phone, the collapse grows the pane downwards; keep the
+   menu inside the glass instead of letting it spill past the corners. */
+.navbar .navbar-collapse {
+  border-radius: var(--radius-panel);
+}
+
+/* A blurred pane needs a solid-ish fallback where the filter is
+   unsupported, or the text sits on near-transparent colour. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navbar {
+    background: var(--navbar-tint-strong) !important;
+  }
 }
 
 .navbar a {
@@ -112,7 +308,7 @@ video.bg-video {
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
+  border-radius: var(--radius-button);
 }
 
 .navbar a::before {
@@ -120,7 +316,7 @@ video.bg-video {
   position: absolute;
   inset: 0;
   background-color: #0099FF;
-  border-radius: 4px;
+  border-radius: var(--radius-button);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -158,37 +354,91 @@ video.bg-video {
   transition: all 0.3s ease;
 }
 
-.article {
-  border: 4px solid #0099FF;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  box-shadow: 8px 8px 0px rgba(0, 0, 0, 1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* ===========================
+   THE PANEL
+
+   One frame, used at three intensities. Everything below reads from the
+   --panel-* tokens, so the border width, the corner and the shadow
+   offset are set once in :root rather than re-typed per class.
+
+   Two things changed here beyond the numbers:
+
+   1. The blur is gone. `backdrop-filter` belonged to the navbar and
+      footer — the frosted pane the page scrolls under — and had spread
+      to eleven panel classes that sit flat on an opaque background,
+      where it cost a compositor layer each and bought nothing.
+
+   2. The white borders and white hard shadows are gone. They were
+      left from the dark theme: `box-shadow: 8px 8px 0 #FFFFFF` and
+      `border-white` are invisible against a white page, so 149 panels
+      were relying on a drop shadow alone while the heroes above them
+      wore a 6px blue frame.
+   =========================== */
+
+/* Level 2 — the ordinary content panel. The site's default. */
+.article,
+.form-container,
+.brutal-panel,
+.brutal-card,
+.brutal-frame,
+.brutal-section {
+  background: var(--panel-bg);
+  border: var(--panel-border-width) solid var(--panel-border-color);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+  padding: var(--panel-padding);
   position: relative;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.article:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 12px 12px 0px rgba(0, 153, 255, 1);
+.article:hover,
+.form-container:hover,
+.brutal-panel:hover,
+.brutal-card:hover,
+.brutal-frame:hover,
+.brutal-section:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: calc(var(--panel-shadow-offset) + 3px) calc(var(--panel-shadow-offset) + 3px) 0 var(--panel-border-color);
 }
 
-/* Brutalist form containers */
+/* Level 3 — a panel inside a panel. The frame is a structural signal;
+   repeating it at depth just adds noise, so nested panels fall back to
+   a hairline and sit still. Project pages nest two deep. */
+.article .article,
+.form-container .form-container,
+.form-container .brutal-panel,
+.form-container .brutal-card,
+.brutal-panel .brutal-panel,
+.brutal-section .form-container,
+.brutal-section .brutal-card,
+.brutal-hero .form-container {
+  border-width: var(--panel-border-width-nested);
+  border-color: var(--panel-border-color-nested);
+  box-shadow: none;
+}
+
+.article .article:hover,
+.form-container .form-container:hover,
+.form-container .brutal-panel:hover,
+.form-container .brutal-card:hover,
+.brutal-panel .brutal-panel:hover,
+.brutal-section .form-container:hover,
+.brutal-section .brutal-card:hover,
+.brutal-hero .form-container:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--panel-border-color);
+}
+
+.article {
+  margin-bottom: 2rem;
+}
+
+/* The layout guards below are the reason .form-container carries so many
+   !important flags; they stay, but the appearance above no longer does. */
 .form-container {
   display: block !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  border-radius: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: 0 26px 55px rgba(0, 0, 0, 0.15);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              border-color 0.4s ease;
-  position: relative;
-  overflow: visible !important;
   width: 100% !important;
   min-width: 50px !important;
   min-height: auto !important;
@@ -196,26 +446,9 @@ video.bg-video {
   opacity: 1 !important;
 }
 
-.form-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent 0%, rgba(0, 153, 255, 0.12) 50%, transparent 100%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-.form-container:hover::before {
-  transform: translateX(100%);
-}
-
-.form-container:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 36px 70px rgba(0, 0, 0, 0.65);
-  border-color: rgba(255, 255, 255, 0.5);
-}
+/* The sheen that swept across a panel on hover ran on 149 elements and
+   read as a different design language from the hard-edged frame around
+   it. The frame moves on hover; that is the whole gesture. */
 
 .panel-container-light {
   background: #FFFFFF !important;
@@ -262,7 +495,7 @@ video.bg-video {
   cursor: zoom-in;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 4px solid #0099FF;
-  border-radius: 0;
+  border-radius: var(--radius-image);
   box-shadow: 6px 6px 0px rgba(0, 153, 255, 0.8);
 }
 
@@ -275,7 +508,7 @@ video.bg-video {
   cursor: zoom-in;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 4px solid #0099FF;
-  border-radius: 0;
+  border-radius: var(--radius-image);
   box-shadow: 6px 6px 0px rgba(0, 153, 255, 0.8);
 }
 
@@ -327,14 +560,30 @@ video.bg-video {
 
 /* ===========================
    DIVIDERS (HR) - BRUTALIST
+
+   Every <hr> on the site is this line, whatever classes it carries.
+   Ten of them were written as Bootstrap utilities instead — eight as
+   `border-4 border-white opacity-75`, which drew a white line on a
+   white page, and two as `border-2 border-black`. Styling the element
+   rather than a class means a stray utility can no longer invent a
+   third kind of divider.
+
+   The 30%-opacity drop shadow is gone: it doubled every rule, the same
+   way the ::after bar doubled every heading underline.
    =========================== */
 hr {
   border: none !important;
-  height: 4px !important;
-  background: #0099FF !important;
-  box-shadow: 0 4px 0px rgba(0, 153, 255, 0.3);
-  margin: 3rem 0 !important;
+  height: var(--rule-weight) !important;
+  background: var(--rule-color) !important;
+  margin: var(--rule-space) 0 !important;
   opacity: 1 !important;
+  box-shadow: none;
+}
+
+/* Bootstrap border utilities on an <hr> would otherwise repaint the
+   rule they sit on. The element's own colour wins. */
+hr[class*="border"] {
+  border: none !important;
 }
 
 /* ===========================
@@ -430,76 +679,70 @@ hr {
 }
 
 /* ===========================
-   HEADINGS (H1, H2, H3) - BRUTALIST
+   HEADINGS - BRUTALIST
+
+   Every heading used to draw two lines: a 4px `border-bottom` plus an
+   `::after` bar 4px tall sitting 8px below it at 30% opacity. Read as a
+   pair they looked like a mistake, and the heroes made it worse —
+   `.brutal-hero h2` cleared the border but not the pseudo-element, so a
+   hero title floated above a single faint bar with nothing above it.
+
+   One rule now, drawn with the shared --rule-* tokens so a heading
+   underline and an <hr> are the same line at the same weight.
+
+   h4-h6 are in the scale too. They were previously styled by a single
+   `h4` rule and nothing at all for h5/h6, which thirty-five <h5>
+   option-card titles were quietly relying on.
    =========================== */
-h1, h2, h3 {
-  font-family: 'Space Mono', monospace;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-weight: 700;
-  border-bottom: 4px solid #0099FF;
-  padding-bottom: 0.5em;
-  margin-bottom: 1.5rem;
-  color: #0099FF;
+  color: var(--rule-color);
   letter-spacing: 2px;
-  position: relative;
+  margin-bottom: 1.5rem;
   display: block;
+  text-wrap: balance;
 }
 
-h1::after, h2::after, h3::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: #0099FF;
-  opacity: 0.3;
-}
-
-h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  text-align: center;
-}
-
-h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  text-align: center;
-}
-
-h3 {
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  text-align: center;
-}
-
-/* Page Heading Group Class */
-.page-heading {
-  font-family: 'Space Mono', monospace;
-  text-transform: uppercase;
-  font-weight: 700;
-  border-bottom: 4px solid #0099FF;
+/* The underline marks a section break, so it belongs to the headings
+   that open a section — not to the small ones used as card titles. */
+h1, h2, h3 {
+  border-bottom: var(--rule-weight) solid var(--rule-color);
   padding-bottom: 0.5em;
-  margin-bottom: 1.5rem;
-  color: #0099FF;
-  letter-spacing: 2px;
-  position: relative;
-  display: inline-block;
+  text-align: center;
 }
 
-h4 {
-  font-family: 'Space Mono', monospace;
-  color: #0099FF;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  text-transform: uppercase;
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.2rem, 3vw, 2rem); }
+
+/* Card and sub-section titles: same voice, no rule, tighter tracking. */
+h4, h5, h6 {
   letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+h4 { font-size: clamp(1rem, 2.5vw, 1.5rem); }
+h5 { font-size: clamp(0.95rem, 2vw, 1.15rem); }
+h6 { font-size: clamp(0.9rem, 1.8vw, 1rem); }
+
+/* `.page-heading` was a byte-for-byte copy of the h1-h3 block that had
+   to be kept in sync by hand. It now differs only in the one way it
+   ever meant to: the rule hugs the text instead of spanning the column. */
+.page-heading {
+  display: inline-block;
+  border-bottom: var(--rule-weight) solid var(--rule-color);
+  padding-bottom: 0.5em;
 }
 
 /* ===========================
    BUTTONS + LANGUAGE TOGGLE - BRUTALIST
    =========================== */
 .btn, #lang-toggle {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   border: 3px solid #0099FF;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   background: #000000;
   color: #FFFFFF;
   text-transform: uppercase;
@@ -630,7 +873,7 @@ h4 {
   height: 100%;
   object-fit: contain;
   object-position: center;
-  border-radius: 10px;
+  border-radius: var(--radius-image);
   display: block;
   margin: auto;
 }
@@ -808,6 +1051,9 @@ main.page-exit {
    =========================== */
 html {
   scroll-behavior: smooth;
+  /* The navbar floats over the page, so an in-page anchor would
+     otherwise scroll its target underneath it. */
+  scroll-padding-top: calc(var(--navbar-height) + var(--navbar-inset) * 2);
 }
 
 /* ===========================
@@ -885,7 +1131,7 @@ html {
   flex-shrink: 1 !important;
   flex-grow: 1 !important;
   flex-basis: auto !important;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-panel);
 }
 
 .form-container .row {
@@ -923,13 +1169,22 @@ html {
 }
 
 @media (max-width: 768px) {
-  .form-container {
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-  }
-
-  .form-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 26px 58px rgba(0, 0, 0, 0.55);
+  /* The frame stays, drawn one step lighter — a 4px border and an 8px
+     offset eat real width on a 360px screen. Scaling the tokens keeps
+     every panel in proportion without restating any of the rules. */
+  .article,
+  .form-container,
+  .brutal-panel,
+  .brutal-card,
+  .brutal-frame,
+  .brutal-section,
+  .brutal-hero,
+  .cta-container {
+    --panel-border-width: 3px;
+    --panel-shadow-offset: 5px;
+    --panel-border-width-lg: 4px;
+    --panel-shadow-offset-lg: 7px;
+    --panel-padding: 1.25rem;
   }
 
   /* Mobile: Reset column widths to full width and stack vertically */
@@ -948,18 +1203,6 @@ html {
     order: 2;
   }
 
-  .panel-image {
-    box-shadow:
-      0 18px 35px rgba(0, 0, 0, 0.45),
-      0 0 24px rgba(0, 153, 255, 0.25);
-  }
-
-  .panel-image:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      0 26px 48px rgba(0, 0, 0, 0.5),
-      0 0 30px rgba(0, 153, 255, 0.35);
-  }
 
   h1 {
     font-size: clamp(1.5rem, 8vw, 2.5rem);
@@ -1011,7 +1254,7 @@ html {
   width: 32px;
   height: 32px;
   border: 3px solid #0099FF;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   background: linear-gradient(90deg, #0099FF 50%, transparent 50%);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1061,7 +1304,7 @@ html {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   border: 3px solid #0099FF;
   opacity: 0;
   transition: all 0.3s ease;
@@ -1091,12 +1334,14 @@ html {
 /* Form inputs should always have dark text on light background */
 .form-container.brutal-frame,
 .form-container.form-container-light {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: var(--panel-bg) !important;
 }
 
-.form-container.brutal-frame h1,
+/* Form labels stay black for legibility. The h1 used to be dragged in
+   here too, which is why the contact page's title rendered black while
+   the heading on every other page was accent blue — a leftover from
+   when a "light" container was the exception rather than the rule. */
 .form-container.brutal-frame .form-label,
-.form-container.form-container-light h1,
 .form-container.form-container-light .form-label {
   color: #000000 !important;
 }
@@ -1127,8 +1372,14 @@ html {
   body::after,
   .cursor-glow,
   .theme-toggle,
+  .navbar,
   video {
     display: none !important;
+  }
+
+  /* With the bar gone there is nothing to clear. */
+  body:has(.navbar) {
+    padding-top: 0 !important;
   }
 
   .form-container {
@@ -1142,103 +1393,61 @@ html {
    Reusable classes for consistent design
    =========================== */
 
-/* --- FRAMES/CONTAINERS --- */
-.brutal-frame {
-  border: 4px solid #0099FF;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  box-shadow: 8px 8px 0px #FFFFFF;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.brutal-frame:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 12px 12px 0px #0099FF;
-}
-
+/* --- FRAME SIZES ---
+   The appearance comes from the shared panel rule above; these three
+   only change intensity. They used to redeclare the whole frame, each
+   with its own border width (3/4/6px) and its own white-on-white
+   shadow (4/8/12px). --- */
 .brutal-frame-sm {
-  border: 3px solid #0099FF;
-  box-shadow: 4px 4px 0px #FFFFFF;
-}
-
-.brutal-frame-sm:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #0099FF;
+  --panel-border-width: 3px;
+  --panel-shadow-offset: 4px;
+  border-width: var(--panel-border-width);
+  box-shadow: var(--panel-shadow);
 }
 
 .brutal-frame-lg {
-  border: 6px solid #0099FF;
-  box-shadow: 12px 12px 0px #FFFFFF;
+  --panel-border-width: var(--panel-border-width-lg);
+  --panel-shadow-offset: var(--panel-shadow-offset-lg);
+  border-width: var(--panel-border-width);
+  box-shadow: var(--panel-shadow);
 }
 
-.brutal-frame-lg:hover {
-  transform: translate(-6px, -6px);
-  box-shadow: 18px 18px 0px #0099FF;
-}
-
-/* --- PANELS --- */
-.brutal-panel {
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  border: 4px solid #0099FF;
-  box-shadow: 8px 8px 0px rgba(0, 153, 255, 1);
-}
-
+/* --- PANEL VARIANTS ---
+   Inverted fills. The names are historical: the studio's accent moved
+   from yellow to blue and the class names never followed, so
+   `.brutal-panel-yellow` paints blue. Renaming means touching every
+   page that uses it, so the truth lives in this comment for now. --- */
 .brutal-panel-solid {
-  padding: 2rem;
-  background: #000000;
-  border: 4px solid #0099FF;
-  box-shadow: 8px 8px 0px rgba(0, 153, 255, 1);
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--panel-border-color);
 }
 
 .brutal-panel-yellow {
-  padding: 2rem;
-  background: #0099FF;
-  color: #000000;
-  border: 4px solid #000000;
-  box-shadow: 8px 8px 0px #000000;
+  background: var(--panel-border-color);
+  color: var(--color-black);
+  border-color: var(--color-black);
+  box-shadow: var(--panel-shadow-offset) var(--panel-shadow-offset) 0 var(--color-black);
 }
 
-/* --- CARDS --- */
-.brutal-card {
-  border: 4px solid #0099FF;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  box-shadow: 6px 6px 0px #FFFFFF;
-  padding: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  border-radius: 0.5rem;
+.brutal-panel-yellow:hover {
+  box-shadow: calc(var(--panel-shadow-offset) + 3px) calc(var(--panel-shadow-offset) + 3px) 0 var(--color-black);
 }
 
-.brutal-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 153, 255, 0.1), transparent);
-  transition: left 0.5s ease;
-}
-
-.brutal-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0px #0099FF;
-}
-
-.brutal-card:hover::before {
-  left: 100%;
+/* Inverted panels carry their own text colour, so headings inside them
+   must not stay accent-blue on a blue or black fill. */
+.brutal-panel-solid :is(h1, h2, h3, h4, h5, h6),
+.brutal-panel-yellow :is(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+  border-bottom-color: currentColor;
 }
 
 /* --- BUTTONS --- */
-.brutal-btn {
-  font-family: 'Space Mono', monospace;
+.brutal-btn,
+.brutal-btn-yellow {
+  font-family: var(--font-display);
   border: 3px solid #0099FF;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   background: #000000;
   color: #FFFFFF;
   text-transform: uppercase;
@@ -1254,7 +1463,8 @@ html {
   letter-spacing: 1px;
 }
 
-.brutal-btn::before {
+.brutal-btn::before,
+.brutal-btn-yellow::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1272,11 +1482,13 @@ html {
   color: #FFFFFF;
 }
 
-.brutal-btn:hover::before {
+.brutal-btn:hover::before,
+.brutal-btn-yellow:hover::before {
   left: 0;
 }
 
-.brutal-btn:active {
+.brutal-btn:active,
+.brutal-btn-yellow:active {
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0px #0099FF;
 }
@@ -1319,44 +1531,81 @@ html {
 .brutal-section {
   margin-bottom: 3rem;
   padding: 2rem;
-  border: 4px solid #0099FF;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
 }
 
+/* Level 1 — the loudest frame on the page, reserved for the hero that
+   opens it and for a closing call to action. Nothing else earns it. */
 .brutal-hero {
-  padding: 4rem 2rem;
-  border: 6px solid #0099FF;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  box-shadow: 12px 12px 0px rgba(0, 153, 255, 1);
-  margin: 2rem 0;
+  --panel-border-width: var(--panel-border-width-lg);
+  --panel-shadow-offset: var(--panel-shadow-offset-lg);
+  background: var(--panel-bg);
+  border: var(--panel-border-width) solid var(--panel-border-color);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
+  padding: 3rem 2rem;
+  margin: 2rem 0 var(--rule-space);
   text-align: center;
-  border-radius: 0.75rem;
 }
 
-.brutal-hero h2 {
-  display: block !important;
+/* The hero title is the frame's only content, so the underline that
+   separates a section from the next one has nothing to separate. It is
+   dropped here rather than left half-drawn, which is what produced the
+   orphan bar under every hero. */
+.brutal-hero :is(h1, h2, h3) {
+  display: block;
   width: 100%;
-  border: none;
-  padding: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
-/* --- IMAGES --- */
+/* A few page titles are a full sentence rather than a name — the thesis
+   title on floodedfutures.html runs to twenty-five words. At the hero
+   size that fills the viewport, so the modifier steps it down one level.
+   It replaces the inline `style="font-size: 1.75rem"` that page used to
+   carry, which is how a one-off escapes the scale in the first place. */
+.brutal-hero--long :is(h1, h2, h3) {
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  letter-spacing: 1px;
+  max-width: 40ch;
+  margin-inline: auto;
+}
+
+/* --- IMAGES ---
+   The 91 `.panel-image` elements were the last thing on the site still
+   wearing the soft language: a 45px black blur plus a blue glow, which
+   sat oddly next to the hard-edged frame of the panel holding them.
+   They are panels too, one step quieter. --- */
 .panel-image {
   display: block;
-  box-shadow:
-    0 24px 45px rgba(0, 0, 0, 0.55),
-    0 0 30px rgba(0, 153, 255, 0.28);
-  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: var(--radius-image);
+  border: var(--panel-border-width-nested) solid var(--panel-border-color-nested);
+  box-shadow: var(--panel-shadow-offset) var(--panel-shadow-offset) 0 var(--panel-border-color);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .panel-image:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 32px 60px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(0, 153, 255, 0.45);
+  transform: translate(-3px, -3px);
+  box-shadow: calc(var(--panel-shadow-offset) + 3px) calc(var(--panel-shadow-offset) + 3px) 0 var(--panel-border-color);
+}
+
+/* An image already inside a framed panel needs no frame of its own —
+   the same rule the nested panels follow. */
+.form-container .panel-image,
+.brutal-panel .panel-image,
+.brutal-card .panel-image,
+.article .panel-image {
+  box-shadow: none;
+}
+
+.form-container .panel-image:hover,
+.brutal-panel .panel-image:hover,
+.brutal-card .panel-image:hover,
+.article .panel-image:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--panel-border-color);
 }
 
 /* --- TEXT ACCENTS --- */
@@ -1392,20 +1641,15 @@ html {
   box-shadow: 0 2px 0px rgba(0, 153, 255, 0.3);
 }
 
-/* --- DIVIDERS --- */
-.brutal-divider {
-  border: none;
-  height: 4px;
-  background: #0099FF;
-  box-shadow: 0 4px 0px rgba(0, 153, 255, 0.3);
-  margin: 2rem 0;
-}
-
+/* --- DIVIDERS ---
+   `.brutal-divider` is the default and needs no declaration of its own;
+   it used to restate the base <hr> rule with a different margin (2rem
+   against 3rem), which the base rule's !important then overrode anyway.
+   Only the quieter variant carries anything. --- */
 .brutal-divider-thin {
-  border: none;
-  height: 2px;
-  background: #0099FF;
-  margin: 1rem 0;
+  height: 2px !important;
+  margin: 1.25rem 0 !important;
+  opacity: 0.5 !important;
 }
 
 /* --- LISTS --- */
@@ -1451,12 +1695,12 @@ html {
 /* --- ALERTS/NOTIFICATIONS --- */
 .brutal-alert {
   padding: 1.5rem;
-  border: 4px solid #0099FF;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
+  border: var(--panel-border-width) solid var(--panel-border-color);
+  border-radius: var(--radius-panel);
+  background: var(--panel-bg);
   margin: 1rem 0;
   position: relative;
-  box-shadow: 6px 6px 0px rgba(0, 153, 255, 1);
+  box-shadow: var(--panel-shadow);
 }
 
 .brutal-alert::before {
@@ -1511,7 +1755,7 @@ html {
   border: 3px solid #0099FF;
   background: #000000;
   color: #FFFFFF;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -1529,7 +1773,7 @@ html {
   border: 3px solid #0099FF;
   background: #000000;
   color: #FFFFFF;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   font-size: 1rem;
   resize: vertical;
   min-height: 120px;
@@ -1548,7 +1792,7 @@ html {
   height: 40px;
   border: 4px solid #0099FF;
   border-top-color: transparent;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   animation: brutal-spin 1s linear infinite;
 }
 
@@ -1646,7 +1890,8 @@ html {
     border-width: 4px;
   }
 
-  .brutal-btn {
+  .brutal-btn,
+  .brutal-btn-yellow {
     padding: 0.6rem 1.5rem;
     font-size: 0.9rem;
   }
@@ -1710,7 +1955,7 @@ html {
   max-height: 85vh;
   object-fit: contain;
   border: 2px solid #FFFFFF;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-image);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
   transform: scale(0.9);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1729,7 +1974,7 @@ html {
   background: #0099FF;
   color: #000000;
   border: 4px solid #000000;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   box-shadow: 4px 4px 0px #000000;
   font-size: 2rem;
   font-weight: bold;
@@ -1765,7 +2010,7 @@ html {
   background: #0099FF;
   color: #000000;
   border: 4px solid #000000;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   box-shadow: 4px 4px 0px #000000;
   font-size: 1.75rem;
   font-weight: bold;
@@ -1810,7 +2055,7 @@ html {
 .ps-lightbox-dot {
   width: 14px;
   height: 14px;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-button);
   background: rgba(255, 255, 255, 0.4);
   border: 2px solid #FFFFFF;
   cursor: pointer;
@@ -1840,7 +2085,7 @@ html {
   font-weight: bold;
   background: rgba(0, 0, 0, 0.5);
   padding: 6px 16px;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-panel);
   z-index: 100000;
 }
 
@@ -1886,7 +2131,6 @@ html {
   .ps-lightbox-img {
     max-width: 95vw;
     max-height: 80vh;
-    border-radius: 10px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   }
 
@@ -1904,7 +2148,6 @@ html {
   .ps-lightbox-img {
     max-width: 98vw;
     max-height: 70vh;
-    border-radius: 8px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
   }
 
@@ -2017,7 +2260,7 @@ html {
   background: transparent;
   color: #FFFFFF;
   border: 3px solid #FFFFFF;
-  border-radius: 8px;
+  border-radius: var(--radius-button);
   font-weight: bold;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -2115,7 +2358,7 @@ html {
 
 .cookie-btn {
   padding: 0.6rem 1.5rem;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -2307,11 +2550,19 @@ button[style*="background: rgb(0"] {
   grid-template-columns: 1fr !important;
 }
 
+/* The CTA block is a level-1 panel, like the hero — it closes the page
+   the way the hero opens it. It previously wore a blue glow at desktop
+   width and turned yellow below 991px, so the same component changed
+   colour when the window was resized. One appearance now, at every
+   width; the breakpoint overrides that did the recolouring are gone. */
 .cta-container {
-  box-shadow: 0 0 30px rgba(0, 153, 255, 0.3), 0 0 60px rgba(0, 153, 255, 0.15);
-  border-radius: 8px;
+  --panel-border-width: var(--panel-border-width-lg);
+  --panel-shadow-offset: var(--panel-shadow-offset-lg);
+  background: var(--panel-bg);
+  border: var(--panel-border-width) solid var(--panel-border-color);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--panel-shadow);
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 153, 255, 0.05) 0%, transparent 100%);
 }
 
 .cta-container .btn {
@@ -2325,12 +2576,15 @@ button[style*="background: rgb(0"] {
 }
 
 .cta-container .cta-container {
-  box-shadow: 0 4px 20px rgba(0, 153, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  border-width: var(--panel-border-width-nested);
+  border-color: var(--panel-border-color-nested);
+  box-shadow: none;
+  transition: border-color 0.3s ease;
 }
 
 .cta-container .cta-container:hover {
-  box-shadow: 0 8px 35px rgba(0, 153, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: var(--panel-border-color);
+  box-shadow: none;
 }
 
 /* Responsive breakpoints for CTA grid - override Bootstrap .row display: flex */
@@ -2347,13 +2601,6 @@ button[style*="background: rgb(0"] {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Change CTA container colors to match tool pages on tablet */
-  .cta-container {
-    border-color: #FFD500 !important;
-    background: linear-gradient(135deg, rgba(255, 213, 0, 0.05) 0%, transparent 100%) !important;
-    box-shadow: 0 0 30px rgba(255, 213, 0, 0.3), 0 0 60px rgba(255, 213, 0, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-  }
 }
 
 @media (max-width: 480px) {
@@ -2362,11 +2609,4 @@ button[style*="background: rgb(0"] {
     grid-template-columns: 1fr !important;
   }
 
-  /* Keep yellow panel accents on mobile, buttons remain black */
-  .cta-container {
-    border-color: #FFD500 !important;
-    background: linear-gradient(135deg, rgba(255, 213, 0, 0.05) 0%, transparent 100%) !important;
-    box-shadow: 0 0 30px rgba(255, 213, 0, 0.3), 0 0 60px rgba(255, 213, 0, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-  }
 }

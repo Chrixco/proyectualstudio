@@ -9,339 +9,73 @@
   <title>Carbon Footprint Calculator | Calculadora de Huella de Carbono | Proyectual Studio</title>
   <meta name="description" content="Calculate your architecture project's carbon footprint. Free tool for buildings in Ecuador and Germany. Calculadora gratuita de huella de carbono para proyectos de arquitectura."/>
   <meta name="keywords" content="carbon footprint calculator, embodied carbon, architecture, sustainable design, calculadora huella carbono, arquitectura sostenible, Ecuador"/>
-  <!-- Language alternates -->
-  <link rel="alternate" hreflang="en" href="https://proyectualst.com/pages/carbon-calculator.html"/>
-  <link rel="alternate" hreflang="es" href="https://proyectualst.com/pages/carbon-calculator.html"/>
+  <link rel="canonical" href="https://proyectualst.com/pages/carbon-calculator.html"/>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Carbon Footprint Calculator | Calculadora de Huella de Carbono"/>
+  <meta property="og:description" content="Estimate a building project's embodied and operational carbon by material and energy source. Free tool for architects."/>
+  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
+  <meta property="og:url" content="https://proyectualst.com/pages/carbon-calculator.html"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Proyectual Studio"/>
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Carbon Footprint Calculator"/>
+  <meta name="twitter:description" content="Estimate a building project's embodied and operational carbon by material and energy source. Free tool for architects."/>
+  <meta name="twitter:image" content="https://proyectualst.com/images/logo03.png"/>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Carbon Footprint Calculator",
+    "alternateName": "Calculadora de Huella de Carbono",
+    "description": "Estimate a building project's embodied and operational carbon by material and energy source. Free tool for architects.",
+    "url": "https://proyectualst.com/pages/carbon-calculator.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "ArchitectureFirm",
+      "name": "Proyectual Studio",
+      "url": "https://proyectualst.com"
+    }
+  }
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
+  <link href="../css/tools.css?v=11" rel="stylesheet" />
+
+  <!-- Language state, needed before the page scripts run -->
+  <script src="../js/tools/i18n.js"></script>
+  <script src="../js/tools/format.js?v=11"></script>
 
   <!-- Theme Script (loads early to prevent flash) -->
   <!-- Centralized Color System -->
-  <script src="../js/colors.js"><\/script>
+  <script src="../js/colors.js"></script>
   <!-- Neo-Brutalist Effects -->
   <script src="../js/neobrutalist.js"></script>
 
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Shared diagram theme: surface, type and palette for every chart. -->
+  <script src="../js/tools/chart-theme.js?v=11"></script>
 
 
   <style>
     /* Two-panel calculator layout for desktop */
-    .calculator-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-
-    main.container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-    }
-
-    .calculator-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      width: 100%;
-      box-sizing: border-box;
-      align-items: stretch;
-    }
 
     /* Mobile: single column */
-    .inputs-panel {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      overflow: visible;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .results-panel {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      overflow: visible;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
 
     /* Tablet: 768px and below */
-    @media (max-width: 768px) {
-      main.container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        margin: 0 auto;
-      }
-
-      .calculator-wrapper {
-        margin: 0 auto;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
-
-      .inputs-panel,
-      .results-panel {
-        box-shadow: 8px 8px 0px #FFD500;
-        border: 3px solid #FFD500;
-      }
-    }
+    
 
     /* Mobile: 480px and below */
-    @media (max-width: 480px) {
-      main.container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-        margin: 0 auto;
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .calculator-wrapper {
-        margin: 0 auto;
-        width: 100%;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
-
-      .inputs-panel,
-      .results-panel {
-        padding: 1rem;
-        box-shadow: 6px 6px 0px #FFD500;
-        border: 2px solid #FFD500;
-      }
-    }
-
-    .calculator-section {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border: 2px solid #0099FF;
-      background: rgba(255, 213, 0, 0.05);
-      border-radius: 0.75rem;
-      backdrop-filter: blur(5px);
-    }
-
-    .calculator-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .calculator-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.75rem;
-      font-size: clamp(0.7rem, 2vw, 0.8rem);
-      color: #000000;
-      display: block;
-      border-bottom: 2px solid rgba(255, 213, 0, 0.2);
-      padding-bottom: 0.5rem;
-    }
-
-    .option-card {
-      padding: 0.8rem;
-      border: 2px solid rgba(0, 153, 255, 0.3);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: #FFFFFF;
-      margin-bottom: 0.5rem;
-      border-radius: 0.75rem;
-      color: #000000;
-    }
-
-    .option-card:last-child {
-      margin-bottom: 0;
-    }
-
-    .option-card h5 {
-      margin-bottom: 0.2rem;
-      font-size: 0.85rem;
-      line-height: 1.2;
-      color: #000000;
-    }
-
-    .option-card p {
-      margin-bottom: 0;
-      font-size: 0.75rem;
-      line-height: 1.1;
-      color: #000000;
-    }
-
-    .option-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px #0099FF;
-      border-color: #0099FF;
-      background: rgba(0, 153, 255, 0.1);
-    }
-
-    .option-card.selected {
-      background: #0099FF;
-      color: #FFFFFF;
-      border-color: #0099FF;
-      box-shadow: 4px 4px 0px #0099FF;
-    }
-
-    .range-slider {
-      width: 100%;
-      height: 6px;
-      background: rgba(0, 153, 255, 0.2);
-      outline: none;
-      border: 1px solid #0099FF;
-      border-radius: 4px;
-      -webkit-appearance: none;
-      margin: 0.5rem 0;
-    }
-
-    .range-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      background: #0099FF;
-      border: 2px solid #FFFFFF;
-      cursor: pointer;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-    }
-
-    .range-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 8px #0099FF;
-    }
-
-    .range-slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      background: #0099FF;
-      border: 2px solid #FFFFFF;
-      cursor: pointer;
-      border-radius: 50%;
-      transition: all 0.2s ease;
-    }
-
-    .range-slider::-moz-range-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 8px #0099FF;
-    }
-
-    .range-value {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-top: 0.4rem;
-      text-align: center;
-    }
-
-    .selection-summary {
-      background: rgba(0, 0, 0, 0.05);
-      border: 3px solid #0099FF;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.75rem;
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      padding-bottom: 0.7rem;
-      margin-bottom: 0.7rem;
-      border-bottom: 2px solid rgba(0, 153, 255, 0.3);
-      font-size: 0.95rem;
-    }
-
-    .summary-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-      margin-bottom: 0;
-    }
-
-    .summary-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      color: #0099FF;
-    }
-
-    .summary-value {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #000000;
-    }
-
-    .charts-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .chart-controls {
-      display: inline-flex;
-      gap: 0;
-      margin-bottom: 1rem;
-      background: rgba(0, 153, 255, 0.05);
-      border: 2px solid #0099FF;
-      border-radius: 50px;
-      padding: 0.3rem;
-      backdrop-filter: blur(5px);
-    }
-
-    .chart-btn {
-      padding: 0.5rem 1.2rem;
-      background: transparent;
-      border: none;
-      color: #0099FF;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      border-radius: 40px;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .chart-btn:hover {
-      background: rgba(0, 153, 255, 0.1);
-      transform: translateY(-1px);
-    }
-
-    .chart-btn.active {
-      background: #0099FF;
-      color: #FFFFFF;
-      border-color: #0099FF;
-      box-shadow: 0 2px 8px rgba(0, 153, 255, 0.5);
-      font-weight: 900;
-    }
+    
 
     /* Tab System */
     .input-tabs-container {
@@ -350,7 +84,7 @@
       margin-bottom: 1.5rem;
       background: rgba(0, 153, 255, 0.05);
       border: 2px solid #0099FF;
-      border-radius: 50px;
+      border-radius: var(--radius-pill);
       padding: 0.3rem;
       backdrop-filter: blur(5px);
     }
@@ -366,7 +100,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
-      border-radius: 40px;
+      border-radius: var(--radius-pill);
       transition: all 0.3s ease;
       white-space: nowrap;
     }
@@ -392,57 +126,6 @@
       display: block;
     }
 
-    .chart-wrapper {
-      position: relative;
-      height: 250px;
-      border: 2px solid rgba(0, 153, 255, 0.2);
-      border-radius: 0.75rem;
-      padding: 0.75rem;
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    .total-container {
-      background: #0099FF;
-      color: #FFFFFF;
-      padding: 1.5rem;
-      border: 4px solid #0099FF;
-      box-shadow: 8px 8px 0px #0099FF;
-      text-align: center;
-      border-radius: 0.75rem;
-    }
-
-    .total-amount {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      word-break: break-word;
-    }
-
-    .total-label {
-      font-size: 0.85rem;
-      font-weight: bold;
-      margin-top: 0.3rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .equivalence {
-      font-size: 0.8rem;
-      margin-top: 0.7rem;
-      padding: 0.8rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 0.75rem;
-      font-style: italic;
-    }
-
-    .disclaimer {
-      font-size: 0.75rem;
-      margin-top: 0.7rem;
-      opacity: 0.8;
-      line-height: 1.3;
-    }
-
     .breakdown-item {
       margin-bottom: 0.7rem;
       display: flex;
@@ -454,318 +137,72 @@
       margin-bottom: 0;
     }
 
+    /* The list is a chart in its own right, so it borrows the diagram
+       tokens: light ink on the charcoal panel, and a neutral track so
+       the series colour on the fill is the only colour in the row. */
     .breakdown-label {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
+      gap: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      color: var(--color-white);
+      line-height: 1.4;
+      color: var(--chart-ink, #F2F2F2);
+    }
+
+    .breakdown-label span:last-child {
+      white-space: nowrap;
+      color: var(--chart-ink-muted, #C4C4C4);
+      font-variant-numeric: tabular-nums;
     }
 
     .breakdown-bar {
       width: 100%;
       height: 12px;
-      background: rgba(0, 153, 255, 0.1);
-      border: 1px solid #0099FF;
-      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid var(--chart-border, rgba(255, 255, 255, 0.28));
+      border-radius: var(--radius-control);
       overflow: hidden;
     }
 
     .breakdown-fill {
       height: 100%;
-      background: linear-gradient(90deg, #0099FF, rgba(0, 153, 255, 0.6));
+      /* Flat fill; the colour is set per row from PROCESS_COLORS so the
+         bar matches its slice in the pie. */
+      background: var(--chart-accent, #FFD500);
       transition: width 0.3s ease;
     }
 
-    .cta-final {
-      margin-top: 1rem;
-      padding: 1rem 2rem;
-      background: #FFFFFF;
-      color: #0099FF;
-      border: 3px solid #0099FF;
-      box-shadow: 4px 4px 0px #0099FF;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      border-radius: 0.75rem;
-      display: block;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .cta-final:hover {
-      background: #0099FF !important;
-      color: #FFFFFF !important;
-      border-color: #0099FF !important;
-      box-shadow: 6px 6px 0px #0099FF !important;
-      transform: translate(-3px, -3px);
-    }
-
     /* Responsive adjustments - Carbon calculator specific */
-    @media (max-width: 768px) {
-      .calculator-wrapper {
-        padding: 0 1rem;
-      }
-
-      .calculator-section {
-        padding: 0.8rem;
-        margin-bottom: 0.8rem;
-      }
-
-      .charts-container {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .chart-wrapper {
-        height: 300px;
-      }
-
-      .chart-btn {
-        padding: 0.5rem 1rem;
-        font-size: clamp(0.75rem, 2vw, 0.85rem);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .calculator-wrapper {
-        padding: 0 0.75rem;
-        margin: 0 auto;
-      }
-
-      main.container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-        margin: 0 auto;
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .calculator-section {
-        padding: 0.7rem;
-        margin-bottom: 0.7rem;
-      }
-
-      .option-card {
-        padding: 0.8rem;
-        margin-bottom: 0.8rem;
-        font-size: clamp(0.8rem, 2vw, 0.85rem);
-      }
-
-      .range-value {
-        font-size: clamp(1rem, 3vw, 1.2rem);
-      }
-
-      .charts-container {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-      }
-
-      .chart-wrapper {
-        height: 250px;
-      }
-
-      .chart-btn {
-        padding: 0.4rem 0.8rem;
-        font-size: clamp(0.7rem, 1.5vw, 0.75rem);
-        margin-bottom: 0.5rem;
-      }
-
-      .cta-final {
-        padding: 0.9rem;
-        font-size: clamp(0.85rem, 2vw, 0.9rem);
-        width: 100%;
-        margin-bottom: 0.5rem;
-        min-height: 44px;
-      }
-    }
-
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .video-background video {
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-    main.container {
-      position: relative;
-      z-index: 1;
-    }
 
     /* Lead Capture Status Messages */
-    .lead-status {
-      padding: 1rem;
-      border-radius: 0.75rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .lead-status-success {
-      background: rgba(144, 238, 144, 0.2);
-      color: #90EE90;
-      border: 2px solid #90EE90;
-    }
-
-    .lead-status-error {
-      background: rgba(255, 107, 107, 0.2);
-      color: #FF6B6B;
-      border: 2px solid #FF6B6B;
-    }
 
     /* Lead Capture Summary */
-    .lead-summary-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid rgba(0, 153, 255, 0.2);
-      font-size: 0.9rem;
-    }
-
-    .lead-summary-label {
-      font-weight: bold;
-      color: #0099FF;
-      text-transform: uppercase;
-    }
-
-    .lead-summary-value {
-      color: #000000;
-    }
 
     /* Email Modal for PDF Download */
-    .email-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 10001;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .email-modal.active {
-      display: flex;
-    }
-
-    .email-modal-content {
-      background: #FFFFFF;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 2.5rem;
-      border-radius: 0.75rem;
-      max-width: 450px;
-      width: 90%;
-      animation: slideIn 0.3s ease;
-    }
-
-    .email-modal-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-input {
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border: 3px solid #0099FF;
-      background: #FFFFFF;
-      color: #000000;
-      font-size: 1rem;
-      border-radius: 0.75rem;
-      box-sizing: border-box;
-    }
-
-    .email-modal-input::placeholder {
-      color: rgba(0, 153, 255, 0.5);
-    }
-
-    .email-modal-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px #0099FF;
-    }
-
-    .email-modal-buttons {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .email-modal-btn {
-      flex: 1;
-      padding: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      border: 3px solid #0099FF;
-      cursor: pointer;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-btn.submit {
-      background: #0099FF;
-      color: #FFFFFF;
-    }
-
-    .email-modal-btn.submit:hover {
-      background: #FFFFFF;
-      color: #0099FF;
-      box-shadow: 6px 6px 0px #0099FF;
-      transform: translate(-3px, -3px);
-    }
-
-    .email-modal-btn.cancel {
-      background: transparent;
-      color: #0099FF;
-    }
-
-    .email-modal-btn.cancel:hover {
-      background: #0099FF;
-      color: #FFFFFF;
-      transform: translate(-3px, -3px);
-    }
 
     .toggle-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
     .toggle-switch { position: relative; width: 44px; height: 24px; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider { position: absolute; inset: 0; background: rgba(0,153,255,0.2); border: 2px solid #0099FF; border-radius: 12px; cursor: pointer; transition: 0.3s; }
-    .toggle-slider:before { content:''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: #0099FF; border-radius: 50%; transition: 0.3s; }
+    .toggle-slider { position: absolute; inset: 0; background: rgba(0,153,255,0.2); border: 2px solid #0099FF; border-radius: var(--radius-panel); cursor: pointer; transition: 0.3s; }
+    .toggle-slider:before { content:''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: #0099FF; border-radius: var(--radius-circle); transition: 0.3s; }
     input:checked + .toggle-slider { background: #0099FF; }
     input:checked + .toggle-slider:before { transform: translateX(20px); background: #FFF; }
     .option-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
-    .option-chip { padding: 0.4rem 0.85rem; border: 2px solid rgba(0,153,255,0.4); border-radius: 50px; font-size: 0.75rem; font-weight: bold; cursor: pointer; background: #FFF; color: #000; transition: all 0.2s; }
+    .option-chip { padding: 0.4rem 0.85rem; border: 2px solid rgba(0,153,255,0.4); border-radius: var(--radius-pill); font-size: 0.75rem; font-weight: bold; cursor: pointer; background: #FFF; color: #000; transition: all 0.2s; }
     .option-chip.selected { background: #0099FF; color: #FFF; border-color: #0099FF; }
     .vol-badge { font-size: 0.7rem; color: #0099FF; font-weight: bold; margin-top: 0.25rem; }
   </style>
 </head>
-<body>
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+<body class="tool-page tool-page--carbon">
+<a class="skip-link" href="#main" data-en="Skip to content" data-es="Saltar al contenido">Skip to content</a>
+  <div class="video-background" aria-hidden="true">
+    <!-- Decorative. The poster ships with the page; js/tools/background-video.js
+         attaches the 6.6 MB source after load, and skips it on constrained
+         connections or when reduced motion is preferred. -->
+    <video muted loop playsinline preload="none"
+           poster="../media/calculator-bg-poster.jpg"
+           data-src="../media/Sequence yellow_colour_128x64.mp4"></video>
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -790,18 +227,18 @@
     </div>
   </nav>
 
-  <main class="container mt-5 px-3 px-md-4 py-5">
+  <main id="main" class="container mt-5 px-3 px-md-4 py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
-      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%; background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex !important; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: var(--radius-circle); background: #0099FF; border: 3px solid #000000; box-shadow: 4px 4px 0px #000000;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
     </div>
-    <h1 class="fw-bold text-center mb-2 text-white" style="text-align: center;" data-en="Carbon Footprint Calculator" data-es="Calculadora de Huella de Carbono">
+    <h1 class="tool-title" data-en="Carbon Footprint Calculator" data-es="Calculadora de Huella de Carbono">
       Carbon Footprint Calculator
     </h1>
-    <p class="text-center text-secondary mb-5" style="text-align: center;" data-en="Estimate the embodied and operational carbon of your architecture project" data-es="Estima la huella de carbono de tu proyecto de arquitectura">
+    <p class="tool-subtitle" data-en="Estimate the embodied and operational carbon of your architecture project" data-es="Estima la huella de carbono de tu proyecto de arquitectura">
       Estimate the embodied and operational carbon of your architecture project
     </p>
 
@@ -967,6 +404,9 @@
               <span id="beamSpacingValue">5</span> m
             </div>
             <div class="vol-badge" id="beamVolBadge">— m³ beams</div>
+            <p id="beamNote" style="display:none; font-size:0.7rem; color:#000; margin:0.4rem 0 0;"
+               data-en="A flat slab spans without beams, so none are counted."
+               data-es="Una losa plana funciona sin vigas, por lo que no se cuentan.">A flat slab spans without beams, so none are counted.</p>
           </div>
           </div>
 
@@ -1034,15 +474,41 @@
           </div>
 
           <!-- Construction Process Breakdown -->
-          <div id="materialBreakdown" style="background: rgba(0, 0, 0, 0.7); border: 3px solid #FFD500; padding: 1rem; margin-bottom: 1rem; border-radius: 0.75rem; display: none;">
-            <div style="font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; font-size: 0.8rem; color: #FFD500; display: block; border-bottom: 2px solid rgba(255, 213, 0, 0.2); padding-bottom: 0.5rem;" data-en="Construction Process" data-es="Proceso de Construcción">
+          <div id="materialBreakdown" class="data-panel" style="display: none;">
+            <h3 class="data-panel-title" data-en="Construction Process" data-es="Proceso de Construcción">
               Construction Process
-            </div>
+            </h3>
             <div id="breakdownItems"></div>
           </div>
 
+          <!-- Call to action: directly after the first real output. The
+               remaining ask at the foot of the panel is a different
+               destination (tree planting) plus the PDF export. -->
+          <aside class="tool-cta">
+            <h3 class="tool-cta-title"
+                data-en="These are generic material factors"
+                data-es="Estos son factores genéricos de material">
+              These are generic material factors
+            </h3>
+            <p class="tool-cta-copy"
+               data-en="Real embodied carbon depends on your supplier's mix, the haul distance and how the structure is actually built. We audit those against your drawings and show where the reductions genuinely are — usually in the structure, not the finishes."
+               data-es="El carbono incorporado real depende de la mezcla de tu proveedor, la distancia de transporte y cómo se construye la estructura. Auditamos eso con tus planos y mostramos dónde están las reducciones reales — normalmente en la estructura, no en los acabados.">
+              Real embodied carbon depends on your supplier's mix, the haul distance and how the structure is actually built. We audit those against your drawings and show where the reductions genuinely are — usually in the structure, not the finishes.
+            </p>
+            <div class="tool-cta-actions">
+              <button type="button" class="tool-cta-btn" onclick="navigateToLeadForm()"
+                      data-en="Request a carbon audit" data-es="Solicitar auditoría de carbono">
+                Request a carbon audit
+              </button>
+              <a class="tool-cta-link" href="contact.html"
+                 data-en="Or send us a question" data-es="O envíanos una pregunta">
+                Or send us a question
+              </a>
+            </div>
+          </aside>
+
           <!-- Chart Filter -->
-          <div style="margin-bottom: 1rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</div>
+          <h3 class="chart-title" data-en="Carbon Scope" data-es="Alcance de Carbono">Carbon Scope</h3>
           <div class="chart-controls" style="margin-bottom: 1rem;">
             <button class="chart-btn active" data-scope-filter="all" data-en="All Phases" data-es="Todas las Fases">All Phases</button>
             <button class="chart-btn" data-scope-filter="construction" data-en="Construction Only" data-es="Solo Construcción">Construction Only</button>
@@ -1052,7 +518,8 @@
           <div class="charts-container">
             <!-- Pie Chart Section -->
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</div>
+              <h3 class="chart-title" data-en="Analysis View" data-es="Vista de Análisis">Analysis View</h3>
+              <span class="chart-note" data-en="Share of total kgCO₂e by lifecycle stage." data-es="Participación del total de kgCO₂e por etapa del ciclo de vida.">Share of total kgCO₂e by lifecycle stage.</span>
               <div class="chart-controls">
                 <button class="chart-btn active" data-pie-mode="lifecycle" data-en="Lifecycle" data-es="Ciclo de Vida">Lifecycle</button>
                 <button class="chart-btn" data-pie-mode="impact" data-en="Total Impact" data-es="Impacto Total">Total Impact</button>
@@ -1065,7 +532,8 @@
 
             <!-- Density Histogram Section -->
             <div>
-              <div style="margin-bottom: 0.7rem; font-size: 0.85rem; color: #FFD500; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;" data-en="Data Representation" data-es="Representación de Datos">Data Representation</div>
+              <h3 class="chart-title" data-en="Data Representation" data-es="Representación de Datos">Data Representation</h3>
+              <span class="chart-note" data-en="Bars: kgCO₂e per stage. Line: smoothed distribution." data-es="Barras: kgCO₂e por etapa. Línea: distribución suavizada.">Bars: kgCO₂e per stage. Line: smoothed distribution.</span>
               <div class="chart-controls">
                 <button class="chart-btn active" data-histogram-mode="absolute" data-en="Absolute" data-es="Absoluto">Absolute</button>
                 <button class="chart-btn" data-histogram-mode="percentage" data-en="Percentage" data-es="Porcentaje">Percentage</button>
@@ -1089,10 +557,7 @@
             <p class="disclaimer" data-en="This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources. Contact us for a detailed audit." data-es="Esta es una estimación aproximada. La huella de carbono final depende de materiales específicos, métodos de transporte y fuentes de energía. Contáctanos para una auditoría detallada.">
               This is a rough estimate. Final carbon footprint depends on specific materials, transportation methods, and energy sources.
             </p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-              <button onclick="navigateToLeadForm()" class="cta-final" data-en="Request Custom Analysis" data-es="Solicitar Análisis Personalizado">
-                Request Custom Analysis
-              </button>
+            <div class="cta-row">
               <a href="plantme.html" class="cta-final" data-en="Support Tree Planting" data-es="Apoya la Plantación de Árboles">
                 Support Tree Planting
               </a>
@@ -1157,7 +622,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    let currentLang = localStorage.getItem('lang') || 'en';
     let pieChart, densityChart;
     let currentPieMode = 'lifecycle';
     let currentHistogramMode = 'absolute';
@@ -1171,7 +635,7 @@
       transport: 100,
       country: 'Ecuador',
       energy: 'Electric',
-      energyCO2: 85,
+      energyCO2: 11,   // kept in step with ENERGY_BY_COUNTRY.Ecuador.Electric
       waste: 50,
       trees: 50,
       floorMode: 'total',
@@ -1189,23 +653,46 @@
       beamType: 'concrete'
     };
 
+    /**
+     * Operational carbon intensity, kgCO₂e per m² per year.
+     *
+     * Derived as (annual final energy per m²) × (emission factor), not guessed:
+     *
+     *   Ecuador, grid ≈ 0.27 kgCO₂e/kWh (hydro-dominant)
+     *     Electric   40 kWh/m²/yr × 0.27 ≈ 11   (no space heating needed)
+     *     Gas        LPG for cooking and hot water plus grid electricity ≈ 20
+     *     Renewable  on-site PV covering most demand ≈ 3
+     *
+     *   Germany, grid ≈ 0.38 kgCO₂e/kWh, gas ≈ 0.20 kgCO₂e/kWh
+     *     Electric   heat pump, ~60 kWh/m²/yr × 0.38 ≈ 23
+     *     Gas        boiler, ~100 kWh/m²/yr × 0.20 + electricity ≈ 31
+     *     Renewable  on-site generation plus a clean tariff ≈ 8
+     *
+     * The previous values (85 / 380) implied roughly 300 and 900 kWh/m²/yr,
+     * several times typical residential use, and operational carbon is by far
+     * the largest term in the total.
+     */
     const ENERGY_BY_COUNTRY = {
       'Ecuador': {
-        Electric: { co2: 85, label: 'Electric (Ecuador: ~65% hydro)' },
-        Gas: { co2: 220, label: 'Gas (Limited availability)' },
-        Renewable: { co2: 25, label: 'Renewable (Solar/Wind)' }
+        Electric: { co2: 11, label: 'Electric (Ecuador grid, ~65% hydro)' },
+        Gas: { co2: 20, label: 'Gas (LPG cooking and hot water)' },
+        Renewable: { co2: 3, label: 'Renewable (on-site solar)' }
       },
       'Germany': {
-        Electric: { co2: 380, label: 'Electric (Germany: Mixed grid)' },
-        Gas: { co2: 280, label: 'Gas (Common heating)' },
-        Renewable: { co2: 60, label: 'Renewable (Wind/Solar)' }
+        Electric: { co2: 23, label: 'Electric (heat pump, German grid)' },
+        Gas: { co2: 31, label: 'Gas (condensing boiler)' },
+        Renewable: { co2: 8, label: 'Renewable (on-site solar, green tariff)' }
       }
     };
 
+    const CAR_KG_PER_DAY = 5;       // average car, roughly 30 km/day
+    const OPERATIONAL_YEARS = 50;   // study period for operational carbon
+    const TREE_GROWTH_YEARS = 30;   // years of sequestration credited
+
     const CO2_FACTORS = {
-      transport: 0.5, // kgCO2e per km per m²
-      waste: -2, // kgCO2e per % recycled
-      treeOffset: -22 // kgCO2e per tree per year
+      transport: 0.5,   // kgCO2e per km per m²
+      waste: -2,        // kgCO2e per % recycled
+      treeOffset: -22   // kgCO2e per tree per year (mature broadleaf)
     };
 
     const STRUCTURAL_CONSTANTS = {
@@ -1224,8 +711,8 @@
         rebarPct: { rc_square: 0.03, rc_round: 0.03, steel: 0, timber: 0 }
       },
       foundation: {
-        depthRatio: 1.0,
-        widthRatio: 2.5,
+        depth: 0.5,        // m, typical isolated pad footing
+        widthRatio: 2.5,   // multiple of column width, before the load factor
         co2PerM3: 300,
         rebarPct: 0.007
       },
@@ -1241,53 +728,51 @@
       }
     };
 
-    // Consistent color mapping for all diagrams
+    /**
+     * One colour per series, shared by every diagram on the page so a
+     * slice and its bar always agree.
+     *
+     * The previous map ran five variations of yellow plus two
+     * translucent whites: adjacent categories were indistinguishable,
+     * and the alpha fills let the plot surface bleed through. These are
+     * the shared palette in js/tools/chart-theme.js — opaque, distinct
+     * in hue and in lightness, and all above 4.5:1 on the charcoal
+     * surface.
+     */
+    const CHART_THEME = window.ProyectualCharts;
+    const SERIES = CHART_THEME.SERIES;
+
     const PROCESS_COLORS = {
-      'Extraction': '#FFD500',           // Yellow
-      'Extracción': '#FFD500',
-      'Processing': '#FFC700',           // Orange
-      'Procesamiento': '#FFC700',
-      'Transportation': 'rgba(255,213,0,0.5)',  // Semi-yellow
-      'Transporte': 'rgba(255,213,0,0.5)',
-      'Installation': 'rgba(255,255,255,0.6)',  // White
-      'Instalación': 'rgba(255,255,255,0.6)',
-      'Operational': 'rgba(200,220,200,0.7)',   // Pale green
-      'Operacional': 'rgba(200,220,200,0.7)',
-      'Tree Offset': 'rgba(100,200,100,0.6)',   // Green
-      'Compensación': 'rgba(100,200,100,0.6)',
-      'Materials': '#FFD500',
-      'Materiales': '#FFD500',
-      'Transport': '#FFC700',
-      'Transporte (Categoría)': '#FFC700',
-      'Energy (50yr)': 'rgba(255,213,0,0.5)',
-      'Energía (50yr)': 'rgba(255,213,0,0.5)',
-      'Waste Reduction': 'rgba(255,255,255,0.6)',
-      'Reducción Residuos': 'rgba(255,255,255,0.6)',
-      'Embodied Carbon': '#FFD500',
-      'Carbono Encarnado': '#FFD500',
-      'Total Impact': '#FFC700',
-      'Impacto Total': '#FFC700',
-      'Breakdown': 'rgba(255,213,0,0.5)',
-      'Desglose': 'rgba(255,213,0,0.5)',
-      'Walls': '#FFD500',           // Yellow
-      'Muros': '#FFD500',
-      'Slabs': '#FFC700',           // Orange
-      'Losas': '#FFC700',
-      'Columns': 'rgba(255,213,0,0.5)',  // Semi-yellow
-      'Columnas': 'rgba(255,213,0,0.5)',
-      'Foundations': 'rgba(255,255,255,0.6)',  // White
-      'Cimentaciones': 'rgba(255,255,255,0.6)',
-      'Beams': 'rgba(200,200,200,0.8)',  // Light gray
-      'Vigas': 'rgba(200,200,200,0.8)',
-      'Steel Frame': 'rgba(150,150,150,0.8)',
-      'Timber Frame': 'rgba(139,69,19,0.8)',
-      'Steel': 'rgba(150,150,150,0.8)',
-      'Acero': 'rgba(150,150,150,0.8)',
-      'Timber': 'rgba(139,69,19,0.8)',
-      'Madera': 'rgba(139,69,19,0.8)',
-      'Concrete Beams': '#FFC700',
-      'Steel Beams': 'rgba(150,150,150,0.8)',
-      'Timber Beams': 'rgba(139,69,19,0.8)'
+      // Lifecycle stages, A1 through A5, in reading order.
+      'Extraction': SERIES[0],           'Extracción': SERIES[0],
+      'Processing': SERIES[1],           'Procesamiento': SERIES[1],
+      'Transportation': SERIES[2],       'Transporte': SERIES[2],
+      'Installation': SERIES[5],         'Instalación': SERIES[5],
+      'Operational': SERIES[4],          'Operacional': SERIES[4],
+      'Operational (50yr)': SERIES[4],   'Operacional (50yr)': SERIES[4],
+      'Tree Offset': SERIES[3],          'Compensación': SERIES[3],
+      'Compensación Árboles': SERIES[3], 'Compensação': SERIES[3],
+
+      // Impact view.
+      'Embodied Carbon': SERIES[0],      'Carbono Encarnado': SERIES[0],
+      'Total Impact': SERIES[1],         'Impacto Total': SERIES[1],
+      'Breakdown': SERIES[2],            'Desglose': SERIES[2],
+
+      // Structural elements.
+      'Walls': SERIES[0],                'Muros': SERIES[0],
+      'Slabs': SERIES[1],                'Losas': SERIES[1],
+      'Columns': SERIES[2],              'Columnas': SERIES[2],
+      'Foundations': SERIES[6],          'Cimentaciones': SERIES[6],
+      'Beams': SERIES[7],                'Vigas': SERIES[7],
+
+      // Materials, where they appear as their own series.
+      'Materials': SERIES[0],            'Materiales': SERIES[0],
+      'Transport': SERIES[2],            'Transporte (Categoría)': SERIES[2],
+      'Energy (50yr)': SERIES[4],        'Energía (50yr)': SERIES[4],
+      'Waste Reduction': SERIES[3],      'Reducción Residuos': SERIES[3],
+      'Steel Frame': SERIES[7],          'Steel': SERIES[7],          'Acero': SERIES[7],
+      'Timber Frame': SERIES[3],         'Timber': SERIES[3],         'Madera': SERIES[3],
+      'Concrete Beams': SERIES[1],       'Steel Beams': SERIES[7],    'Timber Beams': SERIES[3]
     };
 
     // Process-based carbon breakdown by construction lifecycle (A1-A5 framework)
@@ -1497,70 +982,80 @@
       breakdownEl.style.display = 'block';
       itemsEl.innerHTML = '';
 
-      // Display structural elements
-      const elements = ['walls', 'slabs', 'columns', 'foundations', 'beams'];
-      let totalStructuralCO2 = structural.totalStructuralCO2;
+      const es = currentLang === 'es';
+      const rows = [];
 
-      elements.forEach(key => {
+      // Structural elements
+      ['walls', 'slabs', 'columns', 'foundations', 'beams'].forEach(key => {
         const el = structural[key];
         if (el.volume <= 0) return;
+        rows.push({
+          label: el.label,
+          detail: el.volume.toFixed(1) + ' m³',
+          co2: el.co2
+        });
+      });
 
-        const pct = (el.co2 / totalStructuralCO2 * 100).toFixed(0);
-        const barColor = PROCESS_COLORS[el.label] || '#FFD500';
+      if (currentScopeFilter === 'all') {
+        // Transport and waste were part of the total but absent from this
+        // panel, so its rows could never add up to the headline figure.
+        const transportCO2 = carbonState.area * carbonState.transport * CO2_FACTORS.transport;
+        if (transportCO2 > 0) {
+          rows.push({
+            label: es ? 'Transporte' : 'Transport',
+            detail: carbonState.transport + ' km',
+            co2: transportCO2
+          });
+        }
+
+        const wasteCO2 = carbonState.area * carbonState.waste * CO2_FACTORS.waste;
+        if (wasteCO2 !== 0) {
+          rows.push({
+            label: es ? 'Reducción Residuos' : 'Waste Reduction',
+            detail: carbonState.waste + '% ' + (es ? 'reciclado' : 'recycled'),
+            co2: wasteCO2
+          });
+        }
+
+        rows.push({
+          label: es ? 'Operacional' : 'Operational',
+          detail: (es ? 'Uso de energía, 50 años' : 'Energy use, 50 years'),
+          co2: carbonState.area * carbonState.energyCO2 * OPERATIONAL_YEARS
+        });
+
+        // The 30-year factor that calculateTotal() and every chart apply was
+        // missing here, so this row disagreed with the headline by 30x.
+        rows.push({
+          label: es ? 'Compensación' : 'Tree Offset',
+          detail: carbonState.trees + ' ' + (es ? 'árboles, 30 años' : 'trees, 30 years'),
+          co2: carbonState.trees * CO2_FACTORS.treeOffset * TREE_GROWTH_YEARS
+        });
+      }
+
+      // Percentages are shares of the gross positive emissions, so they are
+      // comparable with one another. The previous denominator was the
+      // structural subtotal alone, which printed "Operational 1350%".
+      const grossEmissions = rows.reduce((sum, r) => sum + Math.max(0, r.co2), 0) || 1;
+
+      rows.forEach(row => {
+        const share = row.co2 / grossEmissions * 100;
+        const barWidth = Math.min(100, Math.abs(share));
+        const barColor = PROCESS_COLORS[row.label] || '#FFD500';
+        const sign = row.co2 < 0 ? '−' : '';
 
         const item = document.createElement('div');
         item.className = 'breakdown-item';
         item.innerHTML = `
           <div class="breakdown-label">
-            <span><strong>${el.label}</strong> — ${el.volume.toFixed(1)} m³</span>
-            <span>${pct}% (${el.co2.toFixed(0)} kgCO₂e)</span>
+            <span><strong>${row.label}</strong> — ${row.detail}</span>
+            <span>${sign}${Math.abs(share).toFixed(0)}% (${sign}${formatToolNumber(Math.abs(Math.round(row.co2)))} kgCO₂e)</span>
           </div>
           <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${pct}%; background: ${barColor};"></div>
+            <div class="breakdown-fill" style="width: ${barWidth}%; background: ${barColor};"></div>
           </div>
         `;
         itemsEl.appendChild(item);
       });
-
-      // Display operational energy (50-year window)
-      if (currentScopeFilter === 'all') {
-        const operCO2 = carbonState.area * carbonState.energyCO2 * 50;
-        const operPct = (operCO2 / totalStructuralCO2 * 100).toFixed(0);
-        const operColor = PROCESS_COLORS['Operational'] || 'rgba(200,220,200,0.7)';
-
-        const item = document.createElement('div');
-        item.className = 'breakdown-item';
-        item.innerHTML = `
-          <div class="breakdown-label">
-            <span><strong>Operational</strong> — Energy use (50yr window)</span>
-            <span>${operPct}% (${operCO2.toFixed(0)} kgCO₂e)</span>
-          </div>
-          <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${operPct}%; background: ${operColor};"></div>
-          </div>
-        `;
-        itemsEl.appendChild(item);
-      }
-
-      // Display tree offset
-      const treeOffsetCO2 = Math.abs(carbonState.trees * CO2_FACTORS.treeOffset);
-      if (treeOffsetCO2 > 0 && currentScopeFilter === 'all') {
-        const treePct = (treeOffsetCO2 / totalStructuralCO2 * 100).toFixed(0);
-        const treeColor = PROCESS_COLORS['Tree Offset'] || 'rgba(100,200,100,0.6)';
-
-        const item = document.createElement('div');
-        item.className = 'breakdown-item';
-        item.innerHTML = `
-          <div class="breakdown-label">
-            <span><strong>Tree Offset</strong> — Carbon sequestration</span>
-            <span>−${treePct}% (−${treeOffsetCO2.toFixed(0)} kgCO₂e)</span>
-          </div>
-          <div class="breakdown-bar">
-            <div class="breakdown-fill" style="width: ${treePct}%; background: ${treeColor};"></div>
-          </div>
-        `;
-        itemsEl.appendChild(item);
-      }
     }
 
     function calculateStructural() {
@@ -1594,7 +1089,11 @@
       let nColumns = 0;
       if (carbonState.columnsEnabled) {
         const spacing = carbonState.columnSpacing;
-        nColumns = Math.ceil(gfa / (spacing * spacing));
+        // Count columns on ONE floor plate. Deriving the count from total GFA
+        // and then multiplying the volume by nFloors counted the storeys
+        // twice, so quantities grew with the square of the storey count.
+        // Even a small plate needs its four corners.
+        nColumns = Math.max(4, Math.ceil(floorArea / (spacing * spacing)));
         const ct = STRUCTURAL_CONSTANTS.column;
         const section = ct.section[carbonState.columnType];
         const colCO2 = ct.co2PerM3[carbonState.columnType];
@@ -1608,16 +1107,25 @@
       let foundVolume = 0, foundCO2Total = 0, foundRebarCO2 = 0;
       if (carbonState.columnsEnabled && nColumns > 0 && (carbonState.columnType === 'rc_square' || carbonState.columnType === 'rc_round')) {
         const ft = STRUCTURAL_CONSTANTS.foundation;
-        const footingDepth = ft.depthRatio * carbonState.storyHeight;
-        const footingWidth = ft.widthRatio * Math.sqrt(STRUCTURAL_CONSTANTS.column.section[carbonState.columnType]);
+        // Footing depth was storey height — a 3 m deep pad under a two-storey
+        // house. Pads are shallow; what grows with the building is their
+        // plan area, because they carry more floors above.
+        const footingDepth = ft.depth;
+        const loadFactor = Math.sqrt(nFloors);
+        const footingWidth = ft.widthRatio * loadFactor *
+          Math.sqrt(STRUCTURAL_CONSTANTS.column.section[carbonState.columnType]);
         foundVolume = nColumns * (footingWidth * footingWidth * footingDepth);
         foundCO2Total = foundVolume * ft.co2PerM3;
         foundRebarCO2 = foundVolume * ft.rebarPct * STRUCTURAL_CONSTANTS.rebar.density * STRUCTURAL_CONSTANTS.rebar.co2PerKg;
       }
 
-      // BEAMS (calculated from spacing: 2 directions × beams in each direction)
+      // BEAMS (two directions, per floor plate, repeated for every storey).
+      // A flat slab spans without beams, so it carries none.
       const bt = STRUCTURAL_CONSTANTS.beam;
-      const beamLength = (2 * gfa / carbonState.beamSpacing) * nFloors;
+      const slabNeedsBeams = !(carbonState.slabEnabled && carbonState.slabType === 'flat_slab');
+      const beamLength = slabNeedsBeams
+        ? (2 * floorArea / carbonState.beamSpacing) * nFloors
+        : 0;
       const beamVolume = beamLength * bt.depth * bt.width;
       const beamCO2 = bt.co2PerM3[carbonState.beamType];
       const beamRebarPct = bt.rebarPct[carbonState.beamType] || 0;
@@ -1644,21 +1152,26 @@
       embodiedCO2 = Math.max(0, embodiedCO2 + area * waste * CO2_FACTORS.waste);
 
       // Operational carbon (annual)
-      let operationalCO2 = area * energyCO2 * 50;
+      let operationalCO2 = area * energyCO2 * OPERATIONAL_YEARS;
 
       // Offsets
-      let offsetCO2 = trees * CO2_FACTORS.treeOffset * 30;
+      let offsetCO2 = trees * CO2_FACTORS.treeOffset * TREE_GROWTH_YEARS;
 
       const totalCO2 = embodiedCO2 + operationalCO2 + offsetCO2;
       const totalTonnes = (totalCO2 / 1000).toFixed(2);
 
       document.getElementById('totalCO2').textContent = totalTonnes + ' t CO₂e';
 
-      const treeYears = Math.abs(offsetCO2 / 30);
-      const equivalentDays = totalCO2 / 5;
+      // Tree-years actually needed to absorb the remaining footprint, rather
+      // than the previous figure (trees x annual rate), which was an annual
+      // sequestration total mislabelled as a cumulative requirement.
+      const perTreeYear = Math.abs(CO2_FACTORS.treeOffset);
+      const treeYears = Math.max(0, totalCO2) / perTreeYear;
+      const equivalentDays = Math.max(0, totalCO2) / CAR_KG_PER_DAY;
+      const es = currentLang === 'es';
       document.getElementById('equivalence').innerHTML = `
-        ≈ ${Math.round(treeYears)} tree-years to offset<br>
-        <small>≈ ${Math.round(equivalentDays)} days of car travel</small>
+        ≈ ${formatToolNumber(Math.round(treeYears))} ${es ? 'árbol-años para compensar' : 'tree-years to offset'}<br>
+        <small>≈ ${formatToolNumber(Math.round(equivalentDays))} ${es ? 'días de viaje en coche' : 'days of car travel'}</small>
       `;
 
       // Update volume badges
@@ -1667,6 +1180,10 @@
       document.getElementById('colVolBadge').textContent = structural.columns.volume.toFixed(1) + ' m³ columns';
       document.getElementById('foundVolBadge').textContent = structural.foundations.volume.toFixed(1) + ' m³ foundations';
       document.getElementById('beamVolBadge').textContent = structural.beams.volume.toFixed(1) + ' m³ beams';
+      const beamNote = document.getElementById('beamNote');
+      if (beamNote) {
+        beamNote.style.display = structural.beams.volume > 0 ? 'none' : 'block';
+      }
 
       updateProcessBreakdown(structural);
       updateCharts(embodiedCO2, operationalCO2, transport * area * CO2_FACTORS.transport, Math.max(0, waste * area * CO2_FACTORS.waste), trees, structural);
@@ -1713,8 +1230,8 @@
           });
 
           // Add operational and offset
-          data.push(carbonState.area * carbonState.energyCO2 * 50);
-          data.push(Math.abs(carbonState.trees * CO2_FACTORS.treeOffset * 30));
+          data.push(carbonState.area * carbonState.energyCO2 * OPERATIONAL_YEARS);
+          data.push(Math.abs(carbonState.trees * CO2_FACTORS.treeOffset * TREE_GROWTH_YEARS));
 
           labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
           labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensación');
@@ -1740,7 +1257,7 @@
         data = [
           embodied,
           operational,
-          Math.abs(trees * CO2_FACTORS.treeOffset * 30)
+          Math.abs(trees * CO2_FACTORS.treeOffset * TREE_GROWTH_YEARS)
         ];
         colors = labels.map(label => PROCESS_COLORS[label] || '#FFD500');
 
@@ -1767,20 +1284,18 @@
         if (currentScopeFilter === 'all') {
           labels.push(currentLang === 'en' ? 'Operational' : 'Operacional');
           labels.push(currentLang === 'en' ? 'Tree Offset' : 'Compensação');
-          data.push(carbonState.area * carbonState.energyCO2 * 50);
-          data.push(Math.abs(trees * CO2_FACTORS.treeOffset * 30));
+          data.push(carbonState.area * carbonState.energyCO2 * OPERATIONAL_YEARS);
+          data.push(Math.abs(trees * CO2_FACTORS.treeOffset * TREE_GROWTH_YEARS));
           colors.push(PROCESS_COLORS['Operational'] || 'rgba(200,220,200,0.7)');
           colors.push(PROCESS_COLORS['Tree Offset'] || 'rgba(100,200,100,0.6)');
         }
       }
 
-      const borderColor = 'rgba(255, 213, 0, 0.2)';
-
       // Ensure labels and data are not empty
       if (!labels || labels.length === 0) {
         labels = [currentLang === 'en' ? 'No Data' : 'Sin Datos'];
         data = [0];
-        colors = ['#FFD500'];
+        colors = [SERIES[0]];
       }
 
       // Update Pie Chart
@@ -1792,24 +1307,34 @@
       } else {
         const pieCtx = document.getElementById('pieChart').getContext('2d');
         pieChart = new Chart(pieCtx, {
-          type: 'pie',
+          type: 'doughnut',
           data: {
             labels: labels,
-            datasets: [{
+            datasets: [Object.assign({
               data: data,
               backgroundColor: colors,
-              borderColor: '#000000',
-              borderWidth: 2
-            }]
+              hoverOffset: 6
+            }, CHART_THEME.arcBorder())]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            // A ring rather than a full pie: the small A4/A5 slices are
+            // easier to compare along an arc than as thin wedges.
+            cutout: '46%',
+            layout: { padding: { top: 4, bottom: 4 } },
             plugins: {
-              legend: {
-                position: 'bottom',
-                labels: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } }
-              }
+              legend: CHART_THEME.legend({ position: 'bottom', size: 11 }),
+              tooltip: CHART_THEME.tooltip({
+                callbacks: {
+                  label: function (ctx) {
+                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0) || 1;
+                    const share = (ctx.parsed / total) * 100;
+                    return ' ' + ctx.label + ': ' + formatToolNumber(Math.round(ctx.parsed)) +
+                      ' kgCO₂e (' + share.toFixed(1) + '%)';
+                  }
+                }
+              })
             }
           }
         });
@@ -1850,8 +1375,8 @@
       });
 
       // Add operational and offset to data for complete view
-      const operationalValue = carbonState.area * carbonState.energyCO2 * 50;
-      const treeOffsetValue = Math.abs(carbonState.trees * CO2_FACTORS.treeOffset * 30);
+      const operationalValue = carbonState.area * carbonState.energyCO2 * OPERATIONAL_YEARS;
+      const treeOffsetValue = Math.abs(carbonState.trees * CO2_FACTORS.treeOffset * TREE_GROWTH_YEARS);
 
       data.push(operationalValue);
       data.push(treeOffsetValue);
@@ -1890,20 +1415,33 @@
                            label === 'Compensación' ? 'Tree Offset' : label;
         return PROCESS_COLORS[processName] || '#FFD500';
       });
-      const borderColor = 'rgba(255, 213, 0, 0.2)';
-
       // Update Density Histogram Chart
+      const axisTitle = currentHistogramMode === 'percentage'
+        ? (currentLang === 'en' ? 'Share of total (%)' : 'Porcentaje del total (%)')
+        : currentHistogramMode === 'cumulative'
+          ? (currentLang === 'en' ? 'Cumulative kgCO₂e' : 'kgCO₂e acumulado')
+          : 'kgCO₂e';
+
       if (densityChart) {
         densityChart.data.labels = labels;
         densityChart.data.datasets[0].data = data;
         densityChart.data.datasets[0].backgroundColor = colors;
+        densityChart.data.datasets[0].borderColor = colors;
+        // The chart outlives a language switch, so its series names have
+        // to be re-read rather than left at whatever they were built in.
+        densityChart.data.datasets[0].label =
+          currentLang === 'en' ? 'CO₂e Distribution' : 'Distribución CO₂e';
+        densityChart.data.datasets[1].label =
+          currentLang === 'en' ? 'Density Curve' : 'Curva de Densidad';
         // Update density curve (smoothed distribution)
         const densityValues = calculateDensity(data);
         densityChart.data.datasets[1].data = densityValues;
+        densityChart.options.scales.y.title.text = axisTitle;
         densityChart.update();
       } else {
         const densityCtx = document.getElementById('densityHistogram').getContext('2d');
         const densityValues = calculateDensity(data);
+        const curveColor = CHART_THEME.tokens().ink;
 
         densityChart = new Chart(densityCtx, {
           type: 'bar',
@@ -1914,21 +1452,28 @@
                 label: currentLang === 'en' ? 'CO₂e Distribution' : 'Distribución CO₂e',
                 data: data,
                 backgroundColor: colors,
-                borderColor: '#FFD500',
-                borderWidth: 2,
+                // Border in the bar's own colour: a single yellow outline
+                // around every bar, as before, flattened them into one
+                // block at a glance.
+                borderColor: colors,
+                borderWidth: 1,
+                borderRadius: 3,
+                maxBarThickness: 64,
                 order: 2
               },
               {
                 label: currentLang === 'en' ? 'Density Curve' : 'Curva de Densidad',
                 data: densityValues,
                 type: 'line',
-                borderColor: '#FFFFFF',
-                borderWidth: 3,
+                borderColor: curveColor,
+                borderWidth: 2,
+                borderDash: [6, 4],
                 fill: false,
                 tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#FFD500',
-                pointBorderColor: '#FFFFFF',
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                pointBackgroundColor: curveColor,
+                pointBorderColor: CHART_THEME.tokens().surface,
                 pointBorderWidth: 2,
                 order: 1,
                 yAxisID: 'y1'
@@ -1940,36 +1485,49 @@
             maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
             scales: {
-              y: {
-                type: 'linear',
-                display: true,
-                position: 'left',
-                ticks: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } },
-                grid: { color: borderColor },
-                title: { display: true, text: 'kgCO₂e', color: 'var(--color-black)' }
-              },
-              y1: {
-                type: 'linear',
-                display: false,
-                position: 'right'
-              },
-              x: {
-                ticks: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 9 } },
-                grid: { color: borderColor }
-              }
+              y: Object.assign(
+                CHART_THEME.axis({
+                  beginAtZero: true,
+                  title: axisTitle,
+                  tickCallback: function (value) {
+                    return formatToolNumber(Math.round(value));
+                  }
+                }),
+                { type: 'linear', display: true, position: 'left' }
+              ),
+              // The density curve rides on its own hidden scale so it
+              // never rescales the bars it is drawn over.
+              y1: { type: 'linear', display: false, position: 'right' },
+              x: CHART_THEME.axis({
+                grid: false,
+                tickSize: 10,
+                autoSkip: false,   // every bar keeps its own name
+                // Chart.js rotates only as far as it must, so a high
+                // ceiling costs nothing on a wide screen and keeps the
+                // six stage names apart in a phone-width column.
+                maxRotation: 60
+              })
             },
             plugins: {
-              legend: {
+              legend: CHART_THEME.legend({
                 position: 'bottom',
-                labels: { color: 'var(--color-black)', font: { family: "'Space Mono', monospace", size: 10 } }
-              },
-              tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleColor: '#FFD500',
-                bodyColor: '#FFFFFF',
-                borderColor: '#FFD500',
-                borderWidth: 1
-              }
+                size: 11,
+                // Dataset 0 is the bars: coloured per stage and named on
+                // the axis, so only the curve needs a key entry.
+                hide: [0]
+              }),
+              tooltip: CHART_THEME.tooltip({
+                callbacks: {
+                  label: function (ctx) {
+                    if (ctx.dataset.yAxisID === 'y1') return null; // density curve is unitless
+                    // Read the mode at draw time; the chart is built once
+                    // and then reused across mode switches.
+                    const suffix = currentHistogramMode === 'percentage' ? '%' : 'kgCO₂e';
+                    return ' ' + ctx.dataset.label + ': ' +
+                      formatToolNumber(Math.round(ctx.parsed.y)) + ' ' + suffix;
+                  }
+                }
+              })
             }
           }
         });
@@ -1992,16 +1550,9 @@
     }
 
     // Language support
-    function updateLanguage(lang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        if (!el.querySelector('[data-en]')) { // Only update direct elements
-          el.textContent = el.getAttribute(`data-${lang}`);
-        }
-      });
-      currentLang = lang;
-      localStorage.setItem('lang', lang);
-      calculateTotal(); // Refresh charts with new language
-    }
+    // Translation itself lives in js/tools/i18n.js; the charts carry
+    // translated labels, so they are redrawn on every switch.
+    document.addEventListener('proyectual:languagechange', () => calculateTotal());
 
     document.addEventListener('DOMContentLoaded', () => {
       renderEnergyOptions();
@@ -2038,15 +1589,6 @@
         });
       });
 
-      const langToggle = document.getElementById('lang-toggle');
-      if (langToggle) {
-        langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
-        langToggle.addEventListener('click', () => {
-          currentLang = currentLang === 'en' ? 'es' : 'en';
-          updateLanguage(currentLang);
-          langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
-        });
-      }
 
     });
 
@@ -2101,7 +1643,7 @@
             sustainability: {
               recyclingWasteReduction: carbonState.waste + '%',
               treesPlanted: carbonState.trees + ' trees',
-              carbonOffset: (carbonState.trees * 25).toFixed(2) + ' kgCO₂e/year'
+              carbonOffset: formatToolNumber(Math.round(carbonState.trees * Math.abs(CO2_FACTORS.treeOffset))) + ' kgCO₂e/year'
             }
           }
         }
@@ -2115,37 +1657,7 @@
       window.location.href = 'lead-form.html';
     };
 
-    // Email Modal Functions
-    window.openEmailModal = function() {
-      const modal = document.getElementById('emailModal');
-      if (modal) {
-        modal.classList.add('active');
-        document.getElementById('emailInput').focus();
-      }
-    };
-
-    window.closeEmailModal = function() {
-      const modal = document.getElementById('emailModal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.getElementById('emailInput').value = '';
-      }
-    };
-
-    // Close modal when clicking outside
-    document.addEventListener('click', (e) => {
-      const modal = document.getElementById('emailModal');
-      if (modal && e.target === modal) {
-        window.closeEmailModal();
-      }
-    });
-
-    window.submitPdfDownload = function() {
-      // Trigger browser print dialog to save as PDF
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    };
+    // Modal open/close and PDF export live in js/tools/pdf-export.js.
 
     window.generateCalculatorPDF = async function(email) {
       try {
@@ -2204,5 +1716,9 @@
     };
   </script>
 
+<script src="../js/tools/option-cards.js?v=11" defer></script>
+<script src="../js/tools/pdf-export.js?v=11" defer></script>
+<script src="../js/tools/background-video.js?v=11" defer></script>
+<script src="../js/tools/debug-mode.js?v=11" defer></script>
 </body>
 </html>

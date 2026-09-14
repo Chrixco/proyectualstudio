@@ -3,50 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Cookie Consent & Analytics -->
+  <script src="../js/cookie-consent.js"></script>
   <link rel="icon" href="../images/logo03.ico" type="image/x-icon" />
   <title>Investment Profitability Calculator | Proyectual Studio</title>
   <meta name="description" content="Calculate construction project profitability and ROI for Ecuador or Germany markets."/>
+  <link rel="canonical" href="https://proyectualst.com/pages/investment-calculator.html"/>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Investment Profitability Calculator | Calculadora de Rentabilidad de Inversiones"/>
+  <meta property="og:description" content="Estimate construction project profitability, ROI and payback for the Ecuador and Germany markets. Free tool for developers and architects."/>
+  <meta property="og:image" content="https://proyectualst.com/images/logo03.png"/>
+  <meta property="og:url" content="https://proyectualst.com/pages/investment-calculator.html"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Proyectual Studio"/>
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Investment Profitability Calculator"/>
+  <meta name="twitter:description" content="Estimate construction project profitability, ROI and payback for the Ecuador and Germany markets. Free tool for developers and architects."/>
+  <meta name="twitter:image" content="https://proyectualst.com/images/logo03.png"/>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Investment Profitability Calculator",
+    "alternateName": "Calculadora de Rentabilidad de Inversiones",
+    "description": "Estimate construction project profitability, ROI and payback for the Ecuador and Germany markets. Free tool for developers and architects.",
+    "url": "https://proyectualst.com/pages/investment-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web Browser",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "ArchitectureFirm",
+      "name": "Proyectual Studio",
+      "url": "https://proyectualst.com"
+    }
+  }
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../css/styles.css" rel="stylesheet" />
+  <link href="../css/tools.css?v=11" rel="stylesheet" />
+
+  <!-- Language state, needed before the page scripts run -->
+  <script src="../js/tools/i18n.js"></script>
+  <script src="../js/tools/format.js?v=11"></script>
+  <script src="../js/tools/construction-rates.js?v=11"></script>
 
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Shared diagram theme: surface, type and palette for every chart. -->
+  <script src="../js/tools/chart-theme.js?v=11"></script>
   <!-- EmailJS now handled securely by backend API -->
 
   <style>
-    .calculator-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
-      box-sizing: border-box;
-    }
-
-    main.container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-    }
-
-    .calculator-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
 
     @media (max-width: 768px) {
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
 
       .inputs-panel,
       .results-panel {
@@ -56,24 +73,6 @@
     }
 
     @media (max-width: 480px) {
-      main.container {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-      }
-
-      .calculator-wrapper {
-        padding: 0 0.75rem;
-      }
-
-      .calculator-layout {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .results-panel {
-        position: static !important;
-        top: auto !important;
-      }
 
       .inputs-panel,
       .results-panel {
@@ -83,45 +82,6 @@
       }
     }
 
-    .inputs-panel {
-      background: #FFFFFF;
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      overflow: visible;
-      min-width: 0;
-    }
-
-    .results-panel {
-      background: #FFFFFF;
-      border: 4px solid #0099FF;
-      box-shadow: 12px 12px 0px #0099FF;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      min-width: 0;
-    }
-
-    .calculator-section {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border: 2px solid #0099FF;
-      background: #FFFFFF;
-      border-radius: 0.75rem;
-    }
-
-    .calculator-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.75rem;
-      font-size: 0.8rem;
-      color: #0099FF;
-      display: block;
-      border-bottom: 2px solid rgba(0, 153, 255, 0.1);
-      padding-bottom: 0.5rem;
-    }
-
     .form-control {
       border: 3px solid #0099FF;
       background: #FFFFFF;
@@ -129,7 +89,7 @@
       font-family: 'Space Mono', monospace;
       padding: 0.75rem 1rem;
       font-size: 0.95rem;
-      border-radius: 4px;
+      border-radius: var(--radius-input);
       transition: all 0.3s ease;
     }
 
@@ -200,27 +160,29 @@
       font-family: 'Space Mono', monospace;
     }
 
-    .chart-container {
-      position: relative;
-      height: 300px;
-      margin: 1.5rem 0;
-    }
+    /* .chart-container is styled by css/tools.css, which gives it the
+       shared charcoal plot surface. The local rule here used to set only
+       a height, leaving the canvas on the white panel while the chart
+       drew its axis labels in white. */
 
     .result-section {
       margin-bottom: 1.5rem;
       padding: 1rem;
       border: 2px solid #0099FF;
       background: #FFFFFF;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
     }
 
     .result-section-title {
       font-size: 0.85rem;
       font-weight: 900;
-      color: #0099FF;
+      /* Brand blue #0099FF is 3.0:1 on white — under AA for text this
+         size. The darker tone reads at 4.7:1; the rule underneath keeps
+         the brand colour. */
+      color: #0077CC;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 1rem;
+      margin-bottom: 0.6rem;
       border-bottom: 2px solid #0099FF;
       padding-bottom: 0.5rem;
     }
@@ -236,7 +198,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-button);
       transition: all 0.3s ease;
       font-size: 1rem;
       font-family: 'Space Mono', monospace;
@@ -267,7 +229,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       cursor: pointer;
-      border-radius: 0.75rem;
+      border-radius: var(--radius-button);
       transition: all 0.3s ease;
       font-family: 'Space Mono', monospace;
     }
@@ -288,7 +250,7 @@
       border: 1px solid #0099FF;
       color: #0099FF;
       padding: 0.5rem 0.75rem;
-      border-radius: 4px;
+      border-radius: var(--radius-control);
       font-size: 0.75rem;
       font-weight: bold;
       margin-top: 0.5rem;
@@ -297,27 +259,6 @@
     .currency {
       color: #0099FF;
       font-weight: 600;
-    }
-
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .video-background video {
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-    main.container {
-      position: relative;
-      z-index: 1;
     }
 
     /* Custom Radio Button Styling */
@@ -334,7 +275,7 @@
       cursor: pointer;
       accent-color: #0099FF;
       border: 3px solid #0099FF;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: rgba(0, 0, 0, 0.7);
       transition: all 0.3s ease;
       flex-shrink: 0;
@@ -378,7 +319,7 @@
       padding: 1rem;
       background: rgba(255, 213, 0, 0.05);
       border: 2px solid rgba(255, 213, 0, 0.3);
-      border-radius: 0.75rem;
+      border-radius: var(--radius-panel);
       backdrop-filter: blur(5px);
     }
 
@@ -476,7 +417,7 @@
       border: 2px solid #0099FF;
       color: #0099FF;
       padding: 0.4rem 0.8rem;
-      border-radius: 4px;
+      border-radius: var(--radius-control);
       font-weight: bold;
       font-family: 'Space Mono', monospace;
       font-size: 0.9rem;
@@ -485,7 +426,7 @@
     input[type="range"] {
       width: 100%;
       height: 6px;
-      border-radius: 3px;
+      border-radius: var(--radius-control);
       background: linear-gradient(to right, #0099FF 0%, #0099FF 50%, rgba(0, 153, 255, 0.1) 50%, rgba(0, 153, 255, 0.1) 100%);
       outline: none;
       -webkit-appearance: none;
@@ -495,13 +436,13 @@
     input[type="range"]::-webkit-slider-runnable-track {
       background: linear-gradient(to right, #0099FF 0%, #0099FF 50%, rgba(0, 153, 255, 0.1) 50%, rgba(0, 153, 255, 0.1) 100%);
       height: 6px;
-      border-radius: 3px;
+      border-radius: var(--radius-control);
     }
 
     input[type="range"]::-moz-range-track {
       background: linear-gradient(to right, #0099FF 0%, #0099FF 50%, rgba(0, 153, 255, 0.1) 50%, rgba(0, 153, 255, 0.1) 100%);
       height: 6px;
-      border-radius: 3px;
+      border-radius: var(--radius-control);
       border: none;
     }
 
@@ -510,7 +451,7 @@
       appearance: none;
       width: 20px;
       height: 20px;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #0099FF;
       cursor: pointer;
       border: 3px solid #000000;
@@ -526,7 +467,7 @@
     input[type="range"]::-moz-range-thumb {
       width: 20px;
       height: 20px;
-      border-radius: 50%;
+      border-radius: var(--radius-circle);
       background: #0099FF;
       cursor: pointer;
       border: 3px solid #000000;
@@ -550,68 +491,8 @@
     }
 
     /* Option Card Styling */
-    .option-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .option-cards.two-col {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .option-card {
-      border: 3px solid #0099FF;
-      background: transparent;
-      padding: 1.25rem;
-      border-radius: 0.75rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.5rem;
-    }
-
-    .option-card:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 6px 6px 0px #0099FF;
-    }
-
-    .option-card.active {
-      background: #0099FF;
-      color: #FFFFFF;
-      box-shadow: 8px 8px 0px #0099FF;
-    }
-
-    .option-card-title {
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 1rem;
-    }
-
-    .option-card-subtitle {
-      font-size: 0.8rem;
-      font-weight: 600;
-      opacity: 0.85;
-    }
-
-    .option-card.active .option-card-subtitle {
-      opacity: 1;
-      color: #000000;
-    }
 
     @media (max-width: 480px) {
-      .option-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .option-cards.two-col {
-        grid-template-columns: 1fr;
-      }
 
       .slider-value {
         font-size: 0.8rem;
@@ -638,7 +519,7 @@
       background: rgba(0, 153, 255, 0.2);
       color: #0099FF;
       padding: 0.4rem 0.8rem;
-      border-radius: 4px;
+      border-radius: var(--radius-control);
       font-size: 0.7rem;
       font-weight: bold;
       text-transform: uppercase;
@@ -651,106 +532,17 @@
     }
 
     /* Email Modal for PDF Download */
-    .email-modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .email-modal-overlay.active {
-      display: flex;
-    }
-
-    .email-modal-content {
-      background: #FFFFFF;
-      border: 4px solid #0099FF;
-      padding: 2rem;
-      border-radius: 0.75rem;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 0 50px rgba(255, 213, 0, 0.3);
-    }
-
-    .email-modal-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0099FF;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .email-modal-input {
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border: 3px solid #0099FF;
-      background: #FFFFFF;
-      color: #000000;
-      font-size: 1rem;
-      border-radius: 0.75rem;
-      box-sizing: border-box;
-    }
-
-    .email-modal-input::placeholder {
-      color: rgba(0, 0, 0, 0.5);
-    }
-
-    .email-modal-input:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px #0099FF;
-    }
-
-    .email-modal-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: space-between;
-    }
-
-    .email-modal-btn {
-      flex: 1;
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      border: 3px solid #0099FF;
-      background: #0099FF;
-      color: #000000;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 0.75rem;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .email-modal-btn:hover {
-      background: #ffeb3b;
-      box-shadow: 0 8px 20px rgba(255, 213, 0, 0.4);
-      transform: translateY(-2px);
-    }
-
-    .email-modal-btn.cancel {
-      background: transparent;
-      color: #0099FF;
-    }
-
-    .email-modal-btn.cancel:hover {
-      background: rgba(255, 213, 0, 0.1);
-    }
   </style>
 </head>
-<body class="body-white-text">
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="../media/Sequence yellow_colour_128x64.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+<body class="body-white-text tool-page tool-page--investment">
+<a class="skip-link" href="#main" data-en="Skip to content" data-es="Saltar al contenido">Skip to content</a>
+  <div class="video-background" aria-hidden="true">
+    <!-- Decorative. The poster ships with the page; js/tools/background-video.js
+         attaches the 6.6 MB source after load, and skips it on constrained
+         connections or when reduced motion is preferred. -->
+    <video muted loop playsinline preload="none"
+           poster="../media/calculator-bg-poster.jpg"
+           data-src="../media/Sequence yellow_colour_128x64.mp4"></video>
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
@@ -775,15 +567,15 @@
     </div>
   </nav>
 
-  <main class="container py-5">
+  <main id="main" class="container py-5">
     <div style="text-align: left; margin-bottom: 1.5rem;">
-      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: 50%;">
+      <a href="tools.html" class="brutal-btn-yellow go-back-btn" style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; padding: 0; border-radius: var(--radius-circle);">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </a>
     </div>
-    <h1 class="title-main" style="text-align: center; width: 100%;" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
+    <h1 class="tool-title" data-en="Investment Profitability Calculator" data-es="Calculadora de Rentabilidad de Inversiones">Investment Profitability Calculator</h1>
 
     <div class="calculator-wrapper">
       <div class="calculator-layout">
@@ -927,7 +719,7 @@
                 </div>
                 <input type="range" id="operatingCosts" min="0" max="70" step="1" value="30" aria-label="Operating costs percentage" oninput="syncSlider(this); debouncedCalculate();">
                 <div class="slider-range-labels"><span>0%</span><span>70%</span></div>
-                <span class="hint-text" data-en="Includes maintenance, taxes, insurance, vacancy (30% is typical)" data-es="Incluye mantenimiento, impuestos, seguros, vacancia (30% es típico)">Includes maintenance, taxes, insurance, vacancy</span>
+                <span class="hint-text" data-en="Share of rental income for maintenance, insurance, management and vacancy (30% is typical). Property tax is counted separately." data-es="Porcentaje del ingreso de alquiler para mantenimiento, seguros, gestión y vacancia (30% es típico). El impuesto predial se cuenta aparte.">Share of rental income for maintenance, insurance, management and vacancy (30% is typical). Property tax is counted separately.</span>
               </div>
             </div>
 
@@ -935,7 +727,7 @@
             <div id="sellingPriceSection" style="display: none;">
               <div class="mb-3">
                 <label for="sellingPricePerM2" data-en="Selling Price per m²" data-es="Precio de Venta por m²">Selling Price per m² <span class="currency" id="currencyLabel3">USD</span></label>
-                <input type="number" class="form-control" id="sellingPricePerM2" value="1500" min="100" step="100" oninput="debouncedCalculate();">
+                <input type="number" class="form-control" id="sellingPricePerM2" value="2000" min="100" step="100" oninput="debouncedCalculate();">
                 <span class="hint-text" id="sellingPriceHint" data-en="Market price at time of sale (not appreciation based)" data-es="Precio de mercado al momento de venta (no basado en apreciación)">Market price at time of sale</span>
               </div>
             </div>
@@ -1019,12 +811,12 @@
         <!-- Results Panel -->
         <div class="results-panel" id="resultsPanel" style="opacity: 0.6;" aria-live="polite" aria-atomic="true">
           <div style="text-align: center; margin-bottom: 1.5rem;">
-            <span id="resultStatusBadge" style="background: #0099FF; color: #000000; padding: 0.4rem 0.8rem; border-radius: 0.75rem; font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
+            <span id="resultStatusBadge" style="background: #0099FF; color: #000000; padding: 0.4rem 0.8rem; border-radius: var(--radius-panel); font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">Preview</span>
           </div>
           <div class="result-section">
             <div class="result-section-title" data-en="Investment Summary" data-es="Resumen de Inversión">Investment Summary</div>
             <div class="result-item">
-              <span class="result-label" data-en="Total Investment" data-es="Inversión Total">Total Investment</span>
+              <span class="result-label" data-en="Cash Invested" data-es="Efectivo Invertido">Cash Invested</span>
               <span class="result-value" id="resultInvestment">-</span>
             </div>
             <div id="rentalResultsSection">
@@ -1134,8 +926,35 @@
             </div>
           </div>
 
+          <!-- Call to action: straight after the profit / ROI / breakeven
+               figures, which is the point the reader is deciding. This
+               tool previously had no ask at all — only a PDF export. -->
+          <aside class="tool-cta">
+            <h3 class="tool-cta-title"
+                data-en="Pressure-test these assumptions"
+                data-es="Pon a prueba estos supuestos">
+              Pressure-test these assumptions
+            </h3>
+            <p class="tool-cta-copy"
+               data-en="Every number above rests on inputs you chose: build cost, achievable rent, appreciation. We check them against what comparable projects in your market actually cost and actually let for, and tell you plainly if the case does not hold."
+               data-es="Cada cifra de arriba depende de los datos que elegiste: costo de obra, renta alcanzable, apreciación. Los contrastamos con lo que proyectos comparables en tu mercado realmente cuestan y realmente rentan, y te decimos con franqueza si el caso no se sostiene.">
+              Every number above rests on inputs you chose: build cost, achievable rent, appreciation. We check them against what comparable projects in your market actually cost and actually let for, and tell you plainly if the case does not hold.
+            </p>
+            <div class="tool-cta-actions">
+              <button type="button" class="tool-cta-btn" onclick="navigateToLeadForm()"
+                      data-en="Request a feasibility review" data-es="Solicitar revisión de factibilidad">
+                Request a feasibility review
+              </button>
+              <a class="tool-cta-link" href="contact.html"
+                 data-en="Or send us a question" data-es="O envíanos una pregunta">
+                Or send us a question
+              </a>
+            </div>
+          </aside>
+
           <div class="result-section">
             <div class="result-section-title" data-en="Cash Flow" data-es="Flujo de Caja">Cash Flow Over Time</div>
+            <span class="chart-note" data-en="Cumulative position year by year. Above the dashed line the project has returned its cost." data-es="Posición acumulada año a año. Sobre la línea discontinua el proyecto ya recuperó su costo.">Cumulative position year by year. Above the dashed line the project has returned its cost.</span>
             <div class="chart-container">
               <canvas id="cashFlowChart"></canvas>
             </div>
@@ -1143,13 +962,14 @@
 
           <div class="result-section">
             <div class="result-section-title" data-en="Profit Breakdown" data-es="Desglose de Ganancias">Profit Breakdown</div>
+            <span class="chart-note" data-en="Where the money goes, over the full holding period." data-es="A dónde va el dinero, durante todo el período de tenencia.">Where the money goes, over the full holding period.</span>
             <div class="chart-container">
               <canvas id="profitBreakdownChart"></canvas>
             </div>
           </div>
 
           <div style="text-align: center; margin-top: 2rem;">
-            <button onclick="submitPdfDownload()" class="email-download-btn" style="padding: 0.8rem 2rem; background: #0099FF; color: #000000; border: 3px solid #0099FF; font-weight: bold; border-radius: 0.75rem; cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 8px 20px rgba(255, 213, 0, 0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'" data-en="Download as PDF" data-es="Descargar como PDF">
+            <button onclick="submitPdfDownload()" class="email-download-btn" style="padding: 0.8rem 2rem; background: #0099FF; color: #000000; border: 3px solid #0099FF; font-weight: bold; border-radius: var(--radius-button); cursor: pointer; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 8px 20px rgba(255, 213, 0, 0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'" data-en="Download as PDF" data-es="Descargar como PDF">
               Download as PDF
             </button>
           </div>
@@ -1220,7 +1040,6 @@
     let hasCalculated = false;
     let currentProjectPurpose = 'rent';
     let rentalPurposePercent = 100;
-    let currentLang = localStorage.getItem('lang') || 'en';
 
     // Input constraints and validation limits
     const INPUT_LIMITS = {
@@ -1233,41 +1052,45 @@
       years: { min: 1, max: 100, step: 1 }
     };
 
+    // Construction rates come from js/tools/construction-rates.js, shared with
+    // the budget calculator so the two tools cannot quote different figures for
+    // the same market. Only the finance assumptions live here.
+    const RATE_TABLE = window.CONSTRUCTION_RATES || {
+      ecuador: { currency: 'USD', perM2: { essential: 600, standard: 900, premium: 1400 }, typical: 1200, typicalRange: '800-1500 USD/m²' },
+      germany: { currency: 'EUR', perM2: { essential: 1800, standard: 2500, premium: 4000 }, typical: 2000, typicalRange: '1500-2500 EUR/m²' }
+    };
+
     const countryData = {
       ecuador: {
-        currency: 'USD',
-        taxRate: 0.22,
-        propertyTax: 0.01,
+        currency: RATE_TABLE.ecuador.currency,
+        taxRate: 0.22,          // corporate/rental income rate
+        propertyTax: 0.01,      // predial, share of assessed value
         rentalYield: 0.05,
         appreciation: 0.03,
         info: 'Growing sustainable market, lower construction costs',
-        typicalCostPerM2: 1200,
-        typicalCostRange: '800-1500 USD/m²',
+        typicalCostPerM2: RATE_TABLE.ecuador.typical,
+        typicalCostRange: RATE_TABLE.ecuador.typicalRange,
         finishCosts: {
-          essential: 600,    // $600/m² - Based on Ecuador 2024 construction costs: basic/social housing range $450-$600/m²
-          standard: 900,     // $900/m² - Based on Ecuador 2024: standard residential $750-$1,100/m², using mid-range $900
-          premium: 1400      // $1,400/m² - Based on Ecuador 2024: luxury/premium $1,200-$1,600/m², using mid-range $1,400
+          essential: RATE_TABLE.ecuador.perM2.essential,
+          standard: RATE_TABLE.ecuador.perM2.standard,
+          premium: RATE_TABLE.ecuador.perM2.premium
         }
-        // Sources: https://grupoherreraec.com/blog/ - "Evita estafas: Conoce el precio real por metro cuadrado de Construcción en Quito, Ecuador. 2024"
-        // https://www.minimalstudioec.com/costo-de-construccion-por-mt2-en-ecuador/ - "¿Cuál es el costo de construcción por mt2 en Ecuador?"
       },
       germany: {
-        currency: 'EUR',
-        taxRate: 0.42,
-        propertyTax: 0.006,
+        currency: RATE_TABLE.germany.currency,
+        taxRate: 0.42,          // top marginal personal rate, applied flat
+        propertyTax: 0.002,     // Grundsteuer sits on an assessed value well
+                                // below market; 0.6% of market value was high
         rentalYield: 0.04,
         appreciation: 0.03,
         info: 'Stable market, high energy efficiency standards',
-        typicalCostPerM2: 2000,
-        typicalCostRange: '1500-2500 EUR/m²',
+        typicalCostPerM2: RATE_TABLE.germany.typical,
+        typicalCostRange: RATE_TABLE.germany.typicalRange,
         finishCosts: {
-          essential: 1800,   // €1,800/m² - Based on Germany 2024-2025: basic single-family homes €1,800-€2,500/m²
-          standard: 2500,    // €2,500/m² - Based on Germany 2024-2025: apartment buildings €2,000-€3,000/m², using €2,500 for standard
-          premium: 4000      // €4,000/m² - Based on Germany 2024-2025: luxury construction €4,000-€5,000+/m², using €4,000
+          essential: RATE_TABLE.germany.perM2.essential,
+          standard: RATE_TABLE.germany.perM2.standard,
+          premium: RATE_TABLE.germany.perM2.premium
         }
-        // Sources: https://www.smartest-home.com/en/construction-costs-square-meter-housebuilding/ - "What will a house cost in 2026? Construction costs/square metre"
-        // https://www.euroconstruct.org/ - EUROCONSTRUCT data on German residential construction costs 2024-2025
-        // Data: H1 2024 avg €2,510/m² for single-family homes; simple houses €1,800-€2,500, apartments €2,000-€3,000, luxury €4,000-€5,000+
       }
     };
 
@@ -1440,6 +1263,9 @@
       const percentageSection = document.getElementById('purposePercentageSection');
       if (purpose === 'both') {
         percentageSection.style.display = 'block';
+        // Restore the blend from the slider — selecting 'sale' pins it to 0,
+        // and without this it stayed there and 'both' behaved as pure sale.
+        updatePurposePercentages();
       } else {
         percentageSection.style.display = 'none';
         if (purpose === 'sale') {
@@ -1612,47 +1438,10 @@
       document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
     }
 
-    function showPreviewData() {
-      const countryInfo = countryData[currentCountry];
-      const currency = countryInfo.currency;
-      const locale = currency === 'EUR' ? 'de-DE' : 'en-US';
-      const formatter = new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: currency === 'EUR' ? 'EUR' : 'USD',
-        minimumFractionDigits: 0
-      });
-
-      // Update badge to show preview
-      const badge = document.getElementById('resultStatusBadge');
-      if (badge && !hasCalculated) {
-        badge.textContent = 'PREVIEW';
-      }
-
-      // Sample values
-      const sampleDownPayment = 350000;
-      const sampleRental = 180000;
-      const sampleNetIncome = 126000;
-      const sampleProfit = 450000;
-      const samplePropertyValue = 1200000;
-
-      // Update results with sample data
-      document.getElementById('resultInvestment').textContent = formatter.format(sampleDownPayment);
-      document.getElementById('resultAnnualRental').textContent = formatter.format(sampleRental);
-      document.getElementById('resultNetIncome').textContent = formatter.format(sampleNetIncome);
-      document.getElementById('resultTotalProfit').textContent = formatter.format(sampleProfit);
-      document.getElementById('resultROI').textContent = '28.6%';
-      // Reset labels to defaults for sample calculation
-      document.getElementById('roiLabel').textContent = currentLang === 'en' ? 'ROI (%)' : 'ROI (%)';
-      document.getElementById('roiContext').textContent = currentLang === 'en' ? 'vs ~4% savings account' : 'vs ~4% cuenta de ahorros';
-      document.getElementById('resultPayback').textContent = '3 years';
-      document.getElementById('resultPropertyValue').textContent = formatter.format(samplePropertyValue);
-
-      document.getElementById('resultLandCost').textContent = formatter.format(250000);
-      document.getElementById('resultConstructionCost').textContent = formatter.format(500000);
-      document.getElementById('resultTotalProjectCost').textContent = formatter.format(750000);
-      document.getElementById('resultPropertySize').textContent = '1,000 m²';
-      document.getElementById('resultCostPerM2').textContent = formatter.format(500) + '/m²';
-    }
+    // showPreviewData() used to sit here. It painted invented figures — a
+    // 28.6% ROI, a 3-year payback, $126,000 of net income on a $350,000 down
+    // payment — that came from no calculation and contradicted the model.
+    // Nothing called it; calculateProfitability() runs on load instead.
 
     function calculateLoanPayment(principal, annualRate, years) {
       const monthlyRate = annualRate / 100 / 12;
@@ -1742,8 +1531,13 @@
                           (currentProjectPurpose === 'rent' ? 1 : 0);
       const blendedAnnualRental = annualRental * rentalFocus;
 
-      // Calculate operating costs as percentage of total property cost (applies to entire property regardless of purpose)
-      const annualOperatingCost = Math.round(totalProjectCost * operatingCostPercent * 100) / 100;
+      // Operating costs are a share of gross rental income — that is what the
+      // "30% is typical" rule of thumb refers to. Charging the percentage
+      // against the capital value instead made them ~9x too large and turned
+      // an ordinary rental building into a reported loss.
+      // Scaled to the rent actually being collected: a sale-only project has
+      // no tenants, so it carries no letting costs either.
+      const annualOperatingCost = Math.round(blendedAnnualRental * operatingCostPercent * 100) / 100;
 
       // Calculate annual property tax (applies to entire property value)
       const annualPropertyTax = Math.round(totalProjectCost * propertyTaxRate * 100) / 100;
@@ -1787,10 +1581,12 @@
           // RENT MODE: Annual rental income
           yearProfit = annualNetIncome;
         } else {
-          // BOTH MODE: Annual rental income + sale profit in final year
+          // BOTH MODE: annual rental income, plus the disposal in the final
+          // year. The sale is recognised HERE and nowhere else — it used to be
+          // added again afterwards as an appreciation gain, counting the same
+          // disposal twice on two different price bases.
           yearProfit = annualNetIncome;
           if (year === years) {
-            // Add sale profit in final year
             const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
             const sellingPrice = sellingPricePerM2 * propertySize;
             yearProfit += (sellingPrice - totalProjectCost);
@@ -1856,17 +1652,33 @@
         roiMetricLabel = currentLang === 'en' ? 'Profit Margin (%)' : 'Margen de Ganancia (%)';
         roiContextText = currentLang === 'en' ? 'one-time sale return' : 'retorno de venta única';
       } else if (currentProjectPurpose === 'rent') {
-        // RENT MODE: You invest X, collect Y per year → Profit = annual × years (operational income only)
-        // DO NOT include appreciation gain (unrealized) in rent scenarios
-        totalProfit = cumulativeProfit;
-        const averageAnnualOperationalProfit = years > 0 ? (cumulativeProfit / years) : 0;
-        annualizedROI = years > 0 ? ((averageAnnualOperationalProfit / downPayment) * 100) : 0;
+        // RENT MODE: profit is the net rent collected over the period. The
+        // purchase price is not a loss — the building is still owned — so it
+        // is added back out of the cumulative cash flow, which carries it from
+        // year 0. Capital recovery is what the breakeven row is for.
+        totalProfit = cumulativeProfit + downPayment;
+
+        // The headline rate is cash-on-cash return: annual net income over the
+        // cash invested. The previous figure divided cumulative cash flow —
+        // which already subtracts the whole purchase price — by that same
+        // purchase price, so a building yielding a healthy 5.7% reported
+        // -4.35% right next to the words "vs ~4% savings account".
+        annualizedROI = downPayment > 0 ? ((annualNetIncome / downPayment) * 100) : 0;
+        roiMetricLabel = currentLang === 'en' ? 'Cash-on-Cash Return (%)' : 'Retorno sobre Efectivo (%)';
+        roiContextText = currentLang === 'en'
+          ? 'annual net rent ÷ cash invested'
+          : 'renta neta anual ÷ efectivo invertido';
       } else {
-        // BOTH MODE: You invest X, collect Y per year, sell for Z → Profit = (annual × years) + appreciation
-        // This is a blended scenario combining both operational and appreciation returns
-        totalProfit = cumulativeProfit + appreciationGain;
-        const totalReturn = totalProfit;
-        annualizedROI = years > 0 ? ((totalReturn / years / downPayment) * 100) : 0;
+        // BOTH MODE: rental income and the disposal are both already inside
+        // cumulativeProfit. Adding appreciationGain here recognised the sale a
+        // second time, on a different price basis. The purchase price is added
+        // back for the same reason as in rent mode.
+        totalProfit = cumulativeProfit + downPayment;
+        annualizedROI = downPayment > 0 ? ((annualNetIncome / downPayment) * 100) : 0;
+        roiMetricLabel = currentLang === 'en' ? 'Cash-on-Cash Return (%)' : 'Retorno sobre Efectivo (%)';
+        roiContextText = currentLang === 'en'
+          ? 'annual net rent ÷ cash invested'
+          : 'renta neta anual ÷ efectivo invertido';
       }
 
       const roi = annualizedROI.toFixed(2);
@@ -1931,7 +1743,7 @@
       document.getElementById('resultLandCost').textContent = formatter.format(landCost);
       document.getElementById('resultConstructionCost').textContent = formatter.format(constructionCost);
       document.getElementById('resultTotalProjectCost').textContent = formatter.format(totalProjectCost);
-      document.getElementById('resultPropertySize').textContent = propertySize.toLocaleString() + ' m²';
+      document.getElementById('resultPropertySize').textContent = formatToolNumber(propertySize) + ' m²';
       document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
 
       // Update loan breakdown panel if bank financing is selected
@@ -1944,7 +1756,6 @@
         const loanTerm = parseInt(document.getElementById('loanTerm').value);
 
         const loanAmount = totalProjectCost * loanPercent;
-        const monthlyPayment = loanAmount / (loanTerm * 12) * (1 + (interestRate / 100 / 12 * loanTerm * 12)); // Approximation for display
         const monthlyRate = interestRate / 100 / 12;
         const numberOfPayments = loanTerm * 12;
 
@@ -2017,8 +1828,6 @@
 
     function drawCashFlowChart(labels, data, propertyValues, plotValues, currency, investmentPurpose) {
       const ctx = document.getElementById('cashFlowChart').getContext('2d');
-      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
-      const accentLight = getComputedStyle(document.documentElement).getPropertyValue('--accent-light').trim();
       const currencySymbol = currency === 'EUR' ? '€' : '$';
 
       // Get translated labels based on investment purpose
@@ -2042,25 +1851,31 @@
         cashFlowChart.destroy();
       }
 
-      // Customize line styling based on investment purpose
-      let mainLineColor, mainLineBackColor, mainLineTension;
+      const T = window.ProyectualCharts;
+
+      // Line colour per purpose. All three are taken from the shared
+      // palette, which is tuned for the charcoal plot surface; the old
+      // #FF6B6B / #90EE90 / #FFB347 set was mixed in origin and two of
+      // them sat under 4.5:1 wherever they landed.
+      let mainLineColor, mainLineTension;
 
       if (investmentPurpose === 'sale') {
-        // Sale mode: Emphasize the one-time profit realization
-        mainLineColor = '#FF6B6B';  // Red for dramatic one-time gain
-        mainLineBackColor = 'rgba(255, 107, 107, 0.15)';
-        mainLineTension = 0.2;  // Sharp line to show the jump
+        // Sale: a one-time realisation, drawn taut.
+        mainLineColor = T.SERIES[4];   // coral
+        mainLineTension = 0.2;
       } else if (investmentPurpose === 'rent') {
-        // Rent mode: Steady income growth
-        mainLineColor = accentColor;
-        mainLineBackColor = accentLight;
-        mainLineTension = 0.4;  // Smooth curve for steady growth
+        // Rent: steady income, drawn as a smooth climb.
+        mainLineColor = '#38B6FF';
+        mainLineTension = 0.4;
       } else {
-        // Both mode: Income growth with sale bonus
-        mainLineColor = '#FFD500';  // Yellow for blended scenario
-        mainLineBackColor = 'rgba(255, 213, 0, 0.15)';
+        // Both: income plus a sale at the end.
+        mainLineColor = T.SERIES[0];   // brand yellow
         mainLineTension = 0.4;
       }
+
+      const mainLineBackColor = T.alpha(mainLineColor, 0.16);
+      const valueColor = T.SERIES[3];  // green — property value
+      const plotColor = T.SERIES[1];   // orange — plot value
 
       // Build datasets array - only include appreciation lines for rent and both modes
       const datasets = [
@@ -2072,9 +1887,10 @@
           borderWidth: 3,
           fill: true,
           tension: mainLineTension,
-          pointRadius: 5,
+          pointRadius: 0,
+          pointHoverRadius: 6,
           pointBackgroundColor: mainLineColor,
-          pointBorderColor: '#FFFFFF',
+          pointBorderColor: T.tokens().surface,
           pointBorderWidth: 2,
           yAxisID: 'y'
         }
@@ -2087,31 +1903,40 @@
           {
             label: labelPropertyValue,
             data: propertyValues,
-            borderColor: '#90EE90',
+            borderColor: valueColor,
+            backgroundColor: 'transparent',
             borderWidth: 2,
             fill: false,
             tension: 0.4,
-            pointRadius: 3,
-            pointBackgroundColor: '#90EE90',
-            pointBorderColor: '#90EE90',
-            borderDash: [5, 5],
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: valueColor,
+            pointBorderColor: T.tokens().surface,
+            borderDash: [6, 4],
             yAxisID: 'y1'
           },
           {
             label: labelPlotValue,
             data: plotValues,
-            borderColor: '#FFB347',
+            borderColor: plotColor,
+            backgroundColor: 'transparent',
             borderWidth: 2,
             fill: false,
             tension: 0.4,
-            pointRadius: 2,
-            pointBackgroundColor: '#FFB347',
-            pointBorderColor: '#FFB347',
-            borderDash: [10, 5],
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: plotColor,
+            pointBorderColor: T.tokens().surface,
+            borderDash: [2, 4],
             yAxisID: 'y1'
           }
         );
       }
+
+      // "-$800k", never "$-800k".
+      const money = function (value) {
+        return T.money(currencySymbol, value, true);
+      };
 
       cashFlowChart = new Chart(ctx, {
         type: 'line',
@@ -2122,75 +1947,98 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: {
-              display: true,
-              labels: {
-                color: 'rgba(255, 255, 255, 0.8)',
-                font: { size: 12, weight: 'bold' }
+            legend: T.legend({ position: 'bottom', size: 11 }),
+            tooltip: T.tooltip({
+              callbacks: {
+                title: function (items) {
+                  return (currentLang === 'en' ? 'Year ' : 'Año ') + items[0].label;
+                },
+                label: function (ctx2) {
+                  return ' ' + ctx2.dataset.label + ': ' + T.money(currencySymbol, ctx2.parsed.y);
+                }
               }
-            }
+            }),
+            breakEvenLine: {}
           },
           scales: {
-            x: {
-              display: true,
-              grid: {
-                color: 'rgba(255, 213, 0, 0.1)',
-                drawBorder: false
-              },
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.6)',
-                font: { size: 10 }
+            x: T.axis({
+              grid: false,
+              tickSize: 10,
+              title: currentLang === 'en' ? 'Years' : 'Años'
+            }),
+            y: Object.assign(
+              T.axis({
+                title: labelCumulativeProfit,
+                tickCallback: money
+              }),
+              { type: 'linear', display: true, position: 'left' }
+            ),
+            // Asset value runs on its own scale, so it is tinted to match
+            // the two dashed series it belongs to rather than left in the
+            // same ink as the left hand axis.
+            y1: Object.assign(
+              T.axis({
+                grid: false,
+                tickColor: valueColor,
+                title: currentLang === 'en' ? 'Asset Value' : 'Valor del Activo',
+                titleColor: valueColor,
+                tickCallback: money
+              }),
+              {
+                type: 'linear',
+                display: investmentPurpose !== 'sale',
+                position: 'right'
               }
-            },
-            y: {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              grid: {
-                color: 'rgba(255, 213, 0, 0.1)',
-                drawBorder: false
-              },
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.6)',
-                font: { size: 10 },
-                callback: function(value) {
-                  return currencySymbol + (value / 1000).toFixed(0) + 'k';
-                }
-              },
-              title: {
-                display: true,
-                text: labelCumulativeProfit
-              }
-            },
-            y1: {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              grid: {
-                drawOnChartArea: false
-              },
-              ticks: {
-                color: '#90EE90',
-                font: { size: 10 },
-                callback: function(value) {
-                  return currencySymbol + (value / 1000).toFixed(0) + 'k';
-                }
-              },
-              title: {
-                display: true,
-                text: 'Property Value',
-                color: '#90EE90'
-              }
-            }
+            )
           }
-        }
+        },
+        plugins: [investmentBreakEvenPlugin]
       });
     }
 
+    /**
+     * Marks the zero line on the cash flow chart. Chart.js core carries
+     * no annotation support and the page loads no plugin from the CDN,
+     * so the line that separates "still under water" from "paid back" is
+     * drawn here rather than left for the reader to infer.
+     */
+    const investmentBreakEvenPlugin = {
+      id: 'breakEvenLine',
+      afterDatasetsDraw: function (chart) {
+        const T = window.ProyectualCharts;
+        const yScale = chart.scales.y;
+        const area = chart.chartArea;
+        if (!yScale || !area) return;
+
+        const zeroY = yScale.getPixelForValue(0);
+        if (zeroY < area.top || zeroY > area.bottom) return;
+
+        const c = chart.ctx;
+        c.save();
+        c.beginPath();
+        c.setLineDash([6, 4]);
+        c.lineWidth = 1.5;
+        c.strokeStyle = T.tokens().ink;
+        c.moveTo(area.left, zeroY);
+        c.lineTo(area.right, zeroY);
+        c.stroke();
+
+        c.setLineDash([]);
+        c.font = 'bold 10px ' + T.FONT_FAMILY;
+        c.fillStyle = T.tokens().ink;
+        c.textAlign = 'left';
+        c.textBaseline = 'bottom';
+        c.fillText(currentLang === 'en' ? 'BREAK-EVEN' : 'EQUILIBRIO', area.left + 4, zeroY - 4);
+        c.restore();
+      }
+    };
+
     function drawProfitBreakdownChart(rental, operating, total, currency, purpose, totalProjectCost) {
       const ctx = document.getElementById('profitBreakdownChart').getContext('2d');
-      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
+      const T = window.ProyectualCharts;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
 
       // Get translated labels
       const labelRentalIncome = currentLang === 'en' ? 'Annual Rental Income' : 'Ingreso Anual de Alquiler';
@@ -2202,79 +2050,117 @@
         profitBreakdownChart.destroy();
       }
 
-      // Determine what to show based on purpose
+      // Money in, money out and what is left keep the same three colours
+      // in every mode, so the reader learns the key once.
+      const colorIncome = '#38B6FF';
+      const colorCost = T.SERIES[4];    // coral — money out
+      const colorProfit = T.SERIES[3];  // green — money kept
+      const colorInvested = T.SERIES[7]; // slate — capital tied up
+
       let chartLabels = [];
       let chartData = [];
       let chartColors = [];
 
       if (purpose === 'sale') {
         // SALE: Show cost vs selling price breakdown
-        const salePrice = Math.max(0, total + totalProjectCost); // Back-calculate sale price
         const costLabel = currentLang === 'en' ? 'Total Investment' : 'Inversión Total';
         const profitLabel = currentLang === 'en' ? 'Profit/Loss' : 'Ganancia/Pérdida';
 
         chartLabels = [costLabel, profitLabel];
-        chartData = [totalProjectCost, Math.max(0, total)]; // Investment + Profit
-
-        if (total < 0) {
-          // Loss scenario - show red
-          chartColors = ['rgba(100, 100, 100, 0.7)', 'rgba(255, 107, 107, 0.7)'];
-        } else {
-          // Profit scenario - show green
-          chartColors = ['rgba(100, 100, 100, 0.7)', 'rgba(144, 238, 144, 0.7)'];
-        }
+        chartData = [totalProjectCost, Math.abs(total)];
+        chartColors = [colorInvested, total < 0 ? colorCost : colorProfit];
       } else if (purpose === 'rent') {
         // RENT: Show rental income, operating costs, net profit
         chartLabels = [labelRentalIncome, labelOperatingCosts, labelNetProfit];
         chartData = [rental, operating, Math.max(0, rental - operating)];
-        chartColors = [accentColor, 'rgba(255, 107, 107, 0.7)', 'rgba(144, 238, 144, 0.7)'];
+        chartColors = [colorIncome, colorCost, colorProfit];
       } else {
-        // BOTH: Show rental income, operating costs, net profit (but this is blended)
+        // BOTH: rental income, operating costs, appreciation
         chartLabels = [labelRentalIncome, labelOperatingCosts, labelAppreciation];
         chartData = [rental, operating, Math.max(0, total - rental + operating)];
-        chartColors = [accentColor, 'rgba(255, 107, 107, 0.7)', 'rgba(144, 238, 144, 0.7)'];
-      }
-
-      // Determine border colors based on purpose
-      let borderColors = [];
-      if (purpose === 'sale') {
-        borderColors = total < 0
-          ? ['rgba(100, 100, 100, 1)', '#FF6B6B']  // Loss: gray + red
-          : ['rgba(100, 100, 100, 1)', '#90EE90']; // Profit: gray + green
-      } else if (purpose === 'rent') {
-        borderColors = [accentColor, '#FF6B6B', '#90EE90'];
-      } else {
-        borderColors = [accentColor, '#FF6B6B', '#90EE90'];
+        chartColors = [colorIncome, colorCost, colorProfit];
       }
 
       profitBreakdownChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: chartLabels,
-          datasets: [{
+          datasets: [Object.assign({
             data: chartData,
             backgroundColor: chartColors,
-            borderColor: borderColors,
-            borderWidth: 2
-          }]
+            hoverOffset: 6
+          }, T.arcBorder())]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          cutout: '52%',
+          layout: { padding: { top: 4, bottom: 4 } },
           plugins: {
-            legend: {
-              display: true,
-              position: 'bottom',
-              labels: {
-                color: 'rgba(255, 255, 255, 0.8)',
-                font: { size: 11, weight: 'bold' },
-                padding: 15
+            legend: T.legend({ position: 'bottom', size: 11 }),
+            tooltip: T.tooltip({
+              callbacks: {
+                label: function (item) {
+                  const values = item.dataset.data;
+                  const sum = values.reduce((a, b) => a + b, 0) || 1;
+                  const share = (item.parsed / sum) * 100;
+                  return ' ' + item.label + ': ' + T.money(currencySymbol, item.parsed) +
+                    ' (' + share.toFixed(1) + '%)';
+                }
               }
-            }
+            })
           }
         }
       });
     }
+
+    /**
+     * Hands the current scenario to the lead form, the same way the other
+     * three calculators do: the form reads `leadCaptureData` out of
+     * sessionStorage and shows it back to the reader before they send it.
+     */
+    window.navigateToLeadForm = function () {
+      const text = id => document.getElementById(id)?.textContent?.trim() || '—';
+      const field = id => document.getElementById(id)?.value?.trim() || '';
+      const symbol = currentCountry === 'germany' ? '€' : '$';
+
+      const purposeLabel = currentProjectPurpose === 'sale' ? 'Build to sell'
+        : currentProjectPurpose === 'rent' ? 'Build to rent'
+        : 'Rent then sell';
+
+      const leadData = {
+        calculatorType: 'Investment Feasibility',
+        data: {
+          summary: {
+            project: field('projectName') || 'Investment project',
+            market: currentCountry === 'germany' ? 'Germany' : 'Ecuador',
+            purpose: purposeLabel,
+            totalProjectCost: text('resultTotalProjectCost'),
+            totalProfit: text('resultTotalProfit'),
+            roi: text('resultROI')
+          },
+          full: {
+            project: field('projectName') || 'Investment project',
+            market: currentCountry === 'germany' ? 'Germany' : 'Ecuador',
+            purpose: purposeLabel,
+            constructionCost: symbol + field('constructionCost'),
+            propertySize: field('propertySize') + ' m²',
+            landCost: symbol + field('landCost'),
+            monthlyRentPerM2: symbol + field('rentalPerM2'),
+            operatingCosts: field('operatingCosts') + '%',
+            appreciation: field('appreciation') + '%/yr',
+            analysisPeriod: field('years') + ' years',
+            totalProfit: text('resultTotalProfit'),
+            roi: text('resultROI'),
+            breakeven: text('resultPayback'),
+            propertyValueAtEnd: text('resultPropertyValue')
+          }
+        }
+      };
+
+      sessionStorage.setItem('leadCaptureData', JSON.stringify(leadData));
+      window.location.href = './lead-form.html';
+    };
 
     // Function to re-sync all sliders (called on theme change)
     function resyncAllSliders() {
@@ -2299,17 +2185,9 @@
       // Auto-calculate on page load
       calculateProfitability();
 
-      const currentLang = localStorage.getItem('lang') || 'en';
-      updateLanguageDisplay(currentLang);
-
-      const langToggle = document.getElementById('lang-toggle');
-      if (langToggle) {
-        langToggle.addEventListener('click', function() {
-          const newLang = currentLang === 'en' ? 'es' : 'en';
-          localStorage.setItem('lang', newLang);
-          updateLanguageDisplay(newLang);
-        });
-      }
+      // Language switching is handled by js/tools/i18n.js; the figures
+      // are grouped per language, so they are re-rendered on each switch.
+      document.addEventListener('proyectual:languagechange', () => calculateProfitability());
 
     });
 
@@ -2322,33 +2200,8 @@
       }
     });
 
-    function updateLanguageDisplay(lang) {
-      document.querySelectorAll('[data-en]').forEach(el => {
-        if (lang === 'es' && el.hasAttribute('data-es')) {
-          el.textContent = el.getAttribute('data-es');
-        } else if (lang === 'en') {
-          el.textContent = el.getAttribute('data-en');
-        }
-      });
-    }
 
-    // Email Modal and PDF Download Functions
-    function openEmailModal() {
-      document.getElementById('emailModal').classList.add('active');
-      document.getElementById('emailInput').focus();
-    }
-
-    function closeEmailModal() {
-      document.getElementById('emailModal').classList.remove('active');
-      document.getElementById('emailInput').value = '';
-    }
-
-    window.submitPdfDownload = function() {
-      // Trigger browser print dialog to save as PDF
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    };
+    // Modal open/close and PDF export live in js/tools/pdf-export.js.
 
     function proceedWithEmailDownload(email) {
       const currentLang = localStorage.getItem('lang') || 'en';
@@ -2383,5 +2236,9 @@
       }
     });
   </script>
+<script src="../js/tools/option-cards.js?v=11" defer></script>
+<script src="../js/tools/pdf-export.js?v=11" defer></script>
+<script src="../js/tools/background-video.js?v=11" defer></script>
+<script src="../js/tools/debug-mode.js?v=11" defer></script>
 </body>
 </html>

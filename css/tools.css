@@ -1,0 +1,1958 @@
+/**
+ * Proyectual Studio — Tools design layer
+ * Shared styles for tools.html and the four calculators.
+ * Loaded AFTER css/styles.css so it can rely on the :root tokens defined there.
+ */
+
+/* ---------------------------------------------------------------
+   0. Typefaces and type roles
+   The @font-face declarations and the --font-display / --font-body
+   roles now live in css/styles.css, which every page loads. They used
+   to be here, where only the five tool pages could see them.
+   What stays below is the part that is genuinely tool-specific: the
+   fluid size scale and the spacing rhythm the calculators are built on.
+   --------------------------------------------------------------- */
+
+.tool-page {
+  /* Type scale, fluid between a 360px phone and a 1280px desktop.
+     The floor is 0.8rem (12.8px) — below that these labels stopped being
+     comfortably readable, and several sat at 10.4px. */
+  --step--1: clamp(0.8rem, 0.76rem + 0.18vw, 0.875rem);
+  --step-0:  clamp(0.9rem, 0.86rem + 0.20vw, 1rem);
+  --step-1:  clamp(1.05rem, 0.98rem + 0.32vw, 1.25rem);
+  --step-2:  clamp(1.3rem, 1.15rem + 0.65vw, 1.75rem);
+  --step-3:  clamp(1.6rem, 1.30rem + 1.30vw, 2.5rem);
+
+  /* Rhythm */
+  --space-xs: 0.4rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+}
+
+.tool-page {
+  font-family: var(--font-body);
+}
+
+/* Prose gets the sans; anything that reads as an instrument keeps the mono. */
+.tool-page :is(p, li, label, .hint-text, .tool-subtitle, .option-card p,
+               .breakdown-label, .result-context, .overview-subvalue) {
+  font-family: var(--font-body);
+}
+
+.tool-page :is(h1, h2, h3, h4, h5, .calculator-label, .tool-title,
+               .total-amount, .range-value, .summary-value, .result-value,
+               .overview-value, .chart-btn, .cta-final, .option-card-title) {
+  font-family: var(--font-display);
+}
+
+/* Figures line up in a column when every digit is the same width. */
+.tool-page :is(.total-amount, .range-value, .summary-value, .result-value,
+               .overview-value, .breakdown-label, .vol-badge, .slider-value) {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ---------------------------------------------------------------
+   1. Tool page header
+   Replaces the per-page `.text-white` / `.title-main` drift. The
+   calculators sit on a light background, so the title must be an
+   accent colour, never white.
+   --------------------------------------------------------------- */
+.tool-title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  color: var(--accent-primary, #0099FF);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  margin: 0 auto 0.75rem;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  text-wrap: balance;
+}
+
+.tool-subtitle {
+  text-align: center;
+  color: var(--text-secondary, #333333);
+  margin: 0 auto 2.5rem;
+  max-width: 60ch;
+  padding: 0 1rem;
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------
+   1b. Background video scrim
+   The calculators play a full-bleed looping video behind the page, so
+   text contrast otherwise changes frame by frame. A fixed scrim between
+   the video and the content makes every foreground colour predictable
+   and keeps the light panels reading as intended.
+   --------------------------------------------------------------- */
+.video-background::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.86);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------
+   2. Visible keyboard focus
+   The site had focus styles on three inputs only; everything else
+   relied on the UA outline, which the brutalist borders hide.
+   --------------------------------------------------------------- */
+.tool-page :is(a, button, input, select, textarea, [tabindex]):focus-visible,
+.option-card:focus-visible,
+.tool-button:focus-visible {
+  outline: 3px solid var(--color-yellow, #FFD500);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* Never remove the outline for keyboard users, even where a page
+   sets `outline: none` on :focus. */
+.tool-page :is(a, button, input, select, textarea):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------------------------------------------------------------
+   3. Option cards as a keyboard-operable radio group
+   Behaviour is added by js/tools/option-cards.js; these rules make
+   the resulting state visible and expose the pointer affordance.
+   --------------------------------------------------------------- */
+.option-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------------------------------------------------------------
+   4. Skip link — lets keyboard and screen-reader users jump past the
+   navbar straight into the calculator.
+   --------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10000;
+  background: var(--color-yellow, #FFD500);
+  color: #000000;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 3px solid #000000;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+/* ---------------------------------------------------------------
+   5. Screen-reader-only helper (Bootstrap ships .visually-hidden,
+   but the tools must not depend on it being loaded).
+   --------------------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------
+   6. Reduced motion
+   The cursor glow, scroll reveals, parallax and hover translations
+   are all decorative. Honour the OS setting.
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cursor-glow {
+    display: none !important;
+  }
+
+  .option-card:hover,
+  .tool-button:hover {
+    transform: none !important;
+  }
+}
+
+/* ===============================================================
+   CALCULATOR SHELL
+   The four calculators each carried their own near-identical copy of
+   the layout below. It lives here once; per-tool differences are
+   expressed as custom properties rather than as forked rules.
+   =============================================================== */
+
+.tool-page {
+  --tool-accent: #0099FF;
+  --tool-surface: #FFFFFF;
+  /* Kept as a name the tool rules already use, but it is no longer an
+     independent value: it resolves to the site-wide panel radius set in
+     css/styles.css. */
+  --tool-radius: var(--radius-panel);
+  --tool-shadow: 12px 12px 0px var(--tool-accent);
+  --tool-panel-border: 4px solid var(--tool-accent);
+
+  --tool-section-bg: rgba(0, 153, 255, 0.06);
+  --tool-section-border: 2px solid var(--tool-accent);
+
+  --tool-label-color: var(--tool-accent);
+  --tool-label-rule: rgba(0, 153, 255, 0.15);
+
+  /* --- Diagram surface -------------------------------------------
+     The charts are read as data, not as decoration, so they sit on
+     their own charcoal surface rather than on the white panel. Every
+     value below is consumed twice: by the rules in this file and, via
+     js/tools/chart-theme.js, by Chart.js itself — the canvas cannot
+     resolve a CSS custom property on its own, so the theme module
+     reads these tokens once and hands the resolved colours over.
+
+     Contrast against --chart-surface (#2B2B2B):
+       --chart-ink        #F2F2F2  13.1:1   titles, legends
+       --chart-ink-muted  #C4C4C4   7.6:1   axis ticks
+       brand yellow       #FFD500  10.4:1
+       chart blue         #38B6FF   7.0:1  (page blue #0099FF is 4.7:1
+                                            — fine for bars, thin for
+                                            1px strokes, so strokes use
+                                            the lighter tone)
+     --------------------------------------------------------------- */
+  --chart-surface: #2B2B2B;
+  --chart-ink: #F2F2F2;
+  --chart-ink-muted: #C4C4C4;
+  --chart-grid: rgba(255, 255, 255, 0.14);
+  --chart-border: rgba(255, 255, 255, 0.28);
+  --chart-accent: #38B6FF;
+}
+
+/* The carbon tool reads in yellow; only the tint tokens change. */
+.tool-page--carbon {
+  --tool-section-bg: rgba(255, 213, 0, 0.06);
+  --tool-label-rule: rgba(255, 213, 0, 0.25);
+  --chart-accent: #FFD500;
+}
+
+.tool-page main.container {
+  position: relative;
+  z-index: 1;
+}
+
+.calculator-wrapper {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.calculator-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Components inside these panels size themselves against the panel, not
+   the viewport — the panel is one column of a two-column page. */
+.inputs-panel,
+.results-panel {
+  container-type: inline-size;
+  container-name: panel;
+  background: var(--tool-surface);
+  border: var(--tool-panel-border);
+  box-shadow: var(--tool-shadow);
+  border-radius: var(--tool-radius);
+  padding: 1.5rem;
+  overflow: visible;
+  min-width: 0;
+}
+
+/* Carbon stacks a tab strip above its inputs and needs both panels to
+   distribute height; solar keeps its results in view while you scroll. */
+.tool-page--carbon .inputs-panel,
+.tool-page--carbon .results-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-page--solar .results-panel {
+  position: sticky;
+  /* Clear the floating navbar, then a little air. The old flat 100px
+     was measured against a navbar that sat in the page flow. */
+  top: calc(var(--navbar-height) + var(--navbar-inset) * 2 + 1rem);
+  height: fit-content;
+}
+
+.calculator-section {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: var(--tool-section-border);
+  border-radius: var(--tool-radius);
+  background: var(--tool-section-bg);
+  backdrop-filter: blur(5px);
+}
+
+.calculator-section:last-child {
+  margin-bottom: 0;
+}
+
+.calculator-label {
+  display: block;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  color: var(--tool-label-color);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--tool-label-rule);
+}
+
+/* Full-bleed decorative video layer (see js/tools/background-video.js). */
+.video-background {
+  position: fixed;
+  inset: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-background video {
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .calculator-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-page--solar .results-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .calculator-wrapper {
+    padding: 0 1rem;
+  }
+
+  .inputs-panel,
+  .results-panel {
+    padding: 1.25rem;
+    box-shadow: 6px 6px 0px var(--tool-accent);
+  }
+
+  /* A 300px plot squeezed into a phone column leaves no room for the
+     legend; give the diagrams more height, not less, and let the
+     control pills wrap instead of scrolling sideways. */
+  .chart-wrapper,
+  .chart-container {
+    height: 330px;
+    padding: 0.75rem 0.75rem 0.6rem;
+  }
+
+  .chart-controls {
+    display: flex;
+    width: 100%;
+  }
+
+  .chart-btn {
+    flex: 1 1 auto;
+    padding: 0.5rem 0.7rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .chart-wrapper,
+  .chart-container {
+    height: 300px;
+  }
+
+  .chart-btn {
+    font-size: 0.68rem;
+    letter-spacing: 0.3px;
+  }
+}
+
+/* ===============================================================
+   CALCULATOR COMPONENTS
+   Extracted from the four pages, which each carried a slightly
+   drifted copy. Values follow the most refined variant; per-tool
+   colour differences come from the tokens above.
+   =============================================================== */
+
+/* --- Choice cards -------------------------------------------- */
+.option-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-cards.two-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.option-card {
+  padding: 0.8rem;
+  border: 2px solid rgba(0, 153, 255, 0.3);
+  border-radius: var(--tool-radius);
+  background: var(--tool-surface);
+  color: #000000;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-card:last-child {
+  margin-bottom: 0;
+}
+
+.option-card h5 {
+  margin-bottom: 0.2rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.option-card p {
+  margin-bottom: 0;
+  font-size: 0.75rem;
+  line-height: 1.1;
+  color: #000000;
+}
+
+.option-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px var(--tool-accent);
+  border-color: var(--tool-accent);
+  background: rgba(0, 153, 255, 0.1);
+}
+
+/* `.selected` and `.active` are the two class names the pages use to
+   mark the chosen card. The ARIA layer mirrors these rather than
+   driving them, so the visual state stays owned by the page. */
+.option-card.selected,
+.option-card.active {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  border-color: var(--tool-accent);
+  box-shadow: 4px 4px 0px var(--tool-accent);
+}
+
+.option-card.selected h5,
+.option-card.selected p,
+.option-card.active h5,
+.option-card.active p {
+  color: #FFFFFF;
+}
+
+/* The investment tool centres a title/subtitle pair in each card. */
+.tool-page--investment .option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+}
+
+.option-card-title {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1rem;
+}
+
+.option-card-subtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.option-card.active .option-card-subtitle {
+  opacity: 1;
+}
+
+/* --- Range sliders ------------------------------------------- */
+.range-slider {
+  width: 100%;
+  height: 6px;
+  margin: 0.5rem 0;
+  background: rgba(0, 153, 255, 0.1);
+  border: 1px solid var(--tool-accent);
+  border-radius: var(--radius-control);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--tool-accent);
+  border: 2px solid #FFFFFF;
+  border-radius: var(--radius-circle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--tool-accent);
+  border: 2px solid #FFFFFF;
+  border-radius: var(--radius-circle);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover,
+.range-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.range-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.8rem;
+  margin-top: 0.6rem;
+  padding: 0.4rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--tool-accent);
+  text-align: center;
+  background: rgba(0, 153, 255, 0.1);
+  border-radius: var(--radius-control);
+}
+
+/* --- Results summary ----------------------------------------- */
+.selection-summary {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--tool-radius);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.95rem;
+  border-bottom: 2px solid rgba(0, 153, 255, 0.3);
+}
+
+.summary-item:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.summary-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: var(--tool-accent);
+}
+
+.summary-value {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000000;
+}
+
+/* --- Headline figure ----------------------------------------- */
+.total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  border: 4px solid var(--tool-accent);
+  box-shadow: 8px 8px 0px var(--tool-accent);
+  border-radius: var(--tool-radius);
+  text-align: center;
+}
+
+.total-amount {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-break: break-word;
+}
+
+.total-label {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.equivalence {
+  margin-top: 0.7rem;
+  padding: 0.8rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--tool-radius);
+}
+
+.disclaimer {
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  opacity: 0.8;
+}
+
+/* --- Inline call to action ------------------------------------
+   The tools already ended with a row of buttons, but that row sits
+   below the charts at the bottom of a long results panel — past the
+   point where most readers stop. This block goes directly under the
+   figure that answers the question the tool was opened to answer,
+   which is where the reader is actually deciding what to do next.
+
+   One primary action per tool. The buttons that remain at the foot of
+   the panel are utilities (PDF export, the tree-planting page), not a
+   second competing ask.
+   --------------------------------------------------------------- */
+.tool-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 1.25rem 0;
+  padding: 1.1rem 1.25rem;
+  background: #FFFFFF;
+  border: 3px solid var(--tool-accent);
+  border-left-width: 10px;   /* the accent reads as a marker, not a frame */
+  border-radius: var(--radius-panel);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.12);
+  text-align: left;
+}
+
+.tool-cta-title {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: #111111;
+  /* The panels centre their headings; this one is a block of prose and
+     reads left-aligned against its accent marker. */
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-wrap: balance;
+}
+
+.tool-cta-copy {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #333333;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.tool-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 0.6rem;
+}
+
+/* Filled rather than outlined, so it is plainly the primary action.
+   Near-black rather than accent-filled: white on #0099FF is 3.0:1,
+   under AA at this text size, while this holds 18:1. */
+.tool-cta-btn {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  background: #111111;
+  color: #FFFFFF;
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--radius-button);
+  box-shadow: 4px 4px 0 var(--tool-accent);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.tool-cta-btn:hover,
+.tool-cta-btn:focus-visible {
+  background: #0077CC;   /* 4.7:1 against white text */
+  color: #FFFFFF;
+  box-shadow: 6px 6px 0 var(--tool-accent);
+  transform: translate(-2px, -2px);
+}
+
+.tool-cta-btn:focus-visible {
+  outline: 3px solid #111111;
+  outline-offset: 3px;
+}
+
+/* The quieter second option: same weight of information, far less ink. */
+.tool-cta-link {
+  font-size: 0.82rem;
+  font-weight: bold;
+  color: #0077CC;        /* 4.7:1 on white; brand blue is 3.0:1 */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tool-cta-link:hover {
+  color: #111111;
+}
+
+@media (max-width: 600px) {
+  .tool-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tool-cta-btn {
+    width: 100%;
+  }
+
+  .tool-cta-link {
+    text-align: center;
+  }
+}
+
+/* --- Primary call to action ---------------------------------- */
+.cta-final {
+  display: inline-block;
+  align-self: center;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  background: #FFFFFF;
+  color: var(--tool-accent);
+  border: 3px solid var(--tool-accent);
+  box-shadow: 4px 4px 0px var(--tool-accent);
+  border-radius: var(--tool-radius);
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-final:hover {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  border-color: var(--tool-accent);
+  box-shadow: 6px 6px 0px var(--tool-accent);
+  transform: translate(-3px, -3px);
+}
+
+/* --- Charts ----------------------------------------------------
+   Each diagram is a labelled figure: a caption, its controls, then a
+   charcoal plot surface. Previously the captions were inline yellow
+   (#FFD500 on the white panel — 1.4:1, effectively unreadable) and the
+   plot area was pure black. Both now come from the tokens above.
+   --------------------------------------------------------------- */
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Caption above a diagram. Dark ink on the white panel, with the accent
+   carried by a rule rather than by the text colour. */
+.chart-title {
+  display: block;
+  margin: 0 0 0.6rem;
+  padding-left: 0.6rem;
+  border-left: 4px solid var(--tool-accent);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #1A1A1A;
+  text-align: left;   /* the panels centre their text; captions do not */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Optional one-line gloss under the caption: what the reader is seeing. */
+.chart-note {
+  display: block;
+  margin: -0.2rem 0 0.7rem 0.6rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: #4A4A4A;
+  letter-spacing: 0.2px;
+  text-align: left;
+  text-transform: none;
+  text-wrap: pretty;
+}
+
+.chart-controls {
+  display: inline-flex;
+  text-align: left;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  padding: 0.3rem;
+  margin-bottom: 0.75rem;
+  background: #F1F1F1;
+  border: 2px solid var(--tool-accent);
+  border-radius: var(--radius-pill);
+}
+
+.chart-btn {
+  padding: 0.5rem 1.1rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  /* Near-black rather than the accent: #0099FF on #F1F1F1 is 2.9:1,
+     below AA for text this size. The active pill still carries colour. */
+  color: #1F1F1F;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.chart-btn:hover {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.chart-btn:focus-visible {
+  outline: 3px solid var(--tool-accent);
+  outline-offset: 2px;
+}
+
+.chart-btn.active {
+  background: #1F1F1F;
+  color: #FFFFFF;
+  font-weight: 900;
+  box-shadow: inset 0 0 0 2px var(--tool-accent);
+}
+
+/* The plot surface itself. `.chart-container` is the investment tool's
+   name for the same thing; it used to have no background at all, which
+   left its white axis labels invisible on the white panel. */
+.chart-wrapper,
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+  padding: 0.9rem 1rem 0.75rem;
+  background: var(--chart-surface);
+  border: 2px solid #1A1A1A;
+  border-radius: var(--tool-radius);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+}
+
+.chart-container {
+  margin: 0.5rem 0 1.25rem;
+}
+
+.chart-wrapper canvas,
+.chart-container canvas {
+  max-width: 100%;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* A caption placed directly against the plot surface reads better with
+   a little air between the two. */
+.chart-wrapper + .chart-title,
+.chart-container + .chart-title {
+  margin-top: 1.25rem;
+}
+
+/* --- Data panels ----------------------------------------------
+   The bar breakdowns and figure blocks that sit beside the charts are
+   read the same way, so they share the plot surface. They were inline
+   `rgba(0, 0, 0, 0.7)` over the white panel, which resolved to a
+   different grey on every page, and their headings were yellow at
+   roughly 2:1 against it.
+   --------------------------------------------------------------- */
+.data-panel {
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  background: var(--chart-surface);
+  border: 2px solid #1A1A1A;
+  border-radius: var(--tool-radius);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.18);
+}
+
+.data-panel-title {
+  display: block;
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--chart-border);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--chart-ink);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Figure grid used by the solar cost block: label over value. */
+.data-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.9rem 1.25rem;
+}
+
+.data-figure-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--chart-ink-muted);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-figure-value {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--chart-ink);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The value that answers the tool's headline question. */
+.data-figure-value--accent {
+  color: var(--chart-accent);
+}
+
+/* ===============================================================
+   LEAD CAPTURE
+   The email-gate modal and its status messages were duplicated in all
+   four pages. `.email-modal` and `.email-modal-overlay` are the two
+   wrapper names in use; both behave identically.
+   =============================================================== */
+
+.lead-status {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--tool-radius);
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Darkened from the original #90EE90 / #FF6B6B, which failed contrast
+   against their own tinted backgrounds. */
+.lead-status-success {
+  background: rgba(22, 130, 62, 0.12);
+  color: #16823E;
+  border: 2px solid #16823E;
+}
+
+.lead-status-error {
+  background: rgba(197, 42, 42, 0.12);
+  color: #C52A2A;
+  border: 2px solid #C52A2A;
+}
+
+.lead-summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(0, 153, 255, 0.2);
+}
+
+.lead-summary-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--tool-accent);
+}
+
+.lead-summary-value {
+  color: #000000;
+}
+
+.email-modal,
+.email-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10001;
+}
+
+.email-modal.active,
+.email-modal-overlay.active {
+  display: flex;
+}
+
+.email-modal-content {
+  width: 90%;
+  max-width: 450px;
+  padding: 2.5rem;
+  background: var(--tool-surface);
+  border: 4px solid var(--tool-accent);
+  box-shadow: 12px 12px 0px var(--tool-accent);
+  border-radius: var(--tool-radius);
+  animation: toolModalIn 0.3s ease;
+}
+
+@keyframes toolModalIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.email-modal-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--tool-accent);
+}
+
+.email-modal-input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #000000;
+  background: var(--tool-surface);
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--tool-radius);
+  box-sizing: border-box;
+}
+
+.email-modal-input::placeholder {
+  color: rgba(0, 153, 255, 0.6);
+}
+
+.email-modal-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--tool-accent);
+}
+
+.email-modal-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.email-modal-btn {
+  flex: 1;
+  padding: 1rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 3px solid var(--tool-accent);
+  border-radius: var(--tool-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.email-modal-btn.submit {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+}
+
+.email-modal-btn.submit:hover {
+  background: var(--tool-surface);
+  color: var(--tool-accent);
+  box-shadow: 6px 6px 0px var(--tool-accent);
+  transform: translate(-3px, -3px);
+}
+
+.email-modal-btn.cancel {
+  background: transparent;
+  color: var(--tool-accent);
+}
+
+.email-modal-btn.cancel:hover {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+  transform: translate(-3px, -3px);
+}
+
+/* The investment tool's modal buttons carry no submit/cancel class. */
+.tool-page--investment .email-modal-btn:not(.cancel) {
+  background: var(--tool-accent);
+  color: #FFFFFF;
+}
+
+/* ===============================================================
+   PRINT
+   The "Download as PDF" buttons call window.print(), so the printed
+   page IS the deliverable. Strip the site chrome, drop the decorative
+   layers, and let the two panels flow down the sheet.
+   =============================================================== */
+@media print {
+  .navbar,
+  .footer-enhanced,
+  .video-background,
+  .cursor-glow,
+  .skip-link,
+  .cookie-banner,
+  .go-back-btn,
+  .cta-final,
+  .chart-controls,
+  .email-modal,
+  .email-modal-overlay,
+  #lang-toggle {
+    display: none !important;
+  }
+
+  @page {
+    margin: 15mm;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .tool-page main.container {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none;
+  }
+
+  .calculator-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  /* Side by side becomes top and bottom on paper. */
+  .calculator-layout {
+    display: block;
+  }
+
+  .inputs-panel,
+  .results-panel {
+    position: static !important;
+    box-shadow: none !important;
+    border: 1px solid #666666 !important;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    break-inside: avoid;
+  }
+
+  .calculator-section,
+  .selection-summary,
+  .total-container,
+  .chart-wrapper,
+  .chart-container {
+    break-inside: avoid;
+  }
+
+  /* Ink-heavy fills print as outlines. */
+  .total-container {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+  }
+
+  /* The chosen card is often alone in a Bootstrap column once its
+     siblings are hidden; flatten the grid so it starts at the margin. */
+  .calculator-section .row,
+  .option-cards {
+    display: block !important;
+  }
+
+  .calculator-section [class*="col-"] {
+    width: 100% !important;
+    max-width: none !important;
+    flex: none !important;
+    padding: 0 !important;
+  }
+
+  .calculator-section {
+    background: #FFFFFF !important;
+    border: 1px solid #CCCCCC !important;
+    backdrop-filter: none !important;
+  }
+
+  .calculator-label {
+    color: #000000 !important;
+  }
+
+  .option-card {
+    box-shadow: none !important;
+    transform: none !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Only the chosen option is worth the paper. */
+  .option-card:not(.selected):not(.active) {
+    display: none;
+  }
+
+  .option-card.selected,
+  .option-card.active {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+
+  .option-card.selected h5,
+  .option-card.selected p,
+  .option-card.active h5,
+  .option-card.active p {
+    color: #000000 !important;
+  }
+
+  /* The canvas draws light ink on the charcoal surface, so the surface
+     has to survive onto paper — knocking it back to white would print
+     pale grey labels on white. Ask the browser not to drop the fill. */
+  .chart-wrapper,
+  .chart-container {
+    background: var(--chart-surface) !important;
+    border: 1px solid #1A1A1A !important;
+    box-shadow: none !important;
+    height: 260px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .chart-title {
+    color: #000000 !important;
+  }
+
+  .tool-title {
+    color: #000000 !important;
+  }
+
+  /* Give the printed sheet a provenance line. */
+  .calculator-wrapper::after {
+    content: 'Estimate generated at proyectualst.com — indicative figures only.';
+    display: block;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #666666;
+    font-size: 9pt;
+    color: #333333;
+  }
+}
+
+/* ===============================================================
+   RESPONSIVE CORRECTIONS
+   Each of these was reproduced at a real viewport width before being
+   written; the width that showed the fault is noted.
+   =============================================================== */
+
+/* --- Label/value rows (375px and up) -----------------------------
+   `justify-content: space-between` with no gap let a long label and a
+   long value meet in the middle and overlap — "Cash Flow Breakeven"
+   collided with "Not in analysis period" at every width. */
+.result-item,
+.summary-item,
+.lead-summary-item {
+  gap: var(--space-md);
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.result-label,
+.summary-label,
+.lead-summary-label {
+  flex: 1 1 55%;
+  min-width: 0;
+  hyphens: auto;
+}
+
+.result-value,
+.summary-value,
+.lead-summary-value {
+  flex: 0 1 auto;
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* The explanatory line under a result belongs on its own row. */
+.result-context {
+  flex: 1 0 100%;
+  margin-left: 0;
+  font-size: var(--step--1);
+  line-height: 1.35;
+  opacity: 0.75;
+  white-space: normal;
+  text-align: left;
+}
+
+/* --- Grid and flex children (375px) ------------------------------
+   Grid and flex items default to min-content width of `auto`, which is
+   why the carbon charts and their controls pushed the page wider than
+   the phone and produced horizontal scroll. */
+.calculator-layout > *,
+.charts-container > *,
+.overview-grid > *,
+.option-cards > * {
+  min-width: 0;
+}
+
+.chart-wrapper,
+.chart-wrapper canvas {
+  max-width: 100%;
+}
+
+/* --- Tab strip (375px) -------------------------------------------
+   The carbon input tabs are one row of three labels that has to stay a
+   row; below about 420px it cannot fit and used to drag the whole page
+   wider. It scrolls within itself now. (The chart controls wrap instead
+   — see the figures section.) */
+.input-tabs-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.input-tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.input-tab-btn {
+  flex: 0 0 auto;
+}
+
+/* --- Readability floor -------------------------------------------
+   Several labels sat at 10.4px and 11.2px. Nothing drops below the
+   scale's floor now. */
+.calculator-label {
+  font-size: var(--step-0);
+  letter-spacing: 0.08em;
+}
+
+.overview-label,
+.vol-badge,
+.hint-text,
+.option-card p,
+.option-card-subtitle,
+.breakdown-label,
+.disclaimer,
+.slider-range-labels {
+  font-size: var(--step--1);
+  line-height: 1.4;
+}
+
+.overview-subvalue {
+  font-size: var(--step--1);
+  opacity: 0.7;
+}
+
+.tool-subtitle {
+  font-size: var(--step-0);
+  line-height: 1.5;
+}
+
+/* --- Overview tiles (1280px) -------------------------------------
+   Long values such as "Cuenca, Ecuador" and "Equatorial" pushed out of
+   their tile. Let them wrap and give the tile a floor instead. */
+.overview-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.overview-value {
+  font-size: var(--step-1);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+/* --- Slider readouts (375px) -------------------------------------
+   "15 % (Inverter, wiring, soiling)" broke across three ragged lines
+   because the number and its unit were separate inline boxes. */
+.range-value {
+  flex-wrap: wrap;
+  gap: 0.25em;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--step-1);
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* --- Touch targets ------------------------------------------------
+   44px is the smallest comfortable target on a phone. */
+@media (max-width: 900px) {
+  .option-card,
+  .chart-btn,
+  .input-tab-btn,
+  .option-chip,
+  .country-btn {
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .range-slider {
+    height: 10px;
+  }
+
+  .range-slider::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+  }
+
+  .range-slider::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* --- Page rhythm --------------------------------------------------
+   The hero left a tall empty band above the title on a phone. */
+.tool-page main.container {
+  padding-top: var(--space-md);
+}
+
+.tool-page .go-back-btn {
+  margin-bottom: var(--space-sm);
+}
+
+@media (max-width: 600px) {
+  .tool-page main.container {
+    margin-top: 0 !important;
+    padding-bottom: var(--space-lg);
+  }
+
+  .calculator-section {
+    padding: var(--space-sm);
+  }
+
+  .inputs-panel,
+  .results-panel {
+    padding: var(--space-sm);
+    box-shadow: 4px 4px 0px var(--tool-accent);
+  }
+}
+
+/* --- Call-to-action rows (375px) ---------------------------------
+   The carbon page set three CTAs in a hard `1fr 1fr 1fr` grid. Grid
+   items floor at their content width, so on a phone the row pushed the
+   page ~90px wider than the screen. It reflows now, and the buttons
+   themselves can shrink and wrap. */
+.cta-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.cta-row--stacked {
+  grid-template-columns: 1fr;
+}
+
+.cta-row .cta-final {
+  width: 100%;
+  margin-top: 0;
+}
+
+.cta-final {
+  min-width: 0;
+  max-width: 100%;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 600px) {
+  .cta-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-final {
+    padding: 0.85rem 1rem;
+    font-size: var(--step-0);
+    letter-spacing: 0.5px;
+  }
+}
+
+/* ===============================================================
+   SYSTEM OVERVIEW
+   The solar tool's dashboard of input and output tiles. It lived in
+   that page's inline CSS with a hard four-column grid that collapsed
+   to two at 1200px, so on a phone "Cuenca, Ecuador" wrapped to four
+   ragged lines inside a tile barely wider than the word, and the
+   labels sat at 10.4px.
+   =============================================================== */
+.overview-title {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-size: var(--step-1);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  color: var(--tool-accent);
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+@container panel (min-width: 34rem) {
+  .overview-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@container panel (max-width: 17rem) {
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Two tiles across a phone leaves each about 150px. Ease the type down so
+   the longer labels still fit whole words on a line. */
+@container panel (max-width: 26rem) {
+  .overview-item {
+    padding: var(--space-xs) 0.5rem;
+  }
+
+  .overview-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
+
+  .overview-value {
+    font-size: var(--step-1);
+  }
+
+  /* Tiles whose value is prose rather than a measurement. */
+  #overviewLocation,
+  #overviewClimate {
+    font-size: var(--step-0);
+    font-weight: 700;
+  }
+}
+
+.overview-item {
+  min-width: 0;
+  overflow-wrap: break-word;
+  hyphens: none;
+  padding: var(--space-sm);
+  background: rgba(0, 0, 0, 0.04);
+  border: 2px solid rgba(0, 153, 255, 0.3);
+  border-radius: var(--tool-radius);
+  text-align: center;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.overview-item:hover {
+  border-color: var(--tool-accent);
+  background: rgba(0, 153, 255, 0.06);
+}
+
+.overview-item.highlight {
+  border-color: var(--tool-accent);
+  background: rgba(0, 153, 255, 0.12);
+}
+
+.overview-label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  /* Was rgba(0,153,255,0.8) at 10.4px — 2.6:1 on the panel. */
+  color: #0B6FB8;
+  font-size: var(--step--1);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  text-wrap: balance;
+  /* Spanish labels are longer than their English counterparts
+     ("Orientación", "Precio de Electricidad"). Break them at syllables
+     rather than mid-word — the document carries a lang attribute, so the
+     browser knows where a word may divide. */
+  hyphens: auto;
+  overflow-wrap: normal;
+}
+
+.overview-value {
+  display: block;
+  font-size: var(--step-2);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #000000;
+  /* Most of these are numbers, but a few are words — a place name, a
+     climate zone. Break those at a space or a syllable, never mid-word:
+     "Equatorial" was coming out as "Equato / rial". */
+  overflow-wrap: normal;
+  hyphens: auto;
+}
+
+.overview-subvalue {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--step--1);
+  line-height: 1.3;
+  color: #3A3A3A;
+}
+
+.overview-divider {
+  height: 2px;
+  margin: var(--space-sm) 0;
+  background: linear-gradient(to right, transparent, var(--tool-accent), transparent);
+}
+
+/* A place name is prose, not a measurement — let it breathe. */
+.overview-item .overview-value:not(:only-child) {
+  hyphens: none;
+}
+
+/* --- Unit toggle (360px) ------------------------------------------
+   m² / Apartments / People. The Spanish labels are longer
+   ("Departamentos"), and three of them in a fixed row ran past a 360px
+   screen. The row wraps and the buttons share what space there is. */
+.unit-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  max-width: 100%;
+}
+
+.unit-toggle button {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+/* --- Slider readouts ---------------------------------------------
+   A readout is a figure and, sometimes, a caption explaining it. They
+   used to be one run of inline text, so "15% (Inverter, wiring,
+   soiling)" broke wherever the line happened to end and left the
+   number stranded on its own line. */
+.range-value {
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.range-figure {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.range-caption {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #3A5A72;
+  text-wrap: balance;
+}
+
+/* ===============================================================
+   LIVE READOUT
+   The docked figure on small screens. Behaviour is in
+   js/tools/live-readout.js; this is only how it looks and when it
+   appears. Above 900px the results panel is already beside the inputs,
+   so the bar never shows.
+   =============================================================== */
+.live-readout {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .live-readout {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0.6rem var(--space-md);
+    /* Clear of the home indicator on a phone. */
+    padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+
+    background: #0E1A24;
+    border-top: 3px solid var(--tool-accent);
+    color: #FFFFFF;
+    cursor: pointer;
+
+    transform: translateY(0);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  /* Once the real results are on screen the bar has nothing to add. */
+  .live-readout.is-hidden {
+    transform: translateY(105%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .live-readout__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .live-readout__label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8FC7EA;
+    white-space: nowrap;
+  }
+
+  .live-readout__figure {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+    font-family: var(--font-display);
+    line-height: 1;
+  }
+
+  .live-readout__value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .live-readout__unit {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: #B9CBD8;
+  }
+
+  .live-readout__chevron {
+    margin-left: auto;
+    display: flex;
+    color: var(--tool-accent);
+  }
+
+  /* A figure that just moved gets a brief highlight, so a change you
+     caused is visible without watching for it. */
+  .live-readout__value.is-changed {
+    animation: readoutChange 0.5s ease;
+  }
+
+  @keyframes readoutChange {
+    0%   { color: var(--color-yellow, #FFD500); }
+    100% { color: #FFFFFF; }
+  }
+
+  /* Keep the bar from covering the end of the page. */
+  .tool-page--solar main.container {
+    padding-bottom: 5.5rem;
+  }
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .live-readout {
+    transition: none;
+  }
+
+  .live-readout__value.is-changed {
+    animation: none;
+  }
+}
+
+/* --- Input notes and sizing warning (solar) -----------------------
+   The hint under an input, and the line that appears when an array has
+   outgrown the building it serves. */
+.input-note {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  line-height: 1.4;
+  color: #3A5A72;
+}
+
+.sizing-note {
+  margin: 0 0 var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(255, 213, 0, 0.14);
+  border-left: 4px solid var(--color-yellow, #FFD500);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  line-height: 1.45;
+  color: #4A3B00;
+  text-wrap: pretty;
+}
+
+.sizing-note[hidden] {
+  display: none;
+}
+
+/* A second control inside one section needs its own quiet heading. */
+.sub-label {
+  display: block;
+  margin: var(--space-md) 0 0.35rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #3A5A72;
+}
+
+/* ===============================================================
+   DEBUG GATE
+   Testing controls are hidden until someone types the passphrase into
+   the footer field. See js/tools/debug-mode.js — this is concealment
+   from ordinary visitors, not a security boundary.
+   =============================================================== */
+
+/* Hidden by default, including before the script runs, so the buttons
+   never flash on screen during load. */
+.debug-only {
+  display: none !important;
+}
+
+/* `revert` restores the browser's own default for the element — block for a
+   div, inline-block for a button — which covers both current uses. A debug
+   control that needs an author display value (flex, grid) should set it on a
+   `[data-debug="on"]` rule of its own rather than relying on this. */
+[data-debug="on"] .debug-only {
+  display: revert !important;
+}
+
+/* Make revealed controls obviously not part of the product. */
+[data-debug="on"] .debug-only {
+  outline: 2px dashed #FF6B6B;
+  outline-offset: 3px;
+}
+
+.debug-gate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem auto 0;
+  padding: 0.5rem 1rem 0;
+  justify-content: center;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.7rem;
+}
+
+.debug-gate__form {
+  display: flex;
+}
+
+.debug-gate__input {
+  width: 7rem;
+  padding: 0.25rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0.25rem;
+}
+
+.debug-gate__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.debug-gate__input:focus {
+  outline: 2px solid var(--color-yellow, #FFD500);
+  outline-offset: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* A wrong word shakes rather than explaining itself. */
+.debug-gate__form.is-rejected .debug-gate__input {
+  animation: debugReject 0.3s ease;
+  border-color: #FF6B6B;
+}
+
+@keyframes debugReject {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+
+.debug-gate__status {
+  color: #FFD500;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.debug-gate__off {
+  padding: 0.25rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.debug-gate__off:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debug-gate__form.is-rejected .debug-gate__input {
+    animation: none;
+  }
+}
+
+@media print {
+  .debug-gate,
+  .debug-only {
+    display: none !important;
+  }
+}

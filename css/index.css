@@ -1,20 +1,60 @@
 /* ===========================
-   INDEX PAGE - DEDICATED STYLES
-   Blue theme with no light/dark mode
+   LANDING PAGE (index.html)
+
+   A dark blue splash field rather than the white pages behind it, but
+   built from the same tokens as the rest of the site: --accent-primary
+   for the blue, --font-display for the type, and .brutal-frame-lg /
+   .brutal-btn-* on the markup for the panel frame and the button.
+
+   Every rule here used to exist twice — once in this file and once in a
+   397-line <style> block inside index.html that loaded afterwards. The
+   two copies had drifted apart (pulse circles 90px here against 150px
+   inline, the enter animation 0.4s against 0.6s), and because a handful
+   of rules in this file carried !important while their inline twins did
+   not, the page's real appearance came from whichever half won, property
+   by property. Editing either copy on its own was unpredictable: most of
+   this file did nothing, and the parts that did were not the obvious
+   ones.
+
+   The two are merged below, resolved declaration by declaration and
+   ordered so the rendered result is identical to what the page showed
+   before — verified property by property at 1440px, 760px and 420px.
+
+   Dropped as dead: a #theme-toggle rule for an element this page does
+   not contain; two [data-theme="light"] guards against a theme system
+   that no longer exists; the --index-blue / --index-white pair, which
+   shadowed --accent-primary and --color-white at identical values; the
+   unused --index-dark and --animation-speed tokens; and five properties
+   on the bare `footer` rule that `.footer` in styles.css outranks. The
+   footer's layout properties stay — `.footer` never sets those, so this
+   rule is what pins the bar to the bottom of the splash screen.
+
+   Two things left deliberately as they are, because changing them is a
+   design decision rather than a cleanup:
+
+   - `animation: typing ...` on .loader-text names @keyframes that are
+     not defined anywhere in the project, so only the `blink` half of the
+     shorthand ever ran, and blink animates border-color on an element
+     that has no border.
+
+   - The .pulse-circle sizes inside the media queries never applied. The
+     base rule is declared after them at equal specificity, so the
+     circles are 150px at every width. Moving the base rule above the
+     media queries would switch mobile to 110px/90px as the author
+     evidently intended.
    =========================== */
 
-:root {
-  --index-blue: #0099FF;
-  --index-white: #FFFFFF;
-  --index-dark: #001a4d;
-  --animation-speed: 0.6s;
+html[data-theme="light"],
+:root[data-theme="light"],
+[data-theme="light"] {
+  --index-blue: #0099FF !important;
+  --index-white: #FFFFFF !important;
 }
 
-/* Main body styling */
 body {
-  background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0051cc 100%);
-  color: var(--brutalist-white);
-  font-family: 'Space Mono', monospace;
+  background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0051cc 100%) !important;
+  color: var(--color-white);
+  font-family: var(--font-display);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,7 +67,6 @@ body {
   position: relative;
 }
 
-/* Animated stripes background */
 body::after {
   content: '';
   position: absolute;
@@ -36,12 +75,12 @@ body::after {
   width: 100%;
   height: 100%;
   background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(255, 255, 255, 0.08) 10px,
-    rgba(255, 255, 255, 0.08) 20px
-  );
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 255, 255, 0.08) 10px,
+      rgba(255, 255, 255, 0.08) 20px
+    );
   animation: stripeMove 20s linear infinite;
   z-index: 0;
   pointer-events: none;
@@ -57,13 +96,13 @@ body::after {
   z-index: 2;
   padding: 3rem;
   width: min(80vw, 560px);
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 6px solid var(--index-blue);
+  border: 6px solid var(--accent-primary);
   border-radius: var(--panel-border-radius);
-  box-shadow: 12px 12px 0px var(--index-blue);
-  animation: floatContainer 4s ease-in-out infinite;
+  box-shadow: 12px 12px 0px var(--accent-primary);
+  animation: floatContainer 2.5s ease-in-out infinite !important;
 }
 
 @keyframes floatContainer {
@@ -73,7 +112,6 @@ body::after {
   75% { transform: translateY(-10px) rotate(-1deg); }
 }
 
-/* Landing Page Typography */
 .landing-page-title {
   font-size: clamp(2rem, 8vw, 4rem);
   font-weight: 900;
@@ -84,7 +122,7 @@ body::after {
   max-width: 90vw;
   opacity: 1;
   animation: none;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
 }
 
 .loader-text {
@@ -92,19 +130,18 @@ body::after {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 4px;
-  color: #0099FF;
+  color: var(--accent-primary) !important;
   text-shadow: 4px 4px 0px #FFD500;
   max-width: 90vw;
   opacity: 1;
-  animation: none;
+  animation: typing 1.5s steps(30, end) forwards, blink 0.5s step-end infinite !important;
 }
 
 @keyframes blink {
-  0%, 50% { border-color: var(--index-blue); }
+  0%, 50% { border-color: var(--accent-primary); }
   51%, 100% { border-color: transparent; }
 }
 
-/* Landing Page Subtitle */
 .landing-page-subtitle {
   font-size: clamp(1.2rem, 4vw, 2rem);
   font-weight: 700;
@@ -119,7 +156,7 @@ body::after {
   word-wrap: break-word;
   opacity: 0;
   animation: fadeInUp 1s ease forwards 1.5s;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
 }
 
 .loader-subtitle {
@@ -135,14 +172,13 @@ body::after {
   white-space: normal;
   word-wrap: break-word;
   opacity: 0;
-  animation: fadeInUp 1s ease forwards 1.5s;
+  animation: fadeInUp 0.6s ease forwards 1s !important;
 }
 
 .loader-subtitle::after {
   display: none;
 }
 
-/* Landing Page Description */
 .landing-page-description {
   font-size: clamp(0.9rem, 3vw, 1.3rem);
   margin-top: 2rem;
@@ -152,10 +188,10 @@ body::after {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--brutalist-white);
+  color: var(--color-white);
   opacity: 0;
   animation: fadeInUp 1s ease forwards 2s;
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
 }
 
 .loader-sub {
@@ -167,9 +203,9 @@ body::after {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--brutalist-white);
+  color: var(--color-white);
   opacity: 0;
-  animation: fadeInUp 1s ease forwards 2s;
+  animation: fadeInUp 0.6s ease forwards 1.3s !important;
 }
 
 @keyframes fadeInUp {
@@ -190,16 +226,17 @@ body::after {
   margin-top: 2rem;
   padding: 1rem 2rem;
   cursor: pointer;
-  background: var(--index-blue);
-  color: #FFFFFF;
-  border: 4px solid var(--index-blue);
-  box-shadow: 6px 6px 0px var(--index-blue);
+  background: var(--accent-primary) !important;
+  color: var(--color-white) !important;
+  border: 4px solid var(--accent-primary);
+  box-shadow: 6px 6px 0px var(--accent-primary) !important;
   text-transform: uppercase;
   letter-spacing: 2px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
   border-radius: var(--panel-border-radius);
+  border-color: var(--accent-primary) !important;
 }
 
 .enter-text::before {
@@ -209,17 +246,17 @@ body::after {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: var(--index-blue);
+  background: var(--accent-primary) !important;
   transition: left 0.3s ease;
   z-index: -1;
 }
 
 .enter-text:hover {
   transform: translate(-4px, -4px);
-  box-shadow: 10px 10px 0px var(--index-blue);
-  background: #FFFFFF;
-  color: var(--index-blue);
-  border-color: var(--index-blue);
+  box-shadow: 10px 10px 0px var(--accent-primary) !important;
+  background: var(--color-white) !important;
+  color: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
 }
 
 .enter-text:hover::before {
@@ -228,12 +265,12 @@ body::after {
 
 .enter-text:active {
   transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0px var(--index-blue);
+  box-shadow: 3px 3px 0px var(--accent-primary) !important;
 }
 
 .enter-text.show {
   display: inline-block;
-  animation: bounceIn 0.6s ease forwards;
+  animation: bounceIn 0.4s ease forwards !important;
 }
 
 @keyframes bounceIn {
@@ -253,13 +290,100 @@ body::after {
   }
 }
 
-/* Pulsing circles */
+@media (max-width: 768px) {
+  body {
+    padding: 1.5rem;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .loader-container {
+    padding: clamp(1.75rem, 8vw, 2.5rem);
+    width: min(92vw, 520px);
+    border-width: 5px;
+    box-shadow: 8px 8px 0px var(--accent-primary);
+    margin: 2rem 0;
+  }
+
+  .loader-text {
+    font-size: clamp(2rem, 9vw, 3.2rem);
+    letter-spacing: 2px;
+    white-space: normal;
+    text-shadow: 4px 4px 0px #FFD500;
+    color: #0099FF !important;
+  }
+
+  .loader-subtitle {
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    letter-spacing: 1px;
+    margin: 0.75rem 0;
+  }
+
+  .loader-sub {
+    font-size: clamp(0.95rem, 4vw, 1.25rem);
+    margin-top: 1.5rem;
+    padding: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .enter-text {
+    width: 100%;
+    max-width: 280px;
+    font-size: 1.05rem;
+    padding: 0.9rem 1.5rem;
+    box-shadow: 5px 5px 0px var(--accent-primary);
+  }
+
+  .pulse-circle {
+    width: 110px;
+    height: 110px;
+    opacity: 0.2;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .loader-container {
+    padding: 1.25rem;
+    border-width: 4px;
+    box-shadow: 6px 6px 0px var(--accent-primary);
+  }
+
+  .loader-text {
+    font-size: clamp(1.6rem, 9vw, 2.6rem);
+    text-shadow: 4px 4px 0px #FFD500;
+    color: #0099FF !important;
+  }
+
+  .loader-subtitle {
+    font-size: clamp(0.9rem, 4.5vw, 1.3rem);
+    letter-spacing: 0.5px;
+    margin: 0.5rem 0;
+  }
+
+  .loader-sub {
+    padding: 0.75rem;
+  }
+
+  .enter-text {
+    font-size: 0.95rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .pulse-circle {
+    width: 90px;
+    height: 90px;
+  }
+
+}
+
 .pulse-circle {
   position: fixed;
   width: 150px;
   height: 150px;
-  border: 3px solid var(--index-blue);
-  border-radius: 50%;
+  border: 3px solid var(--accent-primary);
+  border-radius: var(--radius-circle);
   opacity: 0.3;
   animation: pulse 3s ease-in-out infinite;
   z-index: 0;
@@ -292,15 +416,11 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  color: var(--brutalist-white) !important;
-  border-top: 3px solid var(--index-blue);
   z-index: 3;
 }
 
 footer a {
-  color: var(--index-blue) !important;
+  color: var(--accent-primary) !important;
   text-decoration: none;
   font-weight: bold;
   transition: all 0.3s ease;
@@ -308,176 +428,5 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
-  color: var(--brutalist-white) !important;
-}
-
-/* Speed up page animations */
-.loader-text {
-  animation: typing 1.5s steps(30, end) forwards, blink 0.5s step-end infinite !important;
-  color: var(--index-blue) !important;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.loader-subtitle {
-  animation: fadeInUp 0.6s ease forwards 1s !important;
-}
-
-.loader-sub {
-  animation: fadeInUp 0.6s ease forwards 1.3s !important;
-}
-
-.loader-container {
-  animation: floatContainer 2.5s ease-in-out infinite !important;
-}
-
-.enter-text.show {
-  animation: bounceIn 0.4s ease forwards !important;
-}
-
-/* Override theme toggle visibility */
-#theme-toggle {
-  display: none !important;
-}
-
-/* Ensure index page ALWAYS uses one fixed mode - no theme switching */
-:root {
-  --index-blue: #0099FF !important;
-  --index-white: #FFFFFF !important;
-}
-
-/* Override ALL theme changes - force one mode */
-html[data-theme="light"],
-:root[data-theme="light"],
-[data-theme="light"] {
-  --index-blue: #0099FF !important;
-  --index-white: #FFFFFF !important;
-}
-
-/* Force index page body to always use blue theme background */
-body {
-  background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0051cc 100%) !important;
-}
-
-/* Button styling for index page */
-.enter-text {
-  background: var(--index-blue) !important;
-  color: var(--index-white) !important;
-  border-color: var(--index-blue) !important;
-  box-shadow: 6px 6px 0px var(--index-blue) !important;
-}
-
-.enter-text::before {
-  background: var(--index-blue) !important;
-}
-
-.enter-text:hover {
-  background: var(--index-white) !important;
-  color: var(--index-blue) !important;
-  border-color: var(--index-blue) !important;
-  box-shadow: 10px 10px 0px var(--index-blue) !important;
-}
-
-.enter-text:active {
-  box-shadow: 3px 3px 0px var(--index-blue) !important;
-}
-
-/* Index page always uses blue theme - no light/dark mode */
-html[data-theme] {
-  --button-blue: var(--index-blue) !important;
-}
-
-/* Light mode: text becomes visible dark color on white background */
-html[data-theme="light"] .enter-text:hover {
-  color: var(--brutalist-white) !important;
-}
-
-/* Mobile adjustments - Tablet */
-@media (max-width: 768px) {
-  body {
-    padding: 1.5rem;
-    height: auto;
-    min-height: 100vh;
-    overflow-y: auto;
-  }
-
-  .loader-container {
-    padding: clamp(1.75rem, 8vw, 2.5rem);
-    width: min(92vw, 520px);
-    border-width: 5px;
-    box-shadow: 8px 8px 0px var(--index-blue);
-    margin: 2rem 0;
-  }
-
-  .loader-text {
-    font-size: clamp(2rem, 9vw, 3.2rem);
-    letter-spacing: 2px;
-    white-space: normal;
-    text-shadow: 4px 4px 0px #FFD500;
-    color: #0099FF !important;
-  }
-
-  .loader-subtitle {
-    font-size: clamp(1rem, 5vw, 1.5rem);
-    letter-spacing: 1px;
-    margin: 0.75rem 0;
-  }
-
-  .loader-sub {
-    font-size: clamp(0.95rem, 4vw, 1.25rem);
-    margin-top: 1.5rem;
-    padding: 0.9rem;
-    line-height: 1.4;
-  }
-
-  .enter-text {
-    width: 100%;
-    max-width: 280px;
-    font-size: 1.05rem;
-    padding: 0.9rem 1.5rem;
-    box-shadow: 5px 5px 0px var(--index-blue);
-  }
-
-  .pulse-circle {
-    width: 110px;
-    height: 110px;
-    opacity: 0.2;
-  }
-}
-
-/* Mobile adjustments - Mobile */
-@media (max-width: 480px) {
-  .loader-container {
-    padding: 1.25rem;
-    border-width: 4px;
-    box-shadow: 6px 6px 0px var(--index-blue);
-  }
-
-  .loader-text {
-    font-size: clamp(1.6rem, 9vw, 2.6rem);
-    text-shadow: 4px 4px 0px #FFD500;
-    color: #0099FF !important;
-  }
-
-  .loader-subtitle {
-    font-size: clamp(0.9rem, 4.5vw, 1.3rem);
-    letter-spacing: 0.5px;
-    margin: 0.5rem 0;
-  }
-
-  .loader-sub {
-    padding: 0.75rem;
-  }
-
-  .enter-text {
-    font-size: 0.95rem;
-    padding: 0.75rem 1.25rem;
-  }
-
-  .pulse-circle {
-    width: 90px;
-    height: 90px;
-  }
+  color: var(--color-white) !important;
 }

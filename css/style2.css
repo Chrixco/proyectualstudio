@@ -1,6 +1,6 @@
 body {
   background-color: #d5ddfd;
-  font-family: monospace;
+  font-family: var(--font-display);
   color: #555555;
 }
 
@@ -18,13 +18,13 @@ video.bg-video {
 
 .body-white-text {
   background-color: #d5ddfd;
-  font-family: monospace;
+  font-family: var(--font-display);
   color: #555555;
 }
 
 .body-black-text {
   background-color: #d5ddfd;
-  font-family: monospace;
+  font-family: var(--font-display);
   color: #000000;
 }
 
@@ -209,7 +209,7 @@ padding-right: 1rem;
 }
 
 h1, h2, h3 {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-weight: 700;
   border-bottom: 2px solid #000;
@@ -218,7 +218,7 @@ h1, h2, h3 {
 }
 
 .btn, #lang-toggle {
-  font-family: 'Space Mono', monospace;
+  font-family: var(--font-display);
   border: 2px solid black;
   background: none;
   text-transform: uppercase;
