@@ -4,9 +4,14 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://proyectualst.com/sitemap.xml
-
-# Disallow admin/private directories (if any)
+# Internal tooling / scaffolding - not for the index
+Disallow: /templates/
+Disallow: /color-palette/
+Disallow: /backend/
+Disallow: /pages/lead-form.html
+Disallow: /pages/underconstruction.html
 Disallow: /admin/
 Disallow: /private/
+
+# Sitemap location
+Sitemap: https://proyectualst.com/sitemap.xml
