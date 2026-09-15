@@ -53,6 +53,7 @@
   <script src="../js/tools/i18n.js"></script>
   <script src="../js/tools/format.js?v=11"></script>
   <script src="../js/tools/construction-rates.js?v=11"></script>
+  <script src="../js/tools/area-model.js?v=12"></script>
 
   <script src="../js/neobrutalist.js"></script>
   <script src="../js/colors.js"></script>
@@ -164,6 +165,368 @@
        shared charcoal plot surface. The local rule here used to set only
        a height, leaving the canvas on the white panel while the chart
        drew its axis labels in white. */
+
+    /* ---------------------------------------------------------------
+       Area programme
+       The section asks for more than the rest of the form does, so it
+       leans on presets: a reader picks a building type, and only opens
+       the sliders if their scheme differs from it.
+       --------------------------------------------------------------- */
+    .section-intro {
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: #1F1F1F;
+      margin-bottom: 0.9rem;
+    }
+
+    .preset-field {
+      margin-bottom: 1rem;
+    }
+
+    .preset-caption {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1F1F1F;
+      margin-bottom: 0.4rem;
+    }
+
+    /* .chart-controls / .chart-btn come from css/tools.css; the preset
+       rows reuse them so the pills read as the same control everywhere
+       on the site. Only the wrapping behaviour differs. */
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      margin-bottom: 0.35rem;
+    }
+
+    .preset-row .chart-btn {
+      flex: 0 1 auto;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.7rem;
+    }
+
+    /* ---------------------------------------------------------------
+       Cost / size mode
+       The two are one quantity seen from opposite ends: a budget buys an
+       area, an area costs a budget. The control says which one the
+       reader is holding fixed, and the other field is then dressed as an
+       outcome rather than left looking equally editable.
+       --------------------------------------------------------------- */
+    .calc-mode-toggle {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .calc-mode-toggle > label {
+      display: block;
+      margin: 0;
+      padding: 0.6rem 0.75rem;
+      border: 2px solid rgba(0, 153, 255, 0.35);
+      border-radius: var(--radius-input, 4px);
+      background: #FFFFFF;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .calc-mode-toggle > label strong {
+      display: block;
+      font-family: var(--font-display, 'Space Mono', monospace);
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1F1F1F;
+    }
+
+    .calc-mode-toggle > label span {
+      display: block;
+      margin-top: 0.15rem;
+      font-size: 0.68rem;
+      line-height: 1.3;
+      color: #4A4A4A;
+    }
+
+    .calc-mode-toggle > label:hover {
+      border-color: #0099FF;
+      background: #F1F7FF;
+    }
+
+    .calc-mode-toggle > input:checked + label {
+      background: #1F1F1F;
+      border-color: #0099FF;
+    }
+
+    .calc-mode-toggle > input:checked + label strong {
+      color: #FFFFFF;
+    }
+
+    .calc-mode-toggle > input:checked + label span {
+      color: #D5D5D5;
+    }
+
+    /* The radio itself is .sr-only, so the ring has to be drawn on the
+       label it controls or keyboard users lose the focus position. */
+    .calc-mode-toggle > input:focus-visible + label {
+      outline: 3px solid var(--color-yellow, #FFD500);
+      outline-offset: 3px;
+    }
+
+    /* A field the other mode is currently computing. Still readable,
+       still copyable, visibly not the thing to type in. */
+    .form-control.is-derived {
+      background: #F1F1F1;
+      border-style: dashed;
+      color: #1F1F1F;
+      cursor: default;
+    }
+
+    .form-control.is-derived:hover {
+      box-shadow: none;
+      border-color: #0099FF;
+    }
+
+    .field-mode-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0.1rem 0.4rem;
+      border-radius: var(--radius-pill, 999px);
+      background: #1F1F1F;
+      color: #FFFFFF;
+      vertical-align: middle;
+    }
+
+    .field-mode-tag:empty {
+      display: none;
+    }
+
+    .derived-readout {
+      margin-bottom: 1rem;
+      padding: 0.85rem;
+      border: 2px dashed rgba(0, 153, 255, 0.55);
+      border-radius: var(--radius-panel, 6px);
+      background: #F1F1F1;
+    }
+
+    .derived-readout-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      font-size: 0.72rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1F1F1F;
+    }
+
+    .derived-readout-head strong {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.05rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #000000;
+    }
+
+    .derived-readout .inline-action {
+      margin-top: 0.6rem;
+      padding: 0.45rem 0.8rem;
+    }
+
+    .inline-action--ghost {
+      background: transparent;
+      color: #1F1F1F;
+      border-width: 2px;
+    }
+
+    .inline-action--ghost:hover {
+      background: #1F1F1F;
+      color: #FFFFFF;
+    }
+
+    .input-with-action {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .input-with-action .form-control {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .inline-action {
+      flex: 0 0 auto;
+      padding: 0 0.9rem;
+      background: #1F1F1F;
+      color: #FFFFFF;
+      border: 3px solid #0099FF;
+      border-radius: var(--radius-input);
+      font-family: var(--font-display, 'Space Mono', monospace);
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .inline-action:hover {
+      background: #0099FF;
+      color: #FFFFFF;
+    }
+
+    /* The summary is the point of the whole section: it answers "how
+       much of this actually earns" without the reader opening anything. */
+    .area-summary {
+      margin: 0 0 1rem;
+      padding: 0.85rem;
+      border: 2px solid #0099FF;
+      border-radius: var(--radius-panel, 6px);
+      background: #FFFFFF;
+    }
+
+    .area-summary-headline {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .area-summary-headline strong {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: #000000;
+    }
+
+    .area-summary-headline span {
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1F1F1F;
+    }
+
+    /* One bar, four bands: the plan seen edge-on. Colour alone never
+       carries the meaning — every band is also named in the legend. */
+    .area-bar {
+      display: flex;
+      height: 22px;
+      width: 100%;
+      border: 2px solid #1F1F1F;
+      border-radius: 3px;
+      overflow: hidden;
+      background: #F1F1F1;
+    }
+
+    .area-bar span {
+      display: block;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .area-bar .band-sellable { background: #0099FF; }
+    .area-bar .band-structure { background: #1F1F1F; }
+    .area-bar .band-circulation { background: #8A8A8A; }
+    .area-bar .band-technical { background: #C9C9C9; }
+
+    .area-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.9rem;
+      margin-top: 0.55rem;
+      font-size: 0.68rem;
+      color: #1F1F1F;
+    }
+
+    .area-legend em {
+      font-style: normal;
+      font-weight: bold;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .area-legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 0.3rem;
+      border: 1px solid #1F1F1F;
+      vertical-align: baseline;
+    }
+
+    .area-verdict {
+      margin-top: 0.6rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(0, 153, 255, 0.3);
+      font-size: 0.72rem;
+      line-height: 1.4;
+      color: #1F1F1F;
+    }
+
+    .area-verdict.is-warning {
+      color: #A64500;
+      font-weight: bold;
+    }
+
+    .area-details {
+      margin-bottom: 1rem;
+      border: 2px solid rgba(0, 153, 255, 0.4);
+      border-radius: var(--radius-panel, 6px);
+      padding: 0.5rem 0.85rem;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .area-details > summary {
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1F1F1F;
+      padding: 0.35rem 0;
+      list-style-position: inside;
+    }
+
+    .area-details[open] > summary {
+      margin-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(0, 153, 255, 0.3);
+    }
+
+    .area-subgroup {
+      padding: 0.85rem;
+      border: 2px dashed rgba(0, 153, 255, 0.45);
+      border-radius: var(--radius-panel, 6px);
+    }
+
+    .calculator-sublabel {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1F1F1F;
+      margin-bottom: 0.7rem;
+    }
+
+    @media (max-width: 480px) {
+      .input-with-action {
+        flex-direction: column;
+      }
+
+      .inline-action {
+        padding: 0.6rem 0.9rem;
+      }
+    }
 
     .result-section {
       margin-bottom: 1.5rem;
@@ -484,7 +847,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.75rem;
-      color: #cccccc;
+      color: #5A5A5A;
       margin-top: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -500,10 +863,14 @@
       }
     }
 
-    /* Hint text styling */
+    /* Hint text styling
+       The hints carry the reference bands — DIN 277 shares, cost ranges,
+       what a healthy efficiency looks like — and they were set in
+       #cccccc, which is 1.6:1 on the white panel and effectively
+       invisible. They are the reason to trust the number above them. */
     .hint-text {
       font-size: 0.75rem;
-      color: #cccccc;
+      color: #4A4A4A;
       margin-top: 0.4rem;
       display: block;
       font-style: italic;
@@ -678,45 +1045,155 @@
               </div>
             </div>
 
+          </div>
+
+          <!-- 3. Area Programme Section -->
+          <div class="calculator-section">
+            <label class="calculator-label" data-en="3. Area Programme" data-es="3. Programa de Áreas">3. Area Programme</label>
+
+            <p class="section-intro" data-en="Not every square metre earns. Pick the building type closest to yours and the stair core, plant room and garage are taken out of the rentable area before any return is calculated." data-es="No todos los metros generan ingreso. Elige el tipo de edificio más cercano al tuyo y las escaleras, cuartos técnicos y el garaje se descuentan del área rentable antes de calcular cualquier retorno.">Not every square metre earns. Pick the building type closest to yours and the stair core, plant room and garage are taken out of the rentable area before any return is calculated.</p>
+
+            <div class="preset-field">
+              <span class="preset-caption" data-en="Start from what you know" data-es="Empieza por lo que ya sabes">Start from what you know</span>
+              <div class="calc-mode-toggle" id="calcModeToggle">
+                <input class="sr-only" type="radio" name="calcMethod" id="calc-cost" value="cost" checked onchange="toggleCalcMethod(true); debouncedCalculate();" />
+                <label for="calc-cost">
+                  <strong data-en="A budget" data-es="Un presupuesto">A budget</strong>
+                  <span data-en="I know what I can spend" data-es="Sé cuánto puedo gastar">I know what I can spend</span>
+                </label>
+                <input class="sr-only" type="radio" name="calcMethod" id="calc-size" value="size" onchange="toggleCalcMethod(true); debouncedCalculate();" />
+                <label for="calc-size">
+                  <strong data-en="An area" data-es="Un área">An area</strong>
+                  <span data-en="I know how much I am building" data-es="Sé cuánto voy a construir">I know how much I am building</span>
+                </label>
+              </div>
+              <span class="hint-text" id="calcModeHint"></span>
+            </div>
+
+            <div class="preset-field">
+              <span class="preset-caption" data-en="Start from a building type" data-es="Empieza por un tipo de edificio">Start from a building type</span>
+              <div class="chart-controls preset-row" id="typologyPresets" role="group" aria-label="Building type presets"></div>
+              <span class="hint-text" id="typologyNote"></span>
+            </div>
+
             <div class="mb-3">
-              <label data-en="Calculate By" data-es="Calcular Por">Calculate By</label>
-              <div class="toggle-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-cost" value="cost" checked onchange="toggleCalcMethod(); debouncedCalculate();" />
-                  <label class="form-check-label" for="calc-cost" data-en="Construction Cost" data-es="Costo de Construcción">
-                    Construction Cost
-                  </label>
+              <label for="plotArea" data-en="Plot Area (m²)" data-es="Área del Terreno (m²)">Plot Area (m²)</label>
+              <input type="number" class="form-control" id="plotArea" value="1200" min="0" max="1000000" step="50" oninput="debouncedCalculate();">
+              <span class="hint-text" id="farHint"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="maxFar" data-en="Permitted Floor Area Ratio (GFZ / CUS)" data-es="Coeficiente de Ocupación Permitido (CUS / GFZ)">Permitted Floor Area Ratio (GFZ / CUS)</label>
+              <input type="number" class="form-control" id="maxFar" value="1.2" min="0" max="20" step="0.1" oninput="debouncedCalculate();">
+              <span class="hint-text" id="maxFarHint" data-en="Germany: GFZ 1.2 for residential zones (BauNVO §17) · Ecuador: CUS from the municipal regulation sheet" data-es="Alemania: GFZ 1,2 en zonas residenciales (BauNVO §17) · Ecuador: CUS según el IRM municipal">Germany: GFZ 1.2 for residential zones (BauNVO §17) · Ecuador: CUS from the municipal regulation sheet</span>
+            </div>
+
+            <div class="mb-3" id="sizeField">
+              <label for="propertySize"><span data-en="Gross Floor Area above ground (m²)" data-es="Área Bruta sobre rasante (m²)">Gross Floor Area above ground (m²)</span> <span class="field-mode-tag" id="sizeModeTag"></span></label>
+              <div class="input-with-action">
+                <input type="number" class="form-control" id="propertySize" value="1000" min="100" max="100000" step="100" oninput="updateFromSize(); debouncedCalculate();">
+                <button type="button" class="inline-action" id="fitToPlotBtn" onclick="fitToPlot();" data-en="Fill the plot" data-es="Llenar el terreno" title="Build the maximum the plot area and permitted ratio allow">Fill the plot</button>
+              </div>
+              <span class="hint-text" id="sizePerM2Hint"></span>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Everything built above ground. Only the sellable part of it earns rent." data-es="Todo lo construido sobre rasante. Solo la parte vendible genera renta.">Everything built above ground. Only the sellable part of it earns rent.</small>
+            </div>
+
+            <div class="area-summary" id="areaSummary"></div>
+
+            <details class="area-details" id="areaBreakdownDetails">
+              <summary data-en="Detailed area breakdown" data-es="Desglose detallado de áreas">Detailed area breakdown</summary>
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Structure &amp; Walls (%)" data-es="Estructura y Muros (%)">Structure &amp; Walls (%)</label>
+                  <span class="slider-value" id="structurePctValue">12</span>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="calcMethod" id="calc-size" value="size" onchange="toggleCalcMethod(); debouncedCalculate();" />
-                  <label class="form-check-label" for="calc-size" data-en="Construction Size" data-es="Tamaño de Construcción">
-                    Construction Size
-                  </label>
+                <input type="range" id="structurePct" min="0" max="25" step="1" value="12" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>0%</span><span>25%</span></div>
+                <span class="hint-text" data-en="Konstruktionsgrundfläche — wall and column footprint, never lettable (DIN 277: 16–18% for apartment buildings)" data-es="Superficie de construcción — muros y columnas, nunca arrendable (DIN 277: 16–18% en edificios de vivienda)">Konstruktionsgrundfläche — wall and column footprint, never lettable (DIN 277: 16–18% for apartment buildings)</span>
+              </div>
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Circulation (%)" data-es="Circulación (%)">Circulation (%)</label>
+                  <span class="slider-value" id="circulationPctValue">12</span>
                 </div>
+                <input type="range" id="circulationPct" min="0" max="30" step="1" value="12" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>0%</span><span>30%</span></div>
+                <span class="hint-text" data-en="Stairs, corridors, lobby and lifts — Verkehrsfläche (6% for row houses, 12–18% for apartment blocks)" data-es="Escaleras, pasillos, vestíbulo y ascensores — Verkehrsfläche (6% en adosados, 12–18% en bloques)">Stairs, corridors, lobby and lifts — Verkehrsfläche (6% for row houses, 12–18% for apartment blocks)</span>
+              </div>
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Technical &amp; Service (%)" data-es="Técnico y Servicios (%)">Technical &amp; Service (%)</label>
+                  <span class="slider-value" id="technicalPctValue">4</span>
+                </div>
+                <input type="range" id="technicalPct" min="0" max="15" step="1" value="4" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>0%</span><span>15%</span></div>
+                <span class="hint-text" data-en="Plant rooms, meters, waste, bicycle and tenant storage — DIN 277 Technikfläche (2–5%)" data-es="Cuartos técnicos, medidores, basura, bicicletas y bodegas — Technikfläche DIN 277 (2–5%)">Plant rooms, meters, waste, bicycle and tenant storage — DIN 277 Technikfläche (2–5%)</span>
+              </div>
+
+              <div class="slider-field">
+                <div class="slider-header">
+                  <label data-en="Balconies &amp; Terraces (%)" data-es="Balcones y Terrazas (%)">Balconies &amp; Terraces (%)</label>
+                  <span class="slider-value" id="balconyPctValue">7</span>
+                </div>
+                <input type="range" id="balconyPct" min="0" max="25" step="1" value="7" oninput="syncSlider(this); debouncedCalculate();">
+                <div class="slider-range-labels"><span>0%</span><span>25%</span></div>
+                <span class="hint-text" id="balconyHint" data-en="Built at about half the interior rate; counts 25% toward lettable area (WoFlV §4)" data-es="Se construye a la mitad del costo interior; cuenta 25% del área arrendable (WoFlV §4)">Built at about half the interior rate; counts 25% toward lettable area (WoFlV §4)</span>
+              </div>
+            </details>
+
+            <div class="area-subgroup">
+              <label class="calculator-sublabel" data-en="Underground Garage" data-es="Garaje Subterráneo">Underground Garage</label>
+
+              <div class="mb-3">
+                <label for="parkingSpaces" data-en="Parking Spaces" data-es="Plazas de Aparcamiento">Parking Spaces</label>
+                <input type="number" class="form-control" id="parkingSpaces" value="0" min="0" max="2000" step="1" oninput="debouncedCalculate();">
+                <div class="chart-controls preset-row" id="parkingPresets" role="group" aria-label="Parking provision presets"></div>
+                <span class="hint-text" id="parkingSpacesHint" data-en="Set to 0 for no garage, or let a ratio fill it from the sellable area" data-es="Deja 0 si no hay garaje, o deja que una proporción lo calcule desde el área vendible">Set to 0 for no garage, or let a ratio fill it from the sellable area</span>
+              </div>
+
+              <div class="mb-3">
+                <label for="m2PerSpace" data-en="Area per Space (m²)" data-es="Área por Plaza (m²)">Area per Space (m²)</label>
+                <input type="number" class="form-control" id="m2PerSpace" value="30" min="10" max="60" step="1" oninput="debouncedCalculate();">
+                <span class="hint-text" data-en="Includes ramps and aisles — the bay itself is only ~12.5 m²" data-es="Incluye rampas y circulaciones — la plaza en sí mide ~12,5 m²">Includes ramps and aisles — the bay itself is only ~12.5 m²</span>
+              </div>
+
+              <div class="mb-3">
+                <label for="costPerSpace" data-en="Cost per Space" data-es="Costo por Plaza">Cost per Space <span class="currency" id="currencyLabel4">USD</span></label>
+                <input type="number" class="form-control" id="costPerSpace" value="12000" min="0" step="1000" oninput="debouncedCalculate();">
+                <span class="hint-text" id="costPerSpaceHint" data-en="Ecuador: $10–18k · Germany: €25–50k per underground space" data-es="Ecuador: $10–18k · Alemania: €25–50k por plaza subterránea">Ecuador: $10–18k · Germany: €25–50k per underground space</span>
               </div>
             </div>
           </div>
 
-          <!-- 3. Costs Section -->
+          <!-- 4. Costs Section -->
           <div class="calculator-section">
-            <label class="calculator-label" data-en="3. Project Costs" data-es="3. Costos del Proyecto">3. Project Costs</label>
+            <label class="calculator-label" data-en="4. Project Costs" data-es="4. Costos del Proyecto">4. Project Costs</label>
 
             <div id="costInputSection">
               <div class="slider-field">
                 <div class="slider-header">
-                  <label data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost <span class="currency" id="currencyLabel">USD</span></label>
+                  <label><span data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost</span> <span class="currency" id="currencyLabel">USD</span> <span class="field-mode-tag" id="costModeTag"></span></label>
                   <span class="slider-value" id="constructionCostValue">500000</span>
                 </div>
-                <input type="range" id="constructionCost" min="100000" max="5000000" step="50000" value="1200000" aria-label="Construction cost slider" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
-                <div class="slider-range-labels"><span>100K</span><span>5M</span></div>
+                <input type="range" id="constructionCost" min="100000" max="20000000" step="50000" value="1200000" aria-label="Construction cost slider" oninput="syncSlider(this); updateFromCost(); debouncedCalculate();">
+                <div class="slider-range-labels"><span>100K</span><span>20M</span></div>
                 <span class="hint-text" id="costPerM2Hint"></span>
               </div>
             </div>
 
-            <div class="mb-3">
-              <label for="propertySize" data-en="Construction Size (m²)" data-es="Tamaño de Construcción (m²)">Construction Size (m²)</label>
-              <input type="number" class="form-control" id="propertySize" value="1000" min="100" max="100000" step="100" oninput="updateFromSize(); debouncedCalculate();">
-              <span class="hint-text" id="sizePerM2Hint"></span>
+            <!-- In size mode the budget is an outcome, not a control. It
+                 used to vanish entirely, which hid the one figure the
+                 reader had just changed the area to find out. -->
+            <div class="derived-readout" id="derivedCostReadout" style="display: none;">
+              <div class="derived-readout-head">
+                <span data-en="Total Construction Cost" data-es="Costo Total de Construcción">Total Construction Cost</span>
+                <strong id="derivedCostValue">-</strong>
+              </div>
+              <span class="hint-text" id="derivedCostHint"></span>
+              <button type="button" class="inline-action inline-action--ghost" onclick="switchCalcMode('cost');" data-en="Set a budget instead" data-es="Fijar un presupuesto">Set a budget instead</button>
             </div>
 
             <div class="mb-3">
@@ -726,9 +1203,9 @@
             </div>
           </div>
 
-          <!-- 4. Income & Returns Section -->
+          <!-- 5. Income & Returns Section -->
           <div class="calculator-section">
-            <label class="calculator-label" id="incomeReturnsLabel" data-en="4. Income &amp; Returns" data-es="4. Ingresos y Retornos">4. Income &amp; Returns</label>
+            <label class="calculator-label" id="incomeReturnsLabel" data-en="5. Income &amp; Returns" data-es="5. Ingresos y Retornos">5. Income &amp; Returns</label>
 
             <!-- Rental Income Fields (hidden for sale-only) -->
             <div id="rentalIncomeSection">
@@ -736,6 +1213,12 @@
                 <label for="rentalPerM2" data-en="Monthly Rental Income per m²" data-es="Ingreso Mensual de Alquiler por m²">Monthly Rental Income per m² <span class="currency" id="currencyLabel2">USD</span></label>
                 <input type="number" class="form-control" id="rentalPerM2" value="15" min="1" step="0.5" oninput="debouncedCalculate();">
                 <span class="hint-text" data-en="Ecuador: $8–20/m² · Germany: €10–18/m²" data-es="Ecuador: $8–20/m² · Alemania: €10–18/m²">Ecuador: $8–20/m² · Germany: €10–18/m²</span>
+              </div>
+
+              <div class="mb-3">
+                <label for="parkingRentPerSpace" data-en="Monthly Rent per Parking Space" data-es="Renta Mensual por Plaza">Monthly Rent per Parking Space <span class="currency" id="currencyLabel5">USD</span></label>
+                <input type="number" class="form-control" id="parkingRentPerSpace" value="35" min="0" step="5" oninput="debouncedCalculate();">
+                <span class="hint-text" id="parkingRentHint" data-en="Ecuador: $25–50 · Germany: €87–117 per month in the large cities" data-es="Ecuador: $25–50 · Alemania: €87–117 al mes en las grandes ciudades">Ecuador: $25–50 · Germany: €87–117 per month in the large cities</span>
               </div>
 
               <div class="slider-field">
@@ -756,6 +1239,12 @@
                 <input type="number" class="form-control" id="sellingPricePerM2" value="2000" min="100" step="100" oninput="debouncedCalculate();">
                 <span class="hint-text" id="sellingPriceHint" data-en="Market price at time of sale (not appreciation based)" data-es="Precio de mercado al momento de venta (no basado en apreciación)">Market price at time of sale</span>
               </div>
+
+              <div class="mb-3">
+                <label for="parkingSalePrice" data-en="Selling Price per Parking Space" data-es="Precio de Venta por Plaza">Selling Price per Parking Space <span class="currency" id="currencyLabel6">USD</span></label>
+                <input type="number" class="form-control" id="parkingSalePrice" value="10000" min="0" step="1000" oninput="debouncedCalculate();">
+                <span class="hint-text" id="parkingSaleHint" data-en="Ecuador: $8–15k · Germany: €20–40k per space" data-es="Ecuador: $8–15k · Alemania: €20–40k por plaza">Ecuador: $8–15k · Germany: €20–40k per space</span>
+              </div>
             </div>
 
             <!-- Appreciation (shown for both rent and sale) -->
@@ -771,9 +1260,9 @@
           </div>
 
 
-          <!-- 5. Financing Section -->
+          <!-- 6. Financing Section -->
           <div class="calculator-section">
-            <label class="calculator-label" data-en="5. Financing Method" data-es="5. Método de Financiamiento">5. Financing Method</label>
+            <label class="calculator-label" data-en="6. Financing Method" data-es="6. Método de Financiamiento">6. Financing Method</label>
 
             <div class="option-cards two-col">
               <div class="option-card active" id="card-direct" onclick="selectFinancing('cash')">
@@ -818,9 +1307,9 @@
             </div>
           </div>
 
-          <!-- 6. Analysis Period Section -->
+          <!-- 7. Analysis Period Section -->
           <div class="calculator-section">
-            <label class="calculator-label" data-en="6. Analysis Period" data-es="6. Período de Análisis">6. Analysis Period</label>
+            <label class="calculator-label" data-en="7. Analysis Period" data-es="7. Período de Análisis">7. Analysis Period</label>
 
             <div class="slider-field">
               <div class="slider-header">
@@ -829,7 +1318,7 @@
               </div>
               <input type="range" id="years" min="1" max="30" step="1" value="10" oninput="syncSlider(this); debouncedCalculate();">
               <div class="slider-range-labels"><span>1 yr</span><span>30 yrs</span></div>
-              <small id="yearsAnalyzeHint" class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Projection period for cash flow and profit calculations" data-es="Período de proyección para cálculos de flujo y ganancia">Projection period for cash flow and profit calculations</small>
+              <small id="yearsAnalyzeHint" class="result-context" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Projection period for cash flow and profit calculations" data-es="Período de proyección para cálculos de flujo y ganancia">Projection period for cash flow and profit calculations</small>
             </div>
           </div>
         </div>
@@ -858,6 +1347,39 @@
           </div>
 
           <div class="result-section">
+            <div class="result-section-title" data-en="Area Programme" data-es="Programa de Áreas">Area Programme</div>
+            <div class="result-item">
+              <span class="result-label" data-en="Gross Floor Area (above ground)" data-es="Área Bruta (sobre rasante)">Gross Floor Area (above ground)</span>
+              <span class="result-value" id="resultGfa">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" id="sellableAreaLabel" data-en="Sellable / Rentable Area" data-es="Área Vendible / Arrendable">Sellable / Rentable Area</span>
+              <span class="result-value" id="resultSellableArea">-</span>
+              <small class="result-context" id="sellableAreaContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Efficiency (sellable ÷ gross)" data-es="Eficiencia (vendible ÷ bruta)">Efficiency (sellable ÷ gross)</span>
+              <span class="result-value" id="resultEfficiency">-</span>
+              <small class="result-context" id="efficiencyContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Above 75% is healthy for an apartment building" data-es="Por encima del 75% es saludable para un edificio de vivienda">Above 75% is healthy for an apartment building</small>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Non-rentable Area" data-es="Área No Arrendable">Non-rentable Area</span>
+              <span class="result-value" id="resultNonRentable">-</span>
+              <small class="result-context" id="nonRentableContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
+            </div>
+            <div class="result-item" id="garageResultItem">
+              <span class="result-label" data-en="Underground Garage" data-es="Garaje Subterráneo">Underground Garage</span>
+              <span class="result-value" id="resultGarage">-</span>
+              <small class="result-context" id="garageContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Floor Area Ratio achieved" data-es="Coeficiente de Uso alcanzado">Floor Area Ratio achieved</span>
+              <span class="result-value" id="resultFar">-</span>
+              <small class="result-context" id="farContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
+            </div>
+          </div>
+
+          <div class="result-section">
             <div class="result-section-title" data-en="Property Breakdown" data-es="Desglose de Propiedad">Property Breakdown</div>
             <div class="result-item">
               <span class="result-label" data-en="Land/Plot Cost" data-es="Costo del Terreno">Land/Plot Cost</span>
@@ -866,18 +1388,24 @@
             <div class="result-item">
               <span class="result-label" data-en="Construction Cost" data-es="Costo de Construcción">Construction Cost</span>
               <span class="result-value" id="resultConstructionCost">-</span>
+              <small class="result-context" id="constructionSplitContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Total Project Cost" data-es="Costo Total del Proyecto">Total Project Cost</span>
               <span class="result-value" id="resultTotalProjectCost">-</span>
             </div>
             <div class="result-item">
-              <span class="result-label" data-en="Construction Size" data-es="Tamaño de Construcción">Construction Size</span>
+              <span class="result-label" data-en="Built Area (incl. garage)" data-es="Área Construida (incl. garaje)">Built Area (incl. garage)</span>
               <span class="result-value" id="resultPropertySize">-</span>
             </div>
             <div class="result-item">
-              <span class="result-label" data-en="Cost per m²" data-es="Costo por m²">Cost per m²</span>
+              <span class="result-label" data-en="Construction Cost per m² built" data-es="Costo de Construcción por m² construido">Construction Cost per m² built</span>
               <span class="result-value" id="resultCostPerM2">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label" data-en="Total Cost per Sellable m²" data-es="Costo Total por m² Vendible">Total Cost per Sellable m²</span>
+              <span class="result-value" id="resultCostPerSellableM2">-</span>
+              <small class="result-context" id="costPerSellableContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Land and construction over the area you can actually sell" data-es="Terreno y construcción sobre el área que realmente puedes vender">Land and construction over the area you can actually sell</small>
             </div>
           </div>
 
@@ -915,12 +1443,12 @@
             <div class="result-item" style="border-top: 2px solid rgba(255, 213, 0, 0.3); padding-top: 0.75rem; margin-top: 0.75rem;">
               <span class="result-label" id="monthlyRentalLabel" data-en="Monthly Rental Income" data-es="Ingreso Mensual por Alquiler">Monthly Rental Income</span>
               <span class="result-value" id="resultMonthlyRental">-</span>
-              <small class="result-context" id="monthlyRentalContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Monthly income from rental" data-es="Ingreso mensual del alquiler">Monthly income from rental</small>
+              <small class="result-context" id="monthlyRentalContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Monthly income from rental" data-es="Ingreso mensual del alquiler">Monthly income from rental</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Monthly Net Cash Flow" data-es="Flujo de Caja Neto Mensual">Monthly Net Cash Flow</span>
               <span class="result-value" id="resultMonthlyNetCash">-</span>
-              <small class="result-context" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Rental income minus loan payment" data-es="Ingreso de alquiler menos pago del préstamo">Rental income minus loan payment</small>
+              <small class="result-context" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Rental income minus loan payment" data-es="Ingreso de alquiler menos pago del préstamo">Rental income minus loan payment</small>
             </div>
             <div class="result-item">
               <span class="result-label" data-en="Loan Payoff Year" data-es="Año de Pago del Préstamo">Loan Payoff Year</span>
@@ -937,18 +1465,28 @@
             <div class="result-item">
               <span class="result-label" id="roiLabel" data-en="ROI (%)" data-es="ROI (%)">ROI (%)</span>
               <span class="result-value" id="resultROI">-</span>
-              <small class="result-context" id="roiContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
+              <small class="result-context" id="roiContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="vs ~4% savings account" data-es="vs ~4% cuenta de ahorros">vs ~4% savings account</small>
             </div>
             <div class="result-item" id="breakEvenItem">
               <span class="result-label" id="breakEvenLabel" data-en="Cash Flow Breakeven" data-es="Punto de Equilibrio de Flujo">Cash Flow Breakeven</span>
               <span class="result-value" id="resultPayback">-</span>
               <span class="hint-text" id="breakEvenHint" data-en="Year operational cash flow turns positive (before loan payoff)" data-es="Año cuando el flujo de efectivo operativo se vuelve positivo">Year operational cash flow turns positive</span>
-              <small class="result-context" id="breakEvenContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
+              <small class="result-context" id="breakEvenContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;" data-en="Breakeven on initial investment" data-es="Equilibrio en inversión inicial">Breakeven on initial investment</small>
+            </div>
+            <div class="result-item" id="marginPerM2Item">
+              <span class="result-label" id="marginPerM2Label" data-en="Margin per Sellable m²" data-es="Margen por m² Vendible">Margin per Sellable m²</span>
+              <span class="result-value" id="resultMarginPerM2">-</span>
+              <small class="result-context" id="marginPerM2Context" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
+            </div>
+            <div class="result-item" id="garageEconomicsItem" style="display: none;">
+              <span class="result-label" data-en="Garage Self-financing" data-es="Autofinanciación del Garaje">Garage Self-financing</span>
+              <span class="result-value" id="resultGarageEconomics">-</span>
+              <small class="result-context" id="garageEconomicsContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
             </div>
             <div class="result-item">
               <span class="result-label" id="propertyValueLabel" data-en="Property Value (end)" data-es="Valor de Propiedad (final)">Property Value (end)</span>
               <span class="result-value" id="resultPropertyValue">-</span>
-              <small class="result-context" id="propertyValueContext" style="display: block; font-size: 0.7rem; color: #cccccc; margin-top: 0.2rem;"></small>
+              <small class="result-context" id="propertyValueContext" style="display: block; font-size: 0.7rem; color: #333333; margin-top: 0.2rem;"></small>
             </div>
           </div>
 
@@ -1069,7 +1607,7 @@
 
     // Input constraints and validation limits
     const INPUT_LIMITS = {
-      constructionCost: { min: 100000, max: 5000000, step: 50000 },
+      constructionCost: { min: 100000, max: 20000000, step: 50000 },
       loanPercent: { min: 10, max: 90, step: 5 },
       interestRate: { min: 1, max: 15, step: 0.1 },
       propertySize: { min: 100, max: 100000, step: 100 },
@@ -1120,16 +1658,511 @@
       }
     };
 
+    /**
+     * The construction rate the finish cards imply, per m² of gross area.
+     */
+    function adjustedRatePerM2() {
+      return countryData[currentCountry].typicalCostPerM2 * currentFinishMultiplier;
+    }
+
+    /**
+     * Read the area programme off the panel. Anything the reader has not
+     * touched falls back to the country default in js/tools/area-model.js.
+     */
+    function readAreaProgramme() {
+      const d = window.AREA_DEFAULTS[currentCountry];
+      const val = (id, fallback) => {
+        const el = document.getElementById(id);
+        if (!el) return fallback;
+        const n = parseFloat(el.value);
+        return isFinite(n) && n >= 0 ? n : fallback;
+      };
+      const pct = (id, fallback) => val(id, fallback * 100) / 100;
+
+      return {
+        country: currentCountry,
+        ratePerM2: adjustedRatePerM2(),
+        plotArea: val('plotArea', 0),
+        structurePct: pct('structurePct', d.structurePct),
+        circulationPct: pct('circulationPct', d.circulationPct),
+        technicalPct: pct('technicalPct', d.technicalPct),
+        balconyPct: pct('balconyPct', d.balconyPct),
+        balconyCostFactor: d.balconyCostFactor,
+        balconyValueFactor: d.balconyValueFactor,
+        parkingSpaces: val('parkingSpaces', 0),
+        m2PerSpace: val('m2PerSpace', d.m2PerSpace),
+        costPerSpace: val('costPerSpace', d.costPerSpace)
+      };
+    }
+
+    /**
+     * The current programme resolved into areas and construction cost.
+     * Gross floor area is whatever the panel says unless a caller is
+     * back-solving it from a budget.
+     */
+    function currentSchedule(gfaOverride) {
+      const programme = readAreaProgramme();
+      programme.gfa = gfaOverride !== undefined
+        ? gfaOverride
+        : (parseFloat(document.getElementById('propertySize').value) || 0);
+      return window.computeAreaSchedule(programme);
+    }
+
+    /**
+     * Country defaults for the programme. Switching market moves these the
+     * same way it already moves the interest-rate band: a German garage
+     * space costs three times an Ecuadorian one, and a reader comparing
+     * the two markets should not have to know that by heart.
+     */
+    function applyAreaDefaults(country) {
+      const d = window.AREA_DEFAULTS[country];
+      if (!d) return;
+
+      const set = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value;
+      };
+
+      set('structurePct', Math.round(d.structurePct * 100));
+      set('circulationPct', Math.round(d.circulationPct * 100));
+      set('technicalPct', Math.round(d.technicalPct * 100));
+      set('balconyPct', Math.round(d.balconyPct * 100));
+      set('m2PerSpace', d.m2PerSpace);
+      set('costPerSpace', d.costPerSpace);
+      set('parkingRentPerSpace', d.parkingRentPerSpace);
+      set('parkingSalePrice', d.parkingSalePrice);
+      set('maxFar', d.typicalFar);
+
+      ['structurePct', 'circulationPct', 'technicalPct', 'balconyPct'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) syncSlider(el);
+      });
+
+      const balconyHint = document.getElementById('balconyHint');
+      if (balconyHint) {
+        const credit = Math.round(d.balconyValueFactor * 100);
+        balconyHint.textContent = currentLang === 'en'
+          ? `Built at about half the interior rate; counts ${credit}% toward lettable area`
+          : `Se construye a la mitad del costo interior; cuenta ${credit}% del área arrendable`;
+      }
+    }
+
+    /* ----------------------------------------------------------------
+       Presets
+       The area programme has seven numbers in it, and a reader who came
+       to find out whether a building pays for itself did not come to
+       fill in seven numbers. Each preset writes a whole programme at
+       once; the sliders underneath stay editable, so a preset is a
+       starting point and never a lock.
+       ---------------------------------------------------------------- */
+
+    /**
+     * Push a programme change through the cost/size binding in whichever
+     * direction the reader chose. In "construction cost" mode the budget
+     * is the anchor and the area follows it; in "construction size" mode
+     * it is the other way round. Applying a preset must not silently
+     * flip that choice.
+     */
+    function reflowCostAndSize() {
+      const method = document.querySelector('input[name="calcMethod"]:checked').value;
+      if (method === 'cost') {
+        updateFromCost();
+      } else {
+        updateFromSize();
+      }
+    }
+
+    /**
+     * Which preset, if any, the current slider values already spell out.
+     * A type is resolved against the current market, so the same pill
+     * means a German block in Germany and an Ecuadorian one in Ecuador.
+     */
+    function matchingTypology() {
+      const read = id => parseFloat(document.getElementById(id).value);
+      return (window.AREA_PRESETS || []).find(preset => {
+        const p = window.typologyProgramme(currentCountry, preset.id);
+        return p &&
+          read('structurePct') === p.structurePct &&
+          read('circulationPct') === p.circulationPct &&
+          read('technicalPct') === p.technicalPct &&
+          read('balconyPct') === p.balconyPct;
+      }) || null;
+    }
+
+    function applyTypology(id) {
+      const programme = window.typologyProgramme(currentCountry, id);
+      if (!programme) return;
+
+      const set = (field, value) => {
+        const el = document.getElementById(field);
+        if (!el) return;
+        el.value = value;
+        syncSlider(el);
+      };
+      set('structurePct', programme.structurePct);
+      set('circulationPct', programme.circulationPct);
+      set('technicalPct', programme.technicalPct);
+      set('balconyPct', programme.balconyPct);
+
+      // A preset changes how much of the gross area is walls, not how big
+      // the building is — so whichever of cost and size the reader is
+      // driving stays put, and the other one follows.
+      reflowCostAndSize();
+      refreshPresetState();
+      debouncedCalculate();
+    }
+
+    /**
+     * Parking stated the way a brief states it — one space per so many
+     * sellable m² — rather than as a count the reader has to work out.
+     */
+    function applyParkingRatio(perM2) {
+      const schedule = currentSchedule();
+      const spaces = perM2 > 0 ? Math.ceil(schedule.sellableArea / perM2) : 0;
+      const input = document.getElementById('parkingSpaces');
+      input.value = Math.min(spaces, parseFloat(input.max) || spaces);
+      reflowCostAndSize();
+      refreshPresetState();
+      debouncedCalculate();
+    }
+
+    /** The count each ratio would currently produce, for the active pill. */
+    function matchingParkingRatio() {
+      const schedule = currentSchedule();
+      const spaces = schedule.spaces;
+      return (window.PARKING_RATIOS || []).find(r =>
+        spaces === (r.per > 0 ? Math.ceil(schedule.sellableArea / r.per) : 0)
+      ) || null;
+    }
+
+    /**
+     * Build out the plot to the density the regulation sheet allows. The
+     * reader has already typed the plot area and the permitted ratio, so
+     * the maximum scheme is arithmetic — but it is the first thing anyone
+     * wants to see, and it should not cost them a calculator.
+     */
+    function fitToPlot() {
+      const plotArea = parseFloat(document.getElementById('plotArea').value) || 0;
+      const maxFar = parseFloat(document.getElementById('maxFar').value) || 0;
+      const sizeInput = document.getElementById('propertySize');
+
+      if (plotArea <= 0 || maxFar <= 0) {
+        document.getElementById('sizePerM2Hint').textContent = currentLang === 'en'
+          ? 'Enter a plot area and a permitted ratio first'
+          : 'Ingresa primero el área del terreno y el coeficiente permitido';
+        return;
+      }
+
+      // Filling the plot is a statement about area, so it takes the
+      // anchor with it. Writing a size while the budget still drove the
+      // form would have let the next recalculation quietly undo it.
+      const sizeRadio = document.getElementById('calc-size');
+      if (sizeRadio && !sizeRadio.checked) {
+        sizeRadio.checked = true;
+        toggleCalcMethod(true);
+      }
+
+      const max = parseFloat(sizeInput.max) || Infinity;
+      const min = parseFloat(sizeInput.min) || 0;
+      sizeInput.value = Math.round(Math.min(Math.max(plotArea * maxFar, min), max));
+      updateFromSize();
+      debouncedCalculate();
+    }
+
+    /** Render both pill rows. Re-run on language switch. */
+    function buildPresetRows() {
+      const typologyRow = document.getElementById('typologyPresets');
+      if (typologyRow) {
+        typologyRow.innerHTML = '';
+        (window.AREA_PRESETS || []).forEach(preset => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'chart-btn';
+          btn.dataset.typology = preset.id;
+          btn.textContent = currentLang === 'es' ? preset.es : preset.en;
+          btn.setAttribute('aria-pressed', 'false');
+          btn.addEventListener('click', () => applyTypology(preset.id));
+          typologyRow.appendChild(btn);
+        });
+      }
+
+      const parkingRow = document.getElementById('parkingPresets');
+      if (parkingRow) {
+        parkingRow.innerHTML = '';
+        (window.PARKING_RATIOS || []).forEach(ratio => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'chart-btn';
+          btn.dataset.parking = ratio.id;
+          btn.textContent = currentLang === 'es' ? ratio.es : ratio.en;
+          btn.setAttribute('aria-pressed', 'false');
+          btn.addEventListener('click', () => applyParkingRatio(ratio.per));
+          parkingRow.appendChild(btn);
+        });
+      }
+
+      refreshPresetState();
+    }
+
+    /**
+     * Light the pill that describes the current numbers — including when
+     * the reader reached them by dragging a slider rather than clicking.
+     * The pills report state; they do not own it.
+     */
+    function refreshPresetState() {
+      const typology = matchingTypology();
+      document.querySelectorAll('[data-typology]').forEach(btn => {
+        const on = !!typology && btn.dataset.typology === typology.id;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+
+      const note = document.getElementById('typologyNote');
+      if (note) {
+        note.textContent = typology
+          ? (currentLang === 'es' ? typology.noteEs : typology.noteEn)
+          : (currentLang === 'es'
+              ? 'Programa de áreas a medida — los controles de abajo mandan'
+              : 'Custom area programme — the controls below are in charge');
+      }
+
+      const ratio = matchingParkingRatio();
+      document.querySelectorAll('[data-parking]').forEach(btn => {
+        const on = !!ratio && btn.dataset.parking === ratio.id;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    /**
+     * The section's answer, drawn once: a bar the width of the gross
+     * floor area, with the part that earns in brand blue and the parts
+     * that do not in greys. Every band is named in the legend beneath,
+     * so the reading never depends on telling the colours apart.
+     */
+    function renderAreaSummary(schedule) {
+      const box = document.getElementById('areaSummary');
+      if (!box) return;
+
+      const gfa = schedule.gfa || 0;
+      if (gfa <= 0) {
+        box.innerHTML = '';
+        return;
+      }
+
+      const pct = area => (area / gfa) * 100;
+      const n = value => formatToolNumber(Math.round(value));
+      const es = currentLang === 'es';
+      const efficiency = Math.round(schedule.efficiency * 100);
+
+      const bands = [
+        { cls: 'band-sellable', area: schedule.sellableArea, label: es ? 'Vendible' : 'Sellable' },
+        { cls: 'band-structure', area: schedule.structureArea, label: es ? 'Estructura' : 'Structure' },
+        { cls: 'band-circulation', area: schedule.circulationArea, label: es ? 'Circulación' : 'Circulation' },
+        { cls: 'band-technical', area: schedule.technicalArea, label: es ? 'Técnico' : 'Technical' }
+      ];
+
+      // A scheme where the deductions were typed larger than the building
+      // says so plainly rather than reporting a negative sellable area.
+      let verdict;
+      let warning = false;
+      if (schedule.deductionOverrun) {
+        warning = true;
+        verdict = es
+          ? 'Las deducciones superaban el 60% del área bruta; se han reducido proporcionalmente.'
+          : 'The deductions added up to more than 60% of the gross area, so they have been scaled back proportionally.';
+      } else if (efficiency >= 80) {
+        verdict = es
+          ? `${efficiency}% vendible — muy eficiente; comprueba que las escaleras y el núcleo cumplan la norma.`
+          : `${efficiency}% sellable — highly efficient; check the stair and core still meet code.`;
+      } else if (efficiency >= 72) {
+        verdict = es
+          ? `${efficiency}% vendible — dentro del rango saludable (70–75% típico, 82% muy optimizado).`
+          : `${efficiency}% sellable — inside the healthy band (70–75% typical, 82% tightly planned).`;
+      } else if (efficiency >= 65) {
+        verdict = es
+          ? `${efficiency}% vendible — corriente en torres y bloques alemanes (NUF 65–70% de la BGF).`
+          : `${efficiency}% sellable — ordinary for towers and German blocks (NUF 65–70% of gross).`;
+      } else {
+        warning = true;
+        verdict = es
+          ? `${efficiency}% vendible — más de un tercio del edificio no genera ingreso. Revisa circulación y estructura.`
+          : `${efficiency}% sellable — over a third of the building earns nothing. Look at circulation and structure.`;
+      }
+
+      const balconyLine = schedule.balconyArea > 0
+        ? `<div class="area-verdict">${es
+            ? `Más ${n(schedule.balconyArea)} m² de balcón, de los que ${n(schedule.balconyCredit)} m² cuentan como área arrendable.`
+            : `Plus ${n(schedule.balconyArea)} m² of balcony, of which ${n(schedule.balconyCredit)} m² counts as lettable area.`}</div>`
+        : '';
+
+      const garageLine = schedule.spaces > 0
+        ? `<div class="area-verdict">${es
+            ? `Y ${n(schedule.spaces)} plazas bajo rasante ocupando ${n(schedule.garageArea)} m², con su propio costo e ingreso.`
+            : `And ${n(schedule.spaces)} spaces below ground taking ${n(schedule.garageArea)} m², costed and earning on their own.`}</div>`
+        : '';
+
+      box.innerHTML = `
+        <div class="area-summary-headline">
+          <strong>${n(schedule.sellableArea)} m²</strong>
+          <span>${es ? 'de ' : 'of '}${n(gfa)} m² ${es ? 'genera ingreso' : 'earns'}</span>
+        </div>
+        <div class="area-bar" role="img" aria-label="${es ? 'Reparto del área bruta' : 'Split of the gross floor area'}: ${bands.map(b => `${b.label} ${Math.round(pct(b.area))}%`).join(', ')}">
+          ${bands.map(b => `<span class="${b.cls}" style="width:${pct(b.area)}%"></span>`).join('')}
+        </div>
+        <div class="area-legend">
+          ${bands.map(b => `<span><i class="${b.cls}" style="background:${{
+            'band-sellable': '#0099FF',
+            'band-structure': '#1F1F1F',
+            'band-circulation': '#8A8A8A',
+            'band-technical': '#C9C9C9'
+          }[b.cls]}"></i>${b.label} <em>${n(b.area)} m²</em></span>`).join('')}
+        </div>
+        <div class="area-verdict${warning ? ' is-warning' : ''}">${verdict}</div>
+        ${balconyLine}
+        ${garageLine}
+      `;
+    }
+
+    /**
+     * Fill the Area Programme panel and the per-m² figures that depend on
+     * it. The inputs already existed; nothing was reading them back out,
+     * so the panel sat on dashes while the maths ran behind it.
+     */
+    function renderAreaProgrammeResults(schedule, ctx) {
+      const es = currentLang === 'es';
+      const n = value => formatToolNumber(Math.round(value));
+      const set = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      };
+
+      renderAreaSummary(schedule);
+      refreshPresetState();
+      updateDerivedCostReadout(schedule);
+
+      set('resultGfa', n(schedule.gfa) + ' m²');
+      set('resultSellableArea', n(schedule.lettableArea) + ' m²');
+      set('sellableAreaContext', schedule.balconyCredit > 0
+        ? (es
+            ? `${n(schedule.sellableArea)} m² interiores + ${n(schedule.balconyCredit)} m² de crédito por balcón`
+            : `${n(schedule.sellableArea)} m² interior + ${n(schedule.balconyCredit)} m² balcony credit`)
+        : (es ? 'Área interior sobre la que se cobra renta o precio' : 'Interior area that rent and price are charged on'));
+
+      set('resultEfficiency', Math.round(schedule.efficiency * 100) + '%');
+
+      const nonRentable = schedule.structureArea + schedule.circulationArea + schedule.technicalArea;
+      set('resultNonRentable', n(nonRentable) + ' m²');
+      set('nonRentableContext', es
+        ? `Estructura ${n(schedule.structureArea)} · Circulación ${n(schedule.circulationArea)} · Técnico ${n(schedule.technicalArea)} m²`
+        : `Structure ${n(schedule.structureArea)} · Circulation ${n(schedule.circulationArea)} · Technical ${n(schedule.technicalArea)} m²`);
+
+      // The garage row disappears when there is no garage rather than
+      // reporting a row of zeroes.
+      const garageRow = document.getElementById('garageResultItem');
+      if (garageRow) garageRow.style.display = schedule.spaces > 0 ? '' : 'none';
+      if (schedule.spaces > 0) {
+        set('resultGarage', `${n(schedule.spaces)} × ${n(schedule.m2PerSpace)} m² = ${n(schedule.garageArea)} m²`);
+        set('garageContext', es
+          ? `${ctx.formatter.format(schedule.garageCost)} de construcción, fuera del área vendible`
+          : `${ctx.formatter.format(schedule.garageCost)} of construction, outside the sellable area`);
+      }
+
+      // Achieved density against what the plot allows.
+      const maxFar = parseFloat(document.getElementById('maxFar').value) || 0;
+      if (schedule.achievedFar === null) {
+        set('resultFar', '—');
+        set('farContext', es ? 'Ingresa el área del terreno para verlo' : 'Enter a plot area to see this');
+        set('farHint', '');
+      } else {
+        const achieved = schedule.achievedFar;
+        set('resultFar', achieved.toFixed(2));
+        const headroom = maxFar > 0 ? (maxFar - achieved) * schedule.plotArea : 0;
+        let farText;
+        if (maxFar <= 0) {
+          farText = es ? 'Sin coeficiente permitido con el que comparar' : 'No permitted ratio to compare against';
+        } else if (achieved > maxFar + 0.005) {
+          farText = es
+            ? `Por encima del ${maxFar.toFixed(2)} permitido — ${n(-headroom)} m² de más`
+            : `Over the permitted ${maxFar.toFixed(2)} — ${n(-headroom)} m² too much`;
+        } else if (headroom > schedule.plotArea * 0.05) {
+          farText = es
+            ? `Quedan ${n(headroom)} m² sin usar bajo el ${maxFar.toFixed(2)} permitido`
+            : `${n(headroom)} m² still unbuilt under the permitted ${maxFar.toFixed(2)}`;
+        } else {
+          farText = es
+            ? `El terreno está aprovechado casi al máximo (${maxFar.toFixed(2)} permitido)`
+            : `The plot is built out to nearly its limit (${maxFar.toFixed(2)} permitted)`;
+        }
+        set('farContext', farText);
+        set('farHint', farText);
+      }
+
+      // Where the construction money went.
+      const parts = [];
+      if (schedule.aboveGroundCost > 0) parts.push(`${es ? 'Edificio' : 'Building'} ${ctx.formatter.format(schedule.aboveGroundCost)}`);
+      if (schedule.balconyCost > 0) parts.push(`${es ? 'Balcones' : 'Balconies'} ${ctx.formatter.format(schedule.balconyCost)}`);
+      if (schedule.garageCost > 0) parts.push(`${es ? 'Garaje' : 'Garage'} ${ctx.formatter.format(schedule.garageCost)}`);
+      set('constructionSplitContext', parts.join(' · '));
+
+      // The figure a developer actually quotes: everything spent, over
+      // the area that carries a price.
+      const priced = schedule.lettableArea;
+      set('resultCostPerSellableM2', priced > 0
+        ? ctx.formatter.format((schedule.constructionCost + ctx.landCost) / priced) + '/m²'
+        : '—');
+
+      set('resultMarginPerM2', priced > 0
+        ? ctx.formatter.format(ctx.totalProfit / priced) + '/m²'
+        : '—');
+      set('marginPerM2Context', es
+        ? `Resultado total repartido sobre los ${n(priced)} m² que se cobran`
+        : `Total result spread over the ${n(priced)} m² that carry a price`);
+
+      // Does the garage pay for itself? Underground parking is the most
+      // expensive area in the building, and the answer is often no.
+      const garageEconomics = document.getElementById('garageEconomicsItem');
+      if (garageEconomics) {
+        if (schedule.spaces > 0 && schedule.garageCost > 0) {
+          garageEconomics.style.display = '';
+          if (currentProjectPurpose === 'sale') {
+            const coverage = ctx.parkingSaleRevenue / schedule.garageCost;
+            set('resultGarageEconomics', Math.round(coverage * 100) + '%');
+            set('garageEconomicsContext', es
+              ? `La venta de plazas cubre el ${Math.round(coverage * 100)}% de lo que cuesta construirlas`
+              : `Selling the spaces recovers ${Math.round(coverage * 100)}% of what they cost to build`);
+          } else if (ctx.annualParkingRent > 0) {
+            const years = schedule.garageCost / ctx.annualParkingRent;
+            set('resultGarageEconomics', years.toFixed(1) + (es ? ' años' : ' yrs'));
+            set('garageEconomicsContext', es
+              ? `Años de renta de plazas para pagar el garaje (${ctx.formatter.format(ctx.annualParkingRent)}/año)`
+              : `Years of parking rent to pay the garage back (${ctx.formatter.format(ctx.annualParkingRent)}/yr)`);
+          } else {
+            set('resultGarageEconomics', es ? 'Sin ingreso' : 'No income');
+            set('garageEconomicsContext', es
+              ? 'Las plazas no tienen renta asignada, así que solo pesan en el costo'
+              : 'The spaces carry no rent, so they only weigh on the cost side');
+          }
+        } else {
+          garageEconomics.style.display = 'none';
+        }
+      }
+    }
+
     function updateSellingPriceHint() {
-      const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
-      const propertySize = parseFloat(document.getElementById('propertySize').value) || 1;
-      const costPerM2 = Math.round(constructionCost / propertySize);
+      // Against cost per SELLABLE m², not per built m². The selling price is
+      // charged on the area that can be sold, so comparing it to a gross-area
+      // cost flatters every scheme by the width of its own corridors.
+      const schedule = currentSchedule();
+      const landCost = parseFloat(document.getElementById('landCost').value) || 0;
+      const sellable = schedule.lettableArea || 1;
+      const costPerM2 = Math.round((schedule.constructionCost + landCost) / sellable);
       const currencySymbol = currentCountry === 'germany' ? '€' : '$';
 
       const hint = document.getElementById('sellingPriceHint');
       hint.textContent = currentLang === 'en'
-        ? `Your construction cost: ${currencySymbol}${costPerM2}/m² (enter higher to make profit)`
-        : `Tu costo de construcción: ${currencySymbol}${costPerM2}/m² (ingresa más para ganancia)`;
+        ? `Your all-in cost: ${currencySymbol}${formatToolNumber(costPerM2)}/sellable m² (enter higher to make profit)`
+        : `Tu costo total: ${currencySymbol}${formatToolNumber(costPerM2)}/m² vendible (ingresa más para ganancia)`;
     }
 
     function debouncedCalculate() {
@@ -1234,17 +2267,17 @@
       // Update section title based on purpose
       const titleLabel = document.getElementById('incomeReturnsLabel');
       if (purpose === 'sale') {
-        titleLabel.textContent = currentLang === 'en' ? '4. Property Appreciation' : '4. Apreciación de Propiedad';
-        titleLabel.setAttribute('data-en', '4. Property Appreciation');
-        titleLabel.setAttribute('data-es', '4. Apreciación de Propiedad');
+        titleLabel.textContent = currentLang === 'en' ? '5. Property Appreciation' : '5. Apreciación de Propiedad';
+        titleLabel.setAttribute('data-en', '5. Property Appreciation');
+        titleLabel.setAttribute('data-es', '5. Apreciación de Propiedad');
       } else if (purpose === 'rent') {
-        titleLabel.textContent = currentLang === 'en' ? '4. Income & Returns' : '4. Ingresos y Retornos';
-        titleLabel.setAttribute('data-en', '4. Income & Returns');
-        titleLabel.setAttribute('data-es', '4. Ingresos y Retornos');
+        titleLabel.textContent = currentLang === 'en' ? '5. Income & Returns' : '5. Ingresos y Retornos';
+        titleLabel.setAttribute('data-en', '5. Income & Returns');
+        titleLabel.setAttribute('data-es', '5. Ingresos y Retornos');
       } else {
-        titleLabel.textContent = currentLang === 'en' ? '4. Income, Returns & Appreciation' : '4. Ingresos, Retornos y Apreciación';
-        titleLabel.setAttribute('data-en', '4. Income, Returns & Appreciation');
-        titleLabel.setAttribute('data-es', '4. Ingresos, Retornos y Apreciación');
+        titleLabel.textContent = currentLang === 'en' ? '5. Income, Returns & Appreciation' : '5. Ingresos, Retornos y Apreciación';
+        titleLabel.setAttribute('data-en', '5. Income, Returns & Appreciation');
+        titleLabel.setAttribute('data-es', '5. Ingresos, Retornos y Apreciación');
       }
 
       // Update Years to Analyze label and hint based on purpose
@@ -1328,6 +2361,20 @@
       document.getElementById('currencyLabel').textContent = currencySymbol;
       document.getElementById('currencyLabel1').textContent = currencySymbol;
       document.getElementById('currencyLabel2').textContent = currencySymbol;
+      // The garage and parking fields arrived with the area programme and
+      // were never added to this list, so they kept quoting dollars in
+      // the German market.
+      ['currencyLabel4', 'currencyLabel5', 'currencyLabel6'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = currencySymbol;
+      });
+
+      // A German garage space costs three times an Ecuadorian one and the
+      // permitted density is a quarter of it. Switching market moves the
+      // whole area programme, the same way it already moves the interest
+      // rate band.
+      applyAreaDefaults(country);
+
       const costRange = countryData[country].typicalCostRange;
       document.getElementById('countryInfo').textContent = `Base currency: ${currency} ${currencySymbol} - Typical construction: ${costRange} - ${countryData[country].info}`;
 
@@ -1393,23 +2440,106 @@
       }
     }
 
-    function toggleCalcMethod() {
+    /** The page's currency formatter, for code outside calculate(). */
+    function toolCurrency(value) {
+      const currency = countryData[currentCountry].currency === 'EUR' ? 'EUR' : 'USD';
+      return new Intl.NumberFormat(currency === 'EUR' ? 'de-DE' : 'en-US', {
+        style: 'currency',
+        currency: currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    /**
+     * The budget as an outcome: what the area on screen actually costs,
+     * unrounded by the slider's 50k step, with the split that produced it.
+     */
+    function updateDerivedCostReadout(schedule) {
+      const value = document.getElementById('derivedCostValue');
+      if (!value) return;
+      schedule = schedule || currentSchedule();
+
+      value.textContent = toolCurrency(schedule.constructionCost);
+
+      const es = currentLang === 'es';
+      const perM2 = schedule.gfa > 0 ? schedule.constructionCost / schedule.gfa : 0;
+      const parts = [`${toolCurrency(perM2)}/m²${es ? ' de área bruta' : ' of gross area'}`];
+      if (schedule.garageCost > 0) {
+        parts.push(es
+          ? `${toolCurrency(schedule.garageCost)} es el garaje`
+          : `${toolCurrency(schedule.garageCost)} of it is garage`);
+      }
+      document.getElementById('derivedCostHint').textContent = parts.join(' · ');
+    }
+
+    /**
+     * Dress the form for the chosen direction.
+     *
+     * Cost and size are one quantity read from opposite ends, and the
+     * form used to present both as equally editable while they silently
+     * overwrote each other — then, in size mode, hid the budget
+     * altogether. Now exactly one of the two is a control and the other
+     * is a read-out that stays on screen, because the derived figure is
+     * usually the answer the reader came for.
+     */
+    function toggleCalcMethod(carryOver) {
       const method = document.querySelector('input[name="calcMethod"]:checked').value;
       const costSection = document.getElementById('costInputSection');
-      const countryInfo = countryData[currentCountry];
-      const costPerM2 = countryInfo.typicalCostPerM2;
-      const currency = countryInfo.currency;
-      const currencySymbol = currency === 'EUR' ? '€' : '$';
+      const derivedCost = document.getElementById('derivedCostReadout');
+      const sizeInput = document.getElementById('propertySize');
+      const es = currentLang === 'es';
 
-      if (method === 'cost') {
-        costSection.style.display = 'block';
-        document.getElementById('costPerM2Hint').textContent = `Based on typical ${costPerM2} ${currencySymbol}/m² (adjusted for finish quality)`;
-        document.getElementById('sizePerM2Hint').textContent = '';
+      const costDriven = method === 'cost';
+
+      // The budget: a slider in cost mode, a read-out in size mode.
+      costSection.style.display = costDriven ? 'block' : 'none';
+      derivedCost.style.display = costDriven ? 'none' : 'block';
+
+      // The area: typed in size mode, computed in cost mode. readOnly
+      // rather than disabled, so it still reads out to screen readers
+      // and can still be copied.
+      sizeInput.readOnly = costDriven;
+      sizeInput.classList.toggle('is-derived', costDriven);
+      sizeInput.setAttribute('aria-readonly', costDriven ? 'true' : 'false');
+
+      const calculated = es ? 'Calculado' : 'Calculated';
+      document.getElementById('sizeModeTag').textContent = costDriven ? calculated : '';
+      document.getElementById('costModeTag').textContent = '';
+
+      document.getElementById('calcModeHint').textContent = costDriven
+        ? (es
+            ? 'Fijas el presupuesto; el área bruta se calcula a partir de él y del acabado elegido.'
+            : 'You set the budget; the gross floor area is worked out from it and the finish you chose.')
+        : (es
+            ? 'Fijas el área bruta; el costo de construcción se calcula a partir de ella.'
+            : 'You set the gross floor area; the construction cost is worked out from it.');
+
+      // Changing direction must not change the building. Coming into
+      // cost mode, the slider is still holding whatever budget it held
+      // before the reader went off and sized the scheme by hand, so it
+      // is moved onto the scheme's real cost — and the area is left
+      // alone rather than re-derived from a slider that rounds to 50k.
+      if (costDriven && carryOver) {
+        const slider = document.getElementById('constructionCost');
+        const schedule = currentSchedule();
+        slider.value = Math.min(Math.round(schedule.constructionCost), parseFloat(slider.max) || Infinity);
+        syncSlider(slider);
+        updateDerivedCostReadout(schedule);
+      } else if (costDriven) {
+        updateFromCost();
       } else {
-        costSection.style.display = 'none';
-        const adjustedCost = costPerM2 * currentFinishMultiplier;
-        document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
+        updateFromSize();
       }
+    }
+
+    /** The read-out's own escape hatch back to the other mode. */
+    function switchCalcMode(mode) {
+      const radio = document.getElementById(mode === 'cost' ? 'calc-cost' : 'calc-size');
+      if (!radio || radio.checked) return;
+      radio.checked = true;
+      toggleCalcMethod(true);
+      debouncedCalculate();
     }
 
     function updateFinishMultiplier() {
@@ -1429,39 +2559,59 @@
     }
 
     function updateFromCost() {
+      // The budget buys the garage first — a fixed count of spaces is not a
+      // residual — and the rest buys gross floor area at the finish-adjusted
+      // rate, with the balcony allowance folded in.
       const cost = parseFloat(document.getElementById('constructionCost').value) || 0;
-      const countryInfo = countryData[currentCountry];
-      const baseCost = countryInfo.typicalCostPerM2;
-      const adjustedCost = baseCost * currentFinishMultiplier;
-      const calculatedSize = Math.round(cost / adjustedCost);
-      document.getElementById('propertySize').value = calculatedSize;
+      const programme = readAreaProgramme();
+      const sizeInput = document.getElementById('propertySize');
+      const minSize = parseFloat(sizeInput.min) || 0;
+      const solved = Math.round(window.gfaFromBudget(cost, programme));
+      const calculatedSize = Math.max(minSize, solved);
+      sizeInput.value = calculatedSize;
 
-      // Update hints based on current calculation method
+      const countryInfo = countryData[currentCountry];
+      const adjustedCost = programme.ratePerM2;
+      const currencySymbol = countryInfo.currency === 'EUR' ? '€' : '$';
+      const garageCost = programme.parkingSpaces * programme.costPerSpace;
       const method = document.querySelector('input[name="calcMethod"]:checked').value;
-      const currency = countryInfo.currency;
-      const currencySymbol = currency === 'EUR' ? '€' : '$';
+
+      let hint = `Based on typical ${Math.round(adjustedCost)} ${currencySymbol}/m² (adjusted for finish quality)`;
+      if (garageCost > 0) {
+        hint += ` · ${formatToolNumber(Math.round(garageCost))} ${currencySymbol} of it is garage`;
+      }
+      if (solved < minSize) {
+        // The budget does not even cover the basement. Say so rather than
+        // quietly reporting whatever the minimum floor area implies.
+        hint = currentLang === 'en'
+          ? `This budget does not cover the ${programme.parkingSpaces} parking spaces yet — raise it or cut spaces`
+          : `Este presupuesto aún no cubre las ${programme.parkingSpaces} plazas — auméntalo o reduce plazas`;
+      }
 
       if (method === 'cost') {
-        // In cost mode, show adjusted cost per m²
-        document.getElementById('costPerM2Hint').textContent = `Based on typical ${Math.round(adjustedCost)} ${currencySymbol}/m² (adjusted for finish quality)`;
+        document.getElementById('costPerM2Hint').textContent = hint;
       } else {
-        // In size mode, show adjusted cost per m²
         document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
       }
     }
 
     function updateFromSize() {
-      const size = parseFloat(document.getElementById('propertySize').value) || 0;
-      const countryInfo = countryData[currentCountry];
-      const baseCost = countryInfo.typicalCostPerM2;
-      const adjustedCost = baseCost * currentFinishMultiplier;
-      const calculatedCost = Math.round(size * adjustedCost);
-      document.getElementById('constructionCost').value = calculatedCost;
+      const schedule = currentSchedule();
+      const slider = document.getElementById('constructionCost');
+      const sliderMax = parseFloat(slider.max) || Infinity;
+      const calculatedCost = Math.round(schedule.constructionCost);
+      // The slider is a control, not the source of truth: the results read
+      // the schedule, so a scheme larger than the slider's ceiling still
+      // costs what it costs.
+      slider.value = Math.min(calculatedCost, sliderMax);
 
-      // Update hint text with current adjusted cost per m²
-      const currency = countryInfo.currency;
-      const currencySymbol = currency === 'EUR' ? '€' : '$';
-      document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
+      const currencySymbol = countryData[currentCountry].currency === 'EUR' ? '€' : '$';
+      let hint = `${Math.round(schedule.gfa > 0 ? schedule.constructionCost / schedule.gfa : 0)} ${currencySymbol}/m² of gross area (finish, balconies and garage included)`;
+      if (currentLang === 'es') {
+        hint = `${Math.round(schedule.gfa > 0 ? schedule.constructionCost / schedule.gfa : 0)} ${currencySymbol}/m² de área bruta (acabados, balcones y garaje incluidos)`;
+      }
+      document.getElementById('sizePerM2Hint').textContent = hint;
+      updateDerivedCostReadout(schedule);
     }
 
     // showPreviewData() used to sit here. It painted invented figures — a
@@ -1495,9 +2645,20 @@
       // Sanitize project name to prevent XSS if displayed in emails/PDFs
       let projectName = document.getElementById('projectName').value || 'Investment Project';
       projectName = projectName.replace(/[<>]/g, '').trim();
-      const constructionCost = parseFloat(document.getElementById('constructionCost').value);
+      // The area programme is the single source of truth for both sides of
+      // the calculation: gross area carries the construction rate, and only
+      // the sellable part of it carries rent and selling price.
+      const schedule = currentSchedule();
+      const constructionCost = schedule.constructionCost;
       const landCost = parseFloat(document.getElementById('landCost').value) || 0;
       const propertySize = parseFloat(document.getElementById('propertySize').value);
+      const sellableArea = schedule.sellableArea;
+      const lettableArea = schedule.lettableArea;
+      const parkingSpaces = schedule.spaces;
+      const parkingRentPerSpace = parseFloat(document.getElementById('parkingRentPerSpace').value) || 0;
+      const parkingSalePrice = parseFloat(document.getElementById('parkingSalePrice').value) || 0;
+      const annualParkingRent = parkingSpaces * parkingRentPerSpace * 12;
+      const parkingSaleRevenue = parkingSpaces * parkingSalePrice;
       const rentalPerM2 = parseFloat(document.getElementById('rentalPerM2').value);
       const operatingCostPercent = parseFloat(document.getElementById('operatingCosts').value) / 100;
       const appreciation = parseFloat(document.getElementById('appreciation').value) / 100;
@@ -1547,8 +2708,10 @@
       const propertyTaxRate = countryInfo.propertyTax;
       const taxRate = countryData[currentCountry].taxRate;
 
-      // Calculate annual rental income
-      const monthlyRental = rentalPerM2 * propertySize;
+      // Rent is charged on the area that can actually be let — interior
+      // sellable area plus the share of balcony the market pays for — and
+      // the garage is let separately, by the space.
+      const monthlyRental = rentalPerM2 * lettableArea + parkingSpaces * parkingRentPerSpace;
       const annualRental = monthlyRental * 12;
 
       // Calculate annual operating costs (including loan payment if financed)
@@ -1578,6 +2741,11 @@
       // Calculate annual net income after tax
       const annualNetIncome = annualNetBeforeTax - annualIncomeTax;
 
+      // The disposal, on the same area basis as the rent: sellable m² at the
+      // asking price, parking sold by the space.
+      const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
+      const grossSaleValue = sellingPricePerM2 * lettableArea + parkingSaleRevenue;
+
       // Calculate cash flows based on investment purpose
       let cumulativeProfit = 0;
       let paybackYear = null;
@@ -1596,9 +2764,7 @@
           // SALE MODE: No annual returns, only at sale year
           if (year === years) {
             // Final year: Realize the sale profit
-            const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
-            const sellingPrice = sellingPricePerM2 * propertySize;
-            yearProfit = sellingPrice - totalProjectCost;
+            yearProfit = grossSaleValue - totalProjectCost;
           } else {
             // No cash flow in years 1 to N-1
             yearProfit = 0;
@@ -1613,9 +2779,7 @@
           // disposal twice on two different price bases.
           yearProfit = annualNetIncome;
           if (year === years) {
-            const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
-            const sellingPrice = sellingPricePerM2 * propertySize;
-            yearProfit += (sellingPrice - totalProjectCost);
+            yearProfit += (grossSaleValue - totalProjectCost);
           }
         }
 
@@ -1650,8 +2814,7 @@
       if (currentProjectPurpose === 'sale') {
         // SALE MODE: Use selling price per m² input (NOT appreciation-based!)
         // You set the market price you expect to sell at
-        const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
-        propertyValue = sellingPricePerM2 * propertySize;
+        propertyValue = grossSaleValue;
       } else {
         // RENT/BOTH MODE: Calculate value using appreciation rates
         for (let i = 0; i < years; i++) {
@@ -1717,8 +2880,9 @@
         minimumFractionDigits: 0
       });
 
-      // Calculate cost per m² (construction only)
-      const costPerM2 = constructionCost / propertySize;
+      // Cost per m² of everything built, garage included — that is what
+      // the label promises, and the garage is real construction.
+      const costPerM2 = schedule.builtArea > 0 ? constructionCost / schedule.builtArea : 0;
 
       // Update results
       document.getElementById('resultInvestment').textContent = formatter.format(downPayment);
@@ -1769,8 +2933,17 @@
       document.getElementById('resultLandCost').textContent = formatter.format(landCost);
       document.getElementById('resultConstructionCost').textContent = formatter.format(constructionCost);
       document.getElementById('resultTotalProjectCost').textContent = formatter.format(totalProjectCost);
-      document.getElementById('resultPropertySize').textContent = formatToolNumber(propertySize) + ' m²';
+      document.getElementById('resultPropertySize').textContent = formatToolNumber(Math.round(schedule.builtArea)) + ' m²';
       document.getElementById('resultCostPerM2').textContent = formatter.format(costPerM2) + '/m²';
+
+      renderAreaProgrammeResults(schedule, {
+        formatter: formatter,
+        landCost: landCost,
+        totalProjectCost: totalProjectCost,
+        totalProfit: totalProfit,
+        annualParkingRent: annualParkingRent,
+        parkingSaleRevenue: parkingSaleRevenue
+      });
 
       // Update loan breakdown panel if bank financing is selected
       const loanBreakdownSection = document.getElementById('loanBreakdownSection');
@@ -2203,6 +3376,14 @@
       // Initialize all slider displays
       resyncAllSliders();
 
+      // Building-type and parking pills (js/tools/area-model.js supplies
+      // the presets; the rows are built in script so a language switch
+      // relabels them).
+      buildPresetRows();
+
+      // Dress the form for the default direction (budget-driven).
+      toggleCalcMethod();
+
       // Initialize purpose selection
       document.getElementById('purpose-rent').classList.add('active');
       selectPurpose(currentProjectPurpose);  // Update mode-specific labels
@@ -2213,7 +3394,11 @@
 
       // Language switching is handled by js/tools/i18n.js; the figures
       // are grouped per language, so they are re-rendered on each switch.
-      document.addEventListener('proyectual:languagechange', () => calculateProfitability());
+      document.addEventListener('proyectual:languagechange', () => {
+        buildPresetRows();
+        toggleCalcMethod();
+        calculateProfitability();
+      });
 
     });
 
