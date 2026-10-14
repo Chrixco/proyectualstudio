@@ -1026,7 +1026,7 @@
 
             <div class="mb-3">
               <label data-en="Finish Quality" data-es="Calidad de Acabados">Finish Quality</label>
-              <div class="option-cards">
+              <div class="option-cards" id="finishCards">
                 <div class="option-card" id="card-essential" onclick="selectFinish('essential')">
                   <div class="option-card-title" data-en="Essential" data-es="Esencial">Essential</div>
                   <div class="option-card-subtitle" id="essential-cost">$960/m²</div>
@@ -1056,12 +1056,12 @@
             <div class="preset-field">
               <span class="preset-caption" data-en="Start from what you know" data-es="Empieza por lo que ya sabes">Start from what you know</span>
               <div class="calc-mode-toggle" id="calcModeToggle">
-                <input class="sr-only" type="radio" name="calcMethod" id="calc-cost" value="cost" checked onchange="toggleCalcMethod(true); debouncedCalculate();" />
+                <input class="sr-only" type="radio" name="calcMethod" id="calc-cost" value="cost" onchange="toggleCalcMethod(true); debouncedCalculate();" />
                 <label for="calc-cost">
                   <strong data-en="A budget" data-es="Un presupuesto">A budget</strong>
                   <span data-en="I know what I can spend" data-es="Sé cuánto puedo gastar">I know what I can spend</span>
                 </label>
-                <input class="sr-only" type="radio" name="calcMethod" id="calc-size" value="size" onchange="toggleCalcMethod(true); debouncedCalculate();" />
+                <input class="sr-only" type="radio" name="calcMethod" id="calc-size" value="size" checked onchange="toggleCalcMethod(true); debouncedCalculate();" />
                 <label for="calc-size">
                   <strong data-en="An area" data-es="Un área">An area</strong>
                   <span data-en="I know how much I am building" data-es="Sé cuánto voy a construir">I know how much I am building</span>
@@ -1171,6 +1171,17 @@
           <!-- 4. Costs Section -->
           <div class="calculator-section">
             <label class="calculator-label" data-en="4. Project Costs" data-es="4. Costos del Proyecto">4. Project Costs</label>
+
+            <p class="section-intro" data-en="The construction cost is worked out from the area programme above: gross floor area at the rate below, balconies at half of it, and the garage at its own cost per space." data-es="El costo de construcción se calcula a partir del programa de áreas de arriba: el área bruta a la tarifa de abajo, los balcones a la mitad, y el garaje a su propio costo por plaza.">The construction cost is worked out from the area programme above: gross floor area at the rate below, balconies at half of it, and the garage at its own cost per space.</p>
+
+            <div class="mb-3">
+              <label for="costRatePerM2"><span data-en="Construction Cost per m² of gross area" data-es="Costo de Construcción por m² de área bruta">Construction Cost per m² of gross area</span> <span class="currency" id="currencyLabel7">USD</span></label>
+              <div class="input-with-action">
+                <input type="number" class="form-control" id="costRatePerM2" min="0" max="20000" step="50" value="900" oninput="onCostRateInput();" onblur="syncCostRateField();">
+                <button type="button" class="inline-action" id="resetCostRateBtn" onclick="resetCostRate();" data-en="Use finish rate" data-es="Usar tarifa del acabado" style="display: none;">Use finish rate</button>
+              </div>
+              <span class="hint-text" id="costRateHint"></span>
+            </div>
 
             <div id="costInputSection">
               <div class="slider-field">
@@ -1598,6 +1609,9 @@
     let currentCountry = 'ecuador';
     let currentFinishMultiplier = 1.0;
     let baseCostPerM2 = null;
+    // A rate the reader typed themselves, overriding the one the finish
+    // cards imply. null means "follow the finish".
+    let costRateOverride = null;
     let cashFlowChart = null;
     let profitBreakdownChart = null;
     let calcDebounceTimer = null;
@@ -1661,8 +1675,69 @@
     /**
      * The construction rate the finish cards imply, per m² of gross area.
      */
-    function adjustedRatePerM2() {
+    function finishRatePerM2() {
       return countryData[currentCountry].typicalCostPerM2 * currentFinishMultiplier;
+    }
+
+    /**
+     * The rate every cost on the page is built from: the reader's own
+     * figure when they have stated one, the finish card's otherwise. A
+     * studio quoting a real project knows its rate; the three finish
+     * levels are a starting point, not a ceiling.
+     */
+    function adjustedRatePerM2() {
+      if (costRateOverride !== null && costRateOverride > 0) return costRateOverride;
+      return finishRatePerM2();
+    }
+
+    /**
+     * Keep the rate field and its hint in step with the finish, the
+     * market and whether the reader has overridden it. The value itself
+     * is left alone while the field has focus, so clearing it to retype
+     * does not have the finish rate written back mid-keystroke.
+     */
+    function syncCostRateField() {
+      const input = document.getElementById('costRatePerM2');
+      if (!input) return;
+
+      const es = currentLang === 'es';
+      const symbol = countryData[currentCountry].currency === 'EUR' ? '€' : '$';
+      const finishRate = Math.round(finishRatePerM2());
+
+      if (costRateOverride === null && document.activeElement !== input) {
+        input.value = finishRate;
+      }
+
+      const reset = document.getElementById('resetCostRateBtn');
+      if (reset) reset.style.display = costRateOverride === null ? 'none' : '';
+
+      const hint = document.getElementById('costRateHint');
+      if (!hint) return;
+      hint.textContent = costRateOverride === null
+        ? (es
+            ? `La tarifa del acabado elegido: ${symbol}${formatToolNumber(finishRate)}/m². Escribe la tuya si la conoces.`
+            : `The rate your chosen finish implies: ${symbol}${formatToolNumber(finishRate)}/m². Type your own if you know it.`)
+        : (es
+            ? `Tu propia tarifa. El acabado elegido implicaría ${symbol}${formatToolNumber(finishRate)}/m².`
+            : `Your own rate. The finish you picked would imply ${symbol}${formatToolNumber(finishRate)}/m².`);
+    }
+
+    /** The reader stating a rate of their own. */
+    function onCostRateInput() {
+      const input = document.getElementById('costRatePerM2');
+      const typed = parseFloat(input.value);
+      costRateOverride = (isFinite(typed) && typed > 0) ? typed : null;
+      syncCostRateField();
+      reflowCostAndSize();
+      debouncedCalculate();
+    }
+
+    /** Back to the finish card's rate. */
+    function resetCostRate() {
+      costRateOverride = null;
+      syncCostRateField();
+      reflowCostAndSize();
+      debouncedCalculate();
     }
 
     /**
@@ -2236,6 +2311,10 @@
       const finishCost = countryData[currentCountry].finishCosts[quality];
       currentFinishMultiplier = finishCost / countryData[currentCountry].typicalCostPerM2;
 
+      // Choosing a finish level is a request for that level's rate, so it
+      // clears any rate the reader had typed over it.
+      costRateOverride = null;
+
       updateFinishMultiplier();
       debouncedCalculate();
     }
@@ -2349,6 +2428,10 @@
     function selectCountry(country) {
       currentCountry = country;
 
+      // $900/m² in Quito is not €2,500/m² in Berlin: a rate typed for one
+      // market cannot follow the reader into the other.
+      costRateOverride = null;
+
       // Update button states
       document.querySelectorAll('.country-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -2364,7 +2447,7 @@
       // The garage and parking fields arrived with the area programme and
       // were never added to this list, so they kept quoting dollars in
       // the German market.
-      ['currencyLabel4', 'currencyLabel5', 'currencyLabel6'].forEach(id => {
+      ['currencyLabel4', 'currencyLabel5', 'currencyLabel6', 'currencyLabel7'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = currencySymbol;
       });
@@ -2503,6 +2586,8 @@
       sizeInput.classList.toggle('is-derived', costDriven);
       sizeInput.setAttribute('aria-readonly', costDriven ? 'true' : 'false');
 
+      syncCostRateField();
+
       const calculated = es ? 'Calculado' : 'Calculated';
       document.getElementById('sizeModeTag').textContent = costDriven ? calculated : '';
       document.getElementById('costModeTag').textContent = '';
@@ -2526,6 +2611,7 @@
         slider.value = Math.min(Math.round(schedule.constructionCost), parseFloat(slider.max) || Infinity);
         syncSlider(slider);
         updateDerivedCostReadout(schedule);
+        writeCarriedCostHint(schedule);
       } else if (costDriven) {
         updateFromCost();
       } else {
@@ -2543,19 +2629,29 @@
     }
 
     function updateFinishMultiplier() {
-      // Get multiplier from active finish card
-      const activeFinishCard = document.querySelector('.option-cards:first-of-type .option-card.active');
+      // The multiplier is read back from which finish card is lit, so a
+      // country switch re-reads that card's new rate.
+      //
+      // This used to read a `data-multiplier` attribute that no card
+      // carries, off a `.option-cards:first-of-type` selector that
+      // matched the purpose cards before the finish ones. So every call
+      // fell back to 1.0 and threw away the multiplier selectFinish()
+      // had just worked out: the Standard card advertised $900/m² while
+      // the model quietly built at the $1,200 market typical, and
+      // Essential and Premium made no difference to the answer at all.
+      const activeFinishCard = document.querySelector('#finishCards .option-card.active');
       if (activeFinishCard) {
-        currentFinishMultiplier = parseFloat(activeFinishCard.getAttribute('data-multiplier')) || 1.0;
+        const quality = (activeFinishCard.id || '').replace('card-', '');
+        const finishCost = countryData[currentCountry].finishCosts[quality];
+        if (finishCost) {
+          currentFinishMultiplier = finishCost / countryData[currentCountry].typicalCostPerM2;
+        }
       }
 
+      syncCostRateField();
+
       // Update calculations based on current method
-      const method = document.querySelector('input[name="calcMethod"]:checked').value;
-      if (method === 'cost') {
-        updateFromCost();
-      } else {
-        updateFromSize();
-      }
+      reflowCostAndSize();
     }
 
     function updateFromCost() {
@@ -2576,9 +2672,18 @@
       const garageCost = programme.parkingSpaces * programme.costPerSpace;
       const method = document.querySelector('input[name="calcMethod"]:checked').value;
 
-      let hint = `Based on typical ${Math.round(adjustedCost)} ${currencySymbol}/m² (adjusted for finish quality)`;
+      // The hint used to quote the market's "typical" rate whatever rate
+      // was actually in use, in English whatever the page language was.
+      // It now states the rate the budget was divided by — the one in
+      // the field above it — and what that bought.
+      const es = currentLang === 'es';
+      let hint = es
+        ? `Compra ${formatToolNumber(calculatedSize)} m² brutos a ${currencySymbol}${formatToolNumber(Math.round(adjustedCost))}/m²`
+        : `Buys ${formatToolNumber(calculatedSize)} m² of gross area at ${currencySymbol}${formatToolNumber(Math.round(adjustedCost))}/m²`;
       if (garageCost > 0) {
-        hint += ` · ${formatToolNumber(Math.round(garageCost))} ${currencySymbol} of it is garage`;
+        hint += es
+          ? ` · ${currencySymbol}${formatToolNumber(Math.round(garageCost))} es el garaje`
+          : ` · ${currencySymbol}${formatToolNumber(Math.round(garageCost))} of it is garage`;
       }
       if (solved < minSize) {
         // The budget does not even cover the basement. Say so rather than
@@ -2591,8 +2696,30 @@
       if (method === 'cost') {
         document.getElementById('costPerM2Hint').textContent = hint;
       } else {
-        document.getElementById('sizePerM2Hint').textContent = `${Math.round(adjustedCost)} ${currencySymbol}/m² (with finish multiplier)`;
+        document.getElementById('sizePerM2Hint').textContent = es
+          ? `${currencySymbol}${formatToolNumber(Math.round(adjustedCost))}/m² de área bruta`
+          : `${currencySymbol}${formatToolNumber(Math.round(adjustedCost))}/m² of gross area`;
       }
+    }
+
+    /**
+     * The same sentence, for the case where the budget was carried over
+     * from the other mode and the area must not be re-derived from a
+     * slider that snaps to 50k.
+     */
+    function writeCarriedCostHint(schedule) {
+      const es = currentLang === 'es';
+      const symbol = countryData[currentCountry].currency === 'EUR' ? '€' : '$';
+      const rate = Math.round(adjustedRatePerM2());
+      let hint = es
+        ? `Compra ${formatToolNumber(Math.round(schedule.gfa))} m² brutos a ${symbol}${formatToolNumber(rate)}/m²`
+        : `Buys ${formatToolNumber(Math.round(schedule.gfa))} m² of gross area at ${symbol}${formatToolNumber(rate)}/m²`;
+      if (schedule.garageCost > 0) {
+        hint += es
+          ? ` · ${symbol}${formatToolNumber(Math.round(schedule.garageCost))} es el garaje`
+          : ` · ${symbol}${formatToolNumber(Math.round(schedule.garageCost))} of it is garage`;
+      }
+      document.getElementById('costPerM2Hint').textContent = hint;
     }
 
     function updateFromSize() {
@@ -3381,7 +3508,8 @@
       // relabels them).
       buildPresetRows();
 
-      // Dress the form for the default direction (budget-driven).
+      // Dress the form for the default direction (area-driven: the
+      // construction cost is computed from the programme, not typed).
       toggleCalcMethod();
 
       // Initialize purpose selection
