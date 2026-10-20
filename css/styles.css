@@ -2543,11 +2543,30 @@ button[style*="background: rgb(0"] {
 }
 
 .cta-row.first-row {
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
 }
 
 .cta-row.second-row {
   grid-template-columns: 1fr !important;
+}
+
+/* Equal columns: minmax(0, 1fr) lets a track shrink below its longest
+   word, so a long heading ("SIGNIFICATIVO") no longer widens its card.
+   The heading scales with the viewport and may break inside a word as a
+   last resort rather than overflow the card. */
+.cta-row > * {
+  min-width: 0;
+}
+
+.cta-row > * > .cta-container {
+  width: 100%;
+  min-width: 0;
+}
+
+.cta-row.first-row h3 {
+  font-size: clamp(1.1rem, 0.6rem + 1.1vw, 1.75rem);
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 /* The CTA block is a level-1 panel, like the hero — it closes the page
@@ -2591,14 +2610,14 @@ button[style*="background: rgb(0"] {
 @media (max-width: 1200px) {
   .cta-row.first-row {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
 @media (max-width: 768px) {
   .cta-row.first-row {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
 }

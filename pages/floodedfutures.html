@@ -205,7 +205,7 @@
       const isActive = index === 0 ? 'active' : '';
       const item = document.createElement('div');
       item.className = `carousel-item ${isActive}`;
-      item.innerHTML = `<img src="${imageDir}${filename}" class="d-block w-100 rounded carousel-img-white" alt="Additional Slide ${index + 1}" />`;
+      item.innerHTML = `<img loading="lazy" decoding="async" src="${imageDir}${filename}" class="d-block w-100 rounded carousel-img-white" alt="Additional Slide ${index + 1}" />`;
       additionalCarouselInner.appendChild(item);
     });
 

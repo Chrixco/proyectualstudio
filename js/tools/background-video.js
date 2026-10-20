@@ -41,7 +41,7 @@
   }
 
   function init() {
-    var videos = document.querySelectorAll('.video-background video[data-src]');
+    var videos = document.querySelectorAll('.video-background video[data-src], video.bg-video[data-src]');
     if (!videos.length) return;
     if (prefersReducedMotion() || connectionIsConstrained()) return;
 
