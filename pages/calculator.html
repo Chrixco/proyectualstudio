@@ -381,13 +381,13 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <div class="option-card selected" data-location="ecuador" data-rate-arch="600" data-rate-urban="50000" onclick="selectOption(this, 'location')">
+            <div class="option-card selected" data-location="ecuador" onclick="selectOption(this, 'location')">
               <h5 data-en="Ecuador" data-es="Ecuador">Ecuador</h5>
               <p class="small mb-0" data-en="Latin American pricing" data-es="Precios de América Latina">Latin American pricing</p>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="option-card" data-location="germany" data-rate-arch="2500" data-rate-urban="120000" onclick="selectOption(this, 'location')">
+            <div class="option-card" data-location="germany" onclick="selectOption(this, 'location')">
               <h5 data-en="Germany" data-es="Alemania">Germany</h5>
               <p class="small mb-0" data-en="European pricing" data-es="Precios europeos">European pricing</p>
             </div>
@@ -628,11 +628,11 @@
             </h3>
             <div class="total-amount" id="totalCost">$90,000</div>
             <p class="disclaimer" id="disclaimer"
-               data-en-arch="* This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote."
-               data-es-arch="* Esta es una estimación aproximada para diseño arquitectónico y construcción. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada."
+               data-en-arch="* Rough estimate of construction cost. It excludes land, design fees and permits. Final costs depend on location, materials and project complexity. Contact us for a detailed quote."
+               data-es-arch="* Estimación aproximada del costo de construcción. No incluye terreno, honorarios de diseño ni permisos. Los costos finales dependen de la ubicación, materiales y complejidad del proyecto. Contáctanos para una cotización detallada."
                data-en-urban="* This estimate covers urban design services including planning, community engagement, and design documentation. Does not include construction or implementation costs. Contact us for a detailed scope and quote."
                data-es-urban="* Esta estimación cubre servicios de diseño urbano incluyendo planificación, participación comunitaria y documentación de diseño. No incluye costos de construcción o implementación. Contáctanos para un alcance detallado y cotización.">
-              * This is a rough estimate for architectural design and construction. Final costs depend on location, materials, and project complexity. Contact us for a detailed quote.
+              * Rough estimate of construction cost. It excludes land, design fees and permits. Final costs depend on location, materials and project complexity. Contact us for a detailed quote.
             </p>
 
             <div class="cta-row cta-row--stacked">
@@ -774,8 +774,8 @@
     // Ecuador's *essential* rate, which is why this tool read ~$690/m² against
     // the investment calculator's $1,200 typical.
     const RATE_TABLE = window.CONSTRUCTION_RATES || {
-      ecuador: { perM2: { standard: 900 }, urbanBaseProject: 50000 },
-      germany: { perM2: { standard: 2500 }, urbanBaseProject: 120000 }
+      ecuador: { symbol: '$', perM2: { standard: 900 }, urbanBaseProject: 50000 },
+      germany: { symbol: '€', perM2: { standard: 2500 }, urbanBaseProject: 120000 }
     };
 
     const RATES = {
@@ -823,10 +823,10 @@
         archOptions.style.display = 'block';
         urbanOptions.style.display = 'none';
         unitToggle.style.display = 'flex';
-        slider.min = 50;
-        slider.max = 500;
-        slider.value = 150;
-        updateSize(150);
+        // Urban design leaves the unit at 'ha' and the step at 0.5. Without
+        // resetting both, the m² slider was read as a head count (x30 m²).
+        slider.step = 1;
+        switchUnit('sqm');
       } else {
         archOptions.style.display = 'none';
         urbanOptions.style.display = 'block';
@@ -889,8 +889,11 @@
 
         // Update summary
         const summaryLocation = document.getElementById('summaryLocation');
-        const locationName = calculatorState.location.charAt(0).toUpperCase() + calculatorState.location.slice(1);
-        summaryLocation.textContent = locationName;
+        const names = { ecuador: ['Ecuador', 'Ecuador'], germany: ['Germany', 'Alemania'] };
+        const [en, es] = names[calculatorState.location];
+        summaryLocation.setAttribute('data-en', en);
+        summaryLocation.setAttribute('data-es', es);
+        summaryLocation.textContent = currentLang === 'en' ? en : es;
       } else {
         const multiplier = parseFloat(element.getAttribute('data-multiplier'));
         calculatorState[category] = multiplier;

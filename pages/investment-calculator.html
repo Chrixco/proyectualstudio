@@ -2393,7 +2393,9 @@
       } else {
         rentalSection.style.display = 'block';
         rentalResults.style.display = 'block';
-        sellingPriceSection.style.display = 'none';
+        // Rent + sale disposes of the building at the selling price, so
+        // that input has to stay visible; it was hidden but still used.
+        sellingPriceSection.style.display = purpose === 'both' ? 'block' : 'none';
         appreciationSlider.style.display = 'block';
       }
 
@@ -2819,16 +2821,34 @@
       const totalProjectCost = constructionCost + landCost;
       let downPayment = totalProjectCost;
       let annualLoanPayment = 0;
+      let loanPrincipal = 0;
+      let loanYears = 0;
+      let loanMonthlyRate = 0;
+      let loanMonthlyPayment = 0;
 
       if (financingMethod === 'bank') {
         const loanPercent = parseFloat(document.getElementById('loanPercent').value) / 100;
         const interestRate = parseFloat(document.getElementById('interestRate').value);
         const loanTerm = parseInt(document.getElementById('loanTerm').value);
 
-        const loanAmount = totalProjectCost * loanPercent;
-        downPayment = totalProjectCost - loanAmount;
-        annualLoanPayment = calculateLoanPayment(loanAmount, interestRate, loanTerm);
+        loanPrincipal = totalProjectCost * loanPercent;
+        loanYears = loanTerm;
+        loanMonthlyRate = interestRate / 100 / 12;
+        downPayment = totalProjectCost - loanPrincipal;
+        annualLoanPayment = calculateLoanPayment(loanPrincipal, interestRate, loanTerm);
+        loanMonthlyPayment = annualLoanPayment / 12;
       }
+
+      // Outstanding principal after a number of years. Payments stop at the
+      // end of the term, and a sale only has to clear what is still owed.
+      const loanBalanceAfter = (yearsElapsed) => {
+        if (loanPrincipal <= 0) return 0;
+        const n = loanYears * 12;
+        const k = Math.min(yearsElapsed * 12, n);
+        if (loanMonthlyRate === 0) return loanPrincipal * (1 - k / n);
+        const g = Math.pow(1 + loanMonthlyRate, k);
+        return Math.max(0, loanPrincipal * g - loanMonthlyPayment * (g - 1) / loanMonthlyRate);
+      };
 
       const countryInfo = countryData[currentCountry];
       const currency = countryInfo.currency;
@@ -2865,15 +2885,26 @@
       const taxableIncome = Math.max(0, blendedAnnualRental - annualOperatingCost - annualPropertyTax);
       const annualIncomeTax = Math.round(taxableIncome * taxRate * 100) / 100;
 
-      // Calculate annual net income after tax
+      // Calculate annual net income after tax (year 1, while the loan runs)
       const annualNetIncome = annualNetBeforeTax - annualIncomeTax;
+      // The same, before debt service: what the building earns every year.
+      const annualOperatingNet = annualNetIncome + annualLoanPayment;
 
       // The disposal, on the same area basis as the rent: sellable m² at the
       // asking price, parking sold by the space.
       const sellingPricePerM2 = parseFloat(document.getElementById('sellingPricePerM2').value) || 0;
       const grossSaleValue = sellingPricePerM2 * lettableArea + parkingSaleRevenue;
 
-      // Calculate cash flows based on investment purpose
+      // Cash flows, year by year, for every purpose:
+      //   year 0      the cash put in (the whole cost, or the equity share)
+      //   years 1..N  what the building earns, less debt service while the
+      //               loan runs (a sale-only project still pays property tax)
+      //   year N      the sale, less whatever principal is still owed
+      // The sale used to be booked as "price minus total cost" on top of the
+      // year-0 outlay, so the cost was charged twice and a loan's principal
+      // was charged again after the payments had already repaid it. Loan
+      // payments also used to continue after the term had ended.
+      const sells = currentProjectPurpose !== 'rent';
       let cumulativeProfit = 0;
       let paybackYear = null;
       const cashFlows = [];
@@ -2885,28 +2916,12 @@
         let yearProfit;
 
         if (year === 0) {
-          // Year 0: Initial investment (down payment)
           yearProfit = -downPayment;
-        } else if (currentProjectPurpose === 'sale') {
-          // SALE MODE: No annual returns, only at sale year
-          if (year === years) {
-            // Final year: Realize the sale profit
-            yearProfit = grossSaleValue - totalProjectCost;
-          } else {
-            // No cash flow in years 1 to N-1
-            yearProfit = 0;
-          }
-        } else if (currentProjectPurpose === 'rent') {
-          // RENT MODE: Annual rental income
-          yearProfit = annualNetIncome;
         } else {
-          // BOTH MODE: annual rental income, plus the disposal in the final
-          // year. The sale is recognised HERE and nowhere else — it used to be
-          // added again afterwards as an appreciation gain, counting the same
-          // disposal twice on two different price bases.
-          yearProfit = annualNetIncome;
-          if (year === years) {
-            yearProfit += (grossSaleValue - totalProjectCost);
+          const debtService = year <= loanYears ? annualLoanPayment : 0;
+          yearProfit = annualOperatingNet - debtService;
+          if (sells && year === years) {
+            yearProfit += grossSaleValue - loanBalanceAfter(year);
           }
         }
 
@@ -2959,20 +2974,21 @@
       let roiContextText = 'vs ~4% savings account';
 
       if (currentProjectPurpose === 'sale') {
-        // SALE MODE: You invest X, sell for Y at selling price/m² → Profit = Y - X
+        // SALE MODE: everything in minus everything out — the sale, less the
+        // cost, the property tax while holding, and the interest on any loan.
         // Display PROFIT MARGIN % instead of ROI (which doesn't apply to one-time sales)
-        // DO NOT include cumulativeProfit (rental income) in sale scenarios
-        totalProfit = appreciationGain;
+        totalProfit = cumulativeProfit;
         // Profit Margin % = (Profit / Total Investment Cost) × 100
-        annualizedROI = totalProjectCost > 0 ? ((appreciationGain / totalProjectCost) * 100) : 0;
+        annualizedROI = totalProjectCost > 0 ? ((totalProfit / totalProjectCost) * 100) : 0;
         roiMetricLabel = currentLang === 'en' ? 'Profit Margin (%)' : 'Margen de Ganancia (%)';
         roiContextText = currentLang === 'en' ? 'one-time sale return' : 'retorno de venta única';
       } else if (currentProjectPurpose === 'rent') {
-        // RENT MODE: profit is the net rent collected over the period. The
-        // purchase price is not a loss — the building is still owned — so it
-        // is added back out of the cumulative cash flow, which carries it from
-        // year 0. Capital recovery is what the breakeven row is for.
-        totalProfit = cumulativeProfit + downPayment;
+        // RENT MODE: profit is the net rent collected over the period, less
+        // interest. The purchase price is not a loss — the building is still
+        // owned — and neither is repaying principal, which buys back the
+        // building's own equity. Both are added back out of the cumulative
+        // cash flow. Capital recovery is what the breakeven row is for.
+        totalProfit = cumulativeProfit + downPayment + (loanPrincipal - loanBalanceAfter(years));
 
         // The headline rate is cash-on-cash return: annual net income over the
         // cash invested. The previous figure divided cumulative cash flow —
@@ -2986,10 +3002,9 @@
           : 'renta neta anual ÷ efectivo invertido';
       } else {
         // BOTH MODE: rental income and the disposal are both already inside
-        // cumulativeProfit. Adding appreciationGain here recognised the sale a
-        // second time, on a different price basis. The purchase price is added
-        // back for the same reason as in rent mode.
-        totalProfit = cumulativeProfit + downPayment;
+        // cumulativeProfit, net of the loan, and the sale returns the cost —
+        // so the cumulative cash flow is the profit.
+        totalProfit = cumulativeProfit;
         annualizedROI = downPayment > 0 ? ((annualNetIncome / downPayment) * 100) : 0;
         roiMetricLabel = currentLang === 'en' ? 'Cash-on-Cash Return (%)' : 'Retorno sobre Efectivo (%)';
         roiContextText = currentLang === 'en'
@@ -3013,7 +3028,7 @@
 
       // Update results
       document.getElementById('resultInvestment').textContent = formatter.format(downPayment);
-      document.getElementById('resultAnnualRental').textContent = formatter.format(annualRental);
+      document.getElementById('resultAnnualRental').textContent = formatter.format(blendedAnnualRental);
       document.getElementById('resultNetIncome').textContent = formatter.format(annualNetIncome);
       document.getElementById('resultTotalProfit').textContent = formatter.format(totalProfit);
       document.getElementById('resultROI').textContent = roi + '%';
@@ -3097,8 +3112,10 @@
 
         const totalAmountToPay = exactMonthlyPayment * numberOfPayments;
         const totalInterestPaid = totalAmountToPay - loanAmount;
-        const monthlyRental = currentProjectPurpose === 'sale' ? 0 : (annualRental / 12);
-        const monthlyNetCash = monthlyRental - exactMonthlyPayment;
+        const monthlyRental = blendedAnnualRental / 12;
+        // What is left each month after operating costs, property tax,
+        // income tax and the loan payment — gross rent alone overstated it.
+        const monthlyNetCash = annualOperatingNet / 12 - exactMonthlyPayment;
 
         // Display loan breakdown
         document.getElementById('resultLoanAmount').textContent = formatter.format(loanAmount);
