@@ -252,6 +252,46 @@
       margin-top: 1rem;
     }
 
+    /* Preset pills reuse .chart-controls / .chart-btn from css/tools.css,
+       as the investment calculator's do; only the wrapping differs. */
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      margin: 0.25rem 0 0.6rem;
+      /* These rows wrap to several lines; a pill radius on a tall box
+         draws an oval around them. */
+      border-radius: 14px;
+    }
+
+    .preset-row .chart-btn {
+      flex: 0 1 auto;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.7rem;
+      text-align: left;
+    }
+
+    .market-note {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      margin: 0.75rem 0 0;
+    }
+
+    .source-note {
+      display: block;
+      font-size: 0.72rem;
+      opacity: 0.8;
+      margin-top: 0.35rem;
+    }
+
+    .solar-sources {
+      font-size: 0.75rem;
+      text-align: left;
+      margin-top: 1rem;
+    }
+
+    .solar-sources li { margin-bottom: 0.25rem; }
+
     /* Lead Capture Status Messages */
 
     /* Lead Capture Summary */
@@ -337,60 +377,47 @@
       <div class="calculator-layout">
         <!-- LEFT PANEL: INPUTS -->
         <div class="inputs-panel">
-          <!-- 1. Location Selection -->
+          <!-- 1. Market. Everything country-specific hangs off this choice:
+               cities, tariffs, costs, the rules for surplus power and the
+               grid's carbon intensity. -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="1. Select Location" data-es="1. Seleccionar Ubicación">
-              1. Select Location
-            </div>
-            <div style="margin-bottom: 0.5rem;">
-              <select id="locationSelect" class="form-select" style="background: rgba(0, 0, 0, 0.3); border: 2px solid #FFD500; color: #FFFFFF;" onchange="updateLocation()">
-                <optgroup label="Ecuador">
-                  <option value="-2.9" data-location="Cuenca, Ecuador" data-price="0.10" data-ghi="4.8" data-co2="0.27" data-currency="$">Cuenca (2.9°S) - $0.10/kWh</option>
-                  <option value="-0.2" data-location="Quito, Ecuador" data-price="0.10" data-ghi="4.7" data-co2="0.27" data-currency="$">Quito (0.2°S) - $0.10/kWh</option>
-                  <option value="-2.2" data-location="Guayaquil, Ecuador" data-price="0.12" data-ghi="4.4" data-co2="0.27" data-currency="$">Guayaquil (2.2°S) - $0.12/kWh</option>
-                  <option value="-4.0" data-location="Loja, Ecuador" data-price="0.10" data-ghi="4.8" data-co2="0.27" data-currency="$">Loja (4.0°S) - $0.10/kWh</option>
-                </optgroup>
-                <optgroup label="Europe">
-                  <option value="40.4" data-location="Madrid, Spain" data-price="0.30" data-ghi="4.9" data-co2="0.17" data-currency="€">Madrid, Spain (40.4°N) - €0.30/kWh</option>
-                  <option value="41.4" data-location="Barcelona, Spain" data-price="0.30" data-ghi="4.3" data-co2="0.17" data-currency="€">Barcelona, Spain (41.4°N) - €0.30/kWh</option>
-                  <option value="37.98" data-location="Athens, Greece" data-price="0.25" data-ghi="4.6" data-co2="0.34" data-currency="€">Athens, Greece (38.0°N) - €0.25/kWh</option>
-                  <option value="45.5" data-location="Milan, Italy" data-price="0.35" data-ghi="3.6" data-co2="0.30" data-currency="€">Milan, Italy (45.5°N) - €0.35/kWh</option>
-                  <option value="48.9" data-location="Paris, France" data-price="0.28" data-ghi="3.2" data-co2="0.06" data-currency="€">Paris, France (48.9°N) - €0.28/kWh</option>
-                  <option value="51.5" data-location="London, UK" data-price="0.36" data-ghi="2.7" data-co2="0.21" data-currency="£">London, UK (51.5°N) - £0.36/kWh</option>
-                  <option value="52.5" data-location="Berlin, Germany" data-price="0.38" data-ghi="2.9" data-co2="0.38" data-currency="€">Berlin, Germany (52.5°N) - €0.38/kWh</option>
-                  <option value="59.3" data-location="Stockholm, Sweden" data-price="0.20" data-ghi="2.8" data-co2="0.03" data-currency="kr">Stockholm, Sweden (59.3°N) - kr0.20/kWh</option>
-                </optgroup>
-                <optgroup label="Custom">
-                  <option value="custom" data-location="Custom Location" data-price="0.12" data-ghi="" data-co2="0.40" data-currency="$">Custom Location...</option>
-                </optgroup>
-              </select>
-            </div>
-            <div id="customLatitudeSection" style="display: none;">
-              <input type="range" min="-60" max="60" value="2.9" step="0.1" class="range-slider" id="latitudeSlider" oninput="updateDisplay()">
-              <div class="range-value text-center">
-                <span id="latitudeValue">2.9</span>°
+            <div class="calculator-label" data-en="1. Country" data-es="1. País">1. Country</div>
+            <div class="option-cards two-col">
+              <div class="option-card selected" data-market="ecuador" onclick="selectMarket('ecuador')">
+                <h5>Ecuador</h5>
+                <p class="small mb-0" data-en="USD · net metering" data-es="USD · balance neto">USD · net metering</p>
+              </div>
+              <div class="option-card" data-market="germany" onclick="selectMarket('germany')">
+                <h5 data-en="Germany" data-es="Alemania">Germany</h5>
+                <p class="small mb-0" data-en="EUR · EEG feed-in tariff" data-es="EUR · tarifa de inyección EEG">EUR · EEG feed-in tariff</p>
               </div>
             </div>
-            <div id="selectedLocationDisplay" class="range-value text-center" style="color: rgba(0, 153, 255, 0.8); margin-top: 0.5rem;">
-              Cuenca, Ecuador
-            </div>
+            <p class="market-note" id="marketNote"></p>
           </div>
 
-          <!-- 2. Roof Area -->
+          <!-- 2. City -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="2. Roof Area" data-es="2. Área de Techo">
-              2. Roof Area
+            <label class="calculator-label" for="locationSelect" data-en="2. City" data-es="2. Ciudad">2. City</label>
+            <select id="locationSelect" class="form-select" style="background: rgba(0, 0, 0, 0.3); border: 2px solid #FFD500; color: #FFFFFF;" onchange="updateLocation()"></select>
+            <span class="source-note" id="cityNote"></span>
+            <input type="hidden" id="latitudeSlider" value="-2.9">
+          </div>
+
+          <!-- 3. Roof Area -->
+          <div class="calculator-section">
+            <div class="calculator-label" data-en="3. Roof Area" data-es="3. Área de Techo">
+              3. Roof Area
             </div>
-            <input type="range" min="10" max="500" value="50" class="range-slider" id="roofAreaSlider" oninput="updateDisplay()">
+            <input type="range" min="10" max="500" value="20" class="range-slider" id="roofAreaSlider" oninput="updateDisplay()">
             <div class="range-value">
-              <span class="range-figure"><span id="roofAreaValue">50</span> m²</span>
+              <span class="range-figure"><span id="roofAreaValue">20</span> m²</span>
             </div>
           </div>
 
-          <!-- 3. Panel Efficiency -->
+          <!-- 4. Panel Efficiency -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="3. Panel Efficiency" data-es="3. Eficiencia del Panel">
-              3. Panel Efficiency
+            <div class="calculator-label" data-en="4. Panel Efficiency" data-es="4. Eficiencia del Panel">
+              4. Panel Efficiency
             </div>
             <div>
               <div class="option-card selected" onclick="selectOption(this, 'panelType')" data-efficiency="0.18">
@@ -408,78 +435,101 @@
             </div>
           </div>
 
-          <!-- 4. Roof Orientation -->
+          <!-- 5. Roof Orientation -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="4. Roof Orientation" data-es="4. Orientación del Techo">
-              4. Roof Orientation
+            <div class="calculator-label" data-en="5. Roof Orientation" data-es="5. Orientación del Techo">
+              5. Roof Orientation
             </div>
             <input type="range" min="0" max="180" value="0" class="range-slider" id="orientationSlider" oninput="updateDisplay()">
             <div class="range-value">
               <span class="range-figure"><span id="orientationValue">0</span>°</span>
               <span class="range-caption" id="orientationCaption"></span>
             </div>
+            <span class="source-note" id="orientationNote"></span>
           </div>
 
-          <!-- 5. System Loss Factor -->
+          <!-- 6. System Loss Factor -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="5. System Losses" data-es="5. Pérdidas del Sistema">
-              5. System Losses
+            <div class="calculator-label" data-en="6. System Losses" data-es="6. Pérdidas del Sistema">
+              6. System Losses
             </div>
-            <input type="range" min="5" max="30" value="15" class="range-slider" id="lossFactorSlider" oninput="updateDisplay()">
+            <input type="range" min="5" max="30" value="18" class="range-slider" id="lossFactorSlider" oninput="updateDisplay()">
             <div class="range-value">
-              <span class="range-figure"><span id="lossFactorValue">15</span>%</span>
-              <span class="range-caption" data-en="Inverter, wiring, soiling"
-                    data-es="Inversor, cableado, suciedad">Inverter, wiring, soiling</span>
+              <span class="range-figure"><span id="lossFactorValue">18</span>%</span>
+              <span class="range-caption" data-en="Heat, inverter, wiring, soiling"
+                    data-es="Calor, inversor, cableado, suciedad">Heat, inverter, wiring, soiling</span>
             </div>
+            <span class="source-note" data-en="Set from the city: hotter climates lose more to heat. Adjust if you know your system."
+                  data-es="Se ajusta según la ciudad: los climas más cálidos pierden más por calor. Modifícalo si conoces tu sistema.">Set from the city: hotter climates lose more to heat. Adjust if you know your system.</span>
           </div>
 
-          <!-- 6. Electricity Price -->
+          <!-- 7. Electricity Price -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="6. Local Electricity Price" data-es="6. Precio Local de Electricidad">
-              6. Local Electricity Price
+            <div class="calculator-label" data-en="7. Electricity Price" data-es="7. Precio de la Electricidad">
+              7. Electricity Price
             </div>
-            <input type="range" min="0.05" max="0.50" value="0.12" step="0.01" class="range-slider" id="priceSlider" oninput="updateDisplay()">
+            <div class="chart-controls preset-row" id="pricePresets" role="group" aria-label="Electricity price presets"></div>
+            <input type="range" min="0.05" max="0.30" value="0.10" step="0.005" class="range-slider" id="priceSlider" oninput="updateDisplay()">
             <div class="range-value">
-              <span class="range-figure"><span data-currency-symbol>$</span><span id="priceValue">0.12</span> / kWh</span>
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="priceValue">0.10</span> / kWh</span>
             </div>
-            <p style="font-size: 0.75rem; color: rgba(0, 153, 255, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
-              <span data-en="Adjust price based on location selection (2026 rates)" data-es="Ajusta el precio según la selección de ubicación (tarifas 2026)">Adjust price based on location selection (2026 rates)</span>
-            </p>
+            <span class="source-note" id="priceNote"></span>
           </div>
 
-          <!-- 7. Monthly electricity bill -->
+          <!-- 8. Monthly electricity bill -->
           <div class="calculator-section">
-            <div class="calculator-label" data-en="7. Monthly Electricity Bill" data-es="7. Factura Mensual de Electricidad">
-              7. Monthly Electricity Bill
+            <div class="calculator-label" data-en="8. Monthly Electricity Bill" data-es="8. Factura Mensual de Electricidad">
+              8. Monthly Electricity Bill
             </div>
-            <input type="range" min="10" max="500" value="85" step="5" class="range-slider" id="monthlyBillSlider" oninput="updateDisplay()">
+            <input type="range" min="5" max="500" value="40" step="5" class="range-slider" id="monthlyBillSlider" oninput="updateDisplay()">
             <div class="range-value">
-              <span class="range-figure"><span data-currency-symbol>$</span><span id="monthlyBillValue">85</span> / <span data-en="month" data-es="mes">month</span></span>
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="monthlyBillValue">40</span> / <span data-en="month" data-es="mes">month</span></span>
               <span class="range-caption" id="consumptionCaption"></span>
             </div>
             <label class="sub-label" for="fixedChargeSlider"
                    data-en="Fixed monthly charges" data-es="Cargos fijos mensuales">Fixed monthly charges</label>
-            <input type="range" min="0" max="30" value="6" step="1" class="range-slider" id="fixedChargeSlider" oninput="updateDisplay()">
+            <input type="range" min="0" max="30" value="3" step="1" class="range-slider" id="fixedChargeSlider" oninput="updateDisplay()">
             <div class="range-value">
-              <span class="range-figure"><span data-currency-symbol>$</span><span id="fixedChargeValue">6</span> / <span data-en="month" data-es="mes">month</span></span>
-              <span class="range-caption"
-                    data-en="Connection, public lighting, waste collection — solar does not remove these."
-                    data-es="Conexión, alumbrado público, recolección de basura — la solar no elimina estos.">Connection, public lighting, waste collection — solar does not remove these.</span>
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="fixedChargeValue">3</span> / <span data-en="month" data-es="mes">month</span></span>
             </div>
+            <span class="source-note" id="fixedNote"></span>
           </div>
 
-          <!-- 8. System Cost -->
-          <div class="calculator-section">
-            <div class="calculator-label" data-en="8. System Cost per kW" data-es="8. Costo del Sistema por kW">
-              8. System Cost per kW
-            </div>
-            <input type="range" min="1500" max="4000" value="3000" step="100" class="range-slider" id="costPerKwSlider" oninput="updateDisplay()">
+          <!-- 9. What happens to surplus power. Germany only: Ecuador's
+               net metering needs no inputs, so the section is hidden there
+               and the rule is stated in the market note instead. -->
+          <div class="calculator-section" id="selfUseSection" hidden>
+            <div class="calculator-label" data-en="9. Own Use &amp; Feed-in" data-es="9. Autoconsumo e Inyección">9. Own Use &amp; Feed-in</div>
+            <label class="sub-label" for="selfUseSlider"
+                   data-en="Share of your consumption met directly by the panels"
+                   data-es="Parte de tu consumo cubierta directamente por los paneles">Share of your consumption met directly by the panels</label>
+            <div class="chart-controls preset-row" id="selfUsePresets" role="group" aria-label="Self-consumption presets"></div>
+            <input type="range" min="10" max="80" value="30" step="1" class="range-slider" id="selfUseSlider" oninput="updateDisplay()">
             <div class="range-value">
-              <span class="range-figure"><span data-currency-symbol>$</span><span id="costPerKwValue">3000</span> / kW</span>
+              <span class="range-figure"><span id="selfUseValue">30</span>%</span>
             </div>
-            <p style="font-size: 0.75rem; color: rgba(0, 153, 255, 0.7); margin-top: 0.5rem; margin-bottom: 0;">
-              <span data-en="Includes panels, inverter, installation" data-es="Incluye paneles, inversor, instalación">Includes panels, inverter, installation</span>
-            </p>
+            <span class="source-note" id="selfUseNote"></span>
+            <label class="sub-label" for="feedInSlider"
+                   data-en="Feed-in tariff for the rest" data-es="Tarifa de inyección para el resto">Feed-in tariff for the rest</label>
+            <div class="chart-controls preset-row" id="feedInPresets" role="group" aria-label="Feed-in tariff presets"></div>
+            <input type="range" min="0" max="13" value="7.7" step="0.01" class="range-slider" id="feedInSlider" oninput="onFeedInInput()">
+            <div class="range-value">
+              <span class="range-figure"><span id="feedInValue">7.70</span> ct / kWh</span>
+            </div>
+            <span class="source-note" id="feedInNote"></span>
+          </div>
+
+          <!-- 10. System Cost -->
+          <div class="calculator-section">
+            <div class="calculator-label" id="costLabel" data-en="9. System Cost per kWp" data-es="9. Costo del Sistema por kWp">
+              9. System Cost per kWp
+            </div>
+            <div class="chart-controls preset-row" id="costPresets" role="group" aria-label="System cost presets"></div>
+            <input type="range" min="500" max="2500" value="1200" step="50" class="range-slider" id="costPerKwSlider" oninput="updateDisplay()">
+            <div class="range-value">
+              <span class="range-figure"><span data-currency-symbol>$</span><span id="costPerKwValue">1,200</span> / kWp</span>
+            </div>
+            <span class="source-note" id="costNote"></span>
           </div>
         </div>
 
@@ -528,12 +578,12 @@
               <div class="overview-item">
                 <div class="overview-label" data-en="System Cost" data-es="Costo del Sistema">System Cost</div>
                 <div class="overview-value" id="overviewCostPerKw">3000</div>
-                <div class="overview-subvalue">/kW</div>
+                <div class="overview-subvalue">/kWp</div>
               </div>
               <div class="overview-item">
-                <div class="overview-label" data-en="Climate Zone" data-es="Zona Climática">Climate Zone</div>
-                <div class="overview-value" id="overviewClimate">Equatorial</div>
-                <div class="overview-subvalue"><span id="overviewGhi">4.8</span> kWh/m²/day</div>
+                <div class="overview-label" data-en="Sun on Panels" data-es="Sol sobre Paneles">Sun on Panels</div>
+                <div class="overview-value" id="overviewClimate">1,784</div>
+                <div class="overview-subvalue">kWh/m²/<span data-en="yr" data-es="año">yr</span> · <span id="overviewGhi">3</span>°</div>
               </div>
             </div>
 
@@ -678,6 +728,10 @@
             <p class="disclaimer" data-en="This is an estimation based on standard solar irradiance data. Actual production depends on weather, shading, panel degradation, and installation quality." data-es="Esta es una estimación basada en datos estándar de irradiancia solar. La producción real depende del clima, sombreado, degradación de paneles y calidad de instalación.">
               This is an estimation based on standard solar irradiance data.
             </p>
+            <details class="solar-sources">
+              <summary data-en="Sources for these figures" data-es="Fuentes de estas cifras">Sources for these figures</summary>
+              <ul id="sourceList"></ul>
+            </details>
             <div class="cta-row cta-row--stacked">
               <button onclick="submitPdfDownload()" class="cta-final" style="background: #000000; color: #FFFFFF; border-color: #FFD500;" data-en="Download as PDF" data-es="Descargar como PDF">
                 Download as PDF
@@ -820,112 +874,219 @@
     let currentChartMode = 'monthly';
 
     const solarState = {
+      market: 'ecuador',
       location: 'Cuenca, Ecuador',
       latitude: -2.9,
-      ghi: 4.8,               // annual avg daily kWh/m²/day for the location
-      gridCO2: 0.27,          // kg CO₂ per kWh displaced from the local grid
+      gti: [],                // kWh/m² per month on an optimally tilted plane
+      tilt: 3,                // that optimal tilt, degrees
+      gridCO2: 0.4922,        // kg CO₂ per kWh displaced from the local grid
       currency: '$',
-      roofArea: 50,
+      roofArea: 20,
       panelType: 'Standard (18%)',
       panelEfficiency: 0.18,
       orientation: 0,
-      lossFactors: 15,
-      electricityPrice: 0.12,
-      costPerKw: 3000,
-      monthlyBill: 85,       // what the building spends today
-      fixedCharge: 6         // the part of that bill solar cannot remove
+      lossFactors: 18,
+      electricityPrice: 0.10,
+      costPerKw: 1200,
+      monthlyBill: 40,       // what the building spends today
+      fixedCharge: 3,        // the part of that bill solar cannot remove
+      selfUse: 0.30,         // Germany: share of consumption met directly by solar
+      feedIn: 0.077,         // Germany: EEG tariff for exported kWh, per kWh
+      feedInAuto: true       // follow the EEG rate for the system size until the reader overrides it
     };
 
-    // Solar irradiance data (kWh/m²/day) by month for different latitudes
-    // Monthly SHAPE of the solar year, January to December, for the northern
-    // hemisphere. These describe seasonality only — the annual level comes from
-    // each location's own GHI figure, so two cities at the same latitude but in
-    // different climates no longer get identical output.
-    const SEASONAL_PROFILE = {
-      'equatorial': [5.0, 5.1, 4.9, 4.8, 4.6, 4.2, 4.3, 4.5, 4.8, 5.0, 5.1, 5.0],
-      'subtropical': [3.5, 3.8, 4.5, 5.2, 5.6, 5.8, 5.7, 5.3, 4.6, 3.8, 3.2, 3.0],
-      'temperate': [1.8, 2.3, 3.5, 4.8, 5.5, 5.8, 5.5, 4.8, 3.5, 2.3, 1.5, 1.3]
+    /*
+     * Market data. Every figure here carries its source in MARKET_SOURCES.
+     *
+     * Cities: monthly global tilted irradiation at the optimal fixed tilt
+     * (GTI_opta, kWh/m²) and the specific yield of a typical crystalline
+     * system (PVOUT, kWh/kWp/yr), from the Global Solar Atlas (World Bank /
+     * Solargis). `loss` is the system loss that reproduces that PVOUT from
+     * GTI — it is higher on the hot coast than in the Andes, because modules
+     * lose output with heat. It seeds the losses slider for the city.
+     *
+     * Orientation: annual yield relative to an equator-facing array, by
+     * azimuth deviation, from PVGIS (JRC) — a 35° roof in Germany, a 10°
+     * roof in Ecuador. Near the equator a low-pitched roof loses almost
+     * nothing whichever way it faces; in Germany a north roof yields half.
+     */
+    const CITIES = {
+      ecuador: [
+        { id: 'cuenca', name: 'Cuenca', lat: -2.9, tilt: 3, loss: 18, pvout: 1465,
+          gti: [163.3, 142.8, 152.6, 141.5, 142.2, 131.8, 134.1, 140.5, 142.7, 161.3, 167.0, 164.1] },
+        { id: 'quito', name: 'Quito', lat: -0.18, tilt: 4, loss: 18, pvout: 1682,
+          gti: [168.5, 146.9, 164.4, 159.7, 167.7, 168.5, 186.4, 195.4, 185.3, 176.3, 163.4, 164.0] },
+        { id: 'guayaquil', name: 'Guayaquil', lat: -2.19, tilt: 4, loss: 20, pvout: 1324,
+          gti: [128.1, 120.6, 146.9, 145.5, 134.8, 121.9, 129.6, 146.0, 155.2, 148.8, 139.7, 137.1] },
+        { id: 'ambato', name: 'Ambato', lat: -1.24, tilt: 3, loss: 18, pvout: 1564,
+          gti: [166.9, 147.1, 161.1, 156.4, 154.1, 141.6, 150.6, 153.8, 157.9, 180.4, 171.6, 166.2] },
+        { id: 'loja', name: 'Loja', lat: -4.0, tilt: 5, loss: 18, pvout: 1358,
+          gti: [138.0, 119.6, 140.1, 137.0, 139.6, 125.3, 129.0, 138.7, 139.7, 158.0, 156.8, 143.6] },
+        { id: 'manta', name: 'Manta', lat: -0.95, tilt: 3, loss: 20, pvout: 1370,
+          gti: [138.9, 131.1, 165.3, 160.3, 143.2, 124.1, 133.7, 147.3, 149.3, 144.6, 140.9, 140.2] },
+        { id: 'machala', name: 'Machala', lat: -3.26, tilt: 4, loss: 19, pvout: 1267,
+          gti: [144.6, 139.4, 165.2, 158.2, 134.0, 108.9, 112, 117.9, 118.4, 117.7, 122.5, 131.6] },
+        { id: 'ibarra', name: 'Ibarra', lat: 0.35, tilt: 2, loss: 19, pvout: 1527,
+          gti: [164.7, 139.8, 154.2, 144.7, 144.7, 140.4, 155.1, 168.0, 169.7, 174.1, 165.7, 162.2] }
+      ],
+      germany: [
+        { id: 'berlin', name: 'Berlin', lat: 52.52, tilt: 37, loss: 16, pvout: 1071,
+          gti: [40.0, 63.9, 106.9, 143.2, 164.1, 161.0, 160.4, 151.6, 119.3, 80.1, 44.5, 33.0] },
+        { id: 'hamburg', name: 'Hamburg', lat: 53.55, tilt: 37, loss: 15, pvout: 1017,
+          gti: [35.4, 57.0, 102.9, 140.5, 159.7, 154.4, 154.8, 142.9, 110.5, 76.5, 39.5, 28.0] },
+        { id: 'munich', name: 'München', lat: 48.14, tilt: 37, loss: 16, pvout: 1185,
+          gti: [62.1, 85.0, 126.9, 146.7, 157.4, 163.4, 167.6, 160.1, 127.3, 97.1, 61.8, 53.4] },
+        { id: 'cologne', name: 'Köln', lat: 50.94, tilt: 36, loss: 16, pvout: 1064,
+          gti: [44.2, 67.0, 111.0, 139.9, 156.9, 158.5, 154.7, 146.5, 116.9, 82.5, 48.8, 36.4] },
+        { id: 'frankfurt', name: 'Frankfurt am Main', lat: 50.11, tilt: 36, loss: 16, pvout: 1105,
+          gti: [44.9, 69.8, 116.1, 148.6, 162.0, 166.5, 165.0, 157.0, 123.1, 82.7, 44.4, 33.9] },
+        { id: 'stuttgart', name: 'Stuttgart', lat: 48.78, tilt: 37, loss: 16, pvout: 1148,
+          gti: [56.3, 78.7, 121.9, 145.5, 156.3, 163.9, 166.4, 158.0, 127.8, 92.5, 58.6, 47.9] },
+        { id: 'leipzig', name: 'Leipzig', lat: 51.34, tilt: 38, loss: 16, pvout: 1100,
+          gti: [46.1, 68.5, 110.0, 144.3, 164.7, 162.2, 161.2, 154.0, 121.4, 86.2, 50.4, 38.7] },
+        { id: 'hanover', name: 'Hannover', lat: 52.37, tilt: 37, loss: 15, pvout: 1045,
+          gti: [39.4, 61.0, 105.7, 140.6, 159.9, 157.9, 155.2, 146.6, 114.3, 79.1, 42.2, 32.5] }
+      ]
     };
 
-    // Annual average daily global horizontal irradiance against latitude, used
-    // only when no location-specific figure is available (Custom Location).
-    // Irradiance is not monotonic in latitude — it peaks over the subtropical
-    // desert belt near 25° — so this is interpolated from a table rather than
-    // derived from a formula.
-    const GHI_BY_LATITUDE = [
-      { lat: 0,  ghi: 4.8 },
-      { lat: 15, ghi: 5.4 },
-      { lat: 25, ghi: 5.8 },
-      { lat: 35, ghi: 5.0 },
-      { lat: 45, ghi: 3.6 },
-      { lat: 55, ghi: 2.7 },
-      { lat: 65, ghi: 2.1 }
-    ];
+    const MARKETS = {
+      ecuador: {
+        currency: '$',
+        co2: 0.4922,          // combined margin for solar projects, SNI 2024
+        policy: 'netMetering',
+        orientation: [[0, 1], [45, 0.985], [90, 0.976], [135, 0.978], [180, 0.990]],
+        roof: 20, bill: 40, fixed: 3,
+        billRange: [5, 500, 5],
+        priceRange: [0.05, 0.30, 0.005], price: 0.10,
+        prices: [
+          { value: 0.10, en: 'Home ≤ 500 kWh/mo · $0.10', es: 'Hogar ≤ 500 kWh/mes · $0.10' },
+          { value: 0.1285, en: 'Home 501–700 kWh/mo · $0.129', es: 'Hogar 501–700 kWh/mes · $0.129' },
+          { value: 0.145, en: 'Home 701–1,000 kWh/mo · $0.145', es: 'Hogar 701–1.000 kWh/mes · $0.145' },
+          { value: 0.103, en: 'Business > 300 kWh/mo · $0.103', es: 'Comercio > 300 kWh/mes · $0.103' }
+        ],
+        costRange: [500, 2500, 50], cost: 1200,
+        costs: [
+          { value: 900, en: 'Larger system, 10 kWp+ · $900', es: 'Sistema grande, 10 kWp+ · $900' },
+          { value: 1200, en: 'Typical home system · $1,200', es: 'Sistema residencial típico · $1.200' },
+          { value: 1600, en: 'Small system, 2–5 kWp · $1,600', es: 'Sistema pequeño, 2–5 kWp · $1.600' }
+        ],
+        cities: CITIES.ecuador
+      },
+      germany: {
+        currency: '€',
+        co2: 0.344,           // average German mix, 2025
+        policy: 'feedIn',
+        orientation: [[0, 1], [45, 0.930], [90, 0.771], [135, 0.589], [180, 0.507]],
+        roof: 50, bill: 120, fixed: 13,
+        billRange: [10, 800, 5],
+        priceRange: [0.15, 0.60, 0.005], price: 0.37,
+        prices: [
+          { value: 0.37, en: 'Average household · €0.37', es: 'Hogar promedio · €0,37' },
+          { value: 0.30, en: 'Cheapest new contract · €0.30', es: 'Contrato nuevo más barato · €0,30' },
+          { value: 0.40, en: 'Basic supply (Grundversorgung) · €0.40', es: 'Suministro básico (Grundversorgung) · €0,40' }
+        ],
+        costRange: [700, 2500, 50], cost: 1250,
+        costs: [
+          { value: 1000, en: 'Larger system, 15–20 kWp · €1,000', es: 'Sistema grande, 15–20 kWp · €1.000' },
+          { value: 1250, en: 'Typical home, 5–10 kWp · €1,250', es: 'Vivienda típica, 5–10 kWp · €1.250' },
+          { value: 1550, en: 'Small system, 3–5 kWp · €1,550', es: 'Sistema pequeño, 3–5 kWp · €1.550' },
+          { value: 1900, en: 'With 10 kWh battery · €1,900', es: 'Con batería de 10 kWh · €1.900' }
+        ],
+        selfUse: [
+          { value: 30, en: 'No battery · 30%', es: 'Sin batería · 30%' },
+          { value: 60, en: 'With battery · 60%', es: 'Con batería · 60%' }
+        ],
+        cities: CITIES.germany
+      }
+    };
+
+    const MARKET_TEXT = {
+      ecuador: {
+        en: 'Net metering (Regulation ARCERNNR-008/23): every kWh you generate offsets a kWh you would have bought, at your own tariff. Surplus becomes a kWh credit that is wiped every 24 months — it is never paid out — and the system should not exceed your annual demand. Homes with solar also lose the Tarifa de la Dignidad.',
+        es: 'Balance neto (Regulación ARCERNNR-008/23): cada kWh que generas compensa un kWh que habrías comprado, a tu propia tarifa. El excedente se convierte en un crédito en kWh que se anula cada 24 meses — nunca se paga — y el sistema no debe superar tu demanda anual. Los hogares con paneles pierden además la Tarifa de la Dignidad.'
+      },
+      germany: {
+        en: 'No net metering: power you use yourself saves the full tariff; the rest is sold to the grid at the EEG feed-in rate, fixed for 20 years. A kWh used at home is worth about five times a kWh exported, so how much you use directly matters more than how much you produce.',
+        es: 'Sin balance neto: la energía que usas tú mismo ahorra la tarifa completa; el resto se vende a la red a la tarifa de inyección EEG, fija por 20 años. Un kWh usado en casa vale unas cinco veces un kWh exportado, así que importa más cuánto usas directamente que cuánto produces.'
+      }
+    };
+
+    const NOTES = {
+      ecuador: {
+        price: { en: 'Official 2026 tariff (ARCONEL). Blocks stack, so solar removes your most expensive kWh first: pick the block your top consumption falls in.',
+                 es: 'Tarifa oficial 2026 (ARCONEL). Los bloques son crecientes, así que la energía solar elimina primero tus kWh más caros: elige el bloque donde cae tu consumo más alto.' },
+        fixed: { en: 'Commercialisation charge $1.41 plus public lighting and municipal fees — solar does not remove these. Check your bill.',
+                 es: 'Cargo de comercialización $1,41 más alumbrado público y tasas municipales — la solar no los elimina. Revisa tu planilla.' },
+        cost: { en: 'Turnkey installed price, installer market survey (2026). No official index exists.',
+                es: 'Precio llave en mano, referencia de instaladores (2026). No existe un índice oficial.' }
+      },
+      germany: {
+        price: { en: 'Household average 37.0 ct (BDEW, Aug 2026); new-contract and basic-supply prices from Oct 2026.',
+                 es: 'Promedio de hogares 37,0 ct (BDEW, ago 2026); contratos nuevos y suministro básico, oct 2026.' },
+        fixed: { en: 'The standing charge (Grundpreis) — typically €10–15 a month. Check your bill.',
+                 es: 'El cargo fijo (Grundpreis) — normalmente €10–15 al mes. Revisa tu factura.' },
+        cost: { en: 'Turnkey price incl. installation; VAT is 0% on home PV. 2026 market survey (average €1,015/kWp per Fraunhofer ISE).',
+                es: 'Precio llave en mano con instalación; el IVA es 0% en FV residencial. Referencia de mercado 2026 (promedio €1.015/kWp según Fraunhofer ISE).' },
+        selfUse: { en: 'Typical German homes: 30–40% without a battery, about 60% with one (HTW Berlin). Pick the battery cost preset too if you add one.',
+                   es: 'Hogares alemanes típicos: 30–40% sin batería, cerca de 60% con batería (HTW Berlín). Si añades batería, elige también el costo con batería.' },
+        feedIn: { en: 'EEG rate for systems commissioned Aug–Dec 2026, partial feed-in: 7.70 ct to 10 kWp, 6.66 ct to 40 kWp, 5.44 ct to 100 kWp, blended by size and paid for 20 years. After that, exports earn nothing here.',
+                  es: 'Tarifa EEG para sistemas puestos en marcha ago–dic 2026, inyección parcial: 7,70 ct hasta 10 kWp, 6,66 ct hasta 40 kWp, 5,44 ct hasta 100 kWp, ponderada por tamaño y pagada 20 años. Después, la exportación no suma nada aquí.' }
+      }
+    };
+
+    const MARKET_SOURCES = {
+      ecuador: [
+        ['ARCONEL – Pliego tarifario 2025, kept for 2026 (Res. ARCONEL-029/2025)', 'https://arconel.gob.ec/wp-content/uploads/downloads/2025/07/PTSPEE-2025-Codificado_Resol-006-25_certificado.pdf'],
+        ['ARCERNNR-008/23 – Distributed generation for self-supply', 'https://arconel.gob.ec/wp-content/uploads/downloads/2025/05/Regulacion-Nro.-ARCERNNR-008-23-signed1.pdf'],
+        ['CENACE/ARCONEL – CO₂ emission factor of the SNI, 2024', 'https://arconel.gob.ec/wp-content/uploads/downloads/2025/09/Factor-de-emision-de-CO2-del-Sistema-Nacional-Interconectado-de-Ecuador-Informe-2024_compressed.pdf'],
+        ['Installer price survey, Ecuador 2026', 'https://placassolaresecuador.com/blog/cuanto-cuesta-paneles-solares-ecuador-2026/'],
+        ['Global Solar Atlas (World Bank / Solargis) – irradiation and yield', 'https://globalsolaratlas.info/'],
+        ['PVGIS (European Commission JRC) – orientation losses', 'https://re.jrc.ec.europa.eu/pvg_tools/en/']
+      ],
+      germany: [
+        ['BDEW – Strompreisanalyse, August 2026', 'https://www.bdew.de/service/daten-und-grafiken/bdew-strompreisanalyse/'],
+        ['Bundesnetzagentur – EEG feed-in tariffs', 'https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/ErneuerbareEnergien/EEG_Foerderung/start.html'],
+        ['Umweltbundesamt – CO₂ per kWh of electricity, 2025', 'https://www.umweltbundesamt.de/themen/co2-emissionen-pro-kilowattstunde-strom-2025-nur'],
+        ['42watt – PV costs 2026 (cites Fraunhofer ISE)', 'https://42watt.de/magazin/photovoltaik-kosten'],
+        ['HTW Berlin – Unabhängigkeitsrechner (self-consumption)', 'https://solar.htw-berlin.de/rechner/unabhaengigkeitsrechner/'],
+        ['Global Solar Atlas (World Bank / Solargis) – irradiation and yield', 'https://globalsolaratlas.info/'],
+        ['PVGIS (European Commission JRC) – orientation losses', 'https://re.jrc.ec.europa.eu/pvg_tools/en/']
+      ]
+    };
+
+    // EEG 2023 partial feed-in, building-mounted, commissioned 1 Aug – 31 Dec 2026.
+    // Paid pro rata across the bands, as the EEG does.
+    const EEG_BANDS = [[10, 0.0770], [40, 0.0666], [100, 0.0544]];
+    const EEG_YEARS = 20;
+
+    function eegRate(kwp) {
+      if (kwp <= 0) return EEG_BANDS[0][1];
+      let lower = 0, paid = 0;
+      for (const [upper, rate] of EEG_BANDS) {
+        const inBand = Math.max(0, Math.min(kwp, upper) - lower);
+        paid += inBand * rate;
+        lower = upper;
+      }
+      const covered = Math.min(kwp, EEG_BANDS[EEG_BANDS.length - 1][0]);
+      return paid / covered;
+    }
+
+    const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     // A roof cannot be paved edge to edge with modules: row spacing, setbacks,
     // plant and access typically leave 70-80% usable on a simple roof.
-    const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
     const ROOF_UTILISATION = 0.75;
 
     const PANEL_DEGRADATION_PER_YEAR = 0.005;  // 0.5%/yr, typical warranty terms
     const INVERTER_REPLACEMENT_SHARE = 0.15;   // share of system cost, once at ~year 15
     const SYSTEM_LIFETIME_YEARS = 30;
 
-    function estimateGhiFromLatitude(latitude) {
-      const absLat = Math.min(Math.abs(latitude), 65);
-      for (let i = 0; i < GHI_BY_LATITUDE.length - 1; i++) {
-        const a = GHI_BY_LATITUDE[i];
-        const b = GHI_BY_LATITUDE[i + 1];
-        if (absLat <= b.lat) {
-          const t = (absLat - a.lat) / (b.lat - a.lat);
-          return a.ghi + t * (b.ghi - a.ghi);
-        }
-      }
-      return GHI_BY_LATITUDE[GHI_BY_LATITUDE.length - 1].ghi;
-    }
-
-    /**
-     * Monthly irradiance (kWh/m²/day) for the current location.
-     *
-     * The seasonal profile is normalised to an average of 1 and then scaled to
-     * the location's annual GHI, so the shape of the year and its level are
-     * independent. South of the equator the profile is shifted six months.
-     */
-    function monthlyIrradiance() {
-      const profile = SEASONAL_PROFILE[getClimateZone(solarState.latitude)];
-      const ghi = solarState.ghi || estimateGhiFromLatitude(solarState.latitude);
-
-      const shifted = solarState.latitude < 0
-        ? profile.slice(6).concat(profile.slice(0, 6))  // southern hemisphere
-        : profile;
-
-      // Normalise on the DAY-WEIGHTED mean, because production is summed as
-      // daily output times the length of each month. Using the plain mean of
-      // twelve numbers left the integrated year off the location's stated GHI
-      // by up to 0.2%, with the sign depending on the hemisphere.
-      const totalDays = DAYS_IN_MONTH.reduce((sum, d) => sum + d, 0);
-      const weightedMean = shifted.reduce(
-        (sum, v, i) => sum + v * DAYS_IN_MONTH[i], 0) / totalDays;
-
-      return shifted.map(v => v / weightedMean * ghi);
-    }
-
-    function getClimateZone(latitude) {
-      const absLat = Math.abs(latitude);
-      if (absLat < 23.5) return 'equatorial';
-      if (absLat < 40) return 'subtropical';
-      return 'temperate';
-    }
+    function market() { return MARKETS[solarState.market]; }
+    function lang() { return currentLang === 'es' ? 'es' : 'en'; }
 
     /**
      * The direction an array should face to catch the most sun: towards the
-     * equator. North of it that means south; south of it — which is every
-     * Ecuadorian location in this tool — it means north.
-     *
-     * The slider measures deviation from this direction, and the label used to
-     * read "(Optimal: South)" as fixed text, so the default Cuenca setup told
-     * people in the studio's own city to point their panels the wrong way.
+     * equator. North of it that means south; south of it it means north.
      */
     function optimalFacing() {
       return solarState.latitude < 0 ? 'north' : 'south';
@@ -935,83 +1096,194 @@
       const caption = document.getElementById('orientationCaption');
       if (!caption) return;
 
-      const es = currentLang === 'es';
       const facing = optimalFacing();
-      const compass = es
-        ? (facing === 'north' ? 'norte' : 'sur')
-        : facing;
+      const compassEs = facing === 'north' ? 'norte' : 'sur';
       const deviation = solarState.orientation;
-
-      const text = deviation === 0
-        ? (es ? `Orientado al ${compass} — óptimo` : `Facing ${compass} — optimal`)
-        : (es ? `${deviation}° desde el ${compass}` : `${deviation}° from ${compass}`);
-
-      caption.textContent = text;
+      const pct = Math.round(getOrientationFactor(deviation) * 100);
+      const en = deviation === 0 ? `Facing ${facing} — optimal` : `${deviation}° from ${facing} — ${pct}% of optimal`;
+      const es = deviation === 0 ? `Orientado al ${compassEs} — óptimo` : `${deviation}° desde el ${compassEs} — ${pct}% del óptimo`;
+      caption.textContent = lang() === 'es' ? es : en;
       // Keep the shared translator from overwriting a value it did not set.
-      caption.setAttribute('data-en', deviation === 0
-        ? `Facing ${facing} — optimal` : `${deviation}° from ${facing}`);
-      caption.setAttribute('data-es', deviation === 0
-        ? `Orientado al ${facing === 'north' ? 'norte' : 'sur'} — óptimo`
-        : `${deviation}° desde el ${facing === 'north' ? 'norte' : 'sur'}`);
+      caption.setAttribute('data-en', en);
+      caption.setAttribute('data-es', es);
     }
 
     /**
-     * Annual yield relative to an equator-facing array, by azimuth deviation.
-     *
-     * The previous model (cos θ × 0.9 + 0.1) returned negative values beyond
-     * 96°, so a north-facing roof produced negative energy, negative savings
-     * and a negative payback. It also put an east/west roof at 10% of optimal,
-     * where the real figure is around 80%.
-     *
-     * This is the standard shape — loss grows with (1 − cos θ) — scaled by a
-     * latitude-dependent factor, because orientation barely matters at the
-     * equator and matters a great deal near the poles. It cannot go negative.
+     * Annual yield relative to an equator-facing array, interpolated from the
+     * market's PVGIS table. Cannot go negative, and is flat near the equator.
      */
     function getOrientationFactor(orientation) {
-      const deviation = Math.abs(orientation) * Math.PI / 180;
-      const severity = Math.min(0.70, Math.max(0.25, 0.25 + 0.007 * Math.abs(solarState.latitude)));
-      return 1 - severity * (1 - Math.cos(deviation)) / 2;
+      const table = market().orientation;
+      const d = Math.min(180, Math.abs(orientation));
+      for (let i = 0; i < table.length - 1; i++) {
+        const [a, fa] = table[i], [b, fb] = table[i + 1];
+        if (d <= b) return fa + (fb - fa) * (d - a) / (b - a);
+      }
+      return table[table.length - 1][1];
+    }
+
+    function setText(id, en, es) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.setAttribute('data-en', en);
+      el.setAttribute('data-es', es);
+      el.textContent = lang() === 'es' ? es : en;
+    }
+
+    /** Configure a range input and set its value. */
+    function setRange(id, range, value) {
+      const el = document.getElementById(id);
+      el.min = range[0];
+      el.max = range[1];
+      el.step = range[2];
+      el.value = value;
+    }
+
+    /** A row of preset pills that write a value into a slider. */
+    function renderPresets(rowId, presets, sliderId, onPick) {
+      const row = document.getElementById(rowId);
+      if (!row) return;
+      row.innerHTML = '';
+      (presets || []).forEach(preset => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chart-btn';
+        btn.dataset.value = preset.value;
+        btn.textContent = preset[lang()];
+        btn.addEventListener('click', () => {
+          document.getElementById(sliderId).value = preset.value;
+          if (onPick) onPick(preset.value);
+          updateDisplay();
+        });
+        row.appendChild(btn);
+      });
+    }
+
+    /** Light the pill whose value the slider currently holds. */
+    function syncPresets(rowId, sliderId) {
+      const value = parseFloat(document.getElementById(sliderId).value);
+      document.querySelectorAll(`#${rowId} .chart-btn`).forEach(btn => {
+        const on = Math.abs(parseFloat(btn.dataset.value) - value) < 1e-9;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', String(on));
+      });
+    }
+
+    function renderMarketPresets() {
+      const m = market();
+      renderPresets('pricePresets', m.prices, 'priceSlider');
+      renderPresets('costPresets', m.costs, 'costPerKwSlider');
+      renderPresets('selfUsePresets', m.selfUse, 'selfUseSlider');
+      renderPresets('feedInPresets', solarState.market === 'germany'
+        ? [{ value: 'auto', en: 'EEG rate for this size', es: 'Tarifa EEG para este tamaño' }]
+        : [], 'feedInSlider');
+      // The feed-in pill means "follow the size", not a fixed number.
+      const autoBtn = document.querySelector('#feedInPresets .chart-btn');
+      if (autoBtn) {
+        autoBtn.replaceWith(autoBtn.cloneNode(true));
+        document.querySelector('#feedInPresets .chart-btn').addEventListener('click', () => {
+          solarState.feedInAuto = true;
+          updateDisplay();
+        });
+      }
+    }
+
+    function renderMarketText() {
+      const key = solarState.market;
+      const n = NOTES[key];
+      setText('marketNote', MARKET_TEXT[key].en, MARKET_TEXT[key].es);
+      setText('priceNote', n.price.en, n.price.es);
+      setText('fixedNote', n.fixed.en, n.fixed.es);
+      setText('costNote', n.cost.en, n.cost.es);
+      if (n.selfUse) setText('selfUseNote', n.selfUse.en, n.selfUse.es);
+      if (n.feedIn) setText('feedInNote', n.feedIn.en, n.feedIn.es);
+      const costNo = key === 'germany' ? '10' : '9';
+      setText('costLabel', `${costNo}. System Cost per kWp`, `${costNo}. Costo del Sistema por kWp`);
+
+      const list = document.getElementById('sourceList');
+      if (list) {
+        list.innerHTML = '';
+        MARKET_SOURCES[key].forEach(([label, url]) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = label;
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      }
+    }
+
+    /**
+     * Switch market: currency, cities, tariff and cost defaults, the rules
+     * for surplus power and the grid's carbon intensity all move together.
+     */
+    function selectMarket(key) {
+      solarState.market = key;
+      const m = market();
+
+      document.querySelectorAll('[data-market]').forEach(card => {
+        card.classList.toggle('selected', card.dataset.market === key);
+      });
+
+      solarState.currency = m.currency;
+      solarState.gridCO2 = m.co2;
+      solarState.feedInAuto = true;
+
+      const select = document.getElementById('locationSelect');
+      select.innerHTML = '';
+      m.cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city.id;
+        option.textContent = city.name;
+        select.appendChild(option);
+      });
+
+      setRange('priceSlider', m.priceRange, m.price);
+      setRange('costPerKwSlider', m.costRange, m.cost);
+      setRange('monthlyBillSlider', m.billRange, m.bill);
+      document.getElementById('fixedChargeSlider').value = m.fixed;
+      document.getElementById('roofAreaSlider').value = m.roof;
+      document.getElementById('selfUseSlider').value = 30;
+      document.getElementById('selfUseSection').hidden = key !== 'germany';
+
+      renderMarketPresets();
+      renderMarketText();
+      updateCurrencyLabels();
+      updateLocation();
+    }
+
+    function currentCity() {
+      const id = document.getElementById('locationSelect').value;
+      return market().cities.find(c => c.id === id) || market().cities[0];
     }
 
     function updateLocation() {
-      const select = document.getElementById('locationSelect');
-      const selectedOption = select.options[select.selectedIndex] || select.options[0];
-      if (!selectedOption) return;
-      const latitude = parseFloat(selectedOption.value);
-      const price = parseFloat(selectedOption.dataset.price) || 0.12;
-      const customSection = document.getElementById('customLatitudeSection');
-      const displaySection = document.getElementById('selectedLocationDisplay');
+      const city = currentCity();
+      const country = solarState.market === 'germany' ? 'Germany' : 'Ecuador';
+      solarState.location = `${city.name}, ${country}`;
+      solarState.latitude = city.lat;
+      solarState.gti = city.gti;
+      solarState.tilt = city.tilt;
+      document.getElementById('latitudeSlider').value = city.lat;
 
-      solarState.gridCO2 = parseFloat(selectedOption.dataset.co2) || 0.4;
-      solarState.currency = selectedOption.dataset.currency || '$';
+      // Seed the losses from the city's own yield; the reader can still move it.
+      document.getElementById('lossFactorSlider').value = city.loss;
 
-      if (selectedOption.value === 'custom') {
-        customSection.style.display = 'block';
-        displaySection.style.display = 'none';
-        solarState.location = 'Custom Location';
-        // No location-specific irradiance: fall back to the latitude estimate.
-        solarState.ghi = 0;
-      } else {
-        customSection.style.display = 'none';
-        displaySection.style.display = 'block';
-        solarState.location = selectedOption.dataset.location || 'Custom Location';
-        solarState.ghi = parseFloat(selectedOption.dataset.ghi) || 0;
+      const annualGti = city.gti.reduce((a, b) => a + b, 0);
+      setText('cityNote',
+        `${formatToolNumber(Math.round(annualGti))} kWh/m² a year on panels tilted ${city.tilt}°; a typical system yields about ${formatToolNumber(city.pvout)} kWh per kWp (Global Solar Atlas).`,
+        `${formatToolNumber(Math.round(annualGti))} kWh/m² al año sobre paneles inclinados ${city.tilt}°; un sistema típico rinde unos ${formatToolNumber(city.pvout)} kWh por kWp (Global Solar Atlas).`);
+      setText('orientationNote',
+        solarState.market === 'germany'
+          ? 'For a 35° roof (PVGIS). East or west keeps about 77%; north about half.'
+          : 'For a low 10° roof (PVGIS). Near the equator the direction barely matters.',
+        solarState.market === 'germany'
+          ? 'Para un techo de 35° (PVGIS). Este u oeste conserva cerca del 77%; norte, la mitad.'
+          : 'Para un techo bajo de 10° (PVGIS). Cerca del ecuador la dirección casi no importa.');
 
-        // updateDisplay() reads latitude back out of the slider, so the slider
-        // is the value that has to change — assigning solarState.latitude here
-        // alone was silently overwritten, and every location was computed at
-        // whatever latitude the slider happened to hold.
-        document.getElementById('latitudeSlider').value = latitude;
-        solarState.latitude = latitude;
-
-        solarState.electricityPrice = price;
-        document.getElementById('latitudeValue').textContent = Math.abs(latitude).toFixed(1);
-        document.getElementById('priceSlider').value = price;
-        document.getElementById('priceValue').textContent = price.toFixed(2);
-        displaySection.textContent = solarState.location;
-      }
-
-      updateCurrencyLabels();
       updateDisplay();
     }
 
@@ -1026,11 +1298,14 @@
       }
 
       updateDisplay();
-      calculateProduction();
+    }
+
+    function onFeedInInput() {
+      solarState.feedInAuto = false;
+      updateDisplay();
     }
 
     function updateDisplay() {
-      const latitude = parseFloat(document.getElementById('latitudeSlider').value);
       const roofArea = parseInt(document.getElementById('roofAreaSlider').value);
       const orientation = parseInt(document.getElementById('orientationSlider').value);
       const lossFactor = parseInt(document.getElementById('lossFactorSlider').value);
@@ -1038,14 +1313,15 @@
       const costPerKw = parseInt(document.getElementById('costPerKwSlider').value);
       const monthlyBill = parseInt(document.getElementById('monthlyBillSlider').value);
       const fixedCharge = parseInt(document.getElementById('fixedChargeSlider').value);
+      const selfUse = parseInt(document.getElementById('selfUseSlider').value);
 
-      solarState.latitude = latitude;
       solarState.roofArea = roofArea;
       solarState.orientation = orientation;
       solarState.lossFactors = lossFactor;
       solarState.electricityPrice = price;
       solarState.costPerKw = costPerKw;
       solarState.monthlyBill = monthlyBill;
+      solarState.selfUse = selfUse / 100;
       // Clamping only the state left the slider showing a fixed charge larger
       // than the bill it is part of; move the control too.
       const clampedFixed = Math.min(fixedCharge, monthlyBill);
@@ -1054,24 +1330,39 @@
       }
       solarState.fixedCharge = clampedFixed;
 
-      if (document.getElementById('locationSelect').value !== 'custom') {
-        // Don't update latitude display if using preset location
+      // The feed-in rate follows the system size until the reader sets it.
+      const kwp = roofArea * ROOF_UTILISATION * solarState.panelEfficiency;
+      if (solarState.feedInAuto) {
+        solarState.feedIn = eegRate(kwp);
+        document.getElementById('feedInSlider').value = (solarState.feedIn * 100).toFixed(2);
       } else {
-        document.getElementById('latitudeValue').textContent = latitude.toFixed(1);
+        solarState.feedIn = parseFloat(document.getElementById('feedInSlider').value) / 100;
       }
+
       document.getElementById('roofAreaValue').textContent = roofArea;
       document.getElementById('orientationValue').textContent = orientation;
       updateOrientationCaption();
       document.getElementById('lossFactorValue').textContent = lossFactor;
-      document.getElementById('priceValue').textContent = price.toFixed(2);
+      document.getElementById('priceValue').textContent = price.toFixed(price < 1 && Math.round(price * 1000) % 10 ? 3 : 2);
       document.getElementById('costPerKwValue').textContent = formatToolNumber(costPerKw);
       document.getElementById('monthlyBillValue').textContent = formatToolNumber(monthlyBill);
       document.getElementById('fixedChargeValue').textContent = formatToolNumber(solarState.fixedCharge);
+      document.getElementById('selfUseValue').textContent = selfUse;
+      document.getElementById('feedInValue').textContent = (solarState.feedIn * 100).toFixed(2);
+
+      syncPresets('pricePresets', 'priceSlider');
+      syncPresets('costPresets', 'costPerKwSlider');
+      syncPresets('selfUsePresets', 'selfUseSlider');
+      const autoBtn = document.querySelector('#feedInPresets .chart-btn');
+      if (autoBtn) {
+        autoBtn.classList.toggle('active', solarState.feedInAuto);
+        autoBtn.setAttribute('aria-pressed', String(solarState.feedInAuto));
+      }
 
       calculateProduction();
     }
 
-    /** Currency symbol for the selected location. */
+    /** Currency symbol for the selected market. */
     function currencySymbol() {
       return solarState.currency || '$';
     }
@@ -1089,73 +1380,89 @@
       if (!caption) return;
 
       const kwh = formatToolNumber(Math.round(annualConsumption));
-      const en = `About ${kwh} kWh a year at this tariff`;
-      const es = `Unos ${kwh} kWh al año con esta tarifa`;
-      caption.textContent = currentLang === 'es' ? es : en;
+      const perMonth = formatToolNumber(Math.round(annualConsumption / 12));
+      const en = `About ${kwh} kWh a year (${perMonth} a month) at this tariff`;
+      const es = `Unos ${kwh} kWh al año (${perMonth} al mes) con esta tarifa`;
+      caption.textContent = lang() === 'es' ? es : en;
       caption.setAttribute('data-en', en);
       caption.setAttribute('data-es', es);
     }
 
     /**
-     * Say plainly when the array outgrows the building.
-     *
-     * Surplus beyond your own consumption earns nothing here, so a bigger
-     * roof stops paying at that point. Rather than quietly capping the
-     * savings figure, name the surplus and suggest the area that would
-     * actually match the bill.
+     * Say plainly what happens to the power the building does not use.
+     * Ecuador: it earns nothing, so an oversized array is named and a roof
+     * area that matches the bill is suggested. Germany: it is sold at the
+     * feed-in rate, so the split between used and exported is shown.
      */
-    function updateSizingNote(surplusKwh, totalAnnual, annualConsumption) {
+    function updateSizingNote(production, selfUsed, exported, annualConsumption) {
       const note = document.getElementById('sizingNote');
       if (!note) return;
+      const es = lang() === 'es';
 
-      // Ignore a rounding-sized overshoot.
-      if (surplusKwh <= totalAnnual * 0.05 || totalAnnual <= 0) {
-        note.hidden = true;
+      if (solarState.market === 'germany') {
+        if (production <= 0) { note.hidden = true; return; }
+        const usedPct = Math.round(selfUsed / production * 100);
+        const ct = (solarState.feedIn * 100).toFixed(2);
+        const priceCt = (solarState.electricityPrice * 100).toFixed(0);
+        note.textContent = es
+          ? `Usas directamente ${formatToolNumber(Math.round(selfUsed))} kWh (${usedPct}% de la producción) y ahorras ${priceCt} ct por cada uno. Los ${formatToolNumber(Math.round(exported))} kWh restantes se venden a ${ct} ct.`
+          : `You use ${formatToolNumber(Math.round(selfUsed))} kWh directly (${usedPct}% of production), saving ${priceCt} ct on each. The other ${formatToolNumber(Math.round(exported))} kWh are sold at ${ct} ct.`;
+        note.hidden = false;
         return;
       }
 
-      const es = currentLang === 'es';
-      const ratio = annualConsumption > 0 ? totalAnnual / annualConsumption : 0;
-      // Roof area that would just cover the bill, at the current settings.
-      const matchedRoof = Math.max(10, Math.round(solarState.roofArea / ratio));
-      const surplus = formatToolNumber(Math.round(surplusKwh));
-
+      // Ignore a rounding-sized overshoot.
+      if (exported <= production * 0.05 || production <= 0) {
+        note.hidden = true;
+        return;
+      }
+      const ratio = annualConsumption > 0 ? production / annualConsumption : 0;
+      const matchedRoof = ratio > 0 ? Math.max(10, Math.round(solarState.roofArea / ratio)) : 10;
+      const surplus = formatToolNumber(Math.round(exported));
       note.textContent = es
-        ? `Este tejado genera ${ratio.toFixed(1)}× lo que consume el edificio. `
-          + `Sobran ${surplus} kWh al año que no se pagan, así que el ahorro está `
-          + `limitado por la factura. Unos ${matchedRoof} m² bastarían.`
-        : `This roof generates ${ratio.toFixed(1)}× what the building uses. `
-          + `The surplus of ${surplus} kWh a year earns nothing, so savings are `
-          + `capped by the bill. About ${matchedRoof} m² would match it.`;
+        ? `Este techo genera ${ratio.toFixed(1)}× lo que consume el edificio. Los ${surplus} kWh sobrantes al año son un crédito que se anula cada 24 meses sin pago, y la regulación pide no superar la demanda anual. Unos ${matchedRoof} m² bastarían.`
+        : `This roof generates ${ratio.toFixed(1)}× what the building uses. The surplus of ${surplus} kWh a year is a credit wiped every 24 months without payment, and the regulation asks you not to exceed annual demand. About ${matchedRoof} m² would match it.`;
       note.hidden = false;
     }
 
     /**
-     * Simple payback, accumulating year by year so that panel degradation is
-     * taken into account and a zero-saving year cannot divide by zero.
-     * Returns null when the system never pays for itself within its lifetime.
+     * What one year's production is worth.
+     *   Ecuador (net metering): each kWh offsets a purchased kWh, up to the
+     *     building's own consumption; surplus credit earns nothing.
+     *   Germany (EEG): kWh used directly save the tariff, up to the share of
+     *     consumption the building can absorb as it happens; the rest is
+     *     sold at the feed-in rate, which stops after 20 years.
      */
+    function valueOfYear(produced, annualConsumption, year) {
+      const price = solarState.electricityPrice;
+      if (solarState.market === 'germany') {
+        const selfUsed = Math.min(produced, annualConsumption * solarState.selfUse);
+        const exported = produced - selfUsed;
+        const feedIn = year <= EEG_YEARS ? solarState.feedIn : 0;
+        return { selfUsed, exported, value: selfUsed * price + exported * feedIn };
+      }
+      const selfUsed = Math.min(produced, annualConsumption);
+      return { selfUsed, exported: produced - selfUsed, value: selfUsed * price };
+    }
+
     const INVERTER_REPLACEMENT_YEAR = 15;
 
     /**
      * The system's cash flow, year by year — the single model the payback
      * figure, the lifetime total and the payback chart all read from.
-     *
-     * Degradation applies to PRODUCTION, and the saving is re-capped against
-     * consumption each year. Degrading the already-capped saving instead, as
-     * this used to, quietly understated an oversized array: it keeps covering
-     * the same bill for years precisely because it has spare output to lose.
+     * Degradation applies to PRODUCTION, and the value is recomputed from it
+     * each year, so an oversized array keeps covering the bill as it ages.
      *
      * @returns {{year:number, savings:number, cumulative:number}[]} year 0
      *   carries the purchase, so `cumulative` starts at minus the system cost.
      */
-    function cashFlow(systemCost, firstYearProduction, annualConsumption, price) {
+    function cashFlow(systemCost, firstYearProduction, annualConsumption) {
       const rows = [{ year: 0, savings: 0, cumulative: -systemCost }];
       let cumulative = -systemCost;
 
       for (let year = 1; year <= SYSTEM_LIFETIME_YEARS; year++) {
         const produced = firstYearProduction * Math.pow(1 - PANEL_DEGRADATION_PER_YEAR, year - 1);
-        let savings = Math.min(produced, annualConsumption) * price;
+        let savings = valueOfYear(produced, annualConsumption, year).value;
 
         // The inverter will not last the life of the panels.
         if (year === INVERTER_REPLACEMENT_YEAR) {
@@ -1187,7 +1494,6 @@
     }
 
     function calculateProduction() {
-      const irradiance = monthlyIrradiance();
       const orientationFactor = getOrientationFactor(solarState.orientation);
       const efficiencyFactor = (100 - solarState.lossFactors) / 100;
 
@@ -1195,54 +1501,38 @@
       const panelArea = solarState.roofArea * ROOF_UTILISATION;
       const peakCapacity = panelArea * solarState.panelEfficiency; // kWp
 
-      const monthlyProduction = [];
-      let totalAnnual = 0;
+      // kWp × in-plane irradiation (kWh/m², i.e. peak-sun hours) × losses.
+      const monthlyProduction = solarState.gti.map(gti =>
+        peakCapacity * gti * orientationFactor * efficiencyFactor);
+      const totalAnnual = monthlyProduction.reduce((a, b) => a + b, 0);
 
-      for (let i = 0; i < 12; i++) {
-        const dailyProduction = irradiance[i] * panelArea * solarState.panelEfficiency *
-                                orientationFactor * efficiencyFactor;
-        const monthlyProd = dailyProduction * DAYS_IN_MONTH[i];
-        monthlyProduction.push(monthlyProd);
-        totalAnnual += monthlyProd;
-      }
+      document.getElementById('annualProduction').textContent = formatToolNumber(Math.round(totalAnnual)) + ' kWh/yr';
 
-      document.getElementById('annualProduction').textContent = Math.round(totalAnnual) + ' kWh/yr';
-
-      // Generation is only worth money to the extent it displaces electricity
-      // you would otherwise have bought. This used to be
-      // `totalAnnual * price` — every kWh valued at the retail tariff — which
-      // credited a household with more savings than its entire bill. Under
-      // Ecuador's net-metering scheme surplus rolls over as credit but is not
-      // paid out beyond your own consumption, so the annual bill is the cap.
-      // Only the energy part of a bill is bought by the kWh. Dividing the
-      // whole bill by the tariff overstated consumption, and let savings run
-      // up towards the full bill — a figure no grid-connected building can
-      // reach, because the standing charges survive whatever you generate.
+      // Only the energy part of a bill is bought by the kWh; the standing
+      // charges survive whatever you generate.
       const annualBill = solarState.monthlyBill * 12;
       const annualFixed = solarState.fixedCharge * 12;
       const annualEnergyBill = Math.max(0, annualBill - annualFixed);
       const annualConsumption = annualEnergyBill / solarState.electricityPrice;
 
-      const selfUsedKwh = Math.min(totalAnnual, annualConsumption);
-      const surplusKwh = Math.max(0, totalAnnual - annualConsumption);
-      const annualSavings = selfUsedKwh * solarState.electricityPrice;
+      const year1 = valueOfYear(totalAnnual, annualConsumption, 1);
+      const annualSavings = year1.value;
 
-      // Share of the whole bill removed — so it is honest about the floor the
-      // fixed charges put under it, rather than reporting 100% of the part
-      // that happens to be reducible.
+      // Share of the whole bill removed by power used on site. Feed-in income
+      // is money received, not a smaller bill, so it is left out here.
       const billCoveredPct = annualBill > 0
-        ? Math.min(100, (annualSavings / annualBill) * 100)
+        ? Math.min(100, (year1.selfUsed * solarState.electricityPrice / annualBill) * 100)
         : 0;
       const co2Offset = totalAnnual * solarState.gridCO2;
       const carDays = totalAnnual / 20; // an EV at roughly 20 kWh/day
 
       const totalSystemCost = peakCapacity * solarState.costPerKw;
-      const flow = cashFlow(totalSystemCost, totalAnnual, annualConsumption, solarState.electricityPrice);
+      const flow = cashFlow(totalSystemCost, totalAnnual, annualConsumption);
       const payback = paybackYears(flow);
       const lifetimeSavings = lifetimeNetSavings(flow);
 
       const paybackLabel = payback === null
-        ? (currentLang === 'es' ? 'nunca' : 'never')
+        ? (lang() === 'es' ? 'nunca' : 'never')
         : payback.toFixed(1);
 
       document.getElementById('totalCostDisplay').textContent = formatToolNumber(Math.round(totalSystemCost));
@@ -1251,23 +1541,23 @@
       document.getElementById('thirtyYearSavings').textContent = formatToolNumber(Math.round(lifetimeSavings));
 
       document.getElementById('equivalence').innerHTML = `
-        ${currentLang === 'es' ? 'Ahorro anual' : 'Annual savings'}: <strong>${currencySymbol()}${formatToolNumber(Math.round(annualSavings))}</strong><br>
-        <small>≈ ${formatToolNumber(Math.round(co2Offset))} kg CO₂ ${currentLang === 'es' ? 'compensado' : 'offset'} | ${formatToolNumber(Math.round(carDays))} ${currentLang === 'es' ? 'días de viaje en coche' : 'days of car travel'}</small>
+        ${lang() === 'es' ? 'Ahorro anual' : 'Annual savings'}: <strong>${currencySymbol()}${formatToolNumber(Math.round(annualSavings))}</strong><br>
+        <small>≈ ${formatToolNumber(Math.round(co2Offset))} kg CO₂ ${lang() === 'es' ? 'compensado' : 'offset'} | ${formatToolNumber(Math.round(carDays))} ${lang() === 'es' ? 'días de viaje en coche eléctrico' : 'days of EV driving'}</small>
       `;
 
       updateSystemOverview(peakCapacity, Math.round(totalSystemCost), Math.round(totalAnnual),
                            Math.round(annualSavings), paybackLabel, Math.round(co2Offset),
-                           Math.round(lifetimeSavings), getClimateZone(solarState.latitude));
+                           Math.round(lifetimeSavings));
 
       document.getElementById('overviewBillCovered').textContent = Math.round(billCoveredPct);
       updateConsumptionCaption(annualConsumption);
-      updateSizingNote(surplusKwh, totalAnnual, annualConsumption);
+      updateSizingNote(totalAnnual, year1.selfUsed, year1.exported, annualConsumption);
 
       createProductionChart(monthlyProduction);
       createPaybackChart(flow);
     }
 
-    function updateSystemOverview(peakCapacity, totalCost, annualProduction, annualSavings, paybackPeriod, co2Offset, thirtyYearSavings, climateZone) {
+    function updateSystemOverview(peakCapacity, totalCost, annualProduction, annualSavings, paybackPeriod, co2Offset, thirtyYearSavings) {
       // Update input parameters
       document.getElementById('overviewLocation').textContent = solarState.location;
       document.getElementById('overviewLatitude').textContent = Math.abs(solarState.latitude).toFixed(1) + '°';
@@ -1277,16 +1567,10 @@
       document.getElementById('overviewLosses').textContent = solarState.lossFactors;
       document.getElementById('overviewPrice').textContent = solarState.electricityPrice.toFixed(2);
       document.getElementById('overviewCostPerKw').textContent = formatToolNumber(solarState.costPerKw);
-      document.getElementById('overviewGhi').textContent =
-        (solarState.ghi || estimateGhiFromLatitude(solarState.latitude)).toFixed(1);
-
-      // Climate zone label
-      const climateLabels = {
-        'equatorial': 'Equatorial',
-        'subtropical': 'Subtropical',
-        'temperate': 'Temperate'
-      };
-      document.getElementById('overviewClimate').textContent = climateLabels[climateZone] || 'Equatorial';
+      // The solar resource on the panels, at the city's optimal tilt.
+      document.getElementById('overviewGhi').textContent = solarState.tilt;
+      document.getElementById('overviewClimate').textContent =
+        formatToolNumber(Math.round(solarState.gti.reduce((a, b) => a + b, 0)));
 
       // Update calculated values
       document.getElementById('overviewCapacity').textContent = peakCapacity.toFixed(2);
@@ -1504,8 +1788,9 @@
     // Translation itself lives in js/tools/i18n.js; the charts carry
     // translated labels, so they are redrawn on every switch.
     document.addEventListener('proyectual:languagechange', () => {
-      updateOrientationCaption();
-      calculateProduction();
+      // Preset pills are built in script, so they are rebuilt in the new language.
+      renderMarketPresets();
+      updateDisplay();
     });
 
     // EmailJS credentials are now handled securely by the backend
@@ -1621,10 +1906,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Seed state from the selected option so latitude, irradiance, grid
+      // Seed everything from the market so cities, tariffs, costs, grid
       // factor and currency all agree before the first calculation.
-      updateLocation();
-      updateCurrencyLabels();
+      selectMarket('ecuador');
       updateLanguage(currentLang);
 
       const chartButtons = document.querySelectorAll('[data-chart-mode]');
