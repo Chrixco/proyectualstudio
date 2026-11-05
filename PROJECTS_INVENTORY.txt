@@ -191,5 +191,20 @@ Spanish Description:
                 resiliencia colectiva y co-creación de espacio público.
 
 ================================================================================
+PROJECT 10: MISSING LINKS
+================================================================================
+Title:          Missing Links — Lisbon’s Botanical Garden
+Subtitle:       Honourable Mention, Botanical Turn 2026
+Link:           pages/missinglinks.html
+Image Path:     images/missing_links/seed_bank_square.jpg
+Alt Text:       Missing Links
+
+Context:        Urban Design - Competition, Green Equity
+
+Note:           Any public mention of the award must carry the acknowledgement
+                of Non-a, the Naturescapes EU Project (EU co-funding), the
+                University of Lisbon and ICS-ULisboa.
+
+================================================================================
 END OF INVENTORY
 ================================================================================
